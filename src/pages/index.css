@@ -1,0 +1,7 @@
+.markdown p {
+  @apply mt-6 text-lg;
+}
+
+.markdown pre {
+  @apply mt-8;
+}

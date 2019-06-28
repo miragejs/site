@@ -4885,7 +4885,7 @@ fs-extra@^7.0.0, fs-extra@^7.0.1:
     jsonfile "^4.0.0"
     universalify "^0.1.0"
 
-fs-extra@^8.0.0:
+fs-extra@^8.0.0, fs-extra@^8.0.1:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-8.1.0.tgz#49d43c45a88cd9677668cb7be1b46efdb8d2e1c0"
   integrity sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==
@@ -5058,6 +5058,15 @@ gatsby-plugin-postcss@^2.1.0:
   dependencies:
     "@babel/runtime" "^7.0.0"
     postcss-loader "^3.0.0"
+
+gatsby-plugin-purgecss@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-purgecss/-/gatsby-plugin-purgecss-4.0.0.tgz#3bd26ac26441fe3dbb5da323cde1298416573072"
+  integrity sha512-oWPooBGAXZorznbrNxeE3BgKAf8Dq6XU/ilJ1Sa+zBhxq9ypwqHFu7pfGaKE0ZYNCd9OqQkcj72xud1P+1Ssog==
+  dependencies:
+    fs-extra "^8.0.1"
+    loader-utils "^1.1.0"
+    purgecss "^1.3.0"
 
 gatsby-plugin-react-helmet@^3.1.0:
   version "3.1.0"

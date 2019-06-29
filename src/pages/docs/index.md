@@ -97,7 +97,7 @@ Mirage provides an Express-like API that lets you easily intercept your app’s 
 
 Because Mirage runs in the browser, you don’t need to signup for any new services or change your development workflow. Just install the package from npm, and build out fully dynamic features directly in your frontend codebase.
 
-Mirage’s helpers go way beyond single-route mocking. By telling Mirage a bit more aboutyour server resources, you can have a fullly relational CRUD API in just a few lines of code:
+Mirage’s helpers go way beyond single-route mocking. By telling Mirage a bit more about your server resources, you can have a fully relational CRUD API in just a few lines of code:
 
 ```js
 new Server({

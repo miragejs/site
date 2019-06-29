@@ -7,11 +7,26 @@ import SEO from "../components/seo"
 
 import "./index.css"
 
-const IndexPage = function({ data }) {
+function SignupForm() {
+  return (
+    <div className="flex">
+      <input
+        type="text"
+        placeholder="your@email.com"
+        className="w-full max-w-sm mr-4 rounded px-3 py-2 border-2 border-transparent focus:outline-none focus:border-green"
+      />
+      <button className="border border-green px-3 py-2 rounded text-green hover:bg-green hover:text-white focus:outline-none focus:outline-shadow">
+        Notify me
+      </button>
+    </div>
+  )
+}
+
+function IndexPage({ data }) {
   let html = data.allMarkdownRemark.edges[0].node.html
 
   return (
-    <div className="antialised bg-gray-dark text-gray-light font-light leading-normal tracking-wide pt-32 pb-16">
+    <div className="antialised bg-gray-dark text-gray-light font-light leading-normal tracking-wide py-32">
       <Layout>
         <div className="max-w-3xl mx-auto">
           <SEO title="Home" />
@@ -28,15 +43,8 @@ const IndexPage = function({ data }) {
               <p className="mt-4">
                 Sign up and be the first to hear first about our public release:
               </p>
-              <div className="mt-6 flex">
-                <input
-                  type="text"
-                  placeholder="your@email.com"
-                  className="w-full max-w-sm mr-4 rounded px-3 py-2 border-2 border-transparent focus:outline-none focus:border-green"
-                />
-                <button className="border border-green px-3 py-2 rounded text-green hover:bg-green hover:text-white focus:outline-none focus:outline-shadow">
-                  Notify me
-                </button>
+              <div className="mt-6">
+                <SignupForm />
               </div>
             </div>
 
@@ -44,6 +52,20 @@ const IndexPage = function({ data }) {
 
             <div className="mt-24 markdown">
               <div dangerouslySetInnerHTML={{ __html: html }} />
+            </div>
+
+            <hr className="mt-24 w-1/2 mx-auto border border-gray-400" />
+
+            <div className="text-xl mt-24">
+              <p className="mt-4 text-gray-lighter font-bold">
+                Interested in Mirage and the frontend-first workflow?
+              </p>
+              <p className="mt-4">
+                Sign up and be the first to hear first about our public release:
+              </p>
+              <div className="mt-6">
+                <SignupForm />
+              </div>
             </div>
           </div>
         </div>

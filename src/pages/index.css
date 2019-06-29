@@ -2,6 +2,10 @@
   @apply mt-6 text-xl;
 }
 
+.markdown strong {
+  @apply text-gray-lighter font-bold mt-8 block;
+}
+
 .markdown pre {
-  @apply mt-8;
+  @apply mt-8 p-8 rounded-lg;
 }

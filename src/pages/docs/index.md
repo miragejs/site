@@ -52,9 +52,9 @@ Before you know it, you’ve spent half your time cobbling together a mock API i
 
 **What if there was a better way?**
 
-What if you had a tool that embraced your frontend workflow, giving you everything you need to build out complete, production-ready JavaScript features without having to wait on your production API?
+What if you had a tool that embraced your frontend workflow, giving you everything you needed to build out complete, production-ready JavaScript features without having to wait on your production API?
 
-This is exactly why Mirage.js was created.
+That's exactly why Mirage.js was created.
 
 Here’s what it looks like:
 
@@ -64,11 +64,13 @@ import Server from '@miragejs/server';
 
 // Start the Mirage server
 let server = new Server();
-server.get('/users', () => ([
-  { id: '1', name: 'Luke' },
-  { id: '2', name: 'Leah' },
-  { id: '3', name: 'Anakin' }
-]));
+server.get('/users', () => (
+  [
+    { id: '1', name: 'Luke' },
+    { id: '2', name: 'Leah' },
+    { id: '3', name: 'Anakin' }
+  ]
+));
 
 function() {
   let [ users, setUsers ] = useState([]);

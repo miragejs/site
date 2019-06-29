@@ -19,8 +19,8 @@ const IndexPage = function({ data }) {
             <h1 className="text-5xl font-bold leading-tight text-white tracking-wide">
               Build a production-ready frontend, even if your API's not ready.
             </h1>
-            <div className="text-xl">
-              <p className="mt-4">
+            <div className="mt-16 text-xl">
+              <p>
                 Mirage.js is an API mocking library that lets you build, test
                 and even share a complete working JavaScript application without
                 having to rely on any backend services.
@@ -28,13 +28,13 @@ const IndexPage = function({ data }) {
               <p className="mt-4">
                 Sign up and be the first to hear first about our public release:
               </p>
-              <div className="mt-4 flex">
+              <div className="mt-6 flex">
                 <input
                   type="text"
                   placeholder="your@email.com"
-                  className="mr-4 rounded px-3 py-2"
+                  className="w-full max-w-sm mr-4 rounded px-3 py-2 border-2 border-transparent focus:outline-none focus:border-green"
                 />
-                <button className="border border-green px-3 py-2 rounded text-green">
+                <button className="border border-green px-3 py-2 rounded text-green hover:bg-green hover:text-white focus:outline-none focus:outline-shadow">
                   Notify me
                 </button>
               </div>

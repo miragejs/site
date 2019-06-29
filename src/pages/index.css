@@ -1,5 +1,5 @@
 .markdown p {
-  @apply mt-6 text-lg;
+  @apply mt-6 text-xl;
 }
 
 .markdown pre {

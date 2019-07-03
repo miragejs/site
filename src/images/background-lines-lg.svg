@@ -44,7 +44,7 @@
         </linearGradient>
     </defs>
     <g id="background-lines-lg" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Background-Lines" transform="translate(595.000000, -110.000000)">
+        <g id="Background-Lines" transform="translate(720.000000, -110.000000)">
             <mask id="mask-2" fill="white">
                 <use xlink:href="#path-1"></use>
             </mask>
@@ -63,7 +63,7 @@
                     <path d="M0,900 L0,898.90644 L1322.30397,696.680473 C1322.5603,696.641272 1322.79987,696.817287 1322.83907,697.073613 C1322.84267,697.097102 1322.84447,697.120831 1322.84447,697.144593 C1322.84447,697.459094 1322.61486,697.726488 1322.30397,697.774034 L0,900 Z" id="Path" fill="url(#linearGradient-9)" fill-rule="nonzero"></path>
                     <polygon id="Path" fill="url(#linearGradient-8)" fill-rule="nonzero" filter="url(#filter-11)" points="377.378342 814.702309 377.378342 813.608748 1700.22281 611.300122 1700.22281 612.393682"></polygon>
                     <rect id="Rectangle" fill="url(#linearGradient-12)" fill-rule="evenodd" x="590.679144" y="238.396112" width="1312.62032" height="557.715674"></rect>
-                    <rect id="Rectangle-Copy" fill="url(#linearGradient-13)" fill-rule="evenodd" transform="translate(2309.664840, 347.752126) rotate(-180.000000) translate(-2309.664840, -347.752126) " x="1903.29947" y="68.8942892" width="812.730749" height="557.715674"></rect>
+                    <rect id="Rectangle-Copy" fill="url(#linearGradient-13)" fill-rule="evenodd" transform="translate(2185.365374, 347.752126) rotate(-180.000000) translate(-2185.365374, -347.752126) " x="1779" y="68.8942892" width="812.730749" height="557.715674"></rect>
                 </g>
             </g>
         </g>

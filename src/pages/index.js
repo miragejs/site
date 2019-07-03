@@ -6,7 +6,6 @@ import Image from "../components/image"
 import SEO from "../components/seo"
 
 import Logo from "../images/logo.svg"
-// import BackgroundLines from "../images/background-lines.svg"
 import BackgroundLines from "../images/background-lines-lg.svg"
 
 import "./index.css"
@@ -32,40 +31,12 @@ function IndexPage({ data }) {
 
   return (
     <div className="antialised bg-gray-dark text-gray-light font-body font-light leading-normal tracking-wide pt-24 pb-32 relative">
-      {/* <div
-        className="absolute w-full z-0 top-0 -mt-16 flex items-center justify-center"
-        style={{
-          paddingBottom: "42.5%",
-        }}
-      >
-        <div
-          className="absolute inset-0 bg-contain bg-no-repeat max-w-6xl"
-          style={{
-            backgroundImage: `url(${BackgroundLines})`,
-          }}
-        ></div>
-      </div> */}
-
       <div
         className="absolute inset-0 bg-no-repeat bg-top"
         style={{
           backgroundImage: `url(${BackgroundLines})`,
         }}
       ></div>
-
-      {/* <div
-        className="absolute z-0 top-0 -mt-16 flex items-center justify-center"
-        style={{}}
-      >
-        <div
-          className=""
-          style={{
-            width: "1939px",
-            height: "761px",
-            backgroundImage: `url(${BackgroundLines})`,
-          }}
-        ></div>
-      </div> */}
 
       <div className="relative z-10">
         <Layout>

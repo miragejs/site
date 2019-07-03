@@ -1,0 +1,14 @@
+@font-face {
+  font-family: "Ginto";
+  font-style: normal;
+  font-weight: 400;
+  src: url("GintoNormal-Regular.woff2") format("woff2"),
+    url("GintoNormal-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Ginto";
+  font-style: italic;
+  font-weight: 400;
+  src: url("GintoNormal-RegularIta.woff2") format("woff2"),
+    url("GintoNormal-RegularIta.woff") format("woff");
+}

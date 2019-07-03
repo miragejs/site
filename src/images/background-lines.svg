@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1197px" height="509px" viewBox="0 0 1197 509" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>background-lines</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-0.2%" y="-1.2%" width="100.5%" height="102.4%" filterUnits="objectBoundingBox" id="filter-1">
+            <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-0.2%" y="-1.2%" width="100.5%" height="102.4%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-0.5%" y="-2.4%" width="101.0%" height="104.8%" filterUnits="objectBoundingBox" id="filter-3">
+            <feGaussianBlur stdDeviation="2" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-0.2%" y="-1.2%" width="100.5%" height="102.4%" filterUnits="objectBoundingBox" id="filter-4">
+            <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-0.5%" y="-2.4%" width="101.0%" height="104.8%" filterUnits="objectBoundingBox" id="filter-5">
+            <feGaussianBlur stdDeviation="2" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="94.8646044%" y1="49.0179493%" x2="68.7693606%" y2="49.6255212%" id="linearGradient-6">
+            <stop stop-color="#05C77E" offset="0%"></stop>
+            <stop stop-color="#05C77E" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="94.8646044%" y1="49.0179493%" x2="68.7693606%" y2="49.6255212%" id="linearGradient-7">
+            <stop stop-color="#464646" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-0.2%" y="-1.6%" width="100.5%" height="103.2%" filterUnits="objectBoundingBox" id="filter-8">
+            <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-0.2%" y="-1.6%" width="100.5%" height="103.2%" filterUnits="objectBoundingBox" id="filter-9">
+            <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="97.5849609%" y1="44.3384521%" x2="14.7773438%" y2="53.495459%" id="linearGradient-10">
+            <stop stop-color="#1A1C1D" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#1A1C1D" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="background-lines" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Background-Lines" transform="translate(-540.000000, 0.000000)">
+            <polygon id="Path-7" fill="#212425" fill-rule="nonzero" filter="url(#filter-1)" points="530.326531 430 530.326531 367 1739.67347 182 1739.67347 245.291392"></polygon>
+            <polygon id="Path-7" fill="#1E2021" fill-rule="nonzero" filter="url(#filter-2)" points="530.326531 413 530.326531 350 1739.67347 165 1739.67347 228.291392"></polygon>
+            <polygon id="Path-7" fill="#2A2E2F" fill-rule="nonzero" filter="url(#filter-3)" points="530.326531 366 530.326531 303 1739.67347 118 1739.67347 181.291392"></polygon>
+            <polygon id="Path-7" fill="#232627" fill-rule="nonzero" filter="url(#filter-4)" points="530.326531 336 530.326531 273 1739.67347 88 1739.67347 151.291392"></polygon>
+            <polygon id="Path-7" fill="#2A2D2F" fill-rule="nonzero" filter="url(#filter-5)" points="530 493 530 430 1739.34694 245 1739.34694 308.291392"></polygon>
+            <polygon id="Path" fill="url(#linearGradient-6)" fill-rule="nonzero" points="530 412 530 411 1739.34694 226 1739.34694 227"></polygon>
+            <path d="M280,375 L280,374 L1488.85269,189.075608 C1489.08707,189.039753 1489.30615,189.200693 1489.342,189.435079 C1489.34529,189.456563 1489.34694,189.478266 1489.34694,189.5 C1489.34694,189.787596 1489.13698,190.032119 1488.85269,190.075608 L280,375 Z" id="Path" fill="url(#linearGradient-6)" fill-rule="nonzero"></path>
+            <path d="M410,405 L410,404 L1618.85269,219.075608 C1619.08707,219.039753 1619.30615,219.200693 1619.342,219.435079 C1619.34529,219.456563 1619.34694,219.478266 1619.34694,219.5 C1619.34694,219.787596 1619.13698,220.032119 1618.85269,220.075608 L410,405 Z" id="Path" fill="url(#linearGradient-7)" fill-rule="nonzero" filter="url(#filter-8)"></path>
+            <path d="M70,335 L70,334 L1278.85269,149.075608 C1279.08707,149.039753 1279.30615,149.200693 1279.342,149.435079 C1279.34529,149.456563 1279.34694,149.478266 1279.34694,149.5 C1279.34694,149.787596 1279.13698,150.032119 1278.85269,150.075608 L70,335 Z" id="Path" fill="url(#linearGradient-7)" fill-rule="nonzero"></path>
+            <path d="M0,605 L0,604 L1208.85269,419.075608 C1209.08707,419.039753 1209.30615,419.200693 1209.342,419.435079 C1209.34529,419.456563 1209.34694,419.478266 1209.34694,419.5 C1209.34694,419.787596 1209.13698,420.032119 1208.85269,420.075608 L0,605 Z" id="Path" fill="url(#linearGradient-7)" fill-rule="nonzero"></path>
+            <polygon id="Path" fill="url(#linearGradient-6)" fill-rule="nonzero" filter="url(#filter-9)" points="345 527 345 526 1554.34694 341 1554.34694 342"></polygon>
+            <rect id="Rectangle" fill="url(#linearGradient-10)" x="535" y="0" width="1200" height="510"></rect>
+        </g>
+    </g>
+</svg>

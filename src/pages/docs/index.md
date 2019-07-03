@@ -2,7 +2,7 @@
 page: homepage
 ---
 
-Have you ever been working on a React or Vue app and needed to interact with an API that wasn’t ready yet?
+Have you ever worked on a React or Vue app and needed to interact with an API that wasn’t ready yet?
 
 If so, how’d you deal with it?
 
@@ -50,7 +50,7 @@ Even worse, any time your app needs to persist data back to your server, you’r
 
 Before you know it, you’ve spent half your time cobbling together a mock API instead of focusing on your application.
 
-**What if there was a better way?**
+## What if there was a better way?
 
 What if you had a tool that embraced your frontend workflow, giving you everything you needed to build out complete, production-ready JavaScript features without having to wait on your production API?
 

@@ -9,7 +9,7 @@ import Logo from "../images/logo.svg"
 import BackgroundLines from "../images/background-lines-lg.svg"
 
 import "./index.css"
-import "../fonts/Inter/Inter.css"
+// import "../fonts/Inter/Inter.css"
 
 function SignupForm() {
   return (

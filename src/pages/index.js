@@ -48,7 +48,7 @@ function IndexPage({ data }) {
                 className="w-12 h-16 bg-no-repeat bg-contain"
                 style={{ backgroundImage: `url(${Logo})` }}
               ></div>
-              <h1 className="font-title text-5xl font-bold leading-tight text-white tracking-wide">
+              <h1 className="font-title text-5xl leading-tight text-white tracking-wide">
                 Build a production-ready frontend,{" "}
                 <span className="text-green">
                   even if your API's not ready.

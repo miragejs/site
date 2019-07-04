@@ -31,7 +31,7 @@ function IndexPage({ data }) {
   let html = data.allMarkdownRemark.edges[0].node.html
 
   return (
-    <div className="antialised bg-gray-dark text-gray-light font-body font-light leading-normal tracking-wide pt-24 pb-32 relative">
+    <div className="antialised text-gray-light font-body font-light leading-normal tracking-wide pt-24 pb-32 relative">
       <div
         className="absolute inset-0 bg-no-repeat bg-top"
         style={{

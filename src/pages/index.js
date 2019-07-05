@@ -2,11 +2,10 @@ import React from "react"
 import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
 
-import Logo from "../images/logo.svg"
-import BackgroundLines from "../images/background-lines-lg.svg"
+import Logo from "../assets/images/logo.svg"
+import BackgroundLines from "../assets/images/background-lines-lg.svg"
 
 import "./index.css"
 import "../fonts/GTAmerica/gt-america.css"
@@ -31,30 +30,24 @@ function IndexPage({ data }) {
   let html = data.allMarkdownRemark.edges[0].node.html
 
   return (
-    <div className="antialised text-gray-light font-body font-light leading-normal tracking-wide pt-24 pb-32 relative">
-      <div
-        className="absolute inset-0 bg-no-repeat bg-top"
-        style={{
-          backgroundImage: `url(${BackgroundLines})`,
-        }}
-      ></div>
+    <div className="antialised text-gray-light font-body font-light leading-normal tracking-wide pt-8 md:pt-24 pb-32 relative">
+      <div className="absolute top-0 inset-x-0 overflow-hidden max-w-full flex justify-center">
+        <BackgroundLines className="flex-shrink-0" />
+      </div>
 
       <div className="relative z-10">
         <Layout>
-          <div className="max-w-4xl px-4 mx-auto">
+          <div className="max-w-4xl px-5 mx-auto">
             <SEO title="Home" />
             <div>
-              <div
-                className="w-12 h-16 bg-no-repeat bg-contain"
-                style={{ backgroundImage: `url(${Logo})` }}
-              ></div>
-              <h1 className="font-title text-5xl leading-tight text-white tracking-wide">
+              <Logo className="w-8 md:w-12 h-8 md:h-16" />
+              <h1 className="font-title text-3xl md:text-5xl leading-tight text-white">
                 Build a production-ready frontend,{" "}
                 <span className="text-green">
                   even if your API's not ready.
                 </span>
               </h1>
-              <div className="mt-16 text-lg max-w-3xl">
+              <div className="mt-8 md:mt-16 text-lg max-w-3xl">
                 <p>
                   Mirage.js is an API mocking library that lets you build, test
                   and even share a complete working JavaScript application
@@ -91,10 +84,6 @@ function IndexPage({ data }) {
               </div>
             </div>
           </div>
-
-          {/* <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-          <Image />
-        </div> */}
         </Layout>
       </div>
     </div>

@@ -21,6 +21,9 @@ module.exports = {
       borderWidth: {
         "3": "3px",
       },
+      lineHeight: {
+        display: 1.15,
+      },
     },
   },
 }

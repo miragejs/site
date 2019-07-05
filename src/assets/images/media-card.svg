@@ -81,14 +81,14 @@
             <rect id="gradient2" fill="url(#linearGradient-15)" x="697" y="0" width="1313" height="514"></rect>
             <rect id="gradient" fill="url(#linearGradient-16)" transform="translate(2310.500000, 172.500000) rotate(-180.000000) translate(-2310.500000, -172.500000) " x="1904" y="0" width="813" height="345"></rect>
         </g>
-        <text id="Build-a-production-r" font-family="AvenirNext-Bold, Avenir Next" font-size="47" font-weight="bold" line-spacing="58">
-            <tspan x="80.649" y="215.847839" fill="#FFFFFF">Build a production-ready frontend, </tspan>
-            <tspan x="156.742" y="273.847839" fill="#05C77E">even if your API’s not ready.</tspan>
+        <text id="Build-a-production-r" font-family="Ginto-Regular, Ginto" font-size="50" font-weight="normal" line-spacing="62">
+            <tspan x="104.223145" y="230" fill="#FFFFFF">Build a production-ready frontend, </tspan>
+            <tspan x="188.964355" y="292" fill="#05C77E">even if your API’s not ready.</tspan>
         </text>
         <path d="M460.490807,102 L448.8,102 C448.358172,102 448,101.641828 448,101.2 C448,101.07905 448.027425,100.959674 448.080212,100.850851 L453.959257,88.7308974 C454.152087,88.3333693 454.630666,88.1674284 455.028194,88.360258 C455.190969,88.4392154 455.322175,88.5710139 455.400399,88.7341427 L461.21216,100.854097 C461.403197,101.252489 461.235103,101.730316 460.83671,101.921353 C460.728747,101.973124 460.610541,102 460.490807,102 Z M472.488189,102 L459.146494,72 L468.955934,72 C472.906977,72 476.487593,74.3263533 478.093104,77.9364888 L488.794705,102 L472.488189,102 Z M499.488189,102 L486.146494,72 L495.955934,72 C499.906977,72 503.487593,74.3263533 505.093104,77.9364888 L515.794705,102 L499.488189,102 Z" id="Combined-Shape" stroke="#05C77E" stroke-width="2" fill="#05C77E" stroke-linecap="round" stroke-linejoin="round"></path>
-        <text id="Develop,-test-and-sh" font-family="AvenirNext-Regular, Avenir Next" font-size="23" font-weight="normal" line-spacing="35" fill="#98A3AA">
-            <tspan x="324.97" y="394">Develop, test and share your next </tspan>
-            <tspan x="344.1175" y="429">JavaScript app with Mirage.js.</tspan>
+        <text id="Develop,-test-and-sh" font-family="GTAmerica-Regular, GT America" font-size="23" font-weight="normal" line-spacing="35" fill="#98A3AA">
+            <tspan x="327.4425" y="392">Develop, test and share your next </tspan>
+            <tspan x="346.728" y="427">JavaScript app with Mirage.js.</tspan>
         </text>
     </g>
 </svg>

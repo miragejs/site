@@ -17,6 +17,8 @@ module.exports = {
       green: "#05C77E",
     },
     fontSize: {
+      // base: "1.125rem",
+      // lg: "1.06125rem",
       lg: "1.125rem",
       "2lg": "1.1875rem",
       xl: "1.25rem",
@@ -37,14 +39,14 @@ module.exports = {
 
       // title: 1.15,
       // title: 1.1875,
-      // title: 1.21875,
+      title: 1.21875,
       // title: 1.225,
-      title: 1.25,
+      // title: 1.25,
 
       normal: 1.5,
       // display: 1.125,
       // copy: 1.4375,
-      copy: 1.5,
+      copy: 1.6,
     },
 
     // Extensions of theme default theme
@@ -53,6 +55,7 @@ module.exports = {
         "3": "3px",
       },
       letterSpacing: {
+        sm: "-0.0125em",
         title: "-0.0375em",
         // title: "-0.05em",
         // title: "-0.025em",

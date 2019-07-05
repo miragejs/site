@@ -112,6 +112,17 @@ module.exports = {
       options: {
         rule: {
           include: /assets/, // See below to configure properly
+          filters: [
+            function(value) {
+              if (value.tagname === "feGaussianBlur") {
+                let newNode = { ...this.node }
+
+                newNode.props.colorInterpolationFilters = "sRGB"
+
+                this.update(newNode)
+              }
+            },
+          ],
         },
       },
     },

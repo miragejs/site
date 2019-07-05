@@ -41,8 +41,9 @@ function IndexPage({ data }) {
             <SEO title="Home" />
             <div>
               <Logo className="w-8 md:w-12 h-8 md:h-16" />
-              <h1 className="font-title text-3xl md:text-5xl leading-tight text-white">
+              <h1 className="font-title text-3xl md:text-5xl tracking-tight leading-tight text-white">
                 Build a production-ready frontend,{" "}
+                <br className="hidden md:inline" />
                 <span className="text-green">
                   even if your API's not ready.
                 </span>

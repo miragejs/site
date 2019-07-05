@@ -22,7 +22,7 @@ module.exports = {
         "3": "3px",
       },
       lineHeight: {
-        display: 1.15,
+        display: 1.125,
       },
     },
   },

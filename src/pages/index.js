@@ -86,7 +86,7 @@ function IndexPage({ data }) {
       <div className="relative z-10">
         <Layout>
           <div className="max-w-4xl px-5 mx-auto">
-            <SEO title="Home" />
+            <SEO />
             <div>
               <Logo className="w-8 md:w-12 h-8 md:h-16" />
               <h1 className="font-title text-3xl md:text-5xl tracking-tight leading-tight text-white">

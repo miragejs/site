@@ -100,7 +100,7 @@ function IndexPage({ data }) {
                 </h1>
               </div>
 
-              <div className="mt-8 md:mt-16 font-normal text-lg max-w-3xl leading-copy">
+              <div className="mt-8 md:mt-16 font-light text-lg max-w-3xl leading-copy">
                 <p>
                   Mirage.js is an API mocking library that lets you build, test
                   and even share a complete working JavaScript application

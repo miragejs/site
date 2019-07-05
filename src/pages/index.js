@@ -78,7 +78,7 @@ function IndexPage({ data }) {
   let html = data.allMarkdownRemark.edges[0].node.html
 
   return (
-    <div className="antialised text-gray-light font-body font-light leading-normal tracking-wide pt-8 md:pt-24 pb-32 relative">
+    <div className="antialised text-gray-light font-body font-light leading-normal pt-6 md:pt-24 pb-32 relative">
       <div className="absolute top-0 inset-x-0 overflow-hidden max-w-full flex justify-center">
         <BackgroundLines className="flex-shrink-0" />
       </div>
@@ -88,15 +88,19 @@ function IndexPage({ data }) {
           <div className="max-w-4xl px-5 mx-auto">
             <SEO />
             <div>
-              <Logo className="w-8 md:w-12 h-8 md:h-16" />
-              <h1 className="font-title text-3xl md:text-5xl tracking-tight leading-tight text-white">
-                Build a production-ready frontend,{" "}
-                <br className="hidden md:inline" />
-                <span className="text-green">
-                  even if your API's not ready.
-                </span>
-              </h1>
-              <div className="mt-8 md:mt-16 text-lg max-w-3xl">
+              <Logo className="w-10 md:w-12 h-8 md:h-16" />
+
+              <div className="mt-6">
+                <h1 className="font-title text-title md:text-5xl tracking-title leading-title md:leading-tight text-white">
+                  Build a production-ready frontend,{" "}
+                  <br className="hidden md:inline" />
+                  <span className="text-green">
+                    even if your API's not ready.
+                  </span>
+                </h1>
+              </div>
+
+              <div className="mt-8 md:mt-16 font-normal text-lg max-w-3xl leading-copy">
                 <p>
                   Mirage.js is an API mocking library that lets you build, test
                   and even share a complete working JavaScript application

@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
     title: `Mirage.js • Build, test and demo your JavaScript application without an API`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    description: `Build, test and demo your JavaScript application without an API.`,
+    author: `@miragejs`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -25,13 +25,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `Mirage.js`,
+        short_name: `Mirage.js`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
+        background_color: `#1a1b1c`,
+        theme_color: `#1a1b1c`,
         display: `minimal-ui`,
-        icon: `src/assets/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `src/assets/images/mirage-icon.svg`,
       },
     },
     `gatsby-plugin-postcss`,

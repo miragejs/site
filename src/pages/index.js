@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
@@ -12,16 +12,64 @@ import "../fonts/GTAmerica/gt-america.css"
 import "../fonts/Ginto/ginto.css"
 
 function SignupForm() {
+  let convertKitUrl = "https://app.convertkit.com/forms/987317/subscriptions"
+  let [email, setEmail] = useState("")
+  let [formState, setFormState] = useState("")
+
+  let isSaving = formState === "saving"
+  let didError = formState === "error"
+  let didSignup = formState === "finished"
+
+  let handleSubmit = async function(event) {
+    event.preventDefault()
+    if (!email) {
+      setFormState("error")
+    } else {
+      setFormState("saving")
+
+      let formData = new FormData(event.target)
+
+      try {
+        let response = await fetch(convertKitUrl, {
+          method: "POST",
+          body: formData,
+        })
+
+        let state = response.ok ? "finished" : "error"
+        setFormState(state)
+      } catch (e) {
+        setFormState("error")
+      }
+    }
+  }
+
   return (
-    <div className="flex">
-      <input
-        type="text"
-        placeholder="your@email.com"
-        className="w-full max-w-sm mr-4 rounded px-3 py-2 border-3 border-transparent focus:outline-none focus:border-green"
-      />
-      <button className="border border-green px-3 py-2 rounded text-green hover:bg-green hover:text-white focus:outline-none focus:outline-shadow">
-        Notify me
-      </button>
+    <div>
+      {didSignup ? (
+        <div>Thanks {email}, you're all signed up!</div>
+      ) : (
+        <form onSubmit={handleSubmit} action={convertKitUrl} method="post">
+          <div className="flex">
+            <input
+              type="text"
+              name="email_address"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              className="w-full max-w-sm mr-4 rounded px-3 py-2 border-3 border-transparent focus:outline-none focus:border-green"
+            />
+            <button
+              disabled={isSaving && "disabled"}
+              className="border border-green px-3 py-2 rounded text-green hover:bg-green hover:text-white focus:outline-none focus:outline-shadow"
+            >
+              Notify me
+            </button>
+          </div>
+          {didError && (
+            <div className="text-red">Opps, looks like there was an error.</div>
+          )}
+        </form>
+      )}
     </div>
   )
 }

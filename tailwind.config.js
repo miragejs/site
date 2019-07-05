@@ -38,8 +38,8 @@ module.exports = {
       // title: 1.15,
       // title: 1.1875,
       // title: 1.21875,
-      title: 1.225,
-      // title: 1.25,
+      // title: 1.225,
+      title: 1.25,
 
       normal: 1.5,
       // display: 1.125,

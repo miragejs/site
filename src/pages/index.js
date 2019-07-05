@@ -49,18 +49,18 @@ function SignupForm() {
         <div>Thanks {email}, you're all signed up!</div>
       ) : (
         <form onSubmit={handleSubmit} action={convertKitUrl} method="post">
-          <div className="flex">
+          <div className="md:flex">
             <input
               type="text"
               name="email_address"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="w-full max-w-sm mr-4 rounded px-3 py-2 border-3 border-transparent focus:outline-none focus:border-green"
+              placeholder="Enter your email"
+              className="w-full max-w-sm mr-4 rounded px-3 py-2 border-2 border-transparent focus:outline-none focus:border-green"
             />
             <button
               disabled={isSaving && "disabled"}
-              className="border border-green px-3 py-2 rounded text-green hover:bg-green hover:text-white focus:outline-none focus:outline-shadow"
+              className="mt-4 w-full border-2 border-green px-3 py-2 rounded text-green hover:bg-green hover:text-white focus:outline-none focus:outline-shadow"
             >
               Notify me
             </button>

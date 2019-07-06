@@ -5,7 +5,7 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 import Logo from "../assets/images/logo.svg"
-import BackgroundLines from "../assets/images/background-lines-lg.svg"
+import BackgroundLines from "../assets/images/background-lines.svg"
 
 import "./index.css"
 import "../fonts/GTAmerica/gt-america.css"
@@ -136,11 +136,17 @@ function IndexPage({ data }) {
               </Container>
             </section>
 
-            <hr className="w-1/4 border border-gray-400" />
+            {/* <hr className="w-1/4 border border-gray-400" /> */}
 
-            <section>
+            <section
+              className="pt-8"
+              style={{
+                backgroundImage:
+                  "linear-gradient(to bottom,  #020202,#1A1C1D )",
+              }}
+            >
               <Container>
-                <div className="mt-24 markdown max-w-3xl mx-auto">
+                <div className="markdown max-w-3xl mx-auto">
                   <div dangerouslySetInnerHTML={{ __html: html }} />
                 </div>
 

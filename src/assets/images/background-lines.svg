@@ -1,57 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="1197px" height="509px" viewBox="0 0 1197 509" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="2717px" height="551px" viewBox="0 0 2717 551" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
     <title>background-lines</title>
     <desc>Created with Sketch.</desc>
     <defs>
-        <filter x="-0.2%" y="-1.2%" width="100.5%" height="102.4%" filterUnits="objectBoundingBox" id="filter-1">
+        <filter x="-0.1%" y="-0.8%" width="100.3%" height="101.6%" filterUnits="objectBoundingBox" id="filter-1">
             <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
         </filter>
-        <filter x="-0.2%" y="-1.2%" width="100.5%" height="102.4%" filterUnits="objectBoundingBox" id="filter-2">
-            <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
-        </filter>
-        <filter x="-0.5%" y="-2.4%" width="101.0%" height="104.8%" filterUnits="objectBoundingBox" id="filter-3">
+        <filter x="-0.3%" y="-1.7%" width="100.6%" height="103.4%" filterUnits="objectBoundingBox" id="filter-2">
             <feGaussianBlur stdDeviation="2" in="SourceGraphic"></feGaussianBlur>
         </filter>
-        <filter x="-0.2%" y="-1.2%" width="100.5%" height="102.4%" filterUnits="objectBoundingBox" id="filter-4">
+        <filter x="-0.1%" y="-0.8%" width="100.3%" height="101.6%" filterUnits="objectBoundingBox" id="filter-3">
             <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
         </filter>
-        <filter x="-0.5%" y="-2.4%" width="101.0%" height="104.8%" filterUnits="objectBoundingBox" id="filter-5">
+        <filter x="-0.2%" y="-0.8%" width="100.3%" height="101.7%" filterUnits="objectBoundingBox" id="filter-4">
+            <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-0.1%" y="-0.9%" width="100.3%" height="101.9%" filterUnits="objectBoundingBox" id="filter-5">
+            <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-0.3%" y="-1.6%" width="100.6%" height="103.2%" filterUnits="objectBoundingBox" id="filter-6">
             <feGaussianBlur stdDeviation="2" in="SourceGraphic"></feGaussianBlur>
         </filter>
-        <linearGradient x1="94.8646044%" y1="49.0179493%" x2="68.7693606%" y2="49.6255212%" id="linearGradient-6">
+        <linearGradient x1="94.8646044%" y1="49.0184702%" x2="68.7693606%" y2="49.6257198%" id="linearGradient-7">
             <stop stop-color="#05C77E" offset="0%"></stop>
             <stop stop-color="#05C77E" stop-opacity="0" offset="100%"></stop>
         </linearGradient>
-        <linearGradient x1="94.8646044%" y1="49.0179493%" x2="68.7693606%" y2="49.6255212%" id="linearGradient-7">
+        <linearGradient x1="94.8646044%" y1="49.0176729%" x2="68.7693606%" y2="49.6254157%" id="linearGradient-8">
+            <stop stop-color="#05C77E" offset="0%"></stop>
+            <stop stop-color="#05C77E" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="94.8646044%" y1="49.0189289%" x2="68.7693606%" y2="49.6258947%" id="linearGradient-9">
             <stop stop-color="#464646" offset="0%"></stop>
             <stop stop-color="#000000" stop-opacity="0" offset="100%"></stop>
         </linearGradient>
-        <filter x="-0.2%" y="-1.6%" width="100.5%" height="103.2%" filterUnits="objectBoundingBox" id="filter-8">
+        <filter x="-0.2%" y="-1.5%" width="100.5%" height="103.0%" filterUnits="objectBoundingBox" id="filter-10">
             <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
         </filter>
-        <filter x="-0.2%" y="-1.6%" width="100.5%" height="103.2%" filterUnits="objectBoundingBox" id="filter-9">
+        <linearGradient x1="94.8646044%" y1="49.0303059%" x2="68.7693606%" y2="49.630233%" id="linearGradient-11">
+            <stop stop-color="#464646" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="94.8646044%" y1="49.0155129%" x2="68.7693606%" y2="49.6245921%" id="linearGradient-12">
+            <stop stop-color="#464646" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="94.8646044%" y1="49.0175258%" x2="68.7693606%" y2="49.6253597%" id="linearGradient-13">
+            <stop stop-color="#05C77E" offset="0%"></stop>
+            <stop stop-color="#05C77E" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-0.2%" y="-1.6%" width="100.5%" height="103.2%" filterUnits="objectBoundingBox" id="filter-14">
             <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
         </filter>
-        <linearGradient x1="97.5849609%" y1="44.3384521%" x2="14.7773438%" y2="53.495459%" id="linearGradient-10">
+        <linearGradient x1="97.5849609%" y1="45.1965408%" x2="14.7773438%" y2="52.9656721%" id="linearGradient-15">
+            <stop stop-color="#1A1C1D" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#1A1C1D" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="97.5849609%" y1="44.3556437%" x2="14.7773438%" y2="53.4848449%" id="linearGradient-16">
             <stop stop-color="#1A1C1D" stop-opacity="0" offset="0%"></stop>
             <stop stop-color="#1A1C1D" offset="100%"></stop>
         </linearGradient>
     </defs>
     <g id="background-lines" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Background-Lines" transform="translate(-540.000000, 0.000000)">
-            <polygon id="Path-7" fill="#212425" fill-rule="nonzero" filter="url(#filter-1)" points="530.326531 430 530.326531 367 1739.67347 182 1739.67347 245.291392"></polygon>
-            <polygon id="Path-7" fill="#1E2021" fill-rule="nonzero" filter="url(#filter-2)" points="530.326531 413 530.326531 350 1739.67347 165 1739.67347 228.291392"></polygon>
-            <polygon id="Path-7" fill="#2A2E2F" fill-rule="nonzero" filter="url(#filter-3)" points="530.326531 366 530.326531 303 1739.67347 118 1739.67347 181.291392"></polygon>
-            <polygon id="Path-7" fill="#232627" fill-rule="nonzero" filter="url(#filter-4)" points="530.326531 336 530.326531 273 1739.67347 88 1739.67347 151.291392"></polygon>
-            <polygon id="Path-7" fill="#2A2D2F" fill-rule="nonzero" filter="url(#filter-5)" points="530 493 530 430 1739.34694 245 1739.34694 308.291392"></polygon>
-            <polygon id="Path" fill="url(#linearGradient-6)" fill-rule="nonzero" points="530 412 530 411 1739.34694 226 1739.34694 227"></polygon>
-            <path d="M280,375 L280,374 L1488.85269,189.075608 C1489.08707,189.039753 1489.30615,189.200693 1489.342,189.435079 C1489.34529,189.456563 1489.34694,189.478266 1489.34694,189.5 C1489.34694,189.787596 1489.13698,190.032119 1488.85269,190.075608 L280,375 Z" id="Path" fill="url(#linearGradient-6)" fill-rule="nonzero"></path>
-            <path d="M410,405 L410,404 L1618.85269,219.075608 C1619.08707,219.039753 1619.30615,219.200693 1619.342,219.435079 C1619.34529,219.456563 1619.34694,219.478266 1619.34694,219.5 C1619.34694,219.787596 1619.13698,220.032119 1618.85269,220.075608 L410,405 Z" id="Path" fill="url(#linearGradient-7)" fill-rule="nonzero" filter="url(#filter-8)"></path>
-            <path d="M70,335 L70,334 L1278.85269,149.075608 C1279.08707,149.039753 1279.30615,149.200693 1279.342,149.435079 C1279.34529,149.456563 1279.34694,149.478266 1279.34694,149.5 C1279.34694,149.787596 1279.13698,150.032119 1278.85269,150.075608 L70,335 Z" id="Path" fill="url(#linearGradient-7)" fill-rule="nonzero"></path>
-            <path d="M0,605 L0,604 L1208.85269,419.075608 C1209.08707,419.039753 1209.30615,419.200693 1209.342,419.435079 C1209.34529,419.456563 1209.34694,419.478266 1209.34694,419.5 C1209.34694,419.787596 1209.13698,420.032119 1208.85269,420.075608 L0,605 Z" id="Path" fill="url(#linearGradient-7)" fill-rule="nonzero"></path>
-            <polygon id="Path" fill="url(#linearGradient-6)" fill-rule="nonzero" filter="url(#filter-9)" points="345 527 345 526 1554.34694 341 1554.34694 342"></polygon>
-            <rect id="Rectangle" fill="url(#linearGradient-10)" x="535" y="0" width="1200" height="510"></rect>
+        <g id="Group" transform="translate(611.000000, -1.000000)" fill-rule="nonzero">
+            <path d="M2106,32.3988873 L2106,101.474926 L94.0978181,408.983969 L94.0978181,340.089679 L2106,32.3988873 Z" id="Combined-Shape" fill="#1E2021" filter="url(#filter-1)"></path>
+            <path d="M1975.57909,0.947516549 L2106,0.947516549 L2106,50.0775993 L94.0978181,357.586642 L94.0978181,288.692353 L1975.57909,0.947516549 Z" id="Combined-Shape" fill="#2A2E2F" filter="url(#filter-2)"></path>
+            <path d="M2106,50.9894098 L2106,120.065449 L94.0978181,427.574491 L94.0978181,358.680202 L2106,50.9894098 Z" id="Combined-Shape" filter="url(#filter-3)"></path>
+            <polygon id="Path-7-Copy" fill="#212425" filter="url(#filter-4)" points="281 458 281 378.991935 2105 100 2105 179.447503"></polygon>
+            <path d="M1761.06477,0.947516549 L2106,0.947516549 L2106,17.2707949 L94.0978181,324.779837 L94.0978181,255.885548 L1761.06477,0.947516549 Z" id="Combined-Shape" fill="#232627" filter="url(#filter-5)"></path>
+            <path d="M2106,119.8297 L2106,188.905771 L93.7406417,496.46878 L93.7406417,427.574491 L2106,119.8297 Z" id="Combined-Shape" fill="#2A2D2F" filter="url(#filter-6)"></path>
+            <path d="M93.7406417,407.890408 L93.7406417,406.796848 L1416.58511,204.488221 L1416.58511,205.581781 L93.7406417,407.890408 Z" id="Combined-Shape" fill="url(#linearGradient-7)"></path>
+            <path d="M0,338.849431 L1142.58205,164.109156 C1142.83838,164.069955 1143.07795,164.24597 1143.11715,164.502296 C1143.12074,164.525785 1143.12255,164.549514 1143.12255,164.573276 C1143.12255,164.887777 1142.89294,165.155171 1142.58205,165.202717 L0,339.942991 L0,338.849431 Z" id="Combined-Shape" fill="url(#linearGradient-8)"></path>
+            <path d="M0,393.40361 L1284.78258,196.915961 C1285.03891,196.87676 1285.27848,197.052774 1285.31768,197.3091 C1285.32128,197.33259 1285.32308,197.356318 1285.32308,197.38008 C1285.32308,197.694581 1285.09347,197.961976 1284.78258,198.009521 L0,394.49717 L0,393.40361 Z" id="Combined-Shape" fill="url(#linearGradient-9)" filter="url(#filter-10)"></path>
+            <path d="M88.7977713,529.947517 L836.303975,415.62799 C836.560301,415.588789 836.799873,415.764803 836.839074,416.02113 C836.842667,416.044619 836.844471,416.068347 836.844471,416.09211 C836.844471,416.40661 836.614861,416.674005 836.303975,416.72155 L95.948282,529.947517 L88.7977713,529.947517 Z" id="Combined-Shape" fill="url(#linearGradient-11)"></path>
+            <path d="M0,260.719363 L912.852687,121.075608 C913.087072,121.039753 913.306145,121.200693 913.342,121.435079 C913.345287,121.456563 913.346937,121.478266 913.346937,121.5 C913.346937,121.787596 913.136976,122.032119 912.852687,122.075608 L-1.13686838e-13,261.719363 L0,260.719363 Z" id="Combined-Shape" fill="url(#linearGradient-12)"></path>
+            <path d="M2.84217094e-14,515.94426 L1214.22281,330.247638 L1214.22281,331.341198 L-2.27373675e-13,517.037821 L0,515.94426 Z" id="Combined-Shape" fill="url(#linearGradient-13)" filter="url(#filter-14)"></path>
         </g>
+        <rect id="gradient2" fill="url(#linearGradient-15)" x="697" y="0" width="1313" height="514"></rect>
+        <rect id="gradient" fill="url(#linearGradient-16)" transform="translate(2310.500000, 172.500000) rotate(-180.000000) translate(-2310.500000, -172.500000) " x="1904" y="0" width="813" height="345"></rect>
     </g>
 </svg>

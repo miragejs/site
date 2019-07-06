@@ -3,5 +3,16 @@
  *
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
+const fs = require("fs")
 
-// You can delete this file if you're not using it
+exports.onCreateNode = ({ node, getNode, actions }) => {
+  const { createNodeField } = actions
+
+  if (node.internal.type === "File" && node.absolutePath.match(/snippets/)) {
+    createNodeField({
+      node,
+      name: "content",
+      value: fs.readFileSync(node.absolutePath, "utf8"),
+    })
+  }
+}

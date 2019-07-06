@@ -2,12 +2,6 @@
 page: homepage
 ---
 
-Have you ever worked on a React or Vue app and needed to interact with an API that wasn’t ready yet?
-
-If so, how’d you deal with it?
-
-Maybe you created some dummy JavaScript data just so you could keep moving:
-
 ```js
 import React, { useState, useEffect } from 'react';
 

@@ -26,6 +26,7 @@
     "react-helmet": "^5.2.1"
   },
   "devDependencies": {
+    "@miragejs/server": "^0.1.7",
     "prettier": "^1.18.2",
     "tailwindcss": "^1.0.4"
   },

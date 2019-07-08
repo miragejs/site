@@ -56,7 +56,7 @@ With Mirage.js, you can.
 
 **Mirage is a server that runs in the browser**. Its code lives right alongside the rest of your frontend JavaScript.
 
-Once it starts, Mirage will intercept any network requests your app makes and respond with some data, just like a real server would.
+Once it starts, Mirage will intercept any network request your app makes and respond with some data, just like a real server would.
 
 Here's what it looks like:
 
@@ -72,7 +72,7 @@ server.get("/api/users", () => [
 ])
 ```
 
-Now, your app can make a network request to `/api/users`
+Now, whenever your app makes a network request to `/api/users`
 
 ```js
 let [users, setUsers] = useState([])
@@ -84,24 +84,41 @@ useEffect(() => {
 })
 ```
 
-and Mirage will respond with this data. Which means you can see exactly how your app will behave in its production environment.
+Mirage will respond with this data. Which means you can see exactly how your app will behave in its production environment.
 
 Check it out:
 
 [ data-fetching demo ]
 
-This demo is running entirely in your browser, and the frontend code is ready to be deployed and interact with a real API.
+This demo is running entirely in your browser. The frontend code is deployable, and ready to interact with a real API.
 
-## How about persistence?
+## Persistence logic is just as easy
 
-Thanks to Mirage's **in-memory database**, persisting data is just as easy as fetching data.
+Normally, faking out backend logic to let your frontend persist data is even more painful than faking out data queries.
+
+But thanks to an **in-memory database**, persisting data with Mirage is just as easy as fetching it.
+
+```js
+server.post("/api/users", ({ db, request }) => {
+  let attrs = JSON.parse(request.requestBody)
+  let newUser = db.users.insert(attrs)
+
+  return newUser
+})
+```
+
+The database assigns a new `id` and responds with the record, just like your real server would. And everything about the response can be customized to exactly match your production backend.
 
 Here's a full CRUD application that lets you create, edit, and delete Todos.
 
 [ todos demo ]
 
+Mirage lets you see exactly how your JavaScript app behaves as users create, edit, and delete server resources over the network. You can even write tests to verify all this dynamic behavior.
+
+Mirage embraces your frontend workflow and lets you write production-ready JavaScript no matter the state of your API.
+
 ---
 
-So - are you interested in Mirage and the frontend-first workflow?
+Interested in Mirage and the frontend-first workflow?
 
 Sign up and be the first to hear about our public release!

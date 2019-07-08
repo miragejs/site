@@ -21,11 +21,14 @@ export default function Snippet({ name }) {
     name: node.name,
     content: node.fields.content,
   }))
-  let html = Prism.highlight(
-    snippets[0].content,
-    Prism.languages.javascript,
-    "javascript"
-  )
+
+  let snippet = snippets.find(snippet => snippet.name === name).content
+
+  // Remove ``` backticks
+  snippet = snippet.substring(snippet.indexOf("\n") + 1)
+  snippet = snippet.substring(snippet.lastIndexOf("\n") - 3, -1)
+
+  let html = Prism.highlight(snippet, Prism.languages.javascript, "javascript")
 
   return (
     <pre

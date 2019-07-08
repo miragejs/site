@@ -1,3 +1,4 @@
+```js
 import React, { useState, useEffect } from "react"
 import { Server } from "@miragejs/server"
 
@@ -30,3 +31,4 @@ export function App() {
     </ul>
   )
 }
+```

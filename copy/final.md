@@ -8,24 +8,34 @@ Sign up and be the first to hear about our public release!
 
 If so, how'd you handle it?
 
-Maybe you created some local mock JavaScript data directly in your app, just to keep you moving:
+Maybe you created some local mock data directly in your app, just to keep you moving:
 
 ```js
-let [users, setUsers] = useState([])
+function App() {
+  let [users, setUsers] = useState([])
 
-useEffect(() => {
-  // API not ready yet
-  // fetch('/api/users')
-  //   .then(response => response.json())
-  //   .then(json => setUsers(json.data));
+  useEffect(() => {
+    // API not ready
+    // fetch('/api/users')
+    //   .then(response => response.json())
+    //   .then(json => setUsers(json.data));
 
-  // Use dummy data for now
-  setUsers([
-    { id: "1", name: "Luke" },
-    { id: "2", name: "Leah" },
-    { id: "3", name: "Anakin" },
-  ])
-})
+    // Use dummy data for now
+    setUsers([
+      { id: "1", name: "Luke" },
+      { id: "2", name: "Leah" },
+      { id: "3", name: "Anakin" },
+    ])
+  })
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  )
+}
 ```
 
 Seems harmless enough.
@@ -38,23 +48,23 @@ How did this happen?
 
 ## You ignored the network for too long
 
-Here's the thing: the network is a **huge** part of your application. You can't just put it off until the end of your project – it's fundamental complexity that needs to be dealt with from the start.
+Dealing with the network is a **huge** part of your application. You can't just put it off until the end of your project – it's fundamental complexity that needs to be dealt with from the start.
 
-Think about everything that goes into dealing with the network: loading and error states, fetching partial data and caching... not to mention how asynchronous APIs like network requests make your user flows way more complex. For example, what happens if a user transitions to a new a page in the middle of a data request?
+Think about everything that goes into dealing with the network: loading states, error states, fetching partial data, effective use of a cache... not to mention the fact that asynchronous APIs like network requests add a ton of new states to your app's existing user flows.
 
-All this stuff fell on your plate after you had already written a ton of code. But your local mock data setup poked too many holes in reality.
+For example, what happens if a user transitions to a new a page while a pending data request is still in flight?
 
-Because of that, the code you wrote wasn't ready for production.
+When you put off dealing with the network, all of these issues fall on your lap after you've already written a ton of code.
 
-## What if there was a better way?
+The fact is that your local mock data setup poked one too many holes in reality. And because of that, the code you wrote wasn't ready for production.
 
-What if you could still mock your own data, but ensure that your app would always access that mock data over the network, the same way it would access real server data in production?
+## What if you could have the best of both worlds?
 
-That way, all of the networking issues from above - loading and error states, data caching, complex async user flows - would be front-and-center starting with your first line of code.
+What if you could still mock your data in the frontend, but ensure that the way your app accessed that data would be exactly the same way it accesses real server data in production?
 
-With Mirage.js, you can.
+That way, every line of code you write would have to consider the network, and you wouldn't get any surprises when it came time to deploy your app.
 
-Here's what it looks like:
+With Mirage.js, you can do exactly that. Here's what it looks like:
 
 ```js
 import React, { useState, useEffect } from "react"
@@ -91,21 +101,23 @@ export function App() {
 }
 ```
 
-**Mirage is a server that runs in the browser**. Its code lives right alongside the rest of your frontend JavaScript.
+**Mirage is a server that runs in the browser**. Its code lives right alongside the rest of your frontend JavaScript code.
 
-Once it starts, Mirage will intercept any network request your app makes and respond with its data, just like a real server would.
+Once it starts, Mirage will intercept any network request your app makes and respond back with its own mock data. But from the perspective of your app, Mirage is a real server, and the code you wrote is making real network requests.
 
-And Mirage lets you handle responses with as much flexibility and power as a real server has. You can tweak things like latency, error codes and HTTP headers. Mirage even has an in-memory database that lets you persist data too. And the kicker is, you can write front-end tests against all this functionality.
+With Mirage, you'll never write throwaway code again. Your app will be ready for production from day one.
 
-Mirage lets you build a feature-complete frontend app, and see exactly how it will behave in its production environment.
+Mirage also gives you the flexibility to handle server responses with as much flexibility and power as a real server. You can tweak things like latency, error codes, and HTTP headers. Mirage even has an in-memory database that lets you persist data.
+
+And the best part? You can write tests against all of this dynamic functionality.
 
 ## Live demo
 
-Here's a complete working Todo app built with React and Mirage.
+Here's a complete working Todo app built with React and Mirage:
 
 [ demo ]
 
-The best part about this is from the React app's point of view, it's making network requests, and dealing with errors and latency, which means it's ready to be deployed.
+This React app is running in your browser against a Mirage server. But from the React app's point of view, it's making network requests, dealing with errors, and handling latency. Which means this app is ready to be deployed, and interact with a real HTTP server.
 
 ---
 

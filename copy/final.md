@@ -117,7 +117,7 @@ Here's a complete working Todo app built with React and Mirage:
 
 [ demo ]
 
-This React app is running in your browser against a Mirage server. But from the React app's point of view, it's making network requests, dealing with errors, and handling latency. Which means this app is ready to be deployed, and interact with a real HTTP server.
+This React app is running in your browser against a Mirage server. But from the React app's point of view, it's real making network requests, dealing with latency, and handling errors. Which means this app is ready to be deployed and interact with a real HTTP server.
 
 ---
 

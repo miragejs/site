@@ -4,11 +4,11 @@ Mirage.js is an API mocking library that lets you build, test and share a comple
 
 Sign up and be the first to hear about our public release!
 
-## Have you ever worked on a React or Vue app and needed to use a backend API that wasn’t ready?
+## Have you ever worked on a React or Vue app and needed to use a backend API before it was ready?
 
 If so, how'd you handle it?
 
-Maybe you created some JavaScript data directly in your app, just to keep you moving:
+Maybe you created some local mock JavaScript data directly in your app, just to keep you moving:
 
 ```js
 let [users, setUsers] = useState([])
@@ -34,19 +34,23 @@ Weeks later, the server’s ready and you wire up your app – but nothing works
 
 Some screens flash with missing data, others are broken entirely, and worst of all, you have no idea how much of your code needs to be rewritten.
 
-## The network is a huge part of your code
+How did this happen?
 
-The thing is, the network is a huge part of your application. You can't just put it off until the end - its fundamental complexity that needs to be dealt with from the start.
+## You ignored the network for too long
 
-But your development environment poked too many holes in reality.
+Here's the thing: the network is a **huge** part of your application. You can't just put it off until the end of your project – it's fundamental complexity that needs to be dealt with from the start.
 
-Think about everything that goes into dealing with the network: loading states, error states, what happens if a user leaves a page in the middle of a data request, and _so_ much more. All this stuff fell on your plate after you wrote your app.
+Think about everything that goes into dealing with the network: loading and error states, fetching partial data and caching... not to mention how asynchronous APIs like network requests make your user flows way more complex. For example, what happens if a user transitions to a new a page in the middle of a data request?
 
-And because of that, the code you wrote wasn't ready for production.
+All this stuff fell on your plate after you had already written a ton of code. But your local mock data setup poked too many holes in reality.
+
+Because of that, the code you wrote wasn't ready for production.
 
 ## What if there was a better way?
 
-What if you could use mock data, but access that mock data over the network, the same way your app will access data in production? That way you would see http codes, headers, responses, etc.
+What if you could still mock your own data, but ensure that your app would always access that mock data over the network, the same way it would access real server data in production?
+
+That way, all of the networking issues from above - loading and error states, data caching, complex async user flows - would be front-and-center starting with your first line of code.
 
 With Mirage.js, you can.
 
@@ -89,11 +93,11 @@ export function App() {
 
 **Mirage is a server that runs in the browser**. Its code lives right alongside the rest of your frontend JavaScript.
 
-Once it starts, Mirage will intercept any network request your app makes and respond with some data, just like a real server would.
+Once it starts, Mirage will intercept any network request your app makes and respond with its data, just like a real server would.
 
-You can tweak things like latency, error codes, HTTP headers, and more. Mirage even has an in-memory database that lets you persist data too. And you can write tests against all this functionality.
+And Mirage lets you handle responses with as much flexibility and power as a real server has. You can tweak things like latency, error codes and HTTP headers. Mirage even has an in-memory database that lets you persist data too. And the kicker is, you can write front-end tests against all this functionality.
 
-With Mirage, you can see exactly how your app will behave in its production environment.
+Mirage lets you build a feature-complete frontend app, and see exactly how it will behave in its production environment.
 
 ## Live demo
 

@@ -265,6 +265,33 @@ function IndexPage({ data }) {
                   </div>
                 </div>
 
+                <div className="mt-8">
+                  <Text>
+                    You start by defining your API endpoints with Mirage. When
+                    you boot up your frontend, Mirage kicks in automatically.
+                    There's no separate server process for you to manage in
+                    yet-another terminal tab.
+                  </Text>
+                </div>
+
+                <div className="mt-4">
+                  <Text>
+                    Now your components can fetch things from your API
+                    endpoints, and Mirage will respond back with its own mock
+                    data. But your components won't contain a single line of
+                    code that reveals you're using Mirage under-the-hood,
+                    because your components don't even know they're using Mirage
+                    instead of a real API.
+                  </Text>
+                </div>
+
+                <div className="mt-4">
+                  <Text>
+                    With Mirage, you'll never have to write throwaway network
+                    code again.
+                  </Text>
+                </div>
+
                 <hr className="mt-24 w-1/4 border border-gray-400" />
 
                 <div className="text-xl mt-24 max-w-3xl mx-auto">

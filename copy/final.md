@@ -103,11 +103,13 @@ export function App() {
 
 **Mirage is a server that runs in the browser**. Its code lives right alongside the rest of your frontend JavaScript code.
 
-Once it starts, Mirage will intercept any network request your app makes and respond back with its own mock data. But from the perspective of your app, Mirage is a real server, and the code you wrote is making real network requests.
+You start by defining your API endpoints with Mirage. When you boot up your frontend, Mirage kicks in automatically. There's no separate server process for you to manage in yet-another terminal tab.
 
-With Mirage, you'll never write throwaway code again. Your app will be ready for production from day one.
+Now your components can fetch things from your API endpoints, and Mirage will respond back with its own mock data. But your components won't contain a single line of code that reveals you're using Mirage under-the-hood, because your components don't even know they're using Mirage instead of a real API.
 
-Mirage also gives you the flexibility to handle server responses with as much flexibility and power as a real server. You can tweak things like latency, error codes, and HTTP headers. Mirage even has an in-memory database that lets you persist data.
+With Mirage, you'll never write throwaway code again, because you'll be writing production-ready components from day one.
+
+Mirage also lets you handle server responses with as much flexibility and power as a real server. You can tweak things like latency, error codes, and HTTP headers. And Mirage even has an in-memory database that makes it easy to persist data, allowing you to build the kind of dynamic features in your frontend code that are typically only possible when working with a real server.
 
 And the best part? You can write tests against all of this dynamic functionality.
 

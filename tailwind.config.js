@@ -9,13 +9,13 @@ module.exports = {
       transparent: "transparent",
       white: "#FFFFFF",
       gray: {
-        dark: "#1A1C1D",
-        // light: "#98A3AA",
-        // light: "#737f87",
-        light: "#7b878e",
-        lighter: "#d3dade",
+        100: "#d3dade",
+        500: "#7b878e",
+        700: "#454d4f",
+        900: "#1A1C1D",
       },
       green: "#05C77E",
+      yellow: "#DAD085",
     },
     // fontSize: {
     //   // base: "1.125rem",

@@ -58,7 +58,7 @@ function SignupForm() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="text-gray-dark w-full max-w-sm mr-4 rounded p-3 border-2 border-transparent focus:outline-none focus:border-green"
+              className="text-gray-900 w-full max-w-sm mr-4 rounded p-3 border-2 border-transparent focus:outline-none focus:border-green"
             />
             <button
               disabled={isSaving && "disabled"}
@@ -96,7 +96,7 @@ function IndexPage({ data }) {
   // let html = data.allMarkdownRemark.edges[0].node.html
 
   return (
-    <div className="antialised text-gray-light font-body font-light leading-normal md:pt-24 pb-32 relative">
+    <div className="antialised text-gray-500 font-body font-light leading-normal md:pt-24 pb-32 relative">
       <div className="absolute top-0 inset-x-0 overflow-hidden max-w-full flex justify-center">
         <BackgroundLines className="flex-shrink-0" />
       </div>
@@ -149,22 +149,22 @@ function IndexPage({ data }) {
               <Container>
                 <Title>
                   Have you ever worked on a React or Vue app that needed data
-                  from an incomplete API?
+                  from a backend API before it was ready?
                 </Title>
 
                 <div className="mt-6">
-                  <Text>If so, how’d you deal with it?</Text>
+                  <Text>If so, how’d you handle it?</Text>
                 </div>
 
                 <div className="mt-4">
                   <Text>
-                    Maybe you created some dummy data in JavaScript just so you
-                    could keep moving:
+                    Maybe you created some local mock data directly in your app,
+                    just to keep you moving:
                   </Text>
                 </div>
 
                 <div className="mt-8">
-                  <Snippet name="example-1" />
+                  <Snippet name="1-local-mock-data" />
                 </div>
 
                 <div className="mt-8">
@@ -173,68 +173,102 @@ function IndexPage({ data }) {
 
                 <div className="mt-4">
                   <Text>
-                    But then you realize the code you’re writing isn’t really
-                    production-ready. Your React components are rendering local
-                    data, but eventually they’ll be making asynchronous network
-                    requests and rendering from JSON.
+                    Weeks later, the server’s ready and you wire up your app –
+                    but nothing works like it did during development.
                   </Text>
                 </div>
 
                 <div className="mt-4">
                   <Text>
-                    And we all know that those are two very different worlds.
+                    Some screens flash with missing data, others are broken
+                    entirely, and worst of all, you have no idea how much of
+                    your code needs to be rewritten.
+                  </Text>
+                </div>
+
+                <div className="mt-4">
+                  <Text>How did this happen?</Text>
+                </div>
+
+                <div className="mt-10">
+                  <Title>You ignored the network for too long.</Title>
+                </div>
+
+                <div className="mt-4">
+                  <Text>
+                    Dealing with the network is a huge part of your application.
+                    You can't just put it off until the end of your project –
+                    it's fundamental complexity that needs to be dealt with from
+                    the start.
                   </Text>
                 </div>
 
                 <div className="mt-4">
                   <Text>
-                    Even worse, any time your app needs to persist data back to
-                    your server, you’re kinda stuck. Your dummy data doesn’t let
-                    you easily build out and test these sorts of dynamic
-                    features.
+                    Think about everything that goes into dealing with the
+                    network: loading and error states, fetching partial data and
+                    caching... not to mention the fact that asynchronous APIs
+                    like network requests add a ton of new states to your app's
+                    existing user flows.
                   </Text>
                 </div>
 
                 <div className="mt-4">
                   <Text>
-                    Before you know it, you’ve spent half your time cobbling
-                    together a mock API instead of focusing on your application.
+                    When you put off dealing with the network, all these issues
+                    fell on your lap after you had already written a ton of
+                    code.
+                  </Text>
+                </div>
+
+                <div className="mt-4">
+                  <Text>
+                    The fact is that your local mock data setup poked one too
+                    many holes in reality. And because of that, the code you
+                    wrote wasn't ready for production.
                   </Text>
                 </div>
 
                 <div className="mt-10">
-                  <Title>What if there was a better way?</Title>
+                  <Title>What if you could have the best of both worlds?</Title>
                 </div>
 
                 <div className="mt-4">
                   <Text>
-                    What if you had a tool that embraced your frontend workflow,
-                    giving you everything you needed to build out complete,
-                    production-ready JavaScript features without having to wait
-                    on your production API?
+                    What if you could still mock data in the frontend, but also
+                    ensure that your app could only ever access that mock data
+                    in exactly the same way it accesses real server data in
+                    production?
                   </Text>
                 </div>
 
                 <div className="mt-4">
-                  <Text>That's exactly why Mirage.js was created.</Text>
+                  <Text>With Mirage.js, you can.</Text>
                 </div>
 
                 <div className="mt-4">
-                  <Text>Here’s what it looks like:</Text>
+                  <Text>Here's what it looks like:</Text>
                 </div>
 
                 <div className="mt-8">
-                  <Snippet name="example-2" />
-                </div>
+                  <div className="flex text-white text-center">
+                    <button className="w-1/2 border-b border-white pb-2">
+                      index.js
+                    </button>
+                    <button className="w-1/2 border-b border-gray-700 pb-2">
+                      App.js
+                    </button>
+                  </div>
 
-                {/* <div className="markdown max-w-3xl mx-auto">
-                  <div dangerouslySetInnerHTML={{ __html: html }} />
-                </div> */}
+                  <div className="mt-6">
+                    <Snippet name="2-mirage-index" />
+                  </div>
+                </div>
 
                 <hr className="mt-24 w-1/4 border border-gray-400" />
 
                 <div className="text-xl mt-24 max-w-3xl mx-auto">
-                  <p className="mt-4 text-gray-lighter font-bold">
+                  <p className="mt-4 text-gray-100 font-bold">
                     Interested in Mirage and the frontend-first workflow?
                   </p>
                   <p className="mt-4">

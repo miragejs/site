@@ -4,6 +4,7 @@ module.exports = {
     fontFamily: {
       title: `"Ginto"`,
       body: `"GT America", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`,
+      mono: `Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`,
     },
     colors: {
       transparent: "transparent",
@@ -12,6 +13,7 @@ module.exports = {
         100: "#d3dade",
         500: "#7b878e",
         700: "#454d4f",
+        800: "#2b3031",
         900: "#1A1C1D",
       },
       green: "#05C77E",

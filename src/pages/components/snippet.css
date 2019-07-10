@@ -1,7 +1,12 @@
 pre[class*="language-"] {
-  @apply text-sm bg-gray-900 py-4 px-5 border-gray-500 max-w-full overflow-scroll scrolling-touch;
+  @apply rounded-none bg-gray-900 py-4 px-5 border-gray-500 max-w-full overflow-scroll scrolling-touch;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+  @apply text-sm font-mono;
 }
 
 .gatsby-highlight-code-line {
-  @apply block bg-gray-700 -mx-5 px-4 border-l-4 border-yellow;
+  @apply block bg-gray-800 -mx-5 px-4 border-l-4 border-yellow;
 }

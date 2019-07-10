@@ -292,6 +292,33 @@ function IndexPage({ data }) {
                   </Text>
                 </div>
 
+                <div className="mt-10">
+                  <Title>Mirage is a server that runs in the browser.</Title>
+                </div>
+
+                <div className="mt-4">
+                  <Text>
+                    It comes with all the power of a real server, but its code
+                    lives right alongside the rest of your frontend JavaScript.
+                  </Text>
+                </div>
+
+                <div className="mt-4">
+                  <Text>
+                    You can tweak things like latency, error codes, and HTTP
+                    headers. Mirage even has an in-memory database that makes it
+                    easy to persist data, allowing you to build fully dynamic
+                    features entirely in your frontend codebase.
+                  </Text>
+                </div>
+
+                <div className="mt-4">
+                  <Text>
+                    And the best part? You can write tests against all of this
+                    dynamic functionality.{" "}
+                  </Text>
+                </div>
+
                 <hr className="mt-24 w-1/4 border border-gray-400" />
 
                 <div className="text-xl mt-24 max-w-3xl mx-auto">

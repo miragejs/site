@@ -25,10 +25,10 @@ function SEO({ title, description, image, lang, meta }) {
           edges {
             node {
               childImageSharp {
-                facebook: resize(width: 1200, height: 630, quality: 100) {
+                size19x10: resize(width: 1200, height: 630, quality: 100) {
                   src
                 }
-                twitter: resize(width: 1200, height: 600, quality: 100) {
+                size2x1: resize(width: 1200, height: 600, quality: 100) {
                   src
                 }
               }
@@ -40,8 +40,7 @@ function SEO({ title, description, image, lang, meta }) {
   )
 
   const metaDescription = description || site.siteMetadata.description
-  let defaultImage = allFile.edges[0].node.childImageSharp.facebook.src
-  let defaultTwitterImage = allFile.edges[0].node.childImageSharp.twitter.src
+  let defaultImage = allFile.edges[0].node.childImageSharp.size2x1.src
 
   return (
     <Helmet
@@ -79,7 +78,7 @@ function SEO({ title, description, image, lang, meta }) {
         },
         {
           name: `twitter:image`,
-          content: image ? image : defaultTwitterImage,
+          content: image ? image : defaultImage,
         },
         {
           name: `twitter:creator`,

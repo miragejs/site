@@ -16,3 +16,18 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     })
   }
 }
+
+exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+  if (stage === "build-html") {
+    actions.setWebpackConfig({
+      module: {
+        rules: [
+          {
+            test: /@miragejs\/server/,
+            use: loaders.null(),
+          },
+        ],
+      },
+    })
+  }
+}

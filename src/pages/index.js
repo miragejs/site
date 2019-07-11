@@ -12,6 +12,7 @@ import "../fonts/GTAmerica/gt-america.css"
 import "../fonts/Ginto/ginto.css"
 
 import Snippet from "./components/snippet"
+import TodoApp from "./components/todo-app"
 
 function SignupForm() {
   let convertKitUrl = "https://app.convertkit.com/forms/987317/subscriptions"
@@ -76,8 +77,8 @@ function SignupForm() {
   )
 }
 
-function Container({ children }) {
-  return <div className="px-5">{children}</div>
+function Container({ className, children }) {
+  return <div className={`px-5 ${className}`}>{children}</div>
 }
 
 function Title({ children }) {
@@ -94,6 +95,7 @@ function Text({ children }) {
 
 function IndexPage({ data }) {
   // let html = data.allMarkdownRemark.edges[0].node.html
+  let [activeTab, setActiveTab] = useState(0)
 
   return (
     <div className="antialised text-gray-500 font-body font-light leading-normal md:pt-24 pb-32 relative">
@@ -139,14 +141,18 @@ function IndexPage({ data }) {
               </Container>
             </section>
 
-            <section
-              className="pt-12"
-              style={{
-                backgroundImage:
-                  "linear-gradient(to bottom, #020202, #1A1C1D )",
-              }}
-            >
-              <Container>
+            <hr className=" w-1/4 border border-gray-400" />
+
+            <section className="pt-12 relative">
+              {/* <div
+                className="w-full h-64 absolute top-0 z-0"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(to bottom, #020202, #1A1C1D )",
+                }}
+              /> */}
+
+              <Container className="z-10 relative">
                 <Title>
                   Have you ever worked on a React or Vue app that needed data
                   from a backend API before it was ready?
@@ -159,7 +165,7 @@ function IndexPage({ data }) {
                 <div className="mt-4">
                   <Text>
                     Maybe you created some local mock data directly in your app,
-                    just to keep you moving:
+                    just so you could keep moving:
                   </Text>
                 </div>
 
@@ -206,26 +212,27 @@ function IndexPage({ data }) {
                 <div className="mt-4">
                   <Text>
                     Think about everything that goes into dealing with the
-                    network: loading and error states, fetching partial data and
+                    network: loading and error states, fetching partial data,
                     caching... not to mention the fact that asynchronous APIs
-                    like network requests add a ton of new states to your app's
-                    existing user flows.
+                    like network requests add a ton of new states to every one
+                    of your app's existing user flows.
                   </Text>
                 </div>
 
                 <div className="mt-4">
                   <Text>
-                    When you put off dealing with the network, all these issues
-                    fell on your lap after you had already written a ton of
-                    code.
+                    When you ignore the network for too long, all these issues
+                    pile up and fall on your lap after you've already written a
+                    ton of application code. And that's the hardest time to deal
+                    with them.
                   </Text>
                 </div>
 
                 <div className="mt-4">
                   <Text>
                     The fact is that your local mock data setup poked one too
-                    many holes in reality. And because of that, the code you
-                    wrote wasn't ready for production.
+                    many holes in reality. Because of that, the code you wrote
+                    wasn't ready for production.
                   </Text>
                 </div>
 
@@ -235,10 +242,17 @@ function IndexPage({ data }) {
 
                 <div className="mt-4">
                   <Text>
-                    What if you could still mock data in the frontend, but also
-                    ensure that your app could only ever access that mock data
-                    in exactly the same way it accesses real server data in
-                    production?
+                    What if you could still mock data in the frontend, but you
+                    could also ensure that your app only ever accessed that mock
+                    data in exactly the same way it would access real server
+                    data in production?
+                  </Text>
+                </div>
+
+                <div className="mt-4">
+                  <Text>
+                    That way, all these networking issues would be top of mind
+                    from the moment you wrote your first line of code.
                   </Text>
                 </div>
 
@@ -252,23 +266,37 @@ function IndexPage({ data }) {
 
                 <div className="mt-8">
                   <div className="flex text-white text-center">
-                    <button className="w-1/2 border-b border-white pb-2">
+                    <button
+                      onClick={() => setActiveTab(0)}
+                      className={`w-1/2 border-b pb-2 ${
+                        activeTab === 0 ? "border-white" : "border-gray-700"
+                      }`}
+                    >
                       index.js
                     </button>
-                    <button className="w-1/2 border-b border-gray-700 pb-2">
+                    <button
+                      onClick={() => setActiveTab(1)}
+                      className={`w-1/2 border-b pb-2 ${
+                        activeTab === 1 ? "border-white" : "border-gray-700"
+                      }`}
+                    >
                       App.js
                     </button>
                   </div>
 
                   <div className="mt-6">
-                    <Snippet name="2-mirage-index" />
+                    {activeTab === 0 ? (
+                      <Snippet name="2-mirage-index" />
+                    ) : (
+                      <Snippet name="2-mirage-app" />
+                    )}
                   </div>
                 </div>
 
                 <div className="mt-8">
                   <Text>
-                    You start by defining your API endpoints with Mirage. When
-                    you boot up your frontend, Mirage kicks in automatically.
+                    You start by defining your API endpoints in Mirage. When you
+                    boot up your frontend, Mirage kicks in automatically.
                     There's no separate server process for you to manage in
                     yet-another terminal tab.
                   </Text>
@@ -276,12 +304,11 @@ function IndexPage({ data }) {
 
                 <div className="mt-4">
                   <Text>
-                    Now your components can fetch things from your API
-                    endpoints, and Mirage will respond back with its own mock
-                    data. But your components won't contain a single line of
-                    code that reveals you're using Mirage under-the-hood,
-                    because your components don't even know they're using Mirage
-                    instead of a real API.
+                    Now your components can fetch data from your API endpoints,
+                    just like if there was a real server. Your components won't
+                    contain a single line of code that reveals you're using
+                    Mirage under-the-hood, because your components don't even
+                    know they're using Mirage instead of a real API.
                   </Text>
                 </div>
 
@@ -298,37 +325,56 @@ function IndexPage({ data }) {
 
                 <div className="mt-4">
                   <Text>
-                    It comes with all the power of a real server, but its code
-                    lives right alongside the rest of your frontend JavaScript.
+                    And it comes with all the power that you'd expect from a
+                    real server. You can tweak things like latency, error codes,
+                    and HTTP headers. There's even an in-memory database that
+                    lets you persist data.
                   </Text>
                 </div>
 
                 <div className="mt-4">
                   <Text>
-                    You can tweak things like latency, error codes, and HTTP
-                    headers. Mirage even has an in-memory database that makes it
-                    easy to persist data, allowing you to build fully dynamic
-                    features entirely in your frontend codebase.
+                    Did we mention you can write tests against all this
+                    functionality?
                   </Text>
                 </div>
 
                 <div className="mt-4">
                   <Text>
-                    And the best part? You can write tests against all of this
-                    dynamic functionality.{" "}
+                    Equipped with a Mirage server, you'll be able to build fully
+                    dynamic features entirely in your frontend codebase, the
+                    kind of features that typically were only possible to build
+                    using a true production server.
                   </Text>
+                </div>
+
+                <div className="mt-10">
+                  <Title>Live demo</Title>
+                </div>
+
+                <div className="mt-4">
+                  <Text>
+                    Here's a complete working Todo app built with React and
+                    Mirage:
+                  </Text>
+                </div>
+
+                <div className="mt-4">
+                  <TodoApp />
                 </div>
 
                 <hr className="mt-24 w-1/4 border border-gray-400" />
 
                 <div className="text-xl mt-24 max-w-3xl mx-auto">
-                  <p className="mt-4 text-gray-100 font-bold">
+                  <Title>
                     Interested in Mirage and the frontend-first workflow?
-                  </p>
-                  <p className="mt-4">
-                    Sign up and be the first to hear first about our public
-                    release:
-                  </p>
+                  </Title>
+                  <div className="mt-4">
+                    <Text>
+                      Sign up and be the first to hear first about our public
+                      release:
+                    </Text>
+                  </div>
                   <div className="mt-6">
                     <SignupForm />
                   </div>

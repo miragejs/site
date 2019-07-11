@@ -15,9 +15,10 @@ module.exports = {
         700: "#454d4f",
         800: "#2b3031",
         900: "#1A1C1D",
+        1000: "#111113",
       },
+      black: "black",
       green: "#05C77E",
-      yellow: "#DAD085",
     },
     // fontSize: {
     //   // base: "1.125rem",
@@ -43,6 +44,9 @@ module.exports = {
       lineHeight: {
         title: 1.21875,
         copy: 1.6,
+      },
+      height: {
+        "128": "32rem",
       },
       borderWidth: {
         "3": "3px",

@@ -8,7 +8,7 @@ export function App() {
     fetch("/api/users")
       .then(response => response.json())
       .then(json => setUsers(json))
-  })
+  }, [])
 
   return (
     <ul>

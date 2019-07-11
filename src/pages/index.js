@@ -11,8 +11,8 @@ import "./index.css"
 import "../fonts/GTAmerica/gt-america.css"
 import "../fonts/Ginto/ginto.css"
 
-import Snippet from "./components/snippet"
-import TodoApp from "./components/todo-app"
+import Snippet from "../components/snippet"
+import TodoApp from "../components/todo-app"
 
 function SignupForm() {
   let convertKitUrl = "https://app.convertkit.com/forms/987317/subscriptions"
@@ -93,8 +93,7 @@ function Text({ children }) {
   return <p className="font-light text-lg leading-copy">{children}</p>
 }
 
-function IndexPage({ data }) {
-  // let html = data.allMarkdownRemark.edges[0].node.html
+function IndexPage() {
   let [activeTab, setActiveTab] = useState(0)
 
   return (
@@ -144,14 +143,6 @@ function IndexPage({ data }) {
             <hr className=" w-1/4 border border-gray-400" />
 
             <section className="pt-12 relative">
-              {/* <div
-                className="w-full h-64 absolute top-0 z-0"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(to bottom, #020202, #1A1C1D )",
-                }}
-              /> */}
-
               <Container className="z-10 relative">
                 <Title>
                   Have you ever worked on a React or Vue app that needed data
@@ -325,26 +316,26 @@ function IndexPage({ data }) {
 
                 <div className="mt-4">
                   <Text>
-                    And it comes with all the power that you'd expect from a
-                    real server. You can tweak things like latency, error codes,
-                    and HTTP headers. There's even an in-memory database that
-                    lets you persist data.
+                    And it comes with all the power you'd expect from a real
+                    server. You can tweak things like latency, error codes, and
+                    HTTP headers. There's even an in-memory database that lets
+                    you persist data.
                   </Text>
                 </div>
 
                 <div className="mt-4">
                   <Text>
-                    Did we mention you can write tests against all this
-                    functionality?
+                    Not to mention the fact that you can write tests against all
+                    this functionality.
                   </Text>
                 </div>
 
                 <div className="mt-4">
                   <Text>
-                    Equipped with a Mirage server, you'll be able to build fully
-                    dynamic features entirely in your frontend codebase, the
-                    kind of features that typically were only possible to build
-                    using a true production server.
+                    With Mirage, you'll be able to build fully dynamic features
+                    entirely in your frontend codebase, the kind of features
+                    that typically were only possible to build using a true
+                    production server.
                   </Text>
                 </div>
 
@@ -359,7 +350,7 @@ function IndexPage({ data }) {
                   </Text>
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-8">
                   <TodoApp />
                 </div>
 
@@ -387,20 +378,5 @@ function IndexPage({ data }) {
     </div>
   )
 }
-
-export const pageQuery = graphql`
-  query IndexQuery {
-    allMarkdownRemark(filter: { frontmatter: { page: { eq: "homepage" } } }) {
-      edges {
-        node {
-          html
-          frontmatter {
-            title
-          }
-        }
-      }
-    }
-  }
-`
 
 export default IndexPage

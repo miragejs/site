@@ -10,8 +10,8 @@ import PropTypes from "prop-types"
 import Helmet from "react-helmet"
 import { useStaticQuery, graphql } from "gatsby"
 
-function SEO({ description, lang, meta, title }) {
-  const { site } = useStaticQuery(
+function SEO({ title, description, image, lang, meta }) {
+  const { site, allFile } = useStaticQuery(
     graphql`
       query {
         site {
@@ -21,11 +21,23 @@ function SEO({ description, lang, meta, title }) {
             author
           }
         }
+        allFile(filter: { relativePath: { eq: "media-card.png" } }) {
+          edges {
+            node {
+              childImageSharp {
+                resize(width: 1200, height: 630, quality: 100) {
+                  src
+                }
+              }
+            }
+          }
+        }
       }
     `
   )
 
   const metaDescription = description || site.siteMetadata.description
+  let defaultImage = allFile.edges[0].node.childImageSharp.resize.src
 
   return (
     <Helmet
@@ -54,8 +66,12 @@ function SEO({ description, lang, meta, title }) {
           content: `website`,
         },
         {
+          property: `og:image`,
+          content: image ? image : defaultImage,
+        },
+        {
           name: `twitter:card`,
-          content: `summary`,
+          content: `summary_large_image`,
         },
         {
           name: `twitter:creator`,

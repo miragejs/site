@@ -1,23 +1,26 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "miragejs",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
+  "description": "",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "authors": [
+    "Sam Selikoff <sam.selikoff@gmail.com>",
+    "Ryan Toronto <ryanto@gmail.com>"
+  ],
   "dependencies": {
-    "@miragejs/server": "^0.1.7",
-    "gatsby": "^2.10.4",
+    "@miragejs/server": "^0.1.9",
+    "gatsby": "^2.13.14",
     "gatsby-image": "^2.2.5",
-    "gatsby-plugin-manifest": "^2.2.0",
-    "gatsby-plugin-offline": "^2.2.0",
-    "gatsby-plugin-postcss": "^2.1.0",
+    "gatsby-plugin-manifest": "^2.2.2",
+    "gatsby-plugin-offline": "^2.2.2",
+    "gatsby-plugin-postcss": "^2.1.1",
     "gatsby-plugin-purgecss": "^4.0.0",
-    "gatsby-plugin-react-helmet": "^3.1.0",
+    "gatsby-plugin-react-helmet": "^3.1.1",
     "gatsby-plugin-react-svg": "^2.1.1",
     "gatsby-plugin-sharp": "^2.2.4",
-    "gatsby-remark-prismjs": "^3.3.0",
-    "gatsby-source-filesystem": "^2.1.1",
-    "gatsby-transformer-remark": "^2.5.0",
+    "gatsby-remark-prismjs": "^3.3.2",
+    "gatsby-source-filesystem": "^2.1.4",
+    "gatsby-transformer-remark": "^2.6.3",
     "gatsby-transformer-sharp": "^2.2.2",
     "prettier": "^1.18.2",
     "prism-themes": "^1.1.0",
@@ -26,7 +29,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
-    "tailwindcss": "^1.0.4"
+    "tailwindcss": "^1.0.5"
   },
   "devDependencies": {},
   "keywords": [

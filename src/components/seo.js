@@ -77,16 +77,16 @@ function SEO({ title, description, image, lang, meta }) {
           content: `summary_large_image`,
         },
         {
+          name: `twitter:title`,
+          content: title ? title : site.siteMetadata.title,
+        },
+        {
           name: `twitter:image`,
           content: image ? image : defaultImage,
         },
         {
           name: `twitter:creator`,
           content: site.siteMetadata.author,
-        },
-        {
-          name: `twitter:title`,
-          content: title ? title : site.siteMetadata.title,
         },
         {
           name: `twitter:description`,

@@ -61,11 +61,11 @@ function SignupForm() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="text-gray-900 w-full max-w-sm mr-4 rounded p-3 border-2 border-transparent focus:outline-none focus:border-green"
+              className="text-gray-900 w-full md:max-w-sm mr-4 rounded px-5 py-3 border-2 border-transparent focus:outline-none focus:border-green"
             />
             <button
               disabled={isSaving && "disabled"}
-              className="mt-4 w-full border-2 border-green p-3 rounded text-green hover:bg-green hover:text-white focus:outline-none focus:outline-shadow"
+              className="mt-4 md:mt-0 w-full md:w-auto border-2 border-green p-3 md:px-6 rounded text-green hover:bg-green hover:text-white focus:outline-none focus:outline-shadow"
             >
               Get notified
             </button>
@@ -79,8 +79,12 @@ function SignupForm() {
   )
 }
 
-function Container({ className, children }) {
-  return <div className={`px-5 ${className}`}>{children}</div>
+function Container({ className = "", children }) {
+  return (
+    <div className={`px-5 md:px-8 max-w-lg md:max-w-3xl mx-auto ${className}`}>
+      {children}
+    </div>
+  )
 }
 
 function Title({ children }) {
@@ -92,14 +96,16 @@ function Title({ children }) {
 }
 
 function Text({ children }) {
-  return <p className="font-light text-lg leading-copy">{children}</p>
+  return (
+    <p className="font-light text-lg md:text-xl leading-copy">{children}</p>
+  )
 }
 
 function IndexPage() {
   let [activeTab, setActiveTab] = useState(0)
 
   return (
-    <div className="antialised text-gray-500 font-body font-light leading-normal md:pt-24 pb-32 relative">
+    <div className="antialised text-gray-500 font-body font-light leading-normal sm:pt-8 pb-32 relative">
       <div className="absolute top-0 inset-x-0 overflow-hidden max-w-full flex justify-center">
         <BackgroundLines className="flex-shrink-0" />
       </div>
@@ -124,16 +130,17 @@ function IndexPage() {
                 </div>
 
                 <div className="mt-8 md:mt-16 max-w-3xl">
-                  <Text>
+                  <p className="font-light leading-copy text-lg md:text-xl">
                     Mirage.js is an API mocking library that lets you build,
                     test and even share a complete working JavaScript
                     application without having to rely on any backend services.
-                  </Text>
+                  </p>
+
                   <div className="mt-4">
-                    <Text>
+                    <p className="font-light leading-copy text-lg md:text-xl">
                       Sign up and be the first to hear first about our public
                       release:
-                    </Text>
+                    </p>
                   </div>
                   <div className="mt-8">
                     <SignupForm />
@@ -142,7 +149,7 @@ function IndexPage() {
               </Container>
             </section>
 
-            <hr className=" w-1/4 border border-gray-400" />
+            <hr className="w-1/4 border border-gray-400" />
 
             <section className="pt-12 relative">
               <Container className="z-10 relative">

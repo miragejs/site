@@ -1,18 +1,3 @@
 html {
   @apply bg-gray-900;
 }
-
-.markdown {
-}
-
-.markdown p {
-  @apply mt-6 text-lg;
-}
-
-.markdown h2 {
-  @apply text-gray-100 font-bold mt-20 block text-2xl;
-}
-
-.markdown pre {
-  @apply my-12 p-8 rounded-lg;
-}

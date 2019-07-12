@@ -51,16 +51,16 @@ function IndexPage() {
         <Layout>
           <SEO />
 
-          <section className="pt-4 pb-20 lg:pt-12 lg:pb-32">
+          <section className="pt-4 pb-20 lg:pb-32">
             <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl mx-auto">
               <Logo className="w-8 md:w-10 h-8 md:h-16" />
 
-              <div className="mt-6">
+              <div className="mt-6 lg:mt-16">
                 <h1
                   className="font-title text-white
                     text-3.5xl tracking-tight leading-tight
                     md:text-4.5xl
-                    lg:text-5xl
+                    lg:text-5xl lg:leading-tighter
                     xl:text-5xl
                   "
                 >

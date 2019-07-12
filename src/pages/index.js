@@ -72,7 +72,7 @@ function IndexPage() {
                 </h1>
               </div>
 
-              <div className="mt-8">
+              <div className="mt-8 max-w-3xl">
                 <p className="leading-normal text-lg md:text-xl">
                   Mirage.js is an API mocking library that lets you build, test
                   and even share a complete working JavaScript application

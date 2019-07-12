@@ -80,7 +80,7 @@ function SignupForm() {
 
 function Container({ className = "", children }) {
   return (
-    <div className={`px-5 md:px-8 max-w-lg md:max-w-3xl mx-auto ${className}`}>
+    <div className={`px-5 md:px-8 max-w-lg md:max-w-2xl mx-auto ${className}`}>
       {children}
     </div>
   )
@@ -88,7 +88,7 @@ function Container({ className = "", children }) {
 
 function Title({ children }) {
   return (
-    <h2 className="text-white text-2xl leading-snug tracking-tight">
+    <h2 className="text-white text-2xl md:text-2.5xl leading-snug tracking-tight">
       {children}
     </h2>
   )
@@ -118,8 +118,8 @@ function IndexPage() {
               <Container>
                 <Logo className="w-10 md:w-12 h-8 md:h-16" />
 
-                <div className="mt-6">
-                  <h1 className="font-title text-4xl md:text-5xl tracking-title leading-title md:leading-tight text-white">
+                <div className="mt-6 md:mt-4">
+                  <h1 className="font-title text-4xl md:text-4.5xl tracking-title leading-title text-white">
                     Build a production-ready frontend,{" "}
                     <br className="hidden md:inline" />
                     <span className="text-green">
@@ -128,15 +128,15 @@ function IndexPage() {
                   </h1>
                 </div>
 
-                <div className="mt-8 md:mt-16 max-w-3xl">
-                  <p className="font-light leading-copy text-lg md:text-xl">
+                <div className="mt-8 max-w-3xl">
+                  <p className="leading-copy text-lg md:text-xl">
                     Mirage.js is an API mocking library that lets you build,
                     test and even share a complete working JavaScript
                     application without having to rely on any backend services.
                   </p>
 
                   <div className="mt-4">
-                    <p className="font-light leading-copy text-lg md:text-xl">
+                    <p className="leading-copy text-lg md:text-xl">
                       Sign up and be the first to hear first about our public
                       release:
                     </p>
@@ -220,10 +220,10 @@ function IndexPage() {
 
                 <div className="mt-4">
                   <Text>
-                    When you ignore the network for too long, all these issues
-                    pile up and fall on your lap after you've already written a
-                    ton of application code. And that's the hardest time to deal
-                    with them.
+                    When you ignore the network for too long, these issues pile
+                    up and fall on your lap after you've already written a ton
+                    of application code – which is the hardest time to deal with
+                    them.
                   </Text>
                 </div>
 
@@ -249,13 +249,6 @@ function IndexPage() {
                 </div>
 
                 <div className="mt-4">
-                  <Text>
-                    That way, all these networking issues would be top of mind
-                    from the moment you wrote your first line of code.
-                  </Text>
-                </div>
-
-                <div className="mt-4">
                   <Text>With Mirage.js, you can.</Text>
                 </div>
 
@@ -267,7 +260,7 @@ function IndexPage() {
                   <div className="flex text-white text-center">
                     <button
                       onClick={() => setActiveTab(0)}
-                      className={`w-1/2 border-b pb-2 ${
+                      className={`w-1/2 border-b pb-2 md:text-lg ${
                         activeTab === 0 ? "border-white" : "border-gray-700"
                       }`}
                     >
@@ -275,7 +268,7 @@ function IndexPage() {
                     </button>
                     <button
                       onClick={() => setActiveTab(1)}
-                      className={`w-1/2 border-b pb-2 ${
+                      className={`w-1/2 border-b pb-2 md:text-lg ${
                         activeTab === 1 ? "border-white" : "border-gray-700"
                       }`}
                     >

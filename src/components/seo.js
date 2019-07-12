@@ -40,7 +40,10 @@ function SEO({ title, description, image, lang, meta }) {
   )
 
   const metaDescription = description || site.siteMetadata.description
-  let defaultImage = allFile.edges[0].node.childImageSharp.size2x1.src
+
+  // twitter needs a absolute domain name for its image cards, so i'm hardcoding
+  // miragejs.com
+  let defaultImage = `https://miragejs.com${allFile.edges[0].node.childImageSharp.size2x1.src}`
 
   return (
     <Helmet

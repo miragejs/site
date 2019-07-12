@@ -28,9 +28,11 @@ module.exports = {
       fontSize: {
         "2.5xl": "1.6875rem",
         "4.5xl": "2.5rem",
+        "4.75xl": "2.65rem",
       },
       lineHeight: {
         title: 1.21875,
+        "title-lg": 1.15,
         copy: 1.6,
       },
       height: {

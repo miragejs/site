@@ -43,7 +43,7 @@ function IndexPage() {
 
   return (
     <div className="antialised text-gray-500 font-body font-light leading-normal pb-32 relative">
-      <div className="absolute top-0 inset-x-0 overflow-hidden max-w-full flex justify-center lg:top-16">
+      <div className="absolute inset-x-0 overflow-hidden max-w-full flex justify-center -top-16 lg:top-8">
         <BackgroundLines className="flex-shrink-0" />
       </div>
 

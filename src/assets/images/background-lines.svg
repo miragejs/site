@@ -62,7 +62,7 @@
         </linearGradient>
     </defs>
     <g id="background-lines" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Group" transform="translate(611.000000, -1.000000)" fill-rule="nonzero">
+        <g id="Group" transform="translate(611.000000, -71.000000)" fill-rule="nonzero">
             <path d="M2106,32.3988873 L2106,101.474926 L94.0978181,408.983969 L94.0978181,340.089679 L2106,32.3988873 Z" id="Combined-Shape" fill="#1E2021" filter="url(#filter-1)"></path>
             <path d="M1975.57909,0.947516549 L2106,0.947516549 L2106,50.0775993 L94.0978181,357.586642 L94.0978181,288.692353 L1975.57909,0.947516549 Z" id="Combined-Shape" fill="#2A2E2F" filter="url(#filter-2)"></path>
             <path d="M2106,50.9894098 L2106,120.065449 L94.0978181,427.574491 L94.0978181,358.680202 L2106,50.9894098 Z" id="Combined-Shape" filter="url(#filter-3)"></path>
@@ -76,7 +76,7 @@
             <path d="M0,260.719363 L912.852687,121.075608 C913.087072,121.039753 913.306145,121.200693 913.342,121.435079 C913.345287,121.456563 913.346937,121.478266 913.346937,121.5 C913.346937,121.787596 913.136976,122.032119 912.852687,122.075608 L-1.13686838e-13,261.719363 L0,260.719363 Z" id="Combined-Shape" fill="url(#linearGradient-12)"></path>
             <path d="M2.84217094e-14,515.94426 L1214.22281,330.247638 L1214.22281,331.341198 L-2.27373675e-13,517.037821 L0,515.94426 Z" id="Combined-Shape" fill="url(#linearGradient-13)" filter="url(#filter-14)"></path>
         </g>
-        <rect id="gradient2" fill="url(#linearGradient-15)" x="697" y="0" width="1313" height="514"></rect>
-        <rect id="gradient" fill="url(#linearGradient-16)" transform="translate(2310.500000, 172.500000) rotate(-180.000000) translate(-2310.500000, -172.500000) " x="1904" y="0" width="813" height="345"></rect>
+        <rect id="gradient2" fill="url(#linearGradient-15)" x="697" y="-70" width="1313" height="514"></rect>
+        <rect id="gradient" fill="url(#linearGradient-16)" transform="translate(2310.500000, 102.500000) rotate(-180.000000) translate(-2310.500000, -102.500000) " x="1904" y="-70" width="813" height="345"></rect>
     </g>
 </svg>

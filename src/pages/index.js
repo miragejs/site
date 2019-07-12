@@ -33,7 +33,9 @@ function Title({ children }) {
 }
 
 function Text({ children }) {
-  return <p className="font-light text-lg leading-copy">{children}</p>
+  return (
+    <p className="font-light text-lg md:text-xl leading-normal">{children}</p>
+  )
 }
 
 function IndexPage() {
@@ -50,7 +52,7 @@ function IndexPage() {
           <SEO />
 
           <section className="pt-4 pb-20 lg:pt-12 lg:pb-32">
-            <div className="px-5 md:px-8 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto">
+            <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl mx-auto">
               <Logo className="w-8 md:w-10 h-8 md:h-16" />
 
               <div className="mt-6">
@@ -94,10 +96,10 @@ function IndexPage() {
 
           <section className="pt-12 lg:pt-24">
             <Container>
-              <Title>
+              <Text>
                 Have you ever worked on a React or Vue app that needed data from
                 a backend API before it was ready?
-              </Title>
+              </Text>
 
               <div className="mt-6">
                 <Text>If so, how’d you handle it?</Text>

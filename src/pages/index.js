@@ -52,7 +52,7 @@ function IndexPage() {
           <SEO />
 
           <section className="pt-4 pb-20 lg:pb-32">
-            <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl mx-auto">
+            <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto">
               <Logo className="w-8 md:w-10 h-8 md:h-16" />
 
               <div className="mt-6 lg:mt-16">
@@ -92,14 +92,16 @@ function IndexPage() {
             </div>
           </section>
 
-          <hr className="w-1/4 border border-gray-400" />
-
-          <section className="pt-12 lg:pt-24">
+          <section>
             <Container>
-              <Text>
-                Have you ever worked on a React or Vue app that needed data from
-                a backend API before it was ready?
-              </Text>
+              <hr className="w-1/4 border border-gray-400" />
+
+              <div className="mt-12 lg:mt-24">
+                <Text>
+                  Have you ever worked on a React or Vue app that needed data
+                  from a backend API before it was ready?
+                </Text>
+              </div>
 
               <div className="mt-6">
                 <Text>If so, how’d you handle it?</Text>

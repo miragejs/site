@@ -40,7 +40,7 @@ function IndexPage() {
   let [activeTab, setActiveTab] = useState(0)
 
   return (
-    <div className="antialised text-gray-500 font-body font-light leading-normal sm:pt-8 pb-32 relative">
+    <div className="antialised text-gray-500 font-body font-light leading-normal pb-32 relative">
       <div className="absolute top-0 inset-x-0 overflow-hidden max-w-full flex justify-center">
         <BackgroundLines className="flex-shrink-0" />
       </div>
@@ -49,12 +49,19 @@ function IndexPage() {
         <Layout>
           <SEO />
 
-          <section className="pt-6 pb-20 lg:pt-12 lg:pb-32">
-            <div className="px-5 md:px-8 max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
-              <Logo className="w-10 md:w-12 h-8 md:h-16" />
+          <section className="pt-4 pb-20 lg:pt-12 lg:pb-32">
+            <div className="px-5 md:px-8 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto">
+              <Logo className="w-8 md:w-10 h-8 md:h-16" />
 
-              <div className="mt-6 md:mt-4">
-                <h1 className="font-title text-4xl md:text-4.5xl lg:text-4.75xl xl:text-5xl tracking-title leading-title text-white">
+              <div className="mt-6">
+                <h1
+                  className="font-title text-white
+                    text-3.5xl tracking-tight leading-tight
+                    md:text-4.5xl
+                    lg:text-5xl
+                    xl:text-5xl
+                  "
+                >
                   Build a production-ready frontend,{" "}
                   <br className="hidden md:inline" />
                   <span className="text-green">
@@ -64,14 +71,14 @@ function IndexPage() {
               </div>
 
               <div className="mt-8">
-                <p className="leading-copy text-lg md:text-xl">
+                <p className="leading-normal text-lg md:text-xl">
                   Mirage.js is an API mocking library that lets you build, test
                   and even share a complete working JavaScript application
                   without having to rely on any backend services.
                 </p>
 
                 <div className="mt-4">
-                  <p className="leading-copy text-lg md:text-xl">
+                  <p className="leading-normal text-lg md:text-xl">
                     Sign up and be the first to hear first about our public
                     release:
                   </p>

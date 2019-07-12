@@ -25,25 +25,27 @@ module.exports = {
 
     // Extensions of theme default theme
     extend: {
-      fontSize: {
-        "2.5xl": "1.6875rem",
-        "4.5xl": "2.5rem",
-        "4.75xl": "2.65rem",
-      },
       lineHeight: {
         title: 1.21875,
+        tighter: 1.125,
         "title-lg": 1.15,
         copy: 1.6,
+      },
+      letterSpacing: {
+        sm: "-0.0125em",
+        title: "-0.0375em",
+      },
+      fontSize: {
+        "2.5xl": "1.6875rem",
+        "3.5xl": "2.0625rem",
+        "4.5xl": "2.5rem",
+        "4.75xl": "2.65rem",
       },
       height: {
         "128": "32rem",
       },
       borderWidth: {
         "3": "3px",
-      },
-      letterSpacing: {
-        sm: "-0.0125em",
-        title: "-0.0375em",
       },
     },
   },

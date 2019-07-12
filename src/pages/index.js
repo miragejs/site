@@ -58,8 +58,8 @@ function IndexPage() {
               <div className="mt-6 lg:mt-16">
                 <h1
                   className="font-title text-white
-                    text-3.5xl tracking-tight leading-tight
-                    md:text-4.5xl
+                    text-3-5xl tracking-tight leading-tight
+                    md:text-4-5xl
                     lg:text-5xl lg:leading-tighter
                     xl:text-5xl
                   "

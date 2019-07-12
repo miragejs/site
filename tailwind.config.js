@@ -38,13 +38,12 @@ module.exports = {
         title: "-0.0375em",
       },
       fontSize: {
-        "2.5xl": "1.6875rem",
-        "3.5xl": "2.0625rem",
-        "4.5xl": "2.5rem",
-        "4.75xl": "2.65rem",
+        "2-5xl": "1.6875rem",
+        "3-5xl": "2.0625rem",
+        "4-5xl": "2.5rem",
       },
       maxWidth: {
-        "2.5xl": "45rem",
+        "2-5xl": "45rem",
       },
       height: {
         "128": "32rem",

@@ -3,7 +3,11 @@ import { Server } from "@miragejs/server"
 if (Server) {
   new Server({
     baseConfig() {
-      this.passthrough() // Let unhandled requests pass through Mirage
+      // Let unhandled local domain requests pass through Mirage
+      this.passthrough()
+
+      // Let convert kit pass through
+      this.passthrough("https://app.convertkit.com/**")
 
       this.namespace = "api"
       this.timing = 2000

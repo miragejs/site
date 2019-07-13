@@ -1,1 +1,22 @@
 @tailwind base;
+
+@keyframes loadingSpinnerRotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loadingSpinnerFade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+svg.loading {
+  transform-origin: 50% 50%;
+  animation: loadingSpinnerFade 0.2s,
+    loadingSpinnerRotate 0.7s steps(12, end) infinite;
+}

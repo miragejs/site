@@ -303,7 +303,9 @@ function IndexPage() {
                     release:
                   </Text>
                 </div>
-                <div className="mt-6">SIGNUP HERE</div>
+                <div className="mt-6">
+                  <SignupForm />
+                </div>
               </div>
             </Container>
           </section>

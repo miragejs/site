@@ -10,6 +10,7 @@ module.exports = {
       transparent: "transparent",
       white: "#FFFFFF",
       gray: {
+        50: "#fafafa",
         100: "#d3dade",
         500: "#7b878e",
         600: "#454d4f",
@@ -28,6 +29,10 @@ module.exports = {
 
     // Extensions of theme default theme
     extend: {
+      boxShadow: {
+        form:
+          "0 0px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+      },
       lineHeight: {
         title: 1.21875,
         tighter: 1.125,
@@ -60,4 +65,5 @@ module.exports = {
       },
     },
   },
+  plugins: [require("@tailwindcss/custom-forms")],
 }

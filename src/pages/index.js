@@ -287,8 +287,13 @@ function IndexPage() {
                 </Text>
               </div>
 
-              <div className="mt-8">
+              <div className="mt-12">
                 <TodoApp />
+                <div className="mt-4 text-center">
+                  <button className="text-sm text-green focus:outline-none px-3 py-2">
+                    Reset App
+                  </button>
+                </div>
               </div>
 
               <hr className="mt-24 w-1/4 border border-gray-400" />

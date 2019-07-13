@@ -27,9 +27,9 @@ if (Server) {
 
     fixtures: {
       todos: [
-        { text: "Play with Legos", done: true },
-        { text: "Draw on iPad", done: false },
-        { text: "Build an app", done: false },
+        { text: "Buy groceries", done: true },
+        { text: "Beat God of War", done: false },
+        { text: "Learn Mirage.js", done: false },
       ],
     },
   })

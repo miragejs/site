@@ -9,6 +9,7 @@ let isEmailValid = function(email) {
 function SignupForm() {
   // configure
   let fadeOutInDelay = 0.4
+  let feedbackDelay = 900
 
   // state
   let convertKitUrl = "https://app.convertkit.com/forms/987317/subscriptions"
@@ -62,11 +63,11 @@ function SignupForm() {
           body: formData,
         })
 
-        let feedbackDelay = new Promise(resolve => {
-          setTimeout(resolve, 750)
+        let waitForFeedback = new Promise(resolve => {
+          setTimeout(resolve, feedbackDelay)
         })
 
-        let [response] = await Promise.all([postData, feedbackDelay])
+        let [response] = await Promise.all([postData, waitForFeedback])
 
         if (response.ok) {
           setFormState("finished")

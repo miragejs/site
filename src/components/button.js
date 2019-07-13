@@ -31,6 +31,7 @@ function Button({ isRunning = false, children }) {
 
   let [shouldUseTransitions, setShouldUseTransitions] = useState(false)
   let [spinnerWidth, setSpinnerWidth] = useState(0)
+  let [spinnerTop, setSpinnerTop] = useState(0)
   let [isNudged, setIsNudged] = useState(isRunning)
   let [isShowingSpinner, setIsShowingSpinner] = useState(isRunning)
   let [isWideButton, setIsWideButton] = useState(false)
@@ -43,7 +44,11 @@ function Button({ isRunning = false, children }) {
   // actually is. so we'll useLayoutEffect to  make the re-render sync
   // before the browser paints the button
   useLayoutEffect(() => {
+    let verticalSpacing =
+      spinnerEl.current.parentElement.offsetHeight -
+      spinnerEl.current.offsetHeight
     setSpinnerWidth(spinnerEl.current.offsetWidth)
+    setSpinnerTop(verticalSpacing / 2 - 2)
     setIsWideButton(windowWidth < 768)
   }, [windowWidth])
 
@@ -118,14 +123,13 @@ function Button({ isRunning = false, children }) {
       <span
         ref={spinnerEl}
         onTransitionEnd={e => handleTransitionEnd(e)}
-        className={`absolute my-3 pt-px right-0 top-0 ${
-          isShowingSpinner ? "opacity-100" : "opacity-0"
-        }`}
+        className={`absolute ${isShowingSpinner ? "opacity-100" : "opacity-0"}`}
         style={{
           transition: shouldUseTransitions
             ? `opacity ${spinnerOpacityDuration}s`
             : "",
-          marginRight: `${spinnerOffset}px`,
+          right: `${spinnerOffset}px`,
+          top: `${spinnerTop}px`,
         }}
       >
         <Spinner className="h-5 w-5 loading" />

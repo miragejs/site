@@ -203,16 +203,16 @@ function IndexPage() {
                 <div className="flex text-white text-center">
                   <button
                     onClick={() => setActiveTab(0)}
-                    className={`w-1/2 border-b pb-2 md:text-lg ${
-                      activeTab === 0 ? "border-white" : "border-gray-700"
+                    className={`w-1/2 focus:outline-none border-b pb-2 md:text-lg ${
+                      activeTab === 0 ? "border-white" : "border-gray-600"
                     }`}
                   >
                     index.js
                   </button>
                   <button
                     onClick={() => setActiveTab(1)}
-                    className={`w-1/2 border-b pb-2 md:text-lg ${
-                      activeTab === 1 ? "border-white" : "border-gray-700"
+                    className={`w-1/2 focus:outline-none border-b pb-2 md:text-lg ${
+                      activeTab === 1 ? "border-white" : "border-gray-600"
                     }`}
                   >
                     App.js

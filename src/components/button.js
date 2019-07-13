@@ -2,13 +2,18 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from "react"
 import Spinner from "../assets/images/loading-spinner.svg"
 
 function useWindowWidth() {
-  const [width, setWidth] = useState(window.innerWidth)
+  let isBrowser = typeof window !== "undefined"
+  const [width, setWidth] = useState(isBrowser ? window.innerWidth : 0)
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth)
-    window.addEventListener("resize", handleResize)
+
+    if (isBrowser) {
+      window.addEventListener("resize", handleResize)
+    }
+
     return () => {
-      window.removeEventListener("resize", handleResize)
+      isBrowser && window.removeEventListener("resize", handleResize)
     }
   }, [])
 

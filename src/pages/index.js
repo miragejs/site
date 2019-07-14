@@ -2,7 +2,6 @@ import React, { useState } from "react"
 
 import "../server"
 
-import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 import Logo from "../assets/images/logo.svg"
@@ -42,279 +41,270 @@ function IndexPage() {
   let [activeTab, setActiveTab] = useState(0)
 
   return (
-    <div className="antialised text-gray-500 font-body font-light leading-normal pb-32 relative">
+    <div className="antialised text-gray-500 font-body font-light leading-normal relative">
       <div className="absolute inset-x-0 overflow-hidden max-w-full flex justify-center -top-16 lg:top-8">
         <BackgroundLines className="flex-shrink-0" />
       </div>
 
       <div className="relative z-10">
-        <Layout>
-          <SEO />
+        <SEO />
 
-          <section className="pt-4 pb-20 lg:pb-32">
-            <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto">
-              <Logo className="w-8 md:w-10 h-8 md:h-16" />
+        <section className="pt-4 pb-20 lg:pb-32">
+          <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl mx-auto">
+            <Logo className="w-8 md:w-10 h-8 md:h-16" />
 
-              <div className="mt-6 lg:mt-16">
-                <h1
-                  className="font-title text-white
-                    text-3-5xl tracking-tight leading-tight
-                    md:text-4-5xl
+            <div className="mt-12 lg:mt-16">
+              <h1
+                className="font-title text-white
+                    text-3-5xl tracking-tight leading-tighter
+                    md:text-4-5xl md:leading-tight
                     lg:text-5xl
                     xl:text-5xl
                   "
-                >
-                  Build a production-ready frontend,{" "}
-                  <br className="hidden md:inline" />
-                  <span className="text-green">
-                    even if your API's not ready.
-                  </span>
-                </h1>
-              </div>
+              >
+                Build a production-ready frontend,{" "}
+                <br className="hidden md:inline" />
+                <span className="text-green">
+                  even if your API's not ready.
+                </span>
+              </h1>
+            </div>
 
-              <div className="mt-8 max-w-3xl">
+            <div className="mt-8 max-w-3xl">
+              <p className="leading-normal text-lg md:text-xl">
+                Mirage.js is an API mocking library that lets you build, test
+                and even share a complete working JavaScript application without
+                having to rely on any backend services.
+              </p>
+
+              <div className="mt-4">
                 <p className="leading-normal text-lg md:text-xl">
-                  Mirage.js is an API mocking library that lets you build, test
-                  and even share a complete working JavaScript application
-                  without having to rely on any backend services.
+                  Sign up and be the first to hear first about our public
+                  release:
                 </p>
-
-                <div className="mt-4">
-                  <p className="leading-normal text-lg md:text-xl">
-                    Sign up and be the first to hear first about our public
-                    release:
-                  </p>
-                </div>
-                <div className="mt-8">
-                  <SignupForm />
-                </div>
+              </div>
+              <div className="mt-8">
+                <SignupForm />
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section>
-            <Container>
-              <hr className="w-1/4 border border-gray-400" />
+        <section className="bg-gray-1000 py-20 lg:py-24">
+          <Container>
+            <div>
+              <Text>
+                Have you ever worked on a React or Vue app that needed data from
+                a backend API before it was ready?
+              </Text>
+            </div>
 
-              <div className="mt-12 lg:mt-24">
-                <Text>
-                  Have you ever worked on a React or Vue app that needed data
-                  from a backend API before it was ready?
-                </Text>
+            <div className="mt-6">
+              <Text>If so, how’d you handle it?</Text>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                Maybe you created some local mock data directly in your app,
+                just so you could keep moving:
+              </Text>
+            </div>
+
+            <div className="mt-8">
+              <Snippet name="1-local-mock-data" />
+            </div>
+
+            <div className="mt-8">
+              <Text>Seems harmless enough.</Text>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                Weeks later, the server’s ready and you wire up your app – but
+                nothing works like it did during development.
+              </Text>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                Some screens flash with missing data, others are broken
+                entirely, and worst of all, you have no idea how much of your
+                code needs to be rewritten.
+              </Text>
+            </div>
+
+            <div className="mt-4">
+              <Text>How did this happen?</Text>
+            </div>
+
+            <div className="mt-12">
+              <Title>You ignored the network for too long.</Title>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                And the network is the kind of thing that can't be bolted on to
+                the end of your development cycle.
+              </Text>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                Think about everything that goes into dealing with the network:
+                loading and error states, fetching partial data, caching... not
+                to mention the fact that asynchronous APIs like network requests
+                add a ton of new states to every one of your app's existing user
+                flows.
+              </Text>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                When you put off dealing with the network, these issues pile up
+                and fall on your lap after you've already written a ton of
+                application code – which is the hardest time to deal with them.
+              </Text>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                The fact is that your local mock data setup poked one too many
+                holes in reality. Because of that, the code you wrote wasn't
+                ready for production.
+              </Text>
+            </div>
+
+            <div className="mt-12">
+              <Title>What if you could have the best of both worlds?</Title>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                What if you could still mock data in the frontend, but also
+                ensure that your app only ever accessed that mock data the exact
+                same way it would access real server data in production?
+              </Text>
+            </div>
+
+            <div className="mt-4">
+              <Text>With Mirage.js, you can.</Text>
+            </div>
+
+            <div className="mt-4">
+              <Text>Here's what it looks like:</Text>
+            </div>
+
+            <div className="mt-8">
+              <div className="flex text-white text-center">
+                <button
+                  onClick={() => setActiveTab(0)}
+                  className={`w-1/2 focus:outline-none border-b pb-2 md:text-lg ${
+                    activeTab === 0 ? "border-white" : "border-gray-600"
+                  }`}
+                >
+                  index.js
+                </button>
+                <button
+                  onClick={() => setActiveTab(1)}
+                  className={`w-1/2 focus:outline-none border-b pb-2 md:text-lg ${
+                    activeTab === 1 ? "border-white" : "border-gray-600"
+                  }`}
+                >
+                  App.js
+                </button>
               </div>
 
               <div className="mt-6">
-                <Text>If so, how’d you handle it?</Text>
+                {activeTab === 0 ? (
+                  <Snippet name="2-mirage-index" />
+                ) : (
+                  <Snippet name="2-mirage-app" />
+                )}
               </div>
+            </div>
 
-              <div className="mt-4">
-                <Text>
-                  Maybe you created some local mock data directly in your app,
-                  just so you could keep moving:
-                </Text>
+            <div className="mt-8">
+              <Text>
+                You start by defining your API endpoints in Mirage. When you
+                boot up your frontend, Mirage kicks in automatically. There's no
+                separate server process for you to manage in yet-another
+                terminal tab.
+              </Text>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                Now your components can fetch data from your API endpoints, just
+                as if there was a real server. Your components won't contain a
+                single line of code that reveals you're using Mirage
+                under-the-hood, because they don't even know they're talking to
+                Mirage instead of a real API.
+              </Text>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                With Mirage, you'll never have to write throwaway network code
+                again.
+              </Text>
+            </div>
+
+            <div className="mt-12">
+              <Title>Mirage is a server that runs in the browser.</Title>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                And it comes with all the power you'd expect from a real server.
+                You can tweak things like latency, error codes, and HTTP
+                headers. There's an in-memory database that lets you persist
+                data. And you can even write tests against all this
+                functionality.
+              </Text>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                With Mirage, you can build fully dynamic features entirely in
+                your frontend codebase, without having to wire up a production
+                server.
+              </Text>
+            </div>
+
+            <div className="mt-12">
+              <Title>Live demo</Title>
+            </div>
+
+            <div className="mt-4">
+              <Text>
+                Here's a complete working Todo app built with React and Mirage:
+              </Text>
+            </div>
+
+            <div className="mt-12">
+              <TodoApp />
+              <div className="mt-4 text-center">
+                <button className="text-sm text-green focus:outline-none px-3 py-2">
+                  Reset App
+                </button>
               </div>
+            </div>
+          </Container>
+        </section>
 
-              <div className="mt-8">
-                <Snippet name="1-local-mock-data" />
-              </div>
-
-              <div className="mt-8">
-                <Text>Seems harmless enough.</Text>
-              </div>
-
-              <div className="mt-4">
-                <Text>
-                  Weeks later, the server’s ready and you wire up your app – but
-                  nothing works like it did during development.
-                </Text>
-              </div>
-
-              <div className="mt-4">
-                <Text>
-                  Some screens flash with missing data, others are broken
-                  entirely, and worst of all, you have no idea how much of your
-                  code needs to be rewritten.
-                </Text>
-              </div>
-
-              <div className="mt-4">
-                <Text>How did this happen?</Text>
-              </div>
-
-              <div className="mt-10">
-                <Title>You ignored the network for too long.</Title>
-              </div>
-
-              <div className="mt-4">
-                <Text>
-                  And the network is the kind of thing that can't be bolted on
-                  to the end of your development cycle.
-                </Text>
-              </div>
-
-              <div className="mt-4">
-                <Text>
-                  Think about everything that goes into dealing with the
-                  network: loading and error states, fetching partial data,
-                  caching... not to mention the fact that asynchronous APIs like
-                  network requests add a ton of new states to every one of your
-                  app's existing user flows.
-                </Text>
-              </div>
-
-              <div className="mt-4">
-                <Text>
-                  When you put off dealing with the network, these issues pile
-                  up and fall on your lap after you've already written a ton of
-                  application code – which is the hardest time to deal with
-                  them.
-                </Text>
-              </div>
-
-              <div className="mt-4">
-                <Text>
-                  The fact is that your local mock data setup poked one too many
-                  holes in reality. Because of that, the code you wrote wasn't
-                  ready for production.
-                </Text>
-              </div>
-
-              <div className="mt-10">
-                <Title>What if you could have the best of both worlds?</Title>
-              </div>
-
-              <div className="mt-4">
-                <Text>
-                  What if you could still mock data in the frontend, but also
-                  ensure that your app only ever accessed that mock data the
-                  exact same way it would access real server data in production?
-                </Text>
-              </div>
-
-              <div className="mt-4">
-                <Text>With Mirage.js, you can.</Text>
-              </div>
-
-              <div className="mt-4">
-                <Text>Here's what it looks like:</Text>
-              </div>
-
-              <div className="mt-8">
-                <div className="flex text-white text-center">
-                  <button
-                    onClick={() => setActiveTab(0)}
-                    className={`w-1/2 focus:outline-none border-b pb-2 md:text-lg ${
-                      activeTab === 0 ? "border-white" : "border-gray-600"
-                    }`}
-                  >
-                    index.js
-                  </button>
-                  <button
-                    onClick={() => setActiveTab(1)}
-                    className={`w-1/2 focus:outline-none border-b pb-2 md:text-lg ${
-                      activeTab === 1 ? "border-white" : "border-gray-600"
-                    }`}
-                  >
-                    App.js
-                  </button>
-                </div>
-
-                <div className="mt-6">
-                  {activeTab === 0 ? (
-                    <Snippet name="2-mirage-index" />
-                  ) : (
-                    <Snippet name="2-mirage-app" />
-                  )}
-                </div>
-              </div>
-
-              <div className="mt-8">
-                <Text>
-                  You start by defining your API endpoints in Mirage. When you
-                  boot up your frontend, Mirage kicks in automatically. There's
-                  no separate server process for you to manage in yet-another
-                  terminal tab.
-                </Text>
-              </div>
-
-              <div className="mt-4">
-                <Text>
-                  Now your components can fetch data from your API endpoints,
-                  just as if there was a real server. Your components won't
-                  contain a single line of code that reveals you're using Mirage
-                  under-the-hood, because they don't even know they're talking
-                  to Mirage instead of a real API.
-                </Text>
-              </div>
-
-              <div className="mt-4">
-                <Text>
-                  With Mirage, you'll never have to write throwaway network code
-                  again.
-                </Text>
-              </div>
-
-              <div className="mt-10">
-                <Title>Mirage is a server that runs in the browser.</Title>
-              </div>
-
-              <div className="mt-4">
-                <Text>
-                  And it comes with all the power you'd expect from a real
-                  server. You can tweak things like latency, error codes, and
-                  HTTP headers. There's an in-memory database that lets you
-                  persist data. And you can even write tests against all this
-                  functionality.
-                </Text>
-              </div>
-
-              <div className="mt-4">
-                <Text>
-                  With Mirage, you can build fully dynamic features entirely in
-                  your frontend codebase, without having to wire up a production
-                  server.
-                </Text>
-              </div>
-
-              <div className="mt-10">
-                <Title>Live demo</Title>
-              </div>
-
-              <div className="mt-4">
-                <Text>
-                  Here's a complete working Todo app built with React and
-                  Mirage:
-                </Text>
-              </div>
-
-              <div className="mt-12">
-                <TodoApp />
-                <div className="mt-4 text-center">
-                  <button className="text-sm text-green focus:outline-none px-3 py-2">
-                    Reset App
-                  </button>
-                </div>
-              </div>
-
-              <hr className="mt-24 w-1/4 border border-gray-400" />
-
-              <div className="text-xl mt-24 max-w-3xl mx-auto">
-                <Title>
-                  Interested in Mirage and the frontend-first workflow?
-                </Title>
-                <div className="mt-4">
-                  <Text>
-                    Sign up and be the first to hear first about our public
-                    release:
-                  </Text>
-                </div>
-                <div className="mt-6">
-                  <SignupForm />
-                </div>
-              </div>
-            </Container>
-          </section>
-        </Layout>
+        <section className="pt-20 pb-72">
+          <Container>
+            <Title>Interested in Mirage and the frontend-first workflow?</Title>
+            <div className="mt-8">
+              <Text>
+                Sign up and be the first to hear first about our public release:
+              </Text>
+            </div>
+            <div className="mt-6">
+              <SignupForm />
+            </div>
+          </Container>
+        </section>
       </div>
     </div>
   )

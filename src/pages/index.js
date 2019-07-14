@@ -49,26 +49,24 @@ function IndexPage() {
       <div className="relative z-10">
         <SEO />
 
-        <section className="pt-4 pb-20 lg:pb-32">
-          <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl mx-auto">
+        <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl mx-auto">
+          <header className="pt-4">
             <Logo className="w-8 md:w-10 h-8 md:h-16" />
+          </header>
 
-            <div className="mt-12 lg:mt-16">
-              <h1
-                className="font-title text-white
-                    text-3-5xl tracking-tight leading-tighter
-                    md:text-4-5xl md:leading-tight
-                    lg:text-5xl
-                    xl:text-5xl
-                  "
-              >
-                Build a production-ready frontend,{" "}
-                <br className="hidden md:inline" />
-                <span className="text-green">
-                  even if your API's not ready.
-                </span>
-              </h1>
-            </div>
+          <section className="pt-12 lg:pt-16 pb-20 lg:pb-32 xl:pb-40">
+            <h1
+              className="font-title text-white
+                text-3-5xl tracking-tight leading-tighter
+                md:text-4-5xl
+                lg:text-5xl
+                xl:text-5xl
+              "
+            >
+              Build a production-ready frontend,{" "}
+              <br className="hidden md:inline" />
+              <span className="text-green">even if your API's not ready.</span>
+            </h1>
 
             <div className="mt-8 max-w-3xl">
               <p className="leading-normal text-lg md:text-xl">
@@ -87,8 +85,8 @@ function IndexPage() {
                 <SignupForm />
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
 
         <section className="bg-gray-1000 py-20 lg:py-24">
           <Container>

@@ -27,9 +27,9 @@ export default function TodoApp() {
   }
 
   return (
-    <div className="rounded shadow-lg pt-3 pb-6 px-5 bg-gray-50 border-t-4 border-green text-lg text-gray-900">
+    <div className="rounded shadow-lg pt-3 pb-6 px-5 bg-gray-50 border-t-4 border-green text-lg text-gray-600">
       <div className="flex justify-between">
-        <p className="text-2xl font-bold text-gray-900">Todos</p>
+        <p className="text-2xl font-bold text-gray-700">Todos</p>
       </div>
 
       {isShowingNewTodo && (
@@ -57,7 +57,7 @@ export default function TodoApp() {
                 <label className="block flex items-center">
                   <input
                     type="checkbox"
-                    className="form-checkbox mr-2 text-green"
+                    className="form-checkbox mr-3 border-gray-100 text-green"
                   />
                   {todo.text}
                 </label>

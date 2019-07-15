@@ -277,12 +277,15 @@ function IndexPage() {
 
             <div className="mt-4 md:mt-6">
               <Text>
-                Here's a complete working Todo app built with React and Mirage:
+                Here's a complete working To-Do app built with React and Mirage:
               </Text>
             </div>
 
             <div className="mt-12">
-              <TodoApp />
+              <div className="max-w-sm mx-auto">
+                <TodoApp />
+              </div>
+
               <div className="mt-4 text-center">
                 <button className="text-sm text-green focus:outline-none px-3 py-2">
                   Reset App

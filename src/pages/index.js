@@ -135,7 +135,7 @@ function IndexPage() {
               <Text>How did this happen?</Text>
             </div>
 
-            <div className="mt-12">
+            <div className="mt-8">
               <Title>You ignored the network for too long.</Title>
             </div>
 
@@ -172,7 +172,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-12">
+            <div className="mt-8">
               <Title>What if you could have the best of both worlds?</Title>
             </div>
 
@@ -247,7 +247,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-12">
+            <div className="mt-8">
               <Title>Mirage is a server that runs in the browser.</Title>
             </div>
 
@@ -269,7 +269,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-12">
+            <div className="mt-8">
               <Title>Live demo</Title>
             </div>
 

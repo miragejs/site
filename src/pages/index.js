@@ -111,7 +111,9 @@ function IndexPage() {
             </div>
 
             <div className="mt-8 lg:mt-12">
-              <Snippet name="1-local-mock-data" />
+              <div className="sm:rounded-lg overflow-hidden -mx-5">
+                <Snippet name="1-local-mock-data" />
+              </div>
             </div>
 
             <div className="mt-8 lg:mt-12">
@@ -195,26 +197,30 @@ function IndexPage() {
             </div>
 
             <div className="mt-8 lg:mt-12">
-              <div className="flex text-white text-center">
+              <div className="flex text-center sm:bg-gray-800 sm:-mx-5 sm:border-b sm:border-gray-600 sm:px-5 sm:pt-1 sm:rounded-t-lg overflow-hidden">
                 <button
                   onClick={() => setActiveTab(0)}
-                  className={`w-1/2 focus:outline-none border-b pb-2 md:text-lg ${
-                    activeTab === 0 ? "border-white" : "border-gray-600"
+                  className={`w-1/2 sm:w-auto sm:px-4 hover:text-white focus:outline-none border-b py-2  ${
+                    activeTab === 0
+                      ? "text-white border-white"
+                      : "text-gray-500 border-gray-600 sm:border-transparent"
                   }`}
                 >
                   index.js
                 </button>
                 <button
                   onClick={() => setActiveTab(1)}
-                  className={`w-1/2 focus:outline-none border-b pb-2 md:text-lg ${
-                    activeTab === 1 ? "border-white" : "border-gray-600"
+                  className={`w-1/2 sm:w-auto sm:px-4 hover:text-white focus:outline-none border-b py-2  ${
+                    activeTab === 1
+                      ? "text-white border-white"
+                      : "text-gray-500 border-gray-600 sm:border-transparent"
                   }`}
                 >
                   App.js
                 </button>
               </div>
 
-              <div className="mt-6">
+              <div className="-mx-5 mt-6 sm:mt-0 sm:rounded-b-lg overflow-hidden">
                 {activeTab === 0 ? (
                   <Snippet name="2-mirage-index" />
                 ) : (

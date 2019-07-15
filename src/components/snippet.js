@@ -22,7 +22,5 @@ export default function Snippet({ name }) {
 
   let snippet = snippets.find(snippet => snippet.name === name)
 
-  return (
-    <div className="-mx-5" dangerouslySetInnerHTML={{ __html: snippet.html }} />
-  )
+  return <div dangerouslySetInnerHTML={{ __html: snippet.html }} />
 }

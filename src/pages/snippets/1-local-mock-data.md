@@ -1,5 +1,5 @@
 ```js
-function App() {
+export function App() {
   let [users, setUsers] = useState([])
 
   useEffect(() => {

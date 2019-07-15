@@ -31,6 +31,9 @@ module.exports = {
 
     // Extensions of theme default theme
     extend: {
+      screens: {
+        "2xl": "1440px",
+      },
       boxShadow: {
         form:
           "0 0px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
@@ -49,9 +52,11 @@ module.exports = {
         "2-5xl": "1.6875rem",
         "3-5xl": "2.0625rem",
         "4-5xl": "2.5rem",
+        "5-5xl": "3.5rem",
       },
       maxWidth: {
         "2-5xl": "45rem",
+        "7xl": "80rem",
       },
       height: {
         "128": "32rem",

@@ -1,2 +1,8 @@
 @tailwind components;
 @tailwind utilities;
+
+@responsive {
+  .scale-md {
+    transform: scale(1.4);
+  }
+}

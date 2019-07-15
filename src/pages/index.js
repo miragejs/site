@@ -42,25 +42,25 @@ function IndexPage() {
 
   return (
     <div className="antialised text-gray-500 font-body font-light leading-normal relative">
-      <div className="absolute inset-x-0 overflow-hidden max-w-full flex justify-center -top-16 lg:top-8">
+      <div className="absolute inset-x-0 overflow-hidden max-w-full flex justify-center -top-16 lg:top-8 2xl:scale-md">
         <BackgroundLines className="flex-shrink-0" />
       </div>
 
       <div className="relative z-10">
         <SEO />
 
-        <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl mx-auto">
+        <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
           <header className="pt-4">
             <Logo className="w-8 md:w-10 h-8 md:h-16" />
           </header>
 
-          <section className="pt-12 lg:pt-16 pb-20 lg:pb-32 xl:pb-40">
+          <section className="pt-12 lg:pt-16 2xl:pt-24 pb-20 lg:pb-32 xl:pb-40 2xl:pb-48">
             <h1
               className="font-title text-white
                 text-3-5xl tracking-tight leading-tighter
                 md:text-4-5xl
                 lg:text-5xl
-                xl:text-5xl
+                2xl:text-5-5xl
               "
             >
               Build a production-ready frontend,{" "}
@@ -68,20 +68,20 @@ function IndexPage() {
               <span className="text-green">even if your API's not ready.</span>
             </h1>
 
-            <div className="mt-8 max-w-3xl">
-              <p className="leading-normal text-lg md:text-xl">
+            <div className="mt-8 2xl:mt-12 max-w-3xl 2xl:max-w-4xl">
+              <p className="leading-normal text-lg md:text-xl 2xl:text-2xl 2xl:font-thin">
                 Mirage.js is an API mocking library that lets you build, test
                 and even share a complete working JavaScript application without
                 having to rely on any backend services.
               </p>
 
-              <div className="mt-4">
-                <p className="leading-normal text-lg md:text-xl">
+              <div className="mt-4 2xl:mt-8">
+                <p className="leading-normal text-lg md:text-xl 2xl:text-2xl 2xl:font-thin">
                   Sign up and be the first to hear first about our public
                   release:
                 </p>
               </div>
-              <div className="mt-8">
+              <div className="mt-8 2xl:text-lg">
                 <SignupForm />
               </div>
             </div>
@@ -108,11 +108,11 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 lg:mt-12">
               <Snippet name="1-local-mock-data" />
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 lg:mt-12">
               <Text>Seems harmless enough.</Text>
             </div>
 
@@ -192,7 +192,7 @@ function IndexPage() {
               <Text>Here's what it looks like:</Text>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 lg:mt-12">
               <div className="flex text-white text-center">
                 <button
                   onClick={() => setActiveTab(0)}
@@ -221,7 +221,7 @@ function IndexPage() {
               </div>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 lg:mt-12">
               <Text>
                 You start by defining your API endpoints in Mirage. When you
                 boot up your frontend, Mirage kicks in automatically. There's no

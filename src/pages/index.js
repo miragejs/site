@@ -6,6 +6,7 @@ import SEO from "../components/seo"
 
 import Logo from "../assets/images/logo.svg"
 import BackgroundLines from "../assets/images/background-lines.svg"
+import BackgroundLinesLg from "../assets/images/background-lines-lg.svg"
 
 import "./index.css"
 import "../fonts/GTAmerica/gt-america.css"
@@ -42,8 +43,9 @@ function IndexPage() {
 
   return (
     <div className="antialised text-gray-500 font-body font-light leading-normal relative">
-      <div className="absolute inset-x-0 overflow-hidden max-w-full flex justify-center -top-16 lg:top-8 2xl:scale-md">
-        <BackgroundLines className="flex-shrink-0" />
+      <div className="absolute inset-x-0 overflow-hidden max-w-full flex justify-center -top-16 lg:top-0">
+        <BackgroundLines className="flex-shrink-0 2xl:hidden" />
+        <BackgroundLinesLg className="flex-shrink-0 hidden 2xl:block" />
       </div>
 
       <div className="relative z-10">
@@ -54,7 +56,7 @@ function IndexPage() {
             <Logo className="w-8 md:w-10 h-8 md:h-16" />
           </header>
 
-          <section className="pt-12 lg:pt-16 2xl:pt-24 pb-20 lg:pb-32 xl:pb-40 2xl:pb-48">
+          <section className="pt-12 lg:pt-16 2xl:pt-24 pb-20 md:pb-32 xl:pb-40 2xl:pb-48">
             <h1
               className="font-title text-white
                 text-3-5xl tracking-tight leading-tighter
@@ -68,14 +70,14 @@ function IndexPage() {
               <span className="text-green">even if your API's not ready.</span>
             </h1>
 
-            <div className="mt-8 2xl:mt-12 max-w-3xl 2xl:max-w-4xl">
+            <div className="mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl">
               <p className="leading-normal text-lg md:text-xl 2xl:text-2xl 2xl:font-thin">
                 Mirage.js is an API mocking library that lets you build, test
                 and even share a complete working JavaScript application without
                 having to rely on any backend services.
               </p>
 
-              <div className="mt-4 2xl:mt-8">
+              <div className="mt-4 md:mt-6 2xl:mt-8">
                 <p className="leading-normal text-lg md:text-xl 2xl:text-2xl 2xl:font-thin">
                   Sign up and be the first to hear first about our public
                   release:
@@ -97,11 +99,11 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-4 md:mt-6">
               <Text>If so, how’d you handle it?</Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 Maybe you created some local mock data directly in your app,
                 just so you could keep moving:
@@ -116,14 +118,14 @@ function IndexPage() {
               <Text>Seems harmless enough.</Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 Weeks later, the server’s ready and you wire up your app – but
                 nothing works like it did during development.
               </Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 Some screens flash with missing data, others are broken
                 entirely, and worst of all, you have no idea how much of your
@@ -131,7 +133,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>How did this happen?</Text>
             </div>
 
@@ -139,14 +141,14 @@ function IndexPage() {
               <Title>You ignored the network for too long.</Title>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 And the network is the kind of thing that can't be bolted on to
                 the end of your development cycle.
               </Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 Think about everything that goes into dealing with the network:
                 loading and error states, fetching partial data, caching... not
@@ -156,7 +158,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 When you put off dealing with the network, these issues pile up
                 and fall on your lap after you've already written a ton of
@@ -164,7 +166,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 The fact is that your local mock data setup poked one too many
                 holes in reality. Because of that, the code you wrote wasn't
@@ -176,7 +178,7 @@ function IndexPage() {
               <Title>What if you could have the best of both worlds?</Title>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 What if you could still mock data in the frontend, but also
                 ensure that your app only ever accessed that mock data the exact
@@ -184,11 +186,11 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>With Mirage.js, you can.</Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>Here's what it looks like:</Text>
             </div>
 
@@ -230,17 +232,17 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 Now your components can fetch data from your API endpoints, just
                 as if there was a real server. Your components won't contain a
                 single line of code that reveals you're using Mirage
-                under-the-hood, because they don't even know they're talking to
+                under-the-hood, because they won't even know they're talking to
                 Mirage instead of a real API.
               </Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 With Mirage, you'll never have to write throwaway network code
                 again.
@@ -251,7 +253,7 @@ function IndexPage() {
               <Title>Mirage is a server that runs in the browser.</Title>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 And it comes with all the power you'd expect from a real server.
                 You can tweak things like latency, error codes, and HTTP
@@ -261,7 +263,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 With Mirage, you can build fully dynamic features entirely in
                 your frontend codebase, without having to wire up a production
@@ -273,7 +275,7 @@ function IndexPage() {
               <Title>Live demo</Title>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-6">
               <Text>
                 Here's a complete working Todo app built with React and Mirage:
               </Text>

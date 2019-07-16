@@ -5,6 +5,7 @@ import "../server"
 import SEO from "../components/seo"
 
 import Logo from "../assets/images/logo.svg"
+import Replay from "../assets/images/replay.svg"
 import BackgroundLines from "../assets/images/background-lines.svg"
 import BackgroundLinesLg from "../assets/images/background-lines-lg.svg"
 
@@ -40,6 +41,21 @@ function Text({ children }) {
 
 function IndexPage() {
   let [activeTab, setActiveTab] = useState(0)
+  let [refresh, setRefresh] = useState(0)
+
+  function resetApp() {
+    if (window.server) {
+      window.server.db.emptyData()
+      window.server.db.loadData({
+        todos: [
+          { id: 1, text: "Buy groceries" },
+          { id: 2, text: "Beat God of War" },
+          { id: 3, text: "Learn Mirage.js" },
+        ],
+      })
+      setRefresh(refresh + 1)
+    }
+  }
 
   return (
     <div className="antialised text-gray-500 font-body font-light leading-normal relative">
@@ -290,12 +306,16 @@ function IndexPage() {
 
             <div className="mt-12">
               <div className="max-w-sm mx-auto">
-                <TodoApp />
+                <TodoApp refresh={refresh} />
               </div>
 
-              <div className="mt-4 text-center">
-                <button className="text-sm text-green focus:outline-none px-3 py-2">
+              <div className="mt-4">
+                <button
+                  onClick={resetApp}
+                  className="text-sm text-green focus:outline-none px-3 py-2 mx-auto flex items-center hover:underline"
+                >
                   Reset App
+                  <Replay className="ml-1 w-4 h-4" />
                 </button>
               </div>
             </div>

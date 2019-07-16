@@ -1,20 +1,22 @@
 import React, { useEffect, useState, useRef } from "react"
 import Spinner from "./spinner"
 
-export default function TodoApp() {
-  let [isLoading, setIsLoading] = useState(true)
+export default function TodoApp({ refresh }) {
+  let [isLoading, setIsLoading] = useState(false)
   let [todos, setTodos] = useState([])
   let [newTodo, setNewTodo] = useState(null)
   let [isShowingNewTodo, setIsShowingNewTodo] = useState(false)
 
   useEffect(() => {
+    setIsLoading(true)
+
     fetch("/api/todos")
       .then(response => response.json())
       .then(json => {
         setTodos(json)
         setIsLoading(false)
       })
-  }, [])
+  }, [refresh])
 
   function addTodo(todo) {
     setNewTodo(null)
@@ -29,11 +31,17 @@ export default function TodoApp() {
     ])
   }
 
+  function removeTodo(todo) {
+    setTodos([...todos.filter(globalTodo => globalTodo.id !== todo.id)])
+  }
+
   return (
     <div className="rounded-lg shadow-black pt-3 pb-6 px-5 bg-gray-800 border-t-8 border-green text-lg text-white">
       <div className="flex justify-between">
         <p className="text-2xl font-bold text-gray-50">Todos</p>
-        <p className="text-2xl font-bold text-gray-50">{todos.length}</p>
+        <p className="text-2xl font-bold text-gray-50">
+          {!isLoading && todos.length}
+        </p>
       </div>
 
       <div className="mt-6">
@@ -46,28 +54,36 @@ export default function TodoApp() {
             )}
 
             {todos.map(todo => (
-              <TodoItem todo={todo} didSave={updateTodo} key={todo.id} />
+              <TodoItem
+                todo={todo}
+                didSave={updateTodo}
+                didDestroy={removeTodo}
+                key={todo.id}
+              />
             ))}
           </ul>
         )}
       </div>
 
-      <div className="mt-4">
-        <button
-          onClick={() => setNewTodo({ text: "" })}
-          className="ml-auto focus:outline-none bg-green rounded-full text-white w-10 h-10 shadow-lg text-4xl font-light flex items-center justify-center leading-none"
-        >
-          +
-        </button>
+      <div className="mt-6">
+        {!isLoading && (
+          <button
+            onClick={() => setNewTodo({ text: "" })}
+            className="ml-auto focus:outline-none bg-green rounded-full text-white w-10 h-10 shadow-lg text-4xl font-light flex items-center justify-center leading-none"
+          >
+            +
+          </button>
+        )}
       </div>
     </div>
   )
 }
 
-function TodoItem({ todo, didCreate, didSave, autofocus }) {
+function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
   let inputRef = useRef(null)
   let [text, setText] = useState(todo.text)
   let [isSaving, setIsSaving] = useState(false)
+  let [isChecked, setIsChecked] = useState(false)
 
   useEffect(() => {
     if (inputRef.current && autofocus) {
@@ -115,6 +131,31 @@ function TodoItem({ todo, didCreate, didSave, autofocus }) {
       })
   }
 
+  function destroyTodo() {
+    setIsSaving(true)
+
+    fetch(`/api/todos/${todo.id}`, {
+      method: "DELETE",
+    }).then(() => {
+      setIsSaving(false)
+      didDestroy(todo)
+    })
+  }
+
+  function handleCheckboxChange(event) {
+    setIsChecked(event.target.checked)
+  }
+
+  useEffect(() => {
+    if (isChecked) {
+      let id = setTimeout(() => {
+        destroyTodo()
+      }, 1000)
+
+      return () => clearTimeout(id)
+    }
+  })
+
   return (
     <li key={todo.id} className="mt-1">
       <div
@@ -123,7 +164,9 @@ function TodoItem({ todo, didCreate, didSave, autofocus }) {
       >
         <input
           type="checkbox"
-          className="form-checkbox w-4 h-4 rounded-sm mr-2 bg-transparent border-gray-525 text-green"
+          className="form-checkbox w-5 h-5 rounded-sm mr-2 bg-transparent border-gray-525 text-green"
+          checked={isChecked}
+          onChange={handleCheckboxChange}
           disabled={isSaving}
         />
         <form onSubmit={handleSubmit} className="w-full">

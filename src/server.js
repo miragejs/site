@@ -35,9 +35,11 @@ if (Server) {
         return db.todos.update(id, attrs)
       })
 
-      // this.get("/todos", ({ db }) => {
-      //   return db.todos
-      // })
+      this.del("/todos/:id", ({ db }, request) => {
+        let id = request.params.id
+
+        db.todos.remove(id)
+      })
     },
   })
 }

@@ -65,7 +65,7 @@ module.exports = {
         title: "-0.0375em",
       },
       fontSize: {
-        code: "0.8125rem",
+        "sm-": "0.8125rem",
         "base+": "1.0625rem",
         "2-5xl": "1.6875rem",
         "2-75xl": "1.875rem",

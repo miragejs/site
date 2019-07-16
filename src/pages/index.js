@@ -27,7 +27,7 @@ function Container({ children }) {
 
 function Title({ children }) {
   return (
-    <h2 className="text-white text-2xl leading-tight md:leading-snug tracking-tight">
+    <h2 className="text-gray-900 font-medium text-2xl leading-tight md:leading-snug tracking-tight">
       {children}
     </h2>
   )
@@ -103,7 +103,7 @@ function IndexPage() {
           </div>
         </div>
 
-        <section className="bg-gray-1000 py-20 lg:py-24 shadow-black-inset">
+        <section className="bg-white text-gray-5 py-20 lg:py-24 shadow-black-inset">
           <Container>
             <div>
               <Text>
@@ -309,7 +309,7 @@ function IndexPage() {
               <div className="mt-4">
                 <button
                   onClick={resetApp}
-                  className="text-sm text-green focus:outline-none px-3 py-2 mx-auto flex items-center hover:underline"
+                  className="text-sm text-blue-500 focus:outline-none px-3 py-2 mx-auto flex items-center hover:underline"
                 >
                   Reset App
                   <Replay className="ml-1 w-4 h-4" />

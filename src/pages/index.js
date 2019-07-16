@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 
-import "../server"
+import server, { resetDb } from "../server"
 
 import SEO from "../components/seo"
 
@@ -44,15 +44,8 @@ function IndexPage() {
   let [refresh, setRefresh] = useState(0)
 
   function resetApp() {
-    if (window.server) {
-      window.server.db.emptyData()
-      window.server.db.loadData({
-        todos: [
-          { id: 1, text: "Buy groceries" },
-          { id: 2, text: "Beat God of War" },
-          { id: 3, text: "Learn Mirage.js" },
-        ],
-      })
+    if (server) {
+      resetDb(server.db)
       setRefresh(refresh + 1)
     }
   }

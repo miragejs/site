@@ -250,7 +250,7 @@ function IndexPage() {
 
             <div className="mt-4 md:mt-6">
               <Text>
-                With Mirage, you'll never have to write throwaway network code
+                With Mirage, you never have to write throwaway network code
                 again.
               </Text>
             </div>

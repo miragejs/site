@@ -12,7 +12,13 @@ module.exports = {
       gray: {
         50: "#fafafa",
         100: "#d3dade",
+        200: "#C2CCD1",
+        300: "#9FAEB6",
+        400: "#8D9BA3",
         500: "#7b878e",
+        525: "#6E7980",
+        550: "#60696F",
+        575: "#545D60",
         600: "#454d4f",
         // 800: "#2b3031",
         // 800: "#282d2e",
@@ -35,6 +41,7 @@ module.exports = {
         "2xl": "1440px",
       },
       boxShadow: {
+        black: "0 2px 28px -1px black, 0 1px 3px 1px rgba(0, 0, 0, 0.72)",
         form:
           "0 0px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
       },

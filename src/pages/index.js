@@ -283,7 +283,8 @@ function IndexPage() {
 
             <div className="mt-4 md:mt-6">
               <Text>
-                Here's a complete working To-Do app built with React and Mirage:
+                Here's a complete To-Do application – including logic for
+                server-side persistence – built with React and Mirage:
               </Text>
             </div>
 

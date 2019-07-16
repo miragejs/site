@@ -1,3 +1,7 @@
 html {
   @apply bg-gray-900;
 }
+
+::selection {
+  @apply bg-gray-400;
+}

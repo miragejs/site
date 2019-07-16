@@ -1,36 +1,43 @@
 import { Server } from "@miragejs/server"
 
 if (Server) {
-  new Server({
-    baseConfig() {
-      // Let unhandled local domain requests pass through Mirage
-      this.passthrough()
+  window.server = new Server({
+    fixtures: {
+      todos: [
+        { id: 1, text: "Buy groceries" },
+        { id: 2, text: "Beat God of War" },
+        { id: 3, text: "Learn Mirage.js" },
+      ],
+    },
 
-      // Let convert kit pass through
+    baseConfig() {
+      // Tell Mirage to ignore unhandled requests to these domains
+      this.passthrough("/**")
       this.passthrough("https://app.convertkit.com/**")
 
+      this.timing = 1000
       this.namespace = "api"
-      this.timing = 2000
 
       this.get("/todos", ({ db }) => {
         return db.todos
       })
 
-      this.post("/todos", ({ db }) => {
-        return db.todos.insert()
+      this.post("/todos", ({ db }, request) => {
+        let attrs = JSON.parse(request.requestBody)
+
+        return db.todos.insert(attrs)
+      })
+
+      this.patch("/todos/:id", ({ db }, request) => {
+        let id = request.params.id
+        let attrs = JSON.parse(request.requestBody)
+
+        return db.todos.update(id, attrs)
       })
 
       // this.get("/todos", ({ db }) => {
       //   return db.todos
       // })
-    },
-
-    fixtures: {
-      todos: [
-        { text: "Buy groceries", done: true },
-        { text: "Beat God of War", done: false },
-        { text: "Learn Mirage.js", done: false },
-      ],
     },
   })
 }

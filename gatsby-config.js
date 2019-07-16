@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `Mirage.js • Build, test and demo your JavaScript application without an API`,
-    description: `Sign up to hear when Mirage.js is ready`,
+    description: `Sign up to hear when Mirage is ready`,
     author: `@miragejs`,
   },
   plugins: [

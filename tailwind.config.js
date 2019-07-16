@@ -41,6 +41,8 @@ module.exports = {
         "2xl": "1440px",
       },
       boxShadow: {
+        "black-inset":
+          "inset 0 0px 28px 4px rgba(0, 0, 0, 0.09), inset 0 0px 4px 2px rgba(0, 0, 0, 0.18)",
         black: "0 2px 28px -1px black, 0 1px 3px 1px rgba(0, 0, 0, 0.72)",
         form:
           "0 0px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",

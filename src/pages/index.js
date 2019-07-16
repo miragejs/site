@@ -67,46 +67,50 @@ function IndexPage() {
       <div className="relative z-10">
         <SEO />
 
-        <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
-          <header className="pt-4">
-            <Logo className="w-8 md:w-10 h-8 md:h-16" />
-          </header>
+        <div className="">
+          <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
+            <header className="pt-4">
+              <Logo className="w-8 md:w-10 h-8 md:h-16" />
+            </header>
 
-          <section className="pt-12 lg:pt-16 2xl:pt-24 pb-20 md:pb-32 xl:pb-40 2xl:pb-48">
-            <h1
-              className="font-title text-white
+            <section className="pt-12 lg:pt-16 2xl:pt-24 pb-20 md:pb-32 xl:pb-40 2xl:pb-48">
+              <h1
+                className="font-title text-white
                 text-3-5xl tracking-tight leading-tighter
                 md:text-4-5xl
                 lg:text-5xl
                 2xl:text-5-5xl
               "
-            >
-              Build a production-ready frontend,{" "}
-              <br className="hidden md:inline" />
-              <span className="text-green">even if your API's not ready.</span>
-            </h1>
+              >
+                Build a production-ready frontend,{" "}
+                <br className="hidden md:inline" />
+                <span className="text-green">
+                  even if your API's not ready.
+                </span>
+              </h1>
 
-            <div className="mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl">
-              <p className="leading-normal text-lg md:text-xl 2xl:text-2xl 2xl:font-thin">
-                Mirage.js is an API mocking library that lets you build, test
-                and even share a complete working JavaScript application without
-                having to rely on any backend services.
-              </p>
-
-              <div className="mt-4 md:mt-6 2xl:mt-8">
+              <div className="mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl">
                 <p className="leading-normal text-lg md:text-xl 2xl:text-2xl 2xl:font-thin">
-                  Sign up and be the first to hear first about our public
-                  release:
+                  Mirage.js is an API mocking library that lets you build, test
+                  and even share a complete working JavaScript application
+                  without having to rely on any backend services.
                 </p>
+
+                <div className="mt-4 md:mt-6 2xl:mt-8">
+                  <p className="leading-normal text-lg md:text-xl 2xl:text-2xl 2xl:font-thin">
+                    Sign up and be the first to hear first about our public
+                    release:
+                  </p>
+                </div>
+                <div className="mt-8 2xl:text-lg">
+                  <SignupForm />
+                </div>
               </div>
-              <div className="mt-8 2xl:text-lg">
-                <SignupForm />
-              </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
 
-        <section className="bg-gray-1000 py-20 lg:py-24">
+        <section className="bg-gray-1000 py-20 lg:py-24 shadow-black-inset">
           <Container>
             <div>
               <Text>
@@ -213,7 +217,7 @@ function IndexPage() {
             </div>
 
             <div className="mt-8 lg:mt-12">
-              <div className="flex text-center sm:bg-gray-800 sm:-mx-5 sm:border-b sm:border-gray-600 sm:px-5 sm:pt-1 sm:rounded-t-lg overflow-hidden">
+              <div className="flex text-center sm:bg-gray-900 sm:-mx-5 sm:border-b sm:border-gray-600 sm:px-5 sm:pt-1 sm:rounded-t-lg overflow-hidden">
                 <button
                   onClick={() => setActiveTab(0)}
                   className={`w-1/2 sm:w-auto sm:px-4 hover:text-white focus:outline-none border-b py-2  ${
@@ -299,12 +303,12 @@ function IndexPage() {
 
             <div className="mt-4 md:mt-6">
               <Text>
-                Here's a complete To-Do application – including logic for
-                server-side persistence – built with React and Mirage:
+                Here's a complete To-Do application – including server-side
+                persistence logic – built with React and Mirage:
               </Text>
             </div>
 
-            <div className="mt-12">
+            <div className="mt-12 md:mt-20">
               <div className="max-w-sm mx-auto">
                 <TodoApp refresh={refresh} />
               </div>
@@ -319,12 +323,24 @@ function IndexPage() {
                 </button>
               </div>
             </div>
+
+            <div className="mt-12 md:mt-20">
+              <Text>
+                This app is running in the browser. If you take a look at the
+                console, you'll see Mirage intercepting all of the React app's
+                network requests. The state is not actually being persisted –
+                but the React app is ready to be deployed to production, as long
+                as there's an API fulfilling the same contract as Mirage.
+              </Text>
+            </div>
           </Container>
         </section>
 
-        <section className="pt-20 pb-72">
-          <Container>
-            <Title>Interested in Mirage and the frontend-first workflow?</Title>
+        <section className="pt-20 xl:pt-32 pb-72">
+          <div className="px-5 md:px-8 max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
+            <h2 className="text-white text-2xl md:text-3xl lg:text-4xl leading-tight md:leading-snug tracking-tight">
+              Interested in Mirage and the frontend-first workflow?
+            </h2>
             <div className="mt-8">
               <Text>
                 Sign up and be the first to hear first about our public release:
@@ -333,7 +349,7 @@ function IndexPage() {
             <div className="mt-6">
               <SignupForm />
             </div>
-          </Container>
+          </div>
         </section>
       </div>
     </div>

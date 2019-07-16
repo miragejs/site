@@ -150,7 +150,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
     if (isChecked) {
       let id = setTimeout(() => {
         destroyTodo()
-      }, 1000)
+      }, 1250)
 
       return () => clearTimeout(id)
     }
@@ -159,7 +159,8 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
   return (
     <li key={todo.id} className="mt-1">
       <div
-        className={`w-full flex items-center transition ${isSaving &&
+        className={`w-full flex items-center transition ${(isSaving ||
+          isChecked) &&
           "opacity-50"}`}
       >
         <input

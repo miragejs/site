@@ -104,6 +104,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
   function createTodo() {
     setIsSaving(true)
     todo.text = text
+    todo.createdAt = new Date().getTime()
 
     fetch(`/api/todos`, {
       method: "POST",

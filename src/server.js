@@ -2,7 +2,7 @@ import { Server } from "@miragejs/server"
 
 // increase this number to bust all locally stored mirage
 // databases
-let currentVersion = 1
+let currentVersion = 2
 
 let createdAt = new Date().getTime()
 let initialData = {

@@ -39,9 +39,7 @@ export default function TodoApp({ refresh }) {
     <div className="rounded-lg shadow-black pt-3 pb-6 px-5 bg-gray-800 border-t-8 border-green text-lg text-white">
       <div className="flex justify-between">
         <p className="text-2xl font-bold text-gray-50">Todos</p>
-        <p className="text-2xl font-bold text-gray-50">
-          {!isLoading && todos.length}
-        </p>
+        <p className="text-2xl text-gray-50">{!isLoading && todos.length}</p>
       </div>
 
       <div className="mt-6">

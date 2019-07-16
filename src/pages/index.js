@@ -35,7 +35,9 @@ function Title({ children }) {
 
 function Text({ children }) {
   return (
-    <p className="font-light text-lg md:text-xl leading-normal">{children}</p>
+    <p className="font-light text-lg leading-normal md:text-xl md:leading-copy">
+      {children}
+    </p>
   )
 }
 
@@ -70,7 +72,7 @@ function IndexPage() {
         <div className="">
           <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
             <header className="pt-4">
-              <Logo className="w-8 md:w-10 h-8 md:h-16" />
+              <Logo className="w-8 h-8 md:w-10 md:h-16" />
             </header>
 
             <section className="pt-12 lg:pt-16 2xl:pt-24 pb-20 md:pb-32 xl:pb-40 2xl:pb-48">
@@ -89,7 +91,7 @@ function IndexPage() {
                 </span>
               </h1>
 
-              <div className="mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl">
+              <div className="mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl text-gray-400">
                 <p className="leading-normal text-lg md:text-xl 2xl:text-2xl 2xl:font-thin">
                   Mirage.js is an API mocking library that lets you build, test
                   and even share a complete working JavaScript application
@@ -142,7 +144,7 @@ function IndexPage() {
 
             <div className="mt-4 md:mt-6">
               <Text>
-                Weeks later, the server’s ready and you wire up your app – but
+                Weeks later, the server’s ready and you wire up your app — but
                 nothing works like it did during development.
               </Text>
             </div>
@@ -159,24 +161,24 @@ function IndexPage() {
               <Text>How did this happen?</Text>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 md:mt-12">
               <Title>You ignored the network for too long.</Title>
             </div>
 
             <div className="mt-4 md:mt-6">
               <Text>
-                And the network is the kind of thing that can't be bolted on to
-                the end of your development cycle.
+                The network is the kind of thing that can't just be dealt with
+                at the end of your sprint.
               </Text>
             </div>
 
             <div className="mt-4 md:mt-6">
               <Text>
                 Think about everything that goes into dealing with the network:
-                loading and error states, fetching partial data, caching... not
-                to mention the fact that asynchronous APIs like network requests
-                add a ton of new states to every one of your app's existing user
-                flows.
+                loading and error states, fetching partial data, and caching —
+                not to mention the fact that asynchronous APIs like network
+                requests add a ton of new states to every one of your app's
+                existing user flows.
               </Text>
             </div>
 
@@ -184,7 +186,7 @@ function IndexPage() {
               <Text>
                 When you put off dealing with the network, these issues pile up
                 and fall on your lap after you've already written a ton of
-                application code – which is the hardest time to deal with them.
+                application code — which is the hardest time to deal with them.
               </Text>
             </div>
 
@@ -196,7 +198,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 md:mt-12">
               <Title>What if you could have the best of both worlds?</Title>
             </div>
 
@@ -275,7 +277,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 md:mt-12">
               <Title>Mirage is a server that runs in the browser.</Title>
             </div>
 
@@ -297,14 +299,14 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 md:mt-12">
               <Title>Live demo</Title>
             </div>
 
             <div className="mt-4 md:mt-6">
               <Text>
-                Here's a complete To-Do application – including server-side
-                persistence logic – built with React and Mirage:
+                Here's a complete To-Do application — including server-side
+                persistence logic — built with React and Mirage:
               </Text>
             </div>
 
@@ -328,7 +330,7 @@ function IndexPage() {
               <Text>
                 This app is running in the browser. If you take a look at the
                 console, you'll see Mirage intercepting all of the React app's
-                network requests. The state is not actually being persisted –
+                network requests. The state is not actually being persisted —
                 but the React app is ready to be deployed to production, as long
                 as there's an API fulfilling the same contract as Mirage.
               </Text>

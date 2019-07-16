@@ -27,14 +27,16 @@ function Container({ children }) {
 
 function Title({ children }) {
   return (
-    <h2 className="text-gray-900 font-normal text-3xl leading-snug">
+    <h2 className="text-gray-900 font-normal text-2xl md:text-3xl leading-snug">
       {children}
     </h2>
   )
 }
 
 function Text({ children }) {
-  return <p className="text-lg font-normal leading-copy">{children}</p>
+  return (
+    <p className="text-base md:text-lg font-normal leading-copy">{children}</p>
+  )
 }
 
 function IndexPage() {
@@ -100,20 +102,20 @@ function IndexPage() {
           </div>
         </div>
 
-        <section className="bg-white text-gray-5 py-20 lg:py-24 shadow-black-inset">
+        <section className="bg-white text-gray-5 py-16 md:py-20 lg:py-24">
           <Container>
             <div>
               <Title>
-                Have you ever worked on an app that needed to talk to a backend
-                API before it was ready?
+                Have you ever worked on a React or Vue app that needed to talk
+                to a backend API before it was ready?
               </Title>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-5 md:mt-7">
               <Text>If so, how’d you handle it?</Text>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-5 md:mt-7">
               <Text>
                 Maybe you created some local mock data directly in your app,
                 just to keep you moving:
@@ -130,14 +132,14 @@ function IndexPage() {
               <Text>Seems harmless enough.</Text>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-5 md:mt-7">
               <Text>
                 Weeks later, the server’s ready and you wire up your app — but
                 nothing works like it did during development.
               </Text>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-5 md:mt-7">
               <Text>
                 Some screens flash with missing data, others are broken
                 entirely, and worst of all, you have no idea how much of your
@@ -145,40 +147,40 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-5 md:mt-7">
               <Text>How did this happen?</Text>
             </div>
 
-            <div className="mt-8 md:mt-12">
+            <div className="mt-12">
               <Title>You ignored the network for too long.</Title>
             </div>
 
-            <div className="mt-7">
+            <div className="mt-5 md:mt-7">
               <Text>
-                The network is the kind of thing that can't just be dealt with
-                at the end of your sprint.
+                The network is the kind of thing that you can't just tack on to
+                the end of your sprint.
               </Text>
             </div>
 
-            <div className="mt-7">
+            <div className="mt-5 md:mt-7">
               <Text>
                 Think about everything that goes into dealing with the network:
-                loading and error states, fetching partial data, and caching —
-                not to mention the fact that asynchronous APIs like network
-                requests add a ton of new states to every one of your app's
-                existing user flows.
+                loading and error states, fetching partial data, caching — not
+                to mention the fact that asynchronous APIs like network requests
+                add a <em className="italic">ton</em> of new states to every one
+                of your app's existing user flows.
               </Text>
             </div>
 
-            <div className="mt-7">
+            <div className="mt-5 md:mt-7">
               <Text>
-                When you put off dealing with the network, these issues pile up
-                and fall on your lap after you've already written a ton of
-                application code — which is the hardest time to deal with them.
+                By putting off the network, all these issues pile up and fall on
+                your lap after you've already written a ton of application code
+                — which is the hardest time to deal with them.
               </Text>
             </div>
 
-            <div className="mt-7">
+            <div className="mt-5 md:mt-7">
               <Text>
                 The fact is that your local mock data setup poked one too many
                 holes in reality. Because of that, the code you wrote wasn't
@@ -186,23 +188,23 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-15">
+            <div className="mt-12">
               <Title>What if you could have the best of both worlds?</Title>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-5 md:mt-7">
               <Text>
                 What if you could still mock data in the frontend, but also
                 ensure that your app only ever accessed that mock data the exact
-                same way it would access real server data in production?
+                same way it accesses real production data?
               </Text>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-5 md:mt-7">
               <Text>With Mirage.js, you can.</Text>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-5 md:mt-7">
               <Text>Here's what it looks like:</Text>
             </div>
 
@@ -210,20 +212,20 @@ function IndexPage() {
               <div className="flex text-center sm:bg-gray-900 sm:-mx-5 sm:border-b sm:border-gray-600 sm:px-5 sm:pt-1 sm:rounded-t-lg overflow-hidden">
                 <button
                   onClick={() => setActiveTab(0)}
-                  className={`w-1/2 sm:w-auto sm:px-4 hover:text-white focus:outline-none border-b py-2  ${
+                  className={`w-1/2 sm:w-auto sm:px-4 hover:text-gray-900 focus:outline-none border-b py-2  ${
                     activeTab === 0
-                      ? "text-white border-white"
-                      : "text-gray-500 border-gray-600 sm:border-transparent"
+                      ? "text-gray-900 border-gray-900"
+                      : "text-gray-400 border-gray-200 sm:border-transparent"
                   }`}
                 >
                   index.js
                 </button>
                 <button
                   onClick={() => setActiveTab(1)}
-                  className={`w-1/2 sm:w-auto sm:px-4 hover:text-white focus:outline-none border-b py-2  ${
+                  className={`w-1/2 sm:w-auto sm:px-4 hover:text-gray-900 focus:outline-none border-b py-2  ${
                     activeTab === 1
-                      ? "text-white border-white"
-                      : "text-gray-500 border-gray-600 sm:border-transparent"
+                      ? "text-gray-900 border-gray-900"
+                      : "text-gray-400 border-gray-200 sm:border-transparent"
                   }`}
                 >
                   App.js
@@ -239,7 +241,7 @@ function IndexPage() {
               </div>
             </div>
 
-            <div className="mt-8 lg:mt-12">
+            <div className="mt-7">
               <Text>
                 You start by defining your API endpoints in Mirage. When you
                 boot up your frontend, Mirage kicks in automatically. There's no
@@ -248,7 +250,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-5 md:mt-7">
               <Text>
                 Now your components can fetch data from your API endpoints, just
                 as if there was a real server. Your components won't contain a
@@ -258,18 +260,18 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-5 md:mt-7">
               <Text>
-                With Mirage, you never have to write throwaway network code
+                With Mirage, you'll never have to write throwaway network code
                 again.
               </Text>
             </div>
 
-            <div className="mt-8 md:mt-12">
+            <div className="mt-12">
               <Title>Mirage is a server that runs in the browser.</Title>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-5 md:mt-7">
               <Text>
                 And it comes with all the power you'd expect from a real server.
                 You can tweak things like latency, error codes, and HTTP
@@ -279,7 +281,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-5 md:mt-7">
               <Text>
                 With Mirage, you can build fully dynamic features entirely in
                 your frontend codebase, without having to wire up a production
@@ -287,14 +289,14 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-8 md:mt-12">
+            <div className="mt-12">
               <Title>Live demo</Title>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-5 md:mt-7">
               <Text>
-                Here's a complete To-Do application — including server-side
-                persistence logic — built with React and Mirage:
+                Here's a complete Todo application, including server-side
+                persistence logic, built with React and Mirage:
               </Text>
             </div>
 
@@ -316,11 +318,18 @@ function IndexPage() {
 
             <div className="mt-12 md:mt-20">
               <Text>
-                This app is running in the browser. If you take a look at the
-                console, you'll see Mirage intercepting all of the React app's
-                network requests. The state is not actually being persisted —
-                but the React app is ready to be deployed to production, as long
-                as there's an API fulfilling the same contract as Mirage.
+                <span className="xl:hidden">
+                  This app is running in the browser, but Mirage is intercepting
+                  all the React app's network requests.
+                </span>
+                <span className="hidden xl:visible">
+                  This app is running in the browser. If you take a look at the
+                  console, you'll see Mirage intercepting all of the React app's
+                  network requests.
+                </span>{" "}
+                The state is not actually being persisted — but the React app is
+                ready to be deployed to production, and talk to a real server
+                that fulfills the same API contract as Mirage.
               </Text>
             </div>
           </Container>

@@ -12,5 +12,8 @@ server.get("/users", () => [
   { id: "3", name: "Anakin" },
 ])
 
-ReactDOM.render(<App />, document.getElementById("root"))
+ReactDOM.render(
+  <App />,
+  document.getElementById("root")
+)
 ```

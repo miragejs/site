@@ -19,7 +19,7 @@ import TodoApp from "../components/todo-app"
 
 function Container({ children }) {
   return (
-    <div className="px-5 md:px-8 max-w-lg md:max-w-2xl xl:max-w-3xl mx-auto">
+    <div className="px-5 md:px-8 max-w-lg md:max-w-1-5xl mx-auto">
       {children}
     </div>
   )
@@ -27,16 +27,14 @@ function Container({ children }) {
 
 function Title({ children }) {
   return (
-    <h2 className="text-gray-900 font-medium text-2xl leading-tight md:leading-snug tracking-tight">
+    <h2 className="text-gray-900 font-normal text-3xl leading-snug">
       {children}
     </h2>
   )
 }
 
 function Text({ children }) {
-  return (
-    <p className="font-light text-lg leading-normal md:text-xl">{children}</p>
-  )
+  return <p className="text-lg font-normal leading-copy">{children}</p>
 }
 
 function IndexPage() {
@@ -51,7 +49,7 @@ function IndexPage() {
   }
 
   return (
-    <div className="antialised text-gray-500 font-body font-light leading-normal relative">
+    <div className="antialiased text-gray-500 font-body font-light leading-normal relative">
       <div className="absolute inset-x-0 overflow-hidden max-w-full flex justify-center -top-16 lg:top-0">
         <BackgroundLines className="flex-shrink-0 2xl:hidden" />
         <BackgroundLinesLg className="flex-shrink-0 hidden 2xl:block" />
@@ -63,13 +61,13 @@ function IndexPage() {
         <div className="">
           <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
             <header className="pt-4">
-              <Logo className="w-8 h-8 md:w-10 md:h-16" />
+              <Logo className="mx-auto w-8 h-8 md:w-10 md:h-16" />
             </header>
 
             <section className="pt-12 lg:pt-16 2xl:pt-24 pb-20 md:pb-32 xl:pb-40 2xl:pb-48">
               <h1
-                className="font-title text-white
-                text-3-5xl tracking-tight leading-tighter
+                className="font-title text-white text-center
+                text-3-5xl tracking-tight leading-tight
                 md:text-4-5xl
                 lg:text-5xl
                 2xl:text-5-5xl
@@ -82,20 +80,19 @@ function IndexPage() {
                 </span>
               </h1>
 
-              <div className="mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl text-gray-400">
-                <p className="leading-normal text-lg md:text-xl 2xl:text-2xl 2xl:font-thin">
+              <div className="text-center mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl mx-auto text-gray-400">
+                <p className="text-gray-8 leading-normal text-lg md:text-xl 2xl:text-2xl 2xl:font-thin">
                   Mirage.js is an API mocking library that lets you build, test
-                  and even share a complete working JavaScript application
-                  without having to rely on any backend services.
+                  and share a complete working JavaScript application without
+                  having to rely on any backend services.
                 </p>
 
-                <div className="mt-4 md:mt-6 2xl:mt-8">
-                  <p className="leading-normal text-lg md:text-xl 2xl:text-2xl 2xl:font-thin">
-                    Sign up and be the first to hear first about our public
-                    release:
+                <div className="mt-16">
+                  <p className="lg:text-lg leading-normal text-white font-medium">
+                    Sign up to get notified when we release:
                   </p>
                 </div>
-                <div className="mt-8 2xl:text-lg">
+                <div className="mt-4 2xl:text-lg">
                   <SignupForm />
                 </div>
               </div>
@@ -106,17 +103,17 @@ function IndexPage() {
         <section className="bg-white text-gray-5 py-20 lg:py-24 shadow-black-inset">
           <Container>
             <div>
-              <Text>
-                Have you ever worked on a React or Vue app that needed data from
-                a backend API before it was ready?
-              </Text>
+              <Title>
+                Have you ever worked on an app that needed to talk to a backend
+                API before it was ready?
+              </Title>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-6">
               <Text>If so, how’d you handle it?</Text>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-4">
               <Text>
                 Maybe you created some local mock data directly in your app,
                 just to keep you moving:
@@ -156,14 +153,14 @@ function IndexPage() {
               <Title>You ignored the network for too long.</Title>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-7">
               <Text>
                 The network is the kind of thing that can't just be dealt with
                 at the end of your sprint.
               </Text>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-7">
               <Text>
                 Think about everything that goes into dealing with the network:
                 loading and error states, fetching partial data, and caching —
@@ -173,7 +170,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-7">
               <Text>
                 When you put off dealing with the network, these issues pile up
                 and fall on your lap after you've already written a ton of
@@ -181,7 +178,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-4 md:mt-6">
+            <div className="mt-7">
               <Text>
                 The fact is that your local mock data setup poked one too many
                 holes in reality. Because of that, the code you wrote wasn't
@@ -189,7 +186,7 @@ function IndexPage() {
               </Text>
             </div>
 
-            <div className="mt-8 md:mt-12">
+            <div className="mt-15">
               <Title>What if you could have the best of both worlds?</Title>
             </div>
 

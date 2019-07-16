@@ -119,7 +119,7 @@ function SignupForm() {
           }}
           onTransitionEnd={e => handleTransitionEnd(e)}
         >
-          <div className="md:flex">
+          <div className="md:flex md:justify-center">
             <input
               type="email"
               required

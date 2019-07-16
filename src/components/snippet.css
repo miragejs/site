@@ -9,7 +9,7 @@ pre[class*="language-"] {
 
 code[class*="language-"],
 pre[class*="language-"] {
-  @apply text-sm font-mono;
+  @apply text-code font-mono;
 }
 @screen md {
   code[class*="language-"],

@@ -32,6 +32,7 @@ module.exports = {
         1000: "#111313",
 
         5: "#52595D",
+        8: "#98A3AA",
       },
       black: "black",
       blue: {
@@ -64,12 +65,16 @@ module.exports = {
         title: "-0.0375em",
       },
       fontSize: {
+        code: "0.8125rem",
+        "base+": "1.0625rem",
         "2-5xl": "1.6875rem",
+        "2-75xl": "1.875rem",
         "3-5xl": "2.0625rem",
         "4-5xl": "2.5rem",
         "5-5xl": "3.5rem",
       },
       maxWidth: {
+        "1-5xl": "40rem",
         "2-5xl": "45rem",
         "7xl": "80rem",
       },
@@ -86,6 +91,9 @@ module.exports = {
         "16": "4rem",
       },
       spacing: {
+        "7": "1.75rem",
+        "14": "3.5rem",
+        "15": "3.75rem",
         "72": "18rem",
       },
     },

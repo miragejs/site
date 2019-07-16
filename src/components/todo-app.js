@@ -41,8 +41,13 @@ export default function TodoApp({ refresh }) {
     <div className="rounded-lg shadow-lg pt-3 pb-6 px-5 bg-gray-800 border-t-8 border-green text-lg text-white">
       <div className="flex justify-between items-center">
         <p className="text-2xl font-bold text-gray-50">Todos</p>
-        <p className="text-xl font-medium text-gray-50">
-          {!isLoading && todos.length}
+        <p className="text-base font-medium text-gray-300">
+          {!isLoading &&
+            (todos.length ? (
+              <span>{todos.length} left</span>
+            ) : (
+              <span>All done!</span>
+            ))}
         </p>
       </div>
 
@@ -162,13 +167,13 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
   return (
     <li key={todo.id} className="mt-1">
       <div
-        className={`w-full flex items-center transition ${(isSaving ||
-          isChecked) &&
+        className={`w-full flex items-center transition ${isSaving &&
           "opacity-50"}`}
       >
         <input
           type="checkbox"
-          className="form-checkbox w-5 h-5 rounded-sm mr-2 bg-transparent border-gray-525 text-green"
+          className={`form-checkbox w-5 h-5 rounded-sm mr-2 bg-transparent border-gray-525 text-green ${!todo.id &&
+            "opacity-0"}`}
           checked={isChecked}
           onChange={handleCheckboxChange}
           disabled={isSaving}

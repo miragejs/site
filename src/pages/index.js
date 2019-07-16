@@ -113,7 +113,7 @@ function IndexPage() {
 
                 <div className="mt-16">
                   <p className="lg:text-lg leading-normal text-white font-medium">
-                    Sign up to get notified when we release:
+                    Sign up to get notified when it's ready:
                   </p>
                 </div>
                 <div className="mt-4 2xl:text-lg">
@@ -138,8 +138,8 @@ function IndexPage() {
             <Spacer />
 
             <Text>
-              Maybe you created some local mock data directly in your app, just
-              to keep you moving:
+              Maybe you created some mock data directly in your app just to keep
+              you moving:
             </Text>
 
             <Spacer size="lg" />
@@ -178,34 +178,34 @@ function IndexPage() {
             <Spacer />
 
             <Text>
-              The network is the kind of thing that you can't just tack on to
-              the end of your sprint.
+              Code that deals with the network isn't the kind of thing you can
+              just tack on to the end of a sprint.
             </Text>
 
             <Spacer />
 
             <Text>
-              Think about everything that goes into dealing with the network:
-              loading and error states, fetching partial data, caching — not to
-              mention the fact that asynchronous APIs like network requests add
-              a <em className="italic">ton</em> of new states to every one of
-              your app's existing user flows.
+              Think about everything that comes along with making network
+              requests: loading and error states, fetching partial data,
+              caching... not to mention the fact that asynchronous APIs like
+              network requests add a <em className="italic">ton</em> of new
+              states to every one of your app's existing user flows.
             </Text>
 
             <Spacer />
 
             <Text>
-              By putting off the network, all these issues pile up and fall on
-              your lap after you've already written a ton of application code —
-              which is the hardest time to deal with them.
+              If you don't grapple with this crucial part of your application up
+              front, you're just going to have to rewrite a ton of code when it
+              comes time to deploy your app.
             </Text>
 
             <Spacer />
 
             <Text>
-              The fact is that your local mock data setup poked one too many
-              holes in reality. Because of that, the code you wrote wasn't ready
-              for production.
+              You're not doing yourself any favors by writing code that avoids
+              the network. You're just poking holes in reality. And code that
+              doesn't grapple with reality isn't ready for production.
             </Text>
 
             <Spacer size="xl" />
@@ -215,18 +215,29 @@ function IndexPage() {
             <Spacer />
 
             <Text>
-              What if you could still mock data in the frontend, but also ensure
-              that your app only ever accessed that mock data the exact same way
-              it accesses real production data?
+              What if you could still mock data in your frontend app, but be
+              sure that your application code could only access that data in the
+              same way it could access real production data?
             </Text>
 
             <Spacer />
 
-            <Text>With Mirage.js, you can.</Text>
+            <Text>
+              That way, you'd be writing code that was ready for the network
+              from day one.
+            </Text>
 
             <Spacer />
 
-            <Text>Here's what it looks like:</Text>
+            <Text>
+              <strong className="font-medium">
+                Mirage.js let's you do exactly that.
+              </strong>
+            </Text>
+
+            <Spacer />
+
+            <Text>Here's how it works:</Text>
 
             <Spacer size="lg" />
 
@@ -273,18 +284,24 @@ function IndexPage() {
             <Spacer />
 
             <Text>
-              Now your components can fetch data from your API endpoints, just
-              as if there was a real server. Your components won't contain a
-              single line of code that reveals you're using Mirage
-              under-the-hood, because they won't even know they're talking to
+              In development, your components can fetch data from Mirage's API
+              endpoints, just as if they were talking to a real server. Your app
+              won't contain a single line of code that reveals you're using
+              Mirage under-the-hood, because it won't even know it's talking to
               Mirage instead of a real API.
             </Text>
 
             <Spacer />
 
             <Text>
-              With Mirage, you'll never have to write throwaway network code
-              again.
+              When you're ready to deploy, simply build your app without Mirage,
+              and point it at your production API server.
+            </Text>
+
+            <Spacer />
+
+            <Text>
+              With Mirage, you'll never write throwaway network code again.
             </Text>
 
             <Spacer size="xl" />
@@ -295,27 +312,22 @@ function IndexPage() {
 
             <Text>
               And it comes with all the power you'd expect from a real server.
+            </Text>
+
+            <Spacer />
+
+            <Text>
               You can tweak things like latency, error codes, and HTTP headers.
-              There's an in-memory database that lets you persist data. And you
-              can even write tests against all this functionality.
+              There's an in-memory database that lets you build dynamic features
+              involving persistent data. And you can even write tests against
+              any of this functionality.
             </Text>
 
             <Spacer />
 
             <Text>
-              With Mirage, you can build fully dynamic features entirely in your
-              frontend codebase, without having to wire up a production server.
-            </Text>
-
-            <Spacer size="xl" />
-
-            <Title>Live demo</Title>
-
-            <Spacer />
-
-            <Text>
-              Here's a complete Todo application, including server-side
-              persistence logic, built with React and Mirage:
+              Here's a complete Todo application (with server-side persistence
+              logic) built with Mirage and React:
             </Text>
 
             <Spacer size="xl" />
@@ -329,7 +341,7 @@ function IndexPage() {
                 onClick={resetApp}
                 className="text-sm text-blue-500 focus:outline-none px-3 py-2 mx-auto flex items-center hover:underline"
               >
-                Reset App
+                Reset app
                 <Replay className="ml-1 w-4 h-4" />
               </button>
             </div>
@@ -346,24 +358,32 @@ function IndexPage() {
                 console, you'll see Mirage intercepting all of the React app's
                 network requests.
               </span>{" "}
-              The state is not actually being persisted — but the React app is
-              ready to be deployed to production, and talk to a real server that
-              fulfills the same API contract as Mirage.
+              The data is not actually being persisted to a real server. But the
+              React app is deployable, and ready to talk to a real API that
+              fulfills the same contract that Mirage is providing.
+            </Text>
+
+            <Spacer />
+
+            <Text>
+              Once you see how much confidence you can have building fully
+              dynamic features entirely in the frontend, you'll wonder how you
+              ever did it any other way.
             </Text>
           </Container>
         </section>
 
         <section className="pt-20 xl:pt-32 pb-72">
-          <div className="px-5 md:px-8 max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
-            <h2 className="text-white text-2xl md:text-3xl lg:text-4xl leading-tight md:leading-snug tracking-tight">
+          <div className="text-center px-5 md:px-8 max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
+            <h2 className="text-white text-2-5xl md:text-3xl lg:text-4xl leading-tight md:leading-snug tracking-tight">
               Interested in Mirage and the frontend-first workflow?
             </h2>
-            <div className="mt-8">
-              <Text>
-                Sign up and be the first to hear first about our public release:
-              </Text>
+            <div className="mt-12">
+              <p className="lg:text-lg leading-normal text-white font-medium">
+                Sign up to get notified when it's ready:
+              </p>
             </div>
-            <div className="mt-6">
+            <div className="mt-3">
               <SignupForm />
             </div>
           </div>

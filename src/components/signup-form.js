@@ -95,16 +95,16 @@ function SignupForm() {
     <div className="relative">
       {didSignup && (
         <div
-          className={`text-gray-500 ${isAnimatingFormOut ? "absolute" : ""} ${
-            isShowingThankYou ? "opacity-100" : "opacity-0"
-          }`}
+          className={`text-lg text-gray-8 ${
+            isAnimatingFormOut ? "absolute" : ""
+          } ${isShowingThankYou ? "opacity-100" : "opacity-0"}`}
           style={{
             height: `${thankYouHeight}px`,
             transition: `opacity ${fadeOutInDelay}s`,
           }}
         >
-          Thanks <span className="text-gray-100">{email}</span>, you're all
-          signed up!
+          Thanks <span className="text-white">{email}</span>, you're all signed
+          up!
         </div>
       )}
 
@@ -135,11 +135,10 @@ function SignupForm() {
           {isError && (
             <div className="mt-5">
               {error === "serverError" &&
-                "Yikes! It looks like there's something wrong with our signup form."}
+                "Woops — something's wrong with our signup form 😔. Please try again."}
               {error === "invalidEmail" &&
-                "Opps! It looks like you've entered an invalid email."}
-              {error === "noEmail" &&
-                "Opps! It looks like you forgot to enter your email."}
+                "Oops — that's an invalid email address!"}
+              {error === "noEmail" && "Please fill out your email address!"}
             </div>
           )}
         </form>

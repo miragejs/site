@@ -20,11 +20,11 @@ export default function TodoApp({ refresh }) {
 
   function addTodo(todo) {
     setNewTodo(null)
-    setTodos([todo, ...todos])
+    setTodos(todos => [todo, ...todos])
   }
 
   function updateTodo(todo) {
-    setTodos([
+    setTodos(todos => [
       ...todos.map(globalTodo =>
         globalTodo.id === todo.id ? todo : globalTodo
       ),
@@ -32,7 +32,9 @@ export default function TodoApp({ refresh }) {
   }
 
   function removeTodo(todo) {
-    setTodos([...todos.filter(globalTodo => globalTodo.id !== todo.id)])
+    setTodos(todos => [
+      ...todos.filter(globalTodo => globalTodo.id !== todo.id),
+    ])
   }
 
   return (
@@ -152,7 +154,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
 
       return () => clearTimeout(id)
     }
-  })
+  }, [isChecked])
 
   return (
     <li key={todo.id} className="mt-1">

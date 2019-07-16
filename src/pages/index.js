@@ -244,9 +244,9 @@ function IndexPage() {
             <div className="flex text-center sm:bg-gray-900 sm:-mx-5 sm:border-b sm:border-gray-600 sm:px-5 sm:pt-1 sm:rounded-t-lg overflow-hidden">
               <button
                 onClick={() => setActiveTab(0)}
-                className={`w-1/2 sm:w-auto sm:px-4 hover:text-white focus:outline-none border-b py-2  ${
+                className={`w-1/2 sm:w-auto sm:px-4 hover:text-gray-900 sm:hover:text-white focus:outline-none border-b py-2  ${
                   activeTab === 0
-                    ? "text-white border-white"
+                    ? "text-gray-900 border-gray-900 sm:text-white sm:border-white"
                     : "text-gray-400 border-gray-200 sm:border-transparent"
                 }`}
               >
@@ -254,9 +254,9 @@ function IndexPage() {
               </button>
               <button
                 onClick={() => setActiveTab(1)}
-                className={`w-1/2 sm:w-auto sm:px-4 hover:text-white focus:outline-none border-b py-2  ${
+                className={`w-1/2 sm:w-auto sm:px-4 hover:text-gray-900 sm:hover:text-white focus:outline-none border-b py-2  ${
                   activeTab === 1
-                    ? "text-white border-white"
+                    ? "text-gray-900 border-gray-900 sm:text-white sm:border-white"
                     : "text-gray-400 border-gray-200 sm:border-transparent"
                 }`}
               >

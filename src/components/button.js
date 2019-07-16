@@ -48,7 +48,7 @@ function Button({ isRunning = false, children }) {
       spinnerEl.current.parentElement.offsetHeight -
       spinnerEl.current.offsetHeight
     setSpinnerWidth(spinnerEl.current.offsetWidth)
-    setSpinnerTop(verticalSpacing / 2 - 2)
+    setSpinnerTop(verticalSpacing / 2)
     setIsWideButton(windowWidth < 768)
   }, [windowWidth])
 

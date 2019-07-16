@@ -119,7 +119,7 @@ function IndexPage() {
             <div className="mt-4 md:mt-6">
               <Text>
                 Maybe you created some local mock data directly in your app,
-                just so you could keep moving:
+                just to keep you moving:
               </Text>
             </div>
 

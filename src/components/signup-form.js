@@ -121,13 +121,14 @@ function SignupForm() {
         >
           <div className="md:flex">
             <input
-              type="text"
+              type="email"
+              required
               name="email_address"
               value={email}
               disabled={isSaving}
               onChange={e => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="text-gray-900 w-full md:max-w-sm mr-4 rounded px-5 py-3 border-2 border-transparent focus:outline-none focus:border-green"
+              className="form-input bg-white text-gray-600 w-full md:max-w-sm rounded px-5 py-3 border-2 border-transparent focus:shadow-none focus:border-green md:border-r-0 md:rounded-r-none"
             />
             <Button isRunning={didSignup || isSaving}>Get notified</Button>
           </div>

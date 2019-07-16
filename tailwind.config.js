@@ -33,6 +33,7 @@ module.exports = {
       },
       black: "black",
       green: "#05C77E",
+      "green-dark": "#048b57",
     },
 
     // Extensions of theme default theme

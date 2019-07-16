@@ -35,9 +35,7 @@ function Title({ children }) {
 
 function Text({ children }) {
   return (
-    <p className="font-light text-lg leading-normal md:text-xl md:leading-copy">
-      {children}
-    </p>
+    <p className="font-light text-lg leading-normal md:text-xl">{children}</p>
   )
 }
 

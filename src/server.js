@@ -2,7 +2,8 @@ import { Server } from "@miragejs/server"
 
 let server
 
-if (Server) {
+// Gatsby runs in both Node and the browser, but we only want Mirage in the browser.
+if (window) {
   server = new Server({
     fixtures: {
       todos: [

@@ -60,14 +60,17 @@ export default function TodoApp({ refresh }) {
               <TodoItem todo={newTodo} didCreate={addTodo} autofocus={true} />
             )}
 
-            {todos.map(todo => (
-              <TodoItem
-                todo={todo}
-                didSave={updateTodo}
-                didDestroy={removeTodo}
-                key={todo.id}
-              />
-            ))}
+            {todos
+              .sort((a, b) => (Number(a.id) > Number(b.id) ? 1 : -1))
+              .reverse()
+              .map(todo => (
+                <TodoItem
+                  todo={todo}
+                  didSave={updateTodo}
+                  didDestroy={removeTodo}
+                  key={todo.id}
+                />
+              ))}
           </ul>
         )}
       </div>

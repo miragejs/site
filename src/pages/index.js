@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 
-import server, { resetDb } from "../server"
+import server from "../server"
+import { loadDb, resetDb } from "../lib/persist"
 
 import SEO from "../components/seo"
 
@@ -16,6 +17,8 @@ import "../fonts/Ginto/ginto.css"
 import SignupForm from "../components/signup-form"
 import Snippet from "../components/snippet"
 import TodoApp from "../components/todo-app"
+
+loadDb()
 
 function Container({ children }) {
   return (
@@ -67,7 +70,7 @@ function IndexPage() {
 
   function resetApp() {
     if (server) {
-      resetDb(server.db)
+      resetDb()
       setRefresh(refresh + 1)
     }
   }

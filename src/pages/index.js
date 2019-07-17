@@ -21,15 +21,19 @@ import TodoApp from "../components/todo-app"
 loadDb()
 
 function Container({ children }) {
-  return <div className="px-5 max-w-lg md:max-w-1-5xl mx-auto">{children}</div>
+  return (
+    <div className="px-5  max-w-lg md:max-w-1-5xl lg:max-w-2xl lg:px-0 mx-auto">
+      {children}
+    </div>
+  )
 }
 
 function Title({ children }) {
   return (
     <h2
-      className="text-gray-900 font-normal
-      text-2-5xl leading-tight
-      md:text-3-5xl md:leading-snug
+      className="text-gray-900 font-normal font-title
+      text-2-25xl leading-tight
+      md:text-3-5xl
     "
     >
       {children}
@@ -63,7 +67,7 @@ function Spacer({ children, size = "md" }) {
       break
 
     case "xl":
-      classes = "mt-12"
+      classes = "mt-12 lg:mt-16"
       break
 
     default:
@@ -417,8 +421,9 @@ function IndexPage() {
 
         <section className="pt-20 xl:pt-32 pb-72">
           <div className="text-center px-5 md:px-8 max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
-            <h2 className="text-white text-2-5xl md:text-3xl lg:text-4xl leading-tight md:leading-snug tracking-tight">
-              Interested in Mirage and the frontend-first workflow?
+            <h2 className="font-title text-white text-2-5xl md:text-3-5xl lg:text-4-5xl leading-tight md:leading-snug tracking-tight">
+              Interested in Mirage and the <br className="hidden sm:inline" />{" "}
+              frontend-first workflow?
             </h2>
             <div className="mt-12">
               <p className="md:text-lg leading-normal text-white font-medium">

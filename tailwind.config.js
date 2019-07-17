@@ -57,6 +57,8 @@ module.exports = {
       fontSize: {
         "sm-": "0.8125rem",
         "base+": "1.0625rem",
+        "1-5xl": "1.3125rem",
+        "2-25xl": "1.6rem",
         "2-5xl": "1.6875rem",
         "2-75xl": "1.875rem",
         "3-5xl": "2.0625rem",
@@ -66,7 +68,6 @@ module.exports = {
       },
       maxWidth: {
         "1-5xl": "40rem",
-        "2-5xl": "45rem",
         "7xl": "80rem",
       },
       height: {

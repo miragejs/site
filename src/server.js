@@ -7,9 +7,9 @@ if (window) {
   server = new Server({
     fixtures: {
       todos: [
-        { id: 1, text: "Buy groceries" },
+        { id: 1, text: "Learn Mirage.js" },
         { id: 2, text: "Beat God of War" },
-        { id: 3, text: "Learn Mirage.js" },
+        { id: 3, text: "Buy groceries" },
       ],
     },
 

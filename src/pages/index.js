@@ -22,7 +22,7 @@ loadDb()
 
 function Container({ children }) {
   return (
-    <div className="px-5  max-w-lg md:max-w-1-5xl lg:max-w-2xl lg:px-0 mx-auto">
+    <div className="px-5  max-w-lg md:max-w-1-5xl lg:max-w-3xl lg:px-10 mx-auto">
       {children}
     </div>
   )

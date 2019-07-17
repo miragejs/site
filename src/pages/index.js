@@ -329,8 +329,8 @@ function IndexPage() {
             <Spacer />
 
             <Text>
-              Here's a complete Todo application (with server-side persistence
-              logic) built with Mirage and React:
+              Here's a complete Todo application (including server-side
+              persistence logic) built with Mirage and React:
             </Text>
 
             <Spacer size="xl" />

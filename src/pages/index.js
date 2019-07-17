@@ -114,7 +114,7 @@ function IndexPage() {
               >
                 Build a production-ready frontend,{" "}
                 <br className="hidden md:inline" />
-                <span className="text-green">
+                <span className="text-green-500">
                   even if your API's not ready.
                 </span>
               </h1>
@@ -377,7 +377,7 @@ function IndexPage() {
 
             <Text>
               <a
-                className="underline text-green"
+                className="underline text-blue-500"
                 href="https://github.com/miragejs/site/blob/master/src/components/todo-app.js"
               >
                 Check out the code for the React app
@@ -391,7 +391,7 @@ function IndexPage() {
             <Text>
               And{" "}
               <a
-                className="underline text-green"
+                className="underline text-blue-500"
                 href="https://github.com/miragejs/site/blob/master/src/server.js"
               >
                 here's the code for the Mirage server

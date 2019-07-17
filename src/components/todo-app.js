@@ -38,7 +38,7 @@ export default function TodoApp({ refresh }) {
   }
 
   return (
-    <div className="rounded-lg shadow-lg pt-3 pb-6 px-5 bg-gray-800 border-t-8 border-green text-lg text-white">
+    <div className="rounded-lg shadow-lg pt-3 pb-6 px-5 bg-gray-800 border-t-8 border-green-500 text-lg text-white">
       <div className="flex justify-between items-center">
         <p className="text-2xl font-bold text-gray-50">Todos</p>
         <p className="text-base font-medium text-gray-300">
@@ -79,7 +79,7 @@ export default function TodoApp({ refresh }) {
         {!isLoading && (
           <button
             onClick={() => setNewTodo({ text: "" })}
-            className="ml-auto focus:outline-none bg-green rounded-full text-white w-10 h-10 shadow-lg text-4xl font-light flex items-center justify-center leading-none"
+            className="ml-auto focus:outline-none bg-green-500 rounded-full text-white w-10 h-10 shadow-lg text-4xl font-light flex items-center justify-center leading-none"
           >
             +
           </button>
@@ -175,7 +175,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
       >
         <input
           type="checkbox"
-          className={`form-checkbox w-5 h-5 rounded-sm mr-2 bg-transparent border-gray-525 text-green ${!todo.id &&
+          className={`form-checkbox w-5 h-5 rounded-sm mr-2 bg-transparent border-gray-525 text-green-500 ${!todo.id &&
             "opacity-0"}`}
           checked={isChecked}
           onChange={handleCheckboxChange}

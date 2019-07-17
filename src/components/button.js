@@ -99,9 +99,9 @@ function Button({ isRunning = false, children }) {
       disabled={isRunning}
       onTransitionEnd={e => handleTransitionEnd(e)}
       className={`p-3 md:px-8 text-white ${
-        isNudged ? "bg-green-dark opacity-50" : "bg-green"
+        isNudged ? "bg-green-900 opacity-50" : "bg-green-700"
       } ${isRunning && "cursor-not-allowed"}
-      relative mt-4 md:mt-0 w-full md:w-auto md:flex-shrink-0 rounded bg-green focus:outline-none focus:outline-shadow md:rounded-l-none`}
+      relative mt-4 md:mt-0 w-full md:w-auto md:flex-shrink-0 rounded bg-green-700 md:hover:bg-green-900 focus:outline-none focus:outline-shadow md:rounded-l-none`}
       style={{
         transition: shouldUseTransitions
           ? `background-color ${buttonExpandDuration}s, color ${buttonExpandDuration}s`

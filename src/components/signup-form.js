@@ -128,7 +128,7 @@ function SignupForm() {
               disabled={isSaving}
               onChange={e => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="form-input bg-white text-gray-600 w-full rounded px-5 py-3 border-2 border-transparent focus:shadow-none focus:border-green md:border-r-0 md:rounded-r-none"
+              className="form-input bg-white text-gray-600 w-full rounded px-5 py-3 border-2 border-transparent focus:shadow-none focus:border-green-700 md:border-r-0 md:rounded-r-none"
             />
             <Button isRunning={didSignup || isSaving}>Get notified</Button>
           </div>

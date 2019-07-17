@@ -32,8 +32,11 @@ module.exports = {
       blue: {
         500: "#4299E1",
       },
-      green: "#05C77E",
-      "green-dark": "#048b57",
+      green: {
+        500: "#05C77E",
+        700: "#08a066",
+        900: "#048b57",
+      },
     },
 
     extend: {

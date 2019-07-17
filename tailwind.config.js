@@ -20,15 +20,9 @@ module.exports = {
         550: "#60696F",
         575: "#545D60",
         600: "#454d4f",
-        // 800: "#2b3031",
-        // 800: "#282d2e",
-        // 800: "#262b2c",
-        // 800: "#212526",
         700: "#272b2f",
         800: "#1f2123",
         900: "#1A1C1D",
-        // 1000: "#111113",
-        // 1000: "#131515",
         1000: "#111313",
 
         5: "#52595D",
@@ -42,7 +36,6 @@ module.exports = {
       "green-dark": "#048b57",
     },
 
-    // Extensions of theme default theme
     extend: {
       screens: {
         "2xl": "1440px",
@@ -50,7 +43,8 @@ module.exports = {
       boxShadow: {
         "black-inset":
           "inset 0 0px 28px 4px rgba(0, 0, 0, 0.09), inset 0 0px 4px 2px rgba(0, 0, 0, 0.18)",
-        black: "0 2px 28px -1px black, 0 1px 3px 1px rgba(0, 0, 0, 0.72)",
+        black:
+          "0 10px 25px 5px rgba(0, 0, 0, 0.8), 0 10px 10px -5px rgba(0, 0, 0, 0.9)",
         form:
           "0 0px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
       },
@@ -71,6 +65,7 @@ module.exports = {
         "2-75xl": "1.875rem",
         "3-5xl": "2.0625rem",
         "4-5xl": "2.5rem",
+        "4-75xl": "2.75rem",
         "5-5xl": "3.5rem",
       },
       maxWidth: {

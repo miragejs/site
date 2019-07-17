@@ -119,7 +119,7 @@ function SignupForm() {
           }}
           onTransitionEnd={e => handleTransitionEnd(e)}
         >
-          <div className="md:flex md:justify-center">
+          <div className="md:flex md:justify-center md:max-w-md md:mx-auto md:shadow-black">
             <input
               type="email"
               required
@@ -128,7 +128,7 @@ function SignupForm() {
               disabled={isSaving}
               onChange={e => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="form-input bg-white text-gray-600 w-full md:max-w-sm rounded px-5 py-3 border-2 border-transparent focus:shadow-none focus:border-green md:border-r-0 md:rounded-r-none"
+              className="form-input bg-white text-gray-600 w-full rounded px-5 py-3 border-2 border-transparent focus:shadow-none focus:border-green md:border-r-0 md:rounded-r-none"
             />
             <Button isRunning={didSignup || isSaving}>Get notified</Button>
           </div>

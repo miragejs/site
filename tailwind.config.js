@@ -41,12 +41,8 @@ module.exports = {
         "2xl": "1440px",
       },
       boxShadow: {
-        "black-inset":
-          "inset 0 0px 28px 4px rgba(0, 0, 0, 0.09), inset 0 0px 4px 2px rgba(0, 0, 0, 0.18)",
         black:
-          "0 10px 25px 5px rgba(0, 0, 0, 0.8), 0 10px 10px -5px rgba(0, 0, 0, 0.9)",
-        form:
-          "0 0px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+          "0 10px 25px 5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.8)",
       },
       lineHeight: {
         title: 1.21875,

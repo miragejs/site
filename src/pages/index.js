@@ -21,16 +21,17 @@ import TodoApp from "../components/todo-app"
 loadDb()
 
 function Container({ children }) {
-  return (
-    <div className="px-5 md:px-8 max-w-lg md:max-w-1-5xl mx-auto">
-      {children}
-    </div>
-  )
+  return <div className="px-5 max-w-lg md:max-w-1-5xl mx-auto">{children}</div>
 }
 
 function Title({ children }) {
   return (
-    <h2 className="text-gray-900 font-normal text-2xl md:text-3xl leading-snug">
+    <h2
+      className="text-gray-900 font-normal
+      text-2-5xl leading-tight
+      md:text-3-5xl md:leading-snug
+    "
+    >
       {children}
     </h2>
   )
@@ -38,7 +39,14 @@ function Title({ children }) {
 
 function Text({ children }) {
   return (
-    <p className="text-base md:text-lg font-normal leading-copy">{children}</p>
+    <p
+      className="font-normal
+        text-base leading-copy
+        md:text-xl md:leading-normal
+      "
+    >
+      {children}
+    </p>
   )
 }
 
@@ -51,7 +59,7 @@ function Spacer({ children, size = "md" }) {
       break
 
     case "lg":
-      classes = "mt-8 lg:mt-12"
+      classes = "mt-8 md:mt-10 lg:mt-12"
       break
 
     case "xl":
@@ -95,7 +103,7 @@ function IndexPage() {
               <h1
                 className="font-title text-white text-center
                 text-3-5xl tracking-tight leading-tight
-                md:text-4-5xl
+                md:text-4-75xl
                 lg:text-5xl
                 2xl:text-5-5xl
               "
@@ -115,11 +123,11 @@ function IndexPage() {
                 </p>
 
                 <div className="mt-16">
-                  <p className="lg:text-lg leading-normal text-white font-medium">
+                  <p className="md:text-lg leading-normal text-white font-medium">
                     Sign up to get notified when it's ready:
                   </p>
                 </div>
-                <div className="mt-4 2xl:text-lg">
+                <div className="mt-4 md:mt-6 2xl:text-lg">
                   <SignupForm />
                 </div>
               </div>
@@ -147,7 +155,7 @@ function IndexPage() {
 
             <Spacer size="lg" />
 
-            <div className="sm:rounded-lg overflow-hidden -mx-5">
+            <div className="sm:rounded-lg overflow-hidden -mx-5 md:mx-auto md:w-5/6 md:shadow-lg">
               <Snippet name="1-local-mock-data" />
             </div>
 
@@ -191,8 +199,8 @@ function IndexPage() {
               Think about everything that comes along with making network
               requests: loading and error states, fetching partial data,
               caching... not to mention the fact that asynchronous APIs like
-              network requests add a <em className="italic">ton</em> of new
-              states to every one of your app's existing user flows.
+              network requests add <em className="italic">tons</em> of new
+              states to each one of your app's existing user flows.
             </Text>
 
             <Spacer />
@@ -208,7 +216,7 @@ function IndexPage() {
             <Text>
               You're not doing yourself any favors by writing code that avoids
               the network. You're just poking holes in reality. And code that
-              doesn't grapple with reality isn't ready for production.
+              ignores reality isn't ready for production.
             </Text>
 
             <Spacer size="xl" />
@@ -220,7 +228,7 @@ function IndexPage() {
             <Text>
               What if you could still mock data in your frontend app, but be
               sure that your application code could only access that data in the
-              same way it could access real production data?
+              same way it accesses real production data?
             </Text>
 
             <Spacer />
@@ -244,35 +252,37 @@ function IndexPage() {
 
             <Spacer size="lg" />
 
-            <div className="flex text-center sm:bg-gray-900 sm:-mx-5 sm:border-b sm:border-gray-600 sm:px-5 sm:pt-1 sm:rounded-t-lg overflow-hidden">
-              <button
-                onClick={() => setActiveTab(0)}
-                className={`w-1/2 sm:w-auto sm:px-4 hover:text-gray-900 sm:hover:text-white focus:outline-none border-b py-2  ${
-                  activeTab === 0
-                    ? "text-gray-900 border-gray-900 sm:text-white sm:border-white"
-                    : "text-gray-400 border-gray-200 sm:border-transparent"
-                }`}
-              >
-                index.js
-              </button>
-              <button
-                onClick={() => setActiveTab(1)}
-                className={`w-1/2 sm:w-auto sm:px-4 hover:text-gray-900 sm:hover:text-white focus:outline-none border-b py-2  ${
-                  activeTab === 1
-                    ? "text-gray-900 border-gray-900 sm:text-white sm:border-white"
-                    : "text-gray-400 border-gray-200 sm:border-transparent"
-                }`}
-              >
-                App.js
-              </button>
-            </div>
+            <div className="sm:bg-gray-900 sm:rounded-lg sm:overflow-hidden sm:-mx-5 md:mx-auto md:w-5/6 md:shadow-lg">
+              <div className="flex text-center sm:border-b sm:border-gray-600 sm:px-5 sm:pt-1">
+                <button
+                  onClick={() => setActiveTab(0)}
+                  className={`w-1/2 sm:w-auto sm:px-4 hover:text-gray-900 sm:hover:text-white focus:outline-none border-b py-2  ${
+                    activeTab === 0
+                      ? "text-gray-900 border-gray-900 sm:text-white sm:border-white"
+                      : "text-gray-400 border-gray-200 sm:border-transparent"
+                  }`}
+                >
+                  index.js
+                </button>
+                <button
+                  onClick={() => setActiveTab(1)}
+                  className={`w-1/2 sm:w-auto sm:px-4 hover:text-gray-900 sm:hover:text-white focus:outline-none border-b py-2  ${
+                    activeTab === 1
+                      ? "text-gray-900 border-gray-900 sm:text-white sm:border-white"
+                      : "text-gray-400 border-gray-200 sm:border-transparent"
+                  }`}
+                >
+                  App.js
+                </button>
+              </div>
 
-            <div className="-mx-5 mt-6 sm:mt-0 sm:rounded-b-lg overflow-hidden">
-              {activeTab === 0 ? (
-                <Snippet name="2-mirage-index" />
-              ) : (
-                <Snippet name="2-mirage-app" />
-              )}
+              <div className="-mx-5 mt-6 sm:mx-0 sm:mt-0">
+                {activeTab === 0 ? (
+                  <Snippet name="2-mirage-index" />
+                ) : (
+                  <Snippet name="2-mirage-app" />
+                )}
+              </div>
             </div>
 
             <Spacer size="lg" />
@@ -329,8 +339,7 @@ function IndexPage() {
             <Spacer />
 
             <Text>
-              Here's a complete Todo application (including server-side
-              persistence logic) built with Mirage and React:
+              Here's a complete Todo application built with Mirage and React:
             </Text>
 
             <Spacer size="xl" />
@@ -342,7 +351,7 @@ function IndexPage() {
             <div className="mt-4">
               <button
                 onClick={resetApp}
-                className="text-sm text-blue-500 focus:outline-none px-3 py-2 mx-auto flex items-center hover:underline"
+                className="text-sm md:text-base text-blue-500 focus:outline-none px-3 py-2 mx-auto flex items-center hover:underline"
               >
                 Reset app
                 <Replay className="ml-1 w-4 h-4" />
@@ -352,15 +361,45 @@ function IndexPage() {
             <Spacer size="xl" />
 
             <Text>
-              <span className="xl:hidden">
-                This app is running in the browser, but Mirage is intercepting
-                all the React app's network requests.
-              </span>
+              This app is running in the browser, but Mirage is intercepting all
+              the React app's network requests.
               <span className="hidden xl:visible">
-                This app is running in the browser. If you take a look at the
-                console, you'll see Mirage intercepting all of the React app's
-                network requests.
+                If you take a look at the console, you'll see Mirage
+                intercepting all of the React app's network requests.
               </span>{" "}
+            </Text>
+
+            <Spacer />
+
+            <Text>
+              <a
+                className="underline text-green"
+                href="https://github.com/miragejs/site/blob/master/src/components/todo-app.js"
+              >
+                Check out the code for the React app
+              </a>
+              . You'll see it's doing things like making fetch requests and
+              dealing with loading states.
+            </Text>
+
+            <Spacer />
+
+            <Text>
+              And{" "}
+              <a
+                className="underline text-green"
+                href="https://github.com/miragejs/site/blob/master/src/server.js"
+              >
+                here's the code for the Mirage server
+              </a>
+              . It has route handlers defined for each API endpoint the React
+              app needs, and they use the in-memory database to store and modify
+              the server-side representation of the todos over time.
+            </Text>
+
+            <Spacer />
+
+            <Text>
               The data is not actually being persisted to a real server. But the
               React app is deployable, and ready to talk to a real API that
               fulfills the same contract that Mirage is providing.
@@ -370,8 +409,8 @@ function IndexPage() {
 
             <Text>
               Once you see how much confidence you can have building fully
-              dynamic features entirely in the frontend, you'll wonder how you
-              ever did it any other way.
+              dynamic features entirely in your frontend codebase, you'll wonder
+              how you ever did it any other way.
             </Text>
           </Container>
         </section>
@@ -382,11 +421,11 @@ function IndexPage() {
               Interested in Mirage and the frontend-first workflow?
             </h2>
             <div className="mt-12">
-              <p className="lg:text-lg leading-normal text-white font-medium">
+              <p className="md:text-lg leading-normal text-white font-medium">
                 Sign up to get notified when it's ready:
               </p>
             </div>
-            <div className="mt-3">
+            <div className="mt-4 md:mt-6">
               <SignupForm />
             </div>
           </div>

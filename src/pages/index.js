@@ -100,14 +100,14 @@ function IndexPage() {
         <div className="">
           <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
             <header className="pt-4">
-              <Logo className="mx-auto w-8 h-8 md:w-10 md:h-16" />
+              <Logo className="w-8 h-8 md:w-10 md:h-16" />
             </header>
 
             <section className="pt-12 lg:pt-16 2xl:pt-24 pb-20 md:pb-32 xl:pb-40 2xl:pb-48">
               <h1
-                className="font-title text-white text-center
+                className="font-title text-white
                 text-3-5xl tracking-tight leading-tight
-                md:text-4-75xl
+                md:text-4-75xl md:leading-tighter
                 lg:text-5xl
                 2xl:text-5-5xl
               "
@@ -119,7 +119,7 @@ function IndexPage() {
                 </span>
               </h1>
 
-              <div className="text-center mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl mx-auto text-gray-400">
+              <div className="mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl text-gray-400">
                 <p className="text-gray-8 leading-normal text-lg md:text-xl 2xl:text-2xl">
                   Mirage.js is an API mocking library that lets you build, test
                   and share a complete working JavaScript application without

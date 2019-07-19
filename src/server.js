@@ -5,13 +5,16 @@ let server
 // Gatsby runs in both Node and the browser, but we only want Mirage in the browser.
 if (typeof window !== "undefined") {
   server = new Server({
-    fixtures: {
-      todos: [
-        { id: 1, text: "Learn Mirage.js" },
-        { id: 2, text: "Beat God of War" },
-        { id: 3, text: "Buy groceries" },
-      ],
-    },
+    fixtures:
+      process.env.NODE_ENV !== "test"
+        ? {
+            todos: [
+              { id: 1, text: "Learn Mirage.js" },
+              { id: 2, text: "Beat God of War" },
+              { id: 3, text: "Buy groceries" },
+            ],
+          }
+        : {},
 
     baseConfig() {
       // Tell Mirage to ignore unhandled requests to these domains
@@ -45,6 +48,8 @@ if (typeof window !== "undefined") {
       })
     },
   })
+
+  server.logging = process.env.NODE_ENV !== "test"
 }
 
 export default server

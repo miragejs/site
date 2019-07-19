@@ -8,14 +8,26 @@ export default function TodoApp({ refresh }) {
   let [isShowingNewTodo, setIsShowingNewTodo] = useState(false)
 
   useEffect(() => {
-    setIsLoading(true)
+    // since react testing will unmount our component before
+    // fetch finishes we need to use an abort controller singal
+    let controller = new AbortController()
+    let signal = controller.signal
 
-    fetch("/api/todos")
-      .then(response => response.json())
-      .then(json => {
+    let fetchTodos = async () => {
+      setIsLoading(true)
+
+      try {
+        let response = await fetch("/api/todos", { signal })
+        let json = await response.json()
+
         setTodos(json)
         setIsLoading(false)
-      })
+      } catch (e) {}
+    }
+
+    fetchTodos()
+
+    return () => controller.abort()
   }, [refresh])
 
   function addTodo(todo) {
@@ -38,7 +50,10 @@ export default function TodoApp({ refresh }) {
   }
 
   return (
-    <div className="rounded-lg shadow-lg pt-3 pb-6 px-5 bg-gray-800 border-t-8 border-green-500 text-lg text-white">
+    <div
+      className="rounded-lg shadow-lg pt-3 pb-6 px-5 bg-gray-800 border-t-8 border-green-500 text-lg text-white"
+      data-testid="todo-app"
+    >
       <div className="flex justify-between items-center">
         <p className="text-2xl font-bold text-gray-50">Todos</p>
         <p className="text-base font-medium text-gray-300">
@@ -53,9 +68,9 @@ export default function TodoApp({ refresh }) {
 
       <div className="mt-6">
         {isLoading ? (
-          <p>Loading...</p>
+          <p data-testid="loading">Loading...</p>
         ) : (
-          <ul>
+          <ul data-testid="todo-list">
             {newTodo && (
               <TodoItem todo={newTodo} didCreate={addTodo} autofocus={true} />
             )}
@@ -168,7 +183,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
   }, [isChecked])
 
   return (
-    <li key={todo.id} className="mt-1">
+    <li key={todo.id} data-testid={`todo-id-${todo.id}`} className="mt-1">
       <div
         className={`w-full flex items-center transition ${isSaving &&
           "opacity-50"}`}

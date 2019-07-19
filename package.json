@@ -28,13 +28,21 @@
     "prism-themes": "^1.1.0",
     "prismjs": "^1.16.0",
     "prop-types": "^15.7.2",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "16.9.0-alpha.0",
+    "react-dom": "16.9.0-alpha.0",
     "react-helmet": "^5.2.1",
     "react-transition-group": "^4.2.1",
     "tailwindcss": "^1.0.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@testing-library/react": "^8.0.5",
+    "babel-jest": "^24.8.0",
+    "babel-preset-gatsby": "^0.2.7",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.8.0",
+    "@testing-library/jest-dom": "^4.0.0",
+    "react-test-renderer": "^16.8.6"
+  },
   "keywords": [
     "gatsby"
   ],
@@ -45,7 +53,7 @@
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
     "serve": "gatsby serve",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+    "test": "jest"
   },
   "repository": {
     "type": "git",

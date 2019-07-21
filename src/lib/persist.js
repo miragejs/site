@@ -25,7 +25,6 @@ if (server) {
   }
 
   loadDb = function() {
-    let data
     let version = localStorage.getItem("mirage:db:version")
     let dataString = localStorage.getItem("mirage:db:data")
 

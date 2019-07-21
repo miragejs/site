@@ -1,5 +1,5 @@
 import React from "react"
-import "./snippet.css"
+import "./style.css"
 import { useStaticQuery, graphql } from "gatsby"
 
 export default function Snippet({ name }) {

@@ -143,7 +143,6 @@ module.exports = {
           },
         ],
         purgeOnly: ["/tailwind-utils.css"],
-        develop: true,
         content: [
           path.join(process.cwd(), "src/**/!(*.d).{ts,js,jsx,tsx,mdx}"),
         ],

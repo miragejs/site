@@ -101,13 +101,6 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-purgecss`,
-      options: {
-        tailwind: true,
-        purgeOnly: ["/tailwind-utils.css"],
-      },
-    },
-    {
       resolve: "gatsby-plugin-react-svg",
       options: {
         rule: {
@@ -129,5 +122,14 @@ module.exports = {
       },
     },
     `gatsby-plugin-mdx`,
+    
+    // Make sure this comes at the end!
+    {
+      resolve: `gatsby-plugin-purgecss`,
+      options: {
+        tailwind: true,
+        purgeOnly: ["/tailwind-utils.css"],
+      },
+    },
   ],
 }

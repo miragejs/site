@@ -1,17 +1,15 @@
 import React from "react"
-import IndexCopy from "./index-copy"
-
-import SEO from "../components/seo"
-
-import Logo from "../assets/images/logo.svg"
-import BackgroundLines from "../assets/images/background-lines.svg"
-import BackgroundLinesLg from "../assets/images/background-lines-lg.svg"
 
 import "../fonts/GTAmerica/gt-america.css"
 import "../fonts/Ginto/ginto.css"
 
-import SignupForm from "../components/signup-form"
+import Logo from "../assets/images/logo.svg"
+import BackgroundLines from "../assets/images/background-lines.svg"
+import BackgroundLinesLg from "../assets/images/background-lines-lg.svg"
+import IndexCopy from "./index-copy"
 import Layout from "../components/layout"
+import SEO from "../components/seo"
+import SignupForm from "../components/signup-form"
 import { Container } from "../components/presenters"
 
 

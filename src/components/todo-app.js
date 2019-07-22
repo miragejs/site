@@ -4,7 +4,6 @@ import server from "../server"
 import Replay from "../assets/images/replay.svg"
 import { loadDb, resetDb } from "../lib/persist"
 
-console.log('running loadDb');
 loadDb()
 
 export default function TodoApp() {

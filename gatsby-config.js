@@ -122,7 +122,7 @@ module.exports = {
       },
     },
     `gatsby-plugin-mdx`,
-    
+
     // Make sure this comes at the end!
     {
       resolve: `gatsby-plugin-purgecss`,

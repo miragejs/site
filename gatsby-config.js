@@ -1,3 +1,5 @@
+const path = require("path")
+
 module.exports = {
   siteMetadata: {
     title: `Mirage.js • Build, test and demo your JavaScript application without an API`,
@@ -127,8 +129,24 @@ module.exports = {
     {
       resolve: `gatsby-plugin-purgecss`,
       options: {
-        tailwind: true,
+        extractors: [
+          {
+            extractor: class {
+              /**
+               * @param {object} content
+               */
+              static extract(content) {
+                return content.match(/[A-Za-z0-9-_:\/]+/g) || []
+              }
+            },
+            extensions: ["js", "ts", "jsx", "tsx", "mdx"],
+          },
+        ],
         purgeOnly: ["/tailwind-utils.css"],
+        develop: true,
+        content: [
+          path.join(process.cwd(), "src/**/!(*.d).{ts,js,jsx,tsx,mdx}"),
+        ],
       },
     },
   ],

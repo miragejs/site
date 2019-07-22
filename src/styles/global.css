@@ -1,5 +1,9 @@
 @tailwind base;
 
+html {
+  @apply bg-gray-900;
+}
+
 @keyframes loadingSpinnerRotate {
   100% {
     transform: rotate(360deg);
@@ -20,3 +24,38 @@ svg.loading {
   animation: loadingSpinnerFade 0.2s,
     loadingSpinnerRotate 0.7s steps(12, end) infinite;
 }
+
+/* Prism styles
+  ––––––––––––––––––––––––––––––––––––––––––––––––––
+
+  Originally these were in snippet/style.css, but CSS loading order is brittle/random
+  and we ran into specificity issues. Putting these here to ensure they come after the
+  atom-dark import in gatsby-browser.js.
+*/
+
+pre[class*="language-"] {
+  @apply my-0 rounded-none bg-gray-900 py-5 px-5 border-gray-500 max-w-full overflow-scroll scrolling-touch;
+}
+@screen md {
+  pre[class*="language-"] {
+    @apply py-6;
+  }
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+  @apply text-sm- font-mono;
+}
+@screen md {
+  code[class*="language-"],
+  pre[class*="language-"] {
+    @apply text-sm;
+  }
+}
+
+.gatsby-highlight-code-line {
+  @apply block bg-gray-700 -mx-5 px-4 border-l-4 border-gray-500;
+}
+
+/* End Prism styles
+  ––––––––––––––––––––––––––––––––––––––––––––––––––*/

@@ -10,8 +10,6 @@ import IndexCopy from "./index-copy"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import SignupForm from "../components/signup-form"
-import { Container } from "../components/presenters"
-
 
 function IndexPage() {
   return (
@@ -68,9 +66,9 @@ function IndexPage() {
           </div>
 
           <section className="bg-white text-gray-5 py-4 pb-12 md:py-8 md:pb-16">
-            <Container>
+            <div className="px-5 max-w-lg md:max-w-1-5xl lg:max-w-3xl lg:px-10 mx-auto">
               <IndexCopy />
-            </Container>
+            </div>
           </section>
 
           <section className="pt-20 xl:pt-32 pb-72">

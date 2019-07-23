@@ -1,0 +1,50 @@
+# What is Mirage.js?
+
+Mirage is a JavaScript library that lets frontend developers mock out backend APIs.
+
+Unlike other mocking libraries, Mirage makes it easy to reproduce dynamic scenarios that are typically only possible when using a true production server.
+
+Equipped with a Mirage server, a frontend developer can build, test, and even share a complete working JavaScript application without having to use or configure any backend services.
+
+# Installation
+
+To install Mirage.js, run
+
+```sh
+yarn add @miragejs/server
+```
+
+# Overview
+
+Mirage lets you simulate API responses by writing **route handlers**.
+
+The simplest example of a route handler is a function that returns an object:
+
+```js
+// mirage/config.js
+export default function() {
+  this.namespace = "api"
+
+  this.get("/movies", () => {
+    return {
+      data: [
+        { id: 1, type: "movies", attributes: { name: "Interstellar" } },
+        { id: 2, type: "movies", attributes: { name: "Inception" } },
+        { id: 3, type: "movies", attributes: { name: "Dunkirk" } },
+      ],
+    }
+  })
+}
+```
+
+Now whenever your Ember app makes a GET request to `/api/movies`, Mirage will respond with this data.
+
+## Dynamic data
+
+This works, and is a common way to simulate HTTP responses - but hard-coded responses like this have a few problems:
+
+- _They're inflexible_. What if you want to change the data for this route in your tests?
+- _They contain formatting logic_. Logic that's concerned with the shape of your JSON payload (e.g. the `data` and `attributes` keys) is now duplicated across all your route handlers.
+- _They're too basic._ Inevitably, when your Mirage server needs to deal with more complex things like relationships, these simple ad hoc responses start to break down.
+
+Mirage provides a **data layer** that lets you write more powerful server implementations. Let's see how it works by replacing our basic stub data above.

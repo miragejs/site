@@ -1,8 +1,4 @@
 import React from "react"
-
-import "../fonts/GTAmerica/gt-america.css"
-import "../fonts/Ginto/ginto.css"
-
 import Logo from "../assets/images/logo.svg"
 import BackgroundLines from "../assets/images/background-lines.svg"
 import BackgroundLinesLg from "../assets/images/background-lines-lg.svg"
@@ -11,10 +7,10 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import SignupForm from "../components/signup-form"
 
-function IndexPage() {
+export default function IndexPage() {
   return (
     <Layout>
-      <div className="antialiased text-gray-500 font-body font-light leading-normal relative">
+      <div className="relative">
         <div className="absolute inset-x-0 overflow-hidden max-w-full flex justify-center -top-16 lg:top-0">
           <BackgroundLines className="flex-shrink-0 2xl:hidden" />
           <BackgroundLinesLg className="flex-shrink-0 hidden 2xl:block" />
@@ -92,5 +88,3 @@ function IndexPage() {
     </Layout>
   )
 }
-
-export default IndexPage

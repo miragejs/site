@@ -86,7 +86,11 @@ export default function TodoApp() {
             ) : (
               <ul data-testid="todo-list">
                 {newTodo && (
-                  <TodoItem todo={newTodo} didCreate={addTodo} autofocus={true} />
+                  <TodoItem
+                    todo={newTodo}
+                    didCreate={addTodo}
+                    autofocus={true}
+                  />
                 )}
 
                 {todos
@@ -183,22 +187,22 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
       })
   }
 
-  function destroyTodo() {
-    setIsSaving(true)
-
-    fetch(`/api/todos/${todo.id}`, {
-      method: "DELETE",
-    }).then(() => {
-      setIsSaving(false)
-      didDestroy(todo)
-    })
-  }
-
   function handleCheckboxChange(event) {
     setIsChecked(event.target.checked)
   }
 
   useEffect(() => {
+    function destroyTodo() {
+      setIsSaving(true)
+
+      fetch(`/api/todos/${todo.id}`, {
+        method: "DELETE",
+      }).then(() => {
+        setIsSaving(false)
+        didDestroy(todo)
+      })
+    }
+
     if (isChecked) {
       let id = setTimeout(() => {
         destroyTodo()
@@ -206,7 +210,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
 
       return () => clearTimeout(id)
     }
-  }, [isChecked])
+  }, [isChecked, didDestroy, todo])
 
   return (
     <li key={todo.id} data-testid={`todo-id-${todo.id}`} className="mt-1">

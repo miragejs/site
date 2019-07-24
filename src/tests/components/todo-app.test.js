@@ -1,5 +1,5 @@
 import React from "react"
-import { render, act, waitForElementToBeRemoved } from "@testing-library/react"
+import { render } from "@testing-library/react"
 import TodoApp from "miragejs/src/components/todo-app"
 import server from "miragejs/src/server"
 

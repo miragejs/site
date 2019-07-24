@@ -15,7 +15,7 @@ function useWindowWidth() {
     return () => {
       isBrowser && window.removeEventListener("resize", handleResize)
     }
-  }, [])
+  }, [isBrowser])
 
   return width
 }
@@ -76,7 +76,7 @@ function Button({ isRunning = false, children }) {
         isShowingSpinner ? setIsShowingSpinner(false) : setIsNudged(false)
       }
     }
-  }, [isRunning, isWideButton])
+  }, [isRunning, isWideButton, isNudged, isShowingSpinner])
 
   // for large buttons we don't need to nudge, so we wont stagger
   // the animation
@@ -85,7 +85,7 @@ function Button({ isRunning = false, children }) {
       setIsShowingSpinner(isRunning)
       setIsNudged(isRunning)
     }
-  }, [isRunning])
+  }, [isRunning, isWideButton])
 
   let handleTransitionEnd = function(e) {
     e.preventDefault()

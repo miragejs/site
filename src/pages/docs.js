@@ -1,15 +1,32 @@
 import React from "react"
 import Layout from "../components/layout"
 import DocsCopy from "./docs-copy"
+import Logo from "../assets/images/logo.svg"
+import { Link } from 'gatsby'
+
+function Container(props) {
+  return (
+    <div className="mx-auto max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl px-5 md:px-8">
+      {props.children}
+    </div>
+  )
+}
 
 export default function DocsPage() {
   return (
     <Layout>
-      <header></header>
-      <main className="bg-white">
-        <div className="px-5 max-w-lg md:max-w-1-5xl lg:max-w-3xl lg:px-10 mx-auto">
+      <Container>
+        <header className="py-4">
+          <Link to="/">
+            <Logo className="w-8 h-8 md:w-10 md:h-16" />
+          </Link>
+        </header>
+      </Container>
+
+      <main className="bg-white py-4">
+        <Container>
           <DocsCopy />
-        </div>
+        </Container>
       </main>
     </Layout>
   )

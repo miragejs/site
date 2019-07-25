@@ -1,5 +1,6 @@
 import React from "react"
-import Logo from "../assets/images/logo.svg"
+import { MDXProvider } from "@mdx-js/react"
+import Highlight, { defaultProps } from "prism-react-renderer"
 import BackgroundLines from "../assets/images/background-lines.svg"
 import BackgroundLinesLg from "../assets/images/background-lines-lg.svg"
 import IndexCopy from "./index-copy"
@@ -20,19 +21,15 @@ export default function IndexPage() {
           <SEO />
 
           <div className="">
-            <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
-              <header className="pt-4">
-                <Logo className="w-8 h-8 md:w-10 md:h-16" />
-              </header>
-
+            <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl mx-auto">
               <section className="pt-12 lg:pt-16 2xl:pt-24 pb-20 md:pb-32 xl:pb-40 2xl:pb-48">
                 <h1
                   className="font-title text-white
-                text-3-5xl tracking-tight leading-tight
-                md:text-4-75xl md:leading-tighter
-                lg:text-5xl
-                2xl:text-5-5xl
-              "
+                    text-3-5xl tracking-tight leading-tight
+                    md:text-4-75xl md:leading-tighter
+                    lg:text-5xl
+                    2xl:text-5-5xl
+                  "
                 >
                   Build a production-ready frontend,{" "}
                   <br className="hidden md:inline" />
@@ -63,7 +60,9 @@ export default function IndexPage() {
 
           <section className="bg-white text-gray-5 py-4 pb-12 md:py-8 md:pb-16">
             <div className="px-5 max-w-lg md:max-w-1-5xl lg:max-w-3xl lg:px-10 mx-auto">
-              <IndexCopy />
+              <MDXProvider components={components}>
+                <IndexCopy />
+              </MDXProvider>
             </div>
           </section>
 
@@ -87,4 +86,119 @@ export default function IndexPage() {
       </div>
     </Layout>
   )
+}
+
+const components = {
+  h1: props => (
+    <h1
+      {...props}
+      className="text-gray-900 font-normal font-title
+        mt-12 lg:mt-16
+        mb-5 md:mb-6
+        text-3xl leading-tight
+        md:text-5xl
+      "
+    >
+      {props.children}
+    </h1>
+  ),
+
+  h2: props => (
+    <h2
+      {...props}
+      className="text-gray-900 font-normal font-title
+        mt-12 lg:mt-16
+        mb-5 md:mb-6
+        text-2-25xl leading-tight
+        md:text-3-5xl
+      "
+    >
+      {props.children}
+    </h2>
+  ),
+
+  h3: props => (
+    <h3
+      {...props}
+      className="text-gray-900 font-normal font-title
+        mt-12 lg:mt-16
+        mb-5 md:mb-6
+        text-1-2xl leading-tight
+        md:text-2xl
+      "
+    >
+      {props.children}
+    </h3>
+  ),
+
+  p: props => (
+    <p
+      {...props}
+      className="font-normal text-base leading-copy
+        my-5 md:my-6
+        md:text-xl md:leading-normal
+      "
+    >
+      {props.children}
+    </p>
+  ),
+
+  ul: props => (
+    <ul {...props} className="ml-8 list-disc">
+      {props.children}
+    </ul>
+  ),
+
+  li: props => (
+    <li
+      {...props}
+      className="font-normal text-base leading-copy
+        my-5 md:my-6
+        md:text-xl md:leading-normal
+      "
+    >
+      {props.children}
+    </li>
+  ),
+
+  strong: props => (
+    <strong {...props} className="font-medium">
+      {props.children}
+    </strong>
+  ),
+
+  a: props => (
+    <a {...props} className="underline text-blue-500">
+      {props.children}
+    </a>
+  ),
+
+  pre: props => <div {...props} />,
+
+  code: ({ children, className }) => {
+    const language = className.replace(/language-/, "")
+
+    return (
+      <div className="sm:rounded-lg overflow-hidden -mx-5 md:mx-auto md:w-5/6 md:shadow-lg my-8 md:my-10 lg:my-12">
+        <Highlight
+          {...defaultProps}
+          code={children}
+          language={language}
+          theme={undefined}
+        >
+          {({ className, style, tokens, getLineProps, getTokenProps }) => (
+            <pre className={className} style={{ ...style }}>
+              {tokens.map((line, i) => (
+                <div key={i} {...getLineProps({ line, key: i })}>
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({ token, key })} />
+                  ))}
+                </div>
+              ))}
+            </pre>
+          )}
+        </Highlight>
+      </div>
+    )
+  },
 }

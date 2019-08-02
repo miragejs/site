@@ -34,11 +34,11 @@ svg.loading {
 */
 
 pre[class*="language-"] {
-  @apply my-0 rounded-none bg-gray-900 py-5 px-5 border-gray-500 max-w-full overflow-scroll scrolling-touch;
+  @apply my-0 rounded-none bg-gray-900 py-4 px-5 border-gray-500 max-w-full overflow-scroll scrolling-touch;
 }
 @screen md {
   pre[class*="language-"] {
-    @apply py-6;
+    /* @apply py-6; */
   }
 }
 

@@ -6,11 +6,12 @@ import BackgroundLinesLg from "../assets/images/background-lines-lg.svg"
 import IndexCopy from "./index-copy"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import Code from "../components/code"
 import SignupForm from "../components/signup-form"
 
 export default function IndexPage() {
   return (
-    <Layout>
+    <Layout theme="dark">
       <div className="relative">
         <div className="absolute inset-x-0 overflow-hidden max-w-full flex justify-center -top-16 lg:top-0">
           <BackgroundLines className="flex-shrink-0 2xl:hidden" />
@@ -175,30 +176,9 @@ const components = {
 
   pre: props => <div {...props} />,
 
-  code: ({ children, className }) => {
-    const language = className.replace(/language-/, "")
-
-    return (
-      <div className="sm:rounded-lg overflow-hidden -mx-5 md:mx-auto md:w-5/6 md:shadow-lg my-8 md:my-10 lg:my-12">
-        <Highlight
-          {...defaultProps}
-          code={children}
-          language={language}
-          theme={undefined}
-        >
-          {({ className, style, tokens, getLineProps, getTokenProps }) => (
-            <pre className={className} style={{ ...style }}>
-              {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({ line, key: i })}>
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({ token, key })} />
-                  ))}
-                </div>
-              ))}
-            </pre>
-          )}
-        </Highlight>
-      </div>
-    )
-  },
+  code: props => (
+    <div className="sm:rounded-lg overflow-hidden -mx-5 md:mx-auto md:w-5/6 md:shadow-lg my-8 md:my-10 lg:my-12">
+      <Code {...props} />
+    </div>
+  ),
 }

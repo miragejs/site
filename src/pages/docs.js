@@ -1,79 +1,115 @@
 import React from "react"
 import Layout from "../components/layout"
+import Code from "../components/code"
 import { MDXProvider } from "@mdx-js/react"
-import Highlight, { defaultProps } from "prism-react-renderer"
 import DocsCopy from "./docs-copy"
 import { graphql } from "gatsby"
 
-function Container(props) {
-  return (
-    <div className="mx-auto max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl px-5 md:px-8">
-      {props.children}
-    </div>
-  )
-}
+const MAX_WIDTH = 1400
+const MAIN_WIDTH = 870
+const SIDEBAR_WIDTH = (MAX_WIDTH - MAIN_WIDTH) / 2
 
 export default function DocsPage({ data }) {
-  // let items = data.mdx.tableOfContents.items
+  let nav = [
+    { title: "Getting started", children: [{ title: "Introduction" }] },
+    { title: "Examples", children: [{ title: "React" }, { title: "Vue" }] },
+    {
+      title: "API",
+      children: [
+        { title: "Association" },
+        { title: "Collection" },
+        { title: "Db" },
+        { title: "DbCollection" },
+        { title: "IdentityManager" },
+        { title: "JSONAPISerializer" },
+        { title: "Model" },
+        { title: "Response" },
+        { title: "Schema" },
+        { title: "Serializer" },
+        { title: "Server" },
+      ],
+    },
+  ]
 
   return (
     <Layout>
-      <div className="flex-1 bg-white pt-6">
-        <div className="flex">
-          <div
-            className="flex-shrink-0 pt-4"
-            style={{
-              width: `calc(((100% - 1400px)/ 2) + 288px)`,
-              paddingLeft: `calc((100% - 1400px)/ 2)`,
-            }}
-          >
-            {/* <div className="pl-8">
-              <nav className="pr-6 sticky">
-                <ul className="mt-2 text-lg font-normal">
-                  <li>Overview</li>
-                </ul>
-              </nav>
-            </div> */}
-          </div>
-
-          <div className="px-12 pt-8">
-            <MDXProvider components={components}>
-              <DocsCopy />
-            </MDXProvider>
-          </div>
-
-          <div
-            className="flex-shrink-0"
-            style={{
-              width: `calc(((100% - 1408px)/ 2) + 288px)`,
-              paddingRight: `calc((100% - 1408px)/ 2)`,
-            }}
-          >
-            {/* <div className="pr-8">
-              <nav className="mt-8 ml-8 pl-6 sticky">
-                <p className="uppercase text-xs text-gray-600 font-medium tracking-wider">
-                  On this page
-                </p>
-
-                <ul className="mt-2 font-normal text-gray-400 text-sm">
-                  {data.mdx.tableOfContents.items.map(item => (
-                    <li key={item.url} className="my-2 text-blue-500">
+      <div className="flex-1 bg-white flex">
+        <div
+          className="flex-shrink-0 pt-4 bg-gray-50 pt-14"
+          style={{
+            width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
+            paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
+          }}
+        >
+          <div className="pl-7">
+            <nav className="pr-6 sticky top-0 leading-none">
+              <ul className="mt-2">
+                {nav.map(item => (
+                  <li className="mb-8" key={item.title}>
+                    <span className="text-gray-600 text-base+ font-medium">
                       {item.title}
+                    </span>
+                    <ul className="text-gray-500 ml-2 mt-2 font-normal leading-snug">
+                      {item.children.map(child => (
+                        <li className="py-1" key={child.title}>
+                          {child.title}
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        </div>
 
-                      {item.items && (
-                        <ul className="pl-4">
-                          {item.items.map(item => (
-                            <li key={item.url} className="my-2 text-blue-500">
-                              {item.title}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </div> */}
+        <div className="px-20 pt-12 text-lg leading-relaxed font-normal text-gray-600">
+          <MDXProvider components={components}>
+            <DocsCopy />
+          </MDXProvider>
+        </div>
+
+        <div
+          className="flex-shrink-0"
+          style={{
+            width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
+            paddingRight: `calc((100% - 1408px)/ 2)`,
+          }}
+        >
+          <div className="pr-8">
+            <nav className="mt-32 ml-8 pl-6 sticky">
+              {data.mdx.tableOfContents.items[0].items && (
+                <>
+                  <p className="uppercase text-xs text-gray-600 font-medium tracking-wider">
+                    On this page
+                  </p>
+
+                  <ul className="mt-2 font-normal text-gray-400 text-sm">
+                    {data.mdx.tableOfContents.items[0].items.map(item => (
+                      <li
+                        key={item.url}
+                        className="my-2 font-medium text-blue-500"
+                      >
+                        {item.title}
+
+                        {item.items && (
+                          <ul className="pl-4">
+                            {item.items.map(item => (
+                              <li
+                                key={item.url}
+                                className="my-2 font-medium text-blue-500"
+                              >
+                                {item.title}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </nav>
           </div>
         </div>
       </div>
@@ -85,10 +121,10 @@ const components = {
   h1: props => (
     <h1
       {...props}
-      className="text-gray-900 font-title
+      className="text-gray-700 font-title
         mb-8
         font-normal
-        text-5xl leading-tight border-b border-gray-100 pb-2
+        text-5xl leading-tight
       "
     >
       {props.children}
@@ -98,11 +134,11 @@ const components = {
   h2: props => (
     <h2
       {...props}
-      className="text-gray-900 font-normal font-title
-        mt-12
-        mb-4
+      className="text-gray-700 font-normal font-title
+        mt-14
+        mb-6
         text-2-25xl leading-tight
-        md:text-3xl
+        md:text-2-75xl
       "
     >
       {props.children}
@@ -112,10 +148,10 @@ const components = {
   h3: props => (
     <h3
       {...props}
-      className="text-gray-900 font-normal font-title
+      className="text-gray-700 font-normal font-title
         mt-12
         mb-5 md:mb-6
-        text-2xl leading-normal
+        text-2-25xl leading-normal
       "
     >
       {props.children}
@@ -123,16 +159,15 @@ const components = {
   ),
 
   p: props => (
-    <p
-      {...props}
-      className="font-normal
-        my-3
-        text-base+ leading-normal
-
-      "
-    >
+    <p {...props} className="my-4">
       {props.children}
     </p>
+  ),
+
+  ol: props => (
+    <ol {...props} className="ml-8 list-decimal">
+      {props.children}
+    </ol>
   ),
 
   ul: props => (
@@ -142,13 +177,7 @@ const components = {
   ),
 
   li: props => (
-    <li
-      {...props}
-      className="font-normal
-        my-5
-        text-base+ leading-copy
-      "
-    >
+    <li {...props} className="pl-2">
       {props.children}
     </li>
   ),
@@ -165,43 +194,32 @@ const components = {
     </a>
   ),
 
-  hr: props => <hr {...props} className="border-t border-gray-100 pb-3" />,
+  hr: props => <hr {...props} className="border-t border-gray-100 my-8" />,
 
   inlineCode: props => (
-    <code {...props} className="font-mono text-base bg-gray-50 px-1">
+    <code
+      {...props}
+      className="font-mono text-base bg-gray-100 px-1"
+      style={{ backgroundColor: "rgba(255, 229, 100, 0.2)" }}
+    >
       {props.children}
     </code>
   ),
 
   pre: props => <div {...props} />,
 
-  code: ({ children, className }) => {
-    const language = className.replace(/language-/, "")
-
-    return (
-      <div className="sm:rounded-lg overflow-hidden my-8">
-        <Highlight
-          {...defaultProps}
-          code={children}
-          language={language}
-          theme={undefined}
-        >
-          {({ className, style, tokens, getLineProps, getTokenProps }) => (
-            <pre className={className} style={{ ...style }}>
-              {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({ line, key: i })}>
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({ token, key })} />
-                  ))}
-                </div>
-              ))}
-            </pre>
-          )}
-        </Highlight>
-      </div>
-    )
-  },
+  code: props => (
+    <div className="sm:rounded-lg overflow-hidden my-8">
+      <Code {...props} />
+    </div>
+  ),
 }
+
+export const Lead = ({ children }) => (
+  <p className="font-light my-3 text-xl leading-normal text-gray-700">
+    {children}
+  </p>
+)
 
 export const query = graphql`
   query MyQuery {

@@ -52,6 +52,7 @@ module.exports = {
         tighter: 1.125,
         "title-lg": 1.15,
         copy: 1.6,
+        // copy: 1.7,
       },
       letterSpacing: {
         sm: "-0.0125em",
@@ -60,6 +61,7 @@ module.exports = {
       fontSize: {
         "sm-": "0.8125rem",
         "base+": "1.0625rem",
+        "lg+": "1.1875rem",
         "1-5xl": "1.3125rem",
         "2-25xl": "1.6rem",
         "2-5xl": "1.6875rem",

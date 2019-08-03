@@ -11,7 +11,15 @@ const SIDEBAR_WIDTH = (MAX_WIDTH - MAIN_WIDTH) / 2
 
 export default function DocsPage({ data }) {
   let nav = [
-    { title: "Getting started", children: [{ title: "Introduction" }] },
+    {
+      title: "Introduction",
+      children: [
+        { title: "Overview" },
+        { title: "Installation" },
+        { title: "Upgrade guide" },
+        { title: "Overview" },
+      ],
+    },
     { title: "Examples", children: [{ title: "React" }, { title: "Vue" }] },
     {
       title: "API",
@@ -50,8 +58,11 @@ export default function DocsPage({ data }) {
                       {item.title}
                     </span>
                     <ul className="text-gray-600 ml-2 mt-2 font-normal leading-snug">
-                      {item.children.map(child => (
-                        <li className="py-1" key={child.title}>
+                      {item.children.map((child, i) => (
+                        <li
+                          className={`py-1 ${i === 0 && "text-gray-900"}`}
+                          key={child.title}
+                        >
                           {child.title}
                         </li>
                       ))}

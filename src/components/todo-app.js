@@ -65,7 +65,7 @@ export default function TodoApp() {
     <>
       <div className="max-w-sm mx-auto">
         <div
-          className="rounded-lg shadow-lg pt-3 pb-6 px-5 bg-gray-800 border-t-8 border-green-500 text-lg text-white"
+          className="rounded-lg shadow-lg pt-3 pb-6 px-5 bg-gray-xx1000 border-t-8 border-green-500 text-lg text-white"
           data-testid="todo-app"
         >
           <div className="flex justify-between items-center">
@@ -228,7 +228,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
         />
         <form onSubmit={handleSubmit} className="w-full">
           <input
-            className="form-input border-transparent w-full rounded bg-transparent focus:border-transparent focus:shadow-none focus:bg-gray-700 hover:bg-gray-700 font-light text-lg pl-1 py-1"
+            className="form-input border-transparent w-full rounded bg-transparent focus:border-transparent focus:shadow-none focus:bg-gray-xx900 hover:bg-gray-xx900 font-light text-lg pl-1 py-1"
             value={text}
             ref={inputRef}
             onChange={e => setText(e.target.value)}

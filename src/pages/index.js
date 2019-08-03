@@ -92,7 +92,7 @@ const components = {
   h1: props => (
     <h1
       {...props}
-      className="text-gray-900 font-normal font-title
+      className="text-gray-xx1000 font-normal font-title
         mt-12 lg:mt-16
         mb-5 md:mb-6
         text-3xl leading-tight
@@ -106,7 +106,7 @@ const components = {
   h2: props => (
     <h2
       {...props}
-      className="text-gray-900 font-normal font-title
+      className="text-gray-xx1000 font-normal font-title
         mt-12 lg:mt-16
         mb-5 md:mb-6
         text-2-25xl leading-tight
@@ -120,7 +120,7 @@ const components = {
   h3: props => (
     <h3
       {...props}
-      className="text-gray-900 font-normal font-title
+      className="text-gray-xx1000 font-normal font-title
         mt-12 lg:mt-16
         mb-5 md:mb-6
         text-1-2xl leading-tight

@@ -1,7 +1,11 @@
 import React from "react"
-import "./style.css"
 import { useStaticQuery, graphql } from "gatsby"
 
+/*
+  This component uses childMarkdownRemark, because it supports line highlighting.
+
+  It'd be nice to figure out how to get it to use our <Code> component.
+*/
 export default function Snippet({ name }) {
   const data = useStaticQuery(graphql`
     query SnippetsQuery {

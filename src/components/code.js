@@ -15,11 +15,10 @@ export default function({ children, className }) {
       {...defaultProps}
       code={children}
       language={language}
-      theme={undefined}
+      theme={theme}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre className={className} style={{ ...style }}>
-          {console.log(tokens)}
           {tokens.filter(maybeRemoveLastLine).map((line, i) => (
             <div key={i} {...getLineProps({ line, key: i })}>
               {line.map((token, key) => (
@@ -33,132 +32,134 @@ export default function({ children, className }) {
   )
 }
 
+// let theme = undefined
+
 // From StencilJs
-// let theme = {
-//   plain: {
-//     backgroundColor: "#212431", //#212431
-//     color: "#e4e4e4",
-//   },
-//   styles: [
-//     {
-//       types: ["comment"],
-//       style: {
-//         color: "#7b878e",
-//         fontStyle: "italic",
-//       },
-//     },
-//     {
-//       types: ["prolog", "doctype", "cdata"],
-//       style: {
-//         color: "#7b878e",
-//       },
-//     },
-//     {
-//       types: ["namespace"],
-//       style: {
-//         opacity: 0.7,
-//       },
-//     },
-//     {
-//       types: ["tag", "operator"],
-//       style: {
-//         color: "#bebec5",
-//       },
-//     },
-//     {
-//       types: ["boolean", "number"],
-//       style: {
-//         color: "#a77afe",
-//       },
-//     },
-//     {
-//       types: ["atrule", "deleted", "important", "keyword", "plain"],
-//       style: {
-//         color: "#c678dd",
-//       },
-//     },
-//     {
-//       types: ["class-name", "builtin"],
-//       style: {
-//         color: "#e6c07b",
-//       },
-//     },
-//     {
-//       types: ["function"],
-//       style: {
-//         color: "#61aeee",
-//       },
-//     },
-//     {
-//       types: ["string"],
-//       style: {
-//         color: "#98c379",
-//       },
-//     },
-//     //   {
-//     //     types: ["tag-id", "selector", "atrule-id"],
-//     //     style: {
-//     //       color: "#eeebff",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: ["attr-name"],
-//     //     style: {
-//     //       color: "#c4b9fe",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: [
-//     //       "string",
-//     //       "entity",
-//     //       "url",
-//     //       "attr-value",
-//     //       "keyword",
-//     //       "control",
-//     //       "directive",
-//     //       "unit",
-//     //       "statement",
-//     //       "regex",
-//     //       "at-rule",
-//     //       "placeholder",
-//     //       "variable",
-//     //     ],
-//     //     style: {
-//     //       color: "#ffcc99",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: ["deleted"],
-//     //     style: {
-//     //       textDecorationLine: "line-through",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: ["inserted"],
-//     //     style: {
-//     //       textDecorationLine: "underline",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: ["italic"],
-//     //     style: {
-//     //       fontStyle: "italic",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: ["important", "bold"],
-//     //     style: {
-//     //       fontWeight: "bold",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: ["important"],
-//     //     style: {
-//     //       color: "#c4b9fe",
-//     //     },
-//     //   },
-//   ],
-// }
+let theme = {
+  plain: {
+    backgroundColor: "#212431", //#212431
+    color: "#e4e4e4",
+  },
+  styles: [
+    {
+      types: ["comment"],
+      style: {
+        color: "#7b878e",
+        fontStyle: "italic",
+      },
+    },
+    {
+      types: ["prolog", "doctype", "cdata"],
+      style: {
+        color: "#7b878e",
+      },
+    },
+    {
+      types: ["namespace"],
+      style: {
+        opacity: 0.7,
+      },
+    },
+    {
+      types: ["tag", "operator"],
+      style: {
+        color: "#bebec5",
+      },
+    },
+    {
+      types: ["boolean", "number"],
+      style: {
+        color: "#a77afe",
+      },
+    },
+    {
+      types: ["atrule", "deleted", "important", "keyword", "plain"],
+      style: {
+        color: "#c678dd",
+      },
+    },
+    {
+      types: ["class-name", "builtin"],
+      style: {
+        color: "#e6c07b",
+      },
+    },
+    {
+      types: ["function"],
+      style: {
+        color: "#61aeee",
+      },
+    },
+    {
+      types: ["string"],
+      style: {
+        color: "#98c379",
+      },
+    },
+    //   {
+    //     types: ["tag-id", "selector", "atrule-id"],
+    //     style: {
+    //       color: "#eeebff",
+    //     },
+    //   },
+    //   {
+    //     types: ["attr-name"],
+    //     style: {
+    //       color: "#c4b9fe",
+    //     },
+    //   },
+    //   {
+    //     types: [
+    //       "string",
+    //       "entity",
+    //       "url",
+    //       "attr-value",
+    //       "keyword",
+    //       "control",
+    //       "directive",
+    //       "unit",
+    //       "statement",
+    //       "regex",
+    //       "at-rule",
+    //       "placeholder",
+    //       "variable",
+    //     ],
+    //     style: {
+    //       color: "#ffcc99",
+    //     },
+    //   },
+    //   {
+    //     types: ["deleted"],
+    //     style: {
+    //       textDecorationLine: "line-through",
+    //     },
+    //   },
+    //   {
+    //     types: ["inserted"],
+    //     style: {
+    //       textDecorationLine: "underline",
+    //     },
+    //   },
+    //   {
+    //     types: ["italic"],
+    //     style: {
+    //       fontStyle: "italic",
+    //     },
+    //   },
+    //   {
+    //     types: ["important", "bold"],
+    //     style: {
+    //       fontWeight: "bold",
+    //     },
+    //   },
+    //   {
+    //     types: ["important"],
+    //     style: {
+    //       color: "#c4b9fe",
+    //     },
+    //   },
+  ],
+}
 
 // var colors = {
 //   char: "#D8DEE9",

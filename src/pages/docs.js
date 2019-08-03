@@ -35,7 +35,7 @@ export default function DocsPage({ data }) {
     <Layout>
       <div className="flex-1 bg-white flex">
         <div
-          className="flex-shrink-0 pt-4 bg-gray-50 pt-14"
+          className="flex-shrink-0 pt-4 bg-gray-xx100 pt-14"
           style={{
             width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
             paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
@@ -49,7 +49,7 @@ export default function DocsPage({ data }) {
                     <span className="text-gray-600 text-base+ font-medium">
                       {item.title}
                     </span>
-                    <ul className="text-gray-500 ml-2 mt-2 font-normal leading-snug">
+                    <ul className="text-gray-xx600 ml-2 mt-2 font-normal leading-snug">
                       {item.children.map(child => (
                         <li className="py-1" key={child.title}>
                           {child.title}
@@ -84,7 +84,7 @@ export default function DocsPage({ data }) {
                     On this page
                   </p>
 
-                  <ul className="mt-2 font-normal text-gray-400 text-sm">
+                  <ul className="mt-2 font-normal text-sm">
                     {data.mdx.tableOfContents.items[0].items.map(item => (
                       <li
                         key={item.url}
@@ -194,12 +194,12 @@ const components = {
     </a>
   ),
 
-  hr: props => <hr {...props} className="border-t border-gray-100 my-8" />,
+  hr: props => <hr {...props} className="border-t border-gray-xx300 my-8" />,
 
   inlineCode: props => (
     <code
       {...props}
-      className="font-mono text-base bg-gray-100 px-1"
+      className="font-mono text-base px-1"
       style={{ backgroundColor: "rgba(255, 229, 100, 0.2)" }}
     >
       {props.children}

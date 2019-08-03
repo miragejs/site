@@ -37,7 +37,7 @@ export default function({ children, className }) {
 // From StencilJs
 let theme = {
   plain: {
-    backgroundColor: "#212431", //#212431
+    // backgroundColor: "#212431", //#212431
     color: "#e4e4e4",
   },
   styles: [

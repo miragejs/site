@@ -4,8 +4,8 @@ import { Link } from "gatsby"
 
 const themeClasses = {
   light: {
-    active: "text-gray-700",
-    inactive: "text-gray-xx600 hover:text-gray-700",
+    active: "text-gray-xx900",
+    inactive: "text-gray-xx600 hover:text-gray-xx900",
   },
   dark: {
     active: "text-gray-xx100",
@@ -38,7 +38,7 @@ export default function({ children, theme = "light" }) {
               <Link to="/">
                 <Logo
                   className={`w-8 h-8 md:w-10 md:h-16 ${
-                    theme === "dark" ? "text-green-500" : "text-gray-xx800"
+                    theme === "dark" ? "text-green-500" : "text-gray-xx900"
                   }`}
                 />
               </Link>

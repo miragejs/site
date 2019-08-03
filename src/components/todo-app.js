@@ -69,8 +69,8 @@ export default function TodoApp() {
           data-testid="todo-app"
         >
           <div className="flex justify-between items-center">
-            <p className="text-2xl font-bold text-gray-50">Todos</p>
-            <p className="text-base font-medium text-gray-300">
+            <p className="text-2xl font-bold text-gray-xx100">Todos</p>
+            <p className="text-base font-medium text-gray-xx500">
               {!isLoading &&
                 (todos.length ? (
                   <span>{todos.length} left</span>
@@ -220,7 +220,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
       >
         <input
           type="checkbox"
-          className={`form-checkbox w-5 h-5 rounded-sm mr-2 bg-transparent border-gray-525 text-green-500 ${!todo.id &&
+          className={`form-checkbox cursor-pointer w-5 h-5 rounded-sm mr-2 bg-transparent border-gray-xx600 text-green-500 ${!todo.id &&
             "opacity-0"}`}
           checked={isChecked}
           onChange={handleCheckboxChange}

@@ -1,6 +1,5 @@
 import React from "react"
 import { MDXProvider } from "@mdx-js/react"
-import Highlight, { defaultProps } from "prism-react-renderer"
 import BackgroundLines from "../assets/images/background-lines.svg"
 import BackgroundLinesLg from "../assets/images/background-lines-lg.svg"
 import IndexCopy from "./index-copy"
@@ -39,8 +38,8 @@ export default function IndexPage() {
                   </span>
                 </h1>
 
-                <div className="mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl text-gray-400">
-                  <p className="text-gray-8 leading-normal text-lg md:text-xl 2xl:text-2xl">
+                <div className="mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl">
+                  <p className="text-gray-xx500 leading-normal text-lg md:text-xl 2xl:text-2xl">
                     Mirage.js is an API mocking library that lets you build,
                     test and share a complete working JavaScript application
                     without having to rely on any backend services.
@@ -59,7 +58,7 @@ export default function IndexPage() {
             </div>
           </div>
 
-          <section className="bg-white text-gray-5 py-4 pb-12 md:py-8 md:pb-16">
+          <section className="bg-white py-4 pb-12 md:py-8 md:pb-16">
             <div className="px-5 max-w-lg md:max-w-1-5xl lg:max-w-3xl lg:px-10 mx-auto">
               <MDXProvider components={components}>
                 <IndexCopy />

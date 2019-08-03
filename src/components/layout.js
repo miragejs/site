@@ -5,11 +5,11 @@ import { Link } from "gatsby"
 const themeClasses = {
   light: {
     active: "text-gray-700",
-    inactive: "text-gray-500 hover:text-gray-700",
+    inactive: "text-gray-xx600 hover:text-gray-700",
   },
   dark: {
-    active: "text-gray-50",
-    inactive: "text-gray-300 hover:text-gray-50",
+    active: "text-gray-xx100",
+    inactive: "text-gray-xx500 hover:text-gray-xx100",
   },
 }
 
@@ -31,12 +31,16 @@ const ThemeContext = React.createContext({ variant: "light" })
 export default function({ children, theme = "light" }) {
   return (
     <ThemeContext.Provider value={theme}>
-      <div className="antialiased text-gray-5 font-body font-light leading-normal min-h-screen flex flex-col">
+      <div className="antialiased text-gray-xx700 font-body font-light leading-normal min-h-screen flex flex-col">
         <div className={`relative ${theme === "light" && "bg-white shadow"}`}>
           <div className="mx-auto max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl px-5 md:px-8">
             <header className="py-2 flex items-center">
               <Link to="/">
-                <Logo className="w-8 h-8 md:w-10 md:h-16" />
+                <Logo
+                  className={`w-8 h-8 md:w-10 md:h-16 ${
+                    theme === "dark" ? "text-green-500" : "text-gray-xx800"
+                  }`}
+                />
               </Link>
 
               <NavLink to="/docs">Documentation</NavLink>

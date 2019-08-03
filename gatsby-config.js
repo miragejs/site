@@ -123,7 +123,15 @@ module.exports = {
         },
       },
     },
-    `gatsby-plugin-mdx`,
+
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        defaultLayouts: {
+          default: require.resolve("./src/components/docs-layout.js"),
+        },
+      },
+    },
 
     // Make sure this comes at the end!
     {

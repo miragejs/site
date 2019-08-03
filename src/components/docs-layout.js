@@ -48,11 +48,15 @@ export default function DocsPage({ path, children }) {
 
     return match && `${match[1]}/` === path
   })
-  let tableOfContentsItems = mdxPage.tableOfContents.items[0].items
+  let tableOfContentsItems = mdxPage && mdxPage.tableOfContents.items[0].items
   let nav = [
     {
       route: "getting-started",
-      children: [{ route: "introduction" }, { route: "overview" }],
+      children: [
+        { route: "introduction" },
+        { route: "installation" },
+        { route: "overview" },
+      ],
     },
     { route: "Examples", children: [{ route: "React" }, { route: "Vue" }] },
     {
@@ -107,7 +111,7 @@ export default function DocsPage({ path, children }) {
           </div>
         </div>
 
-        <div className="px-20 pt-12 text-lg leading-relaxed font-normal text-gray-700">
+        <div className="flex-1 px-20 pt-12 text-lg leading-relaxed font-normal text-gray-700">
           <MDXProvider components={components}>{children}</MDXProvider>
         </div>
 
@@ -120,7 +124,7 @@ export default function DocsPage({ path, children }) {
         >
           <div className="pr-8">
             <nav className="mt-32 ml-8 pl-6 sticky">
-              {tableOfContentsItems.length && (
+              {tableOfContentsItems && (
                 <>
                   <p className="uppercase text-xs text-gray-800 font-medium tracking-wider">
                     On this page

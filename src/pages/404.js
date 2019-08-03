@@ -4,7 +4,7 @@ import { Link } from "gatsby"
 import SEO from "../components/seo"
 
 const NotFoundPage = () => (
-  <div className="flex min-w-screen min-h-screen items-center justify-center text-gray-xx100">
+  <div className="flex min-w-screen min-h-screen items-center justify-center text-gray-100">
     <SEO title="404: Not found" />
     <div className="max-w-sm mx-4">
       <h1 className="font-bold text-3xl">Page not found</h1>

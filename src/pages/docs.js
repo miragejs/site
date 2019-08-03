@@ -35,7 +35,7 @@ export default function DocsPage({ data }) {
     <Layout>
       <div className="flex-1 bg-white flex">
         <div
-          className="flex-shrink-0 pt-4 bg-gray-xx100 pt-14"
+          className="flex-shrink-0 pt-4 bg-gray-100 pt-14"
           style={{
             width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
             paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
@@ -46,10 +46,10 @@ export default function DocsPage({ data }) {
               <ul className="mt-2">
                 {nav.map(item => (
                   <li className="mb-8" key={item.title}>
-                    <span className="text-gray-xx800 text-base+ font-medium">
+                    <span className="text-gray-800 text-base+ font-medium">
                       {item.title}
                     </span>
-                    <ul className="text-gray-xx600 ml-2 mt-2 font-normal leading-snug">
+                    <ul className="text-gray-600 ml-2 mt-2 font-normal leading-snug">
                       {item.children.map(child => (
                         <li className="py-1" key={child.title}>
                           {child.title}
@@ -63,7 +63,7 @@ export default function DocsPage({ data }) {
           </div>
         </div>
 
-        <div className="px-20 pt-12 text-lg leading-relaxed font-normal text-gray-xx800">
+        <div className="px-20 pt-12 text-lg leading-relaxed font-normal text-gray-800">
           <MDXProvider components={components}>
             <DocsCopy />
           </MDXProvider>
@@ -80,7 +80,7 @@ export default function DocsPage({ data }) {
             <nav className="mt-32 ml-8 pl-6 sticky">
               {data.mdx.tableOfContents.items[0].items && (
                 <>
-                  <p className="uppercase text-xs text-gray-xx800 font-medium tracking-wider">
+                  <p className="uppercase text-xs text-gray-800 font-medium tracking-wider">
                     On this page
                   </p>
 
@@ -121,7 +121,7 @@ const components = {
   h1: props => (
     <h1
       {...props}
-      className="text-gray-xx900 font-title
+      className="text-gray-900 font-title
         mb-8
         font-normal
         text-5xl leading-tight
@@ -134,7 +134,7 @@ const components = {
   h2: props => (
     <h2
       {...props}
-      className="text-gray-xx900 font-normal font-title
+      className="text-gray-900 font-normal font-title
         mt-14
         mb-6
         text-2-25xl leading-tight
@@ -148,7 +148,7 @@ const components = {
   h3: props => (
     <h3
       {...props}
-      className="text-gray-xx900 font-normal font-title
+      className="text-gray-900 font-normal font-title
         mt-12
         mb-5 md:mb-6
         text-2-25xl leading-normal
@@ -194,7 +194,7 @@ const components = {
     </a>
   ),
 
-  hr: props => <hr {...props} className="border-t border-gray-xx300 my-8" />,
+  hr: props => <hr {...props} className="border-t border-gray-300 my-8" />,
 
   inlineCode: props => (
     <code
@@ -216,7 +216,7 @@ const components = {
 }
 
 export const Lead = ({ children }) => (
-  <p className="font-light my-3 text-xl leading-normal text-gray-xx900">
+  <p className="font-light my-3 text-xl leading-normal text-gray-900">
     {children}
   </p>
 )

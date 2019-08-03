@@ -1,0 +1,53 @@
+import { Lead } from "../../../components/docs-layout"
+import Snippet from "../../../components/snippet"
+import { Tabs, Tab } from "../../../components/tabs"
+
+import Layout from "../../../components/docs-layout"
+export default Layout
+
+# Introduction
+
+<Lead>
+  Mirage is a library that lets frontend developers mock out backend APIs.
+</Lead>
+
+<Lead>
+  Unlike other mocking libraries, Mirage makes it easy to recreate dynamic
+  scenarios that are typically only possible with real production servers.
+</Lead>
+
+---
+
+Mirage was originally built to bring conventions to some home-grown HTTP mocking code. It ended up proving most useful when it enabled frontend developers to work on their apps without having to rely on any local or staging backend services as part of their normal development workflow.
+
+Since then, Mirage has focused on making it as easy as possible for frontend developers to maintain a mock server alongside their codebase.
+
+## How it works
+
+Mirage runs in the browser. It intercepts any `XMLHTTPRequest` or `fetch` requests your JavaScript app makes, letting you mock the response. You can then develop and test your app as if it were talking to a real server.
+
+<div className="my-8 md:my-10 lg:my-12">
+  <Tabs>
+    <Tab name="index.js">
+      <Snippet name="2-mirage-index" />
+    </Tab>
+    <Tab name="App.js">
+      <Snippet name="2-mirage-app" />
+    </Tab>
+  </Tabs>
+</div>
+
+Importantly, because Mirage mocks at the HTTP boundary, you never need to modify your application code to account for whether your app is talking to Mirage or to your real production backend.
+
+In this way, Mirage lets you write production-ready frontend code, even if your backend API hasn't been written yet.
+
+In addition to intercepting HTTP requests, Mirage provides a mock database and helper functions that make it easy to simulate dynamic backend services.
+
+Mirage borrows concepts from typical server-side frameworks like
+
+- **routes** to handle HTTP requests
+- a **database** and **models** for storing data and defining relationships
+- **factories** and **fixtures** for stubbing data, and
+- **serializers** for formatting HTTP responses
+
+to make it easy to simulate production server behavior.

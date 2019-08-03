@@ -65,12 +65,12 @@ export default function TodoApp() {
     <>
       <div className="max-w-sm mx-auto">
         <div
-          className="rounded-lg shadow-lg pt-3 pb-6 px-5 bg-gray-xx1000 border-t-8 border-green-500 text-lg text-white"
+          className="rounded-lg shadow-lg pt-3 pb-6 px-5 bg-gray-1000 border-t-8 border-green-500 text-lg text-white"
           data-testid="todo-app"
         >
           <div className="flex justify-between items-center">
-            <p className="text-2xl font-bold text-gray-xx100">Todos</p>
-            <p className="text-base font-medium text-gray-xx500">
+            <p className="text-2xl font-bold text-gray-100">Todos</p>
+            <p className="text-base font-medium text-gray-500">
               {!isLoading &&
                 (todos.length ? (
                   <span>{todos.length} left</span>
@@ -220,7 +220,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
       >
         <input
           type="checkbox"
-          className={`form-checkbox cursor-pointer w-5 h-5 rounded-sm mr-2 bg-transparent border-gray-xx600 text-green-500 ${!todo.id &&
+          className={`form-checkbox cursor-pointer w-5 h-5 rounded-sm mr-2 bg-transparent border-gray-600 text-green-500 ${!todo.id &&
             "opacity-0"}`}
           checked={isChecked}
           onChange={handleCheckboxChange}
@@ -228,7 +228,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
         />
         <form onSubmit={handleSubmit} className="w-full">
           <input
-            className="form-input border-transparent w-full rounded bg-transparent focus:border-transparent focus:shadow-none focus:bg-gray-xx900 hover:bg-gray-xx900 font-light text-lg pl-1 py-1"
+            className="form-input border-transparent w-full rounded bg-transparent focus:border-transparent focus:shadow-none focus:bg-gray-900 hover:bg-gray-900 font-light text-lg pl-1 py-1"
             value={text}
             ref={inputRef}
             onChange={e => setText(e.target.value)}

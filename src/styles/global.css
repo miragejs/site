@@ -1,7 +1,7 @@
 @tailwind base;
 
 html {
-  @apply bg-gray-xx1000;
+  @apply bg-gray-1000;
 }
 
 @keyframes loadingSpinnerRotate {
@@ -34,7 +34,7 @@ svg.loading {
 */
 
 pre[class*="language-"] {
-  @apply my-0 rounded-none bg-gray-xx1000 py-4 px-5 max-w-full overflow-scroll scrolling-touch;
+  @apply my-0 rounded-none bg-gray-1000 py-4 px-5 max-w-full overflow-scroll scrolling-touch;
 }
 @screen md {
   pre[class*="language-"] {
@@ -63,7 +63,7 @@ pre[class*="language-"] {
 }
 
 .gatsby-highlight-code-line {
-  @apply block bg-gray-xx900 -mx-5 px-4 border-l-4 border-gray-xx600;
+  @apply block bg-gray-900 -mx-5 px-4 border-l-4 border-gray-600;
 }
 
 /* End Prism styles

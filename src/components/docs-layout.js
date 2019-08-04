@@ -8,12 +8,6 @@ const MAX_WIDTH = 1400
 const MAIN_WIDTH = 870
 const SIDEBAR_WIDTH = (MAX_WIDTH - MAIN_WIDTH) / 2
 
-const undasherize = string => {
-  string = string.replace("-", " ")
-
-  return string.charAt(0).toUpperCase() + string.slice(1)
-}
-
 const NavSectionContext = createContext()
 
 function NavSection({ route, label, children }) {
@@ -70,33 +64,6 @@ export default function DocsPage({ path, children }) {
     return match && `${match[1]}/` === path
   })
   let tableOfContentsItems = mdxPage && mdxPage.tableOfContents.items[0].items
-  let nav = [
-    {
-      route: "getting-started",
-      children: [
-        { route: "introduction" },
-        { route: "installation" },
-        { route: "usage" },
-      ],
-    },
-    { route: "Examples", children: [{ route: "React" }, { route: "Vue" }] },
-    {
-      route: "API",
-      children: [
-        { route: "Association" },
-        { route: "Collection" },
-        { route: "Db" },
-        { route: "DbCollection" },
-        { route: "IdentityManager" },
-        { route: "JSONAPISerializer" },
-        { route: "Model" },
-        { route: "Response" },
-        { route: "Schema" },
-        { route: "Serializer" },
-        { route: "Server" },
-      ],
-    },
-  ]
 
   return (
     <Layout>

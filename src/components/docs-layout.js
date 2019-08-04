@@ -1,9 +1,8 @@
-import React from "react"
+import React, { createContext, useContext } from "react"
 import Layout from "./layout"
 import Code from "./code"
 import { MDXProvider } from "@mdx-js/react"
-import { useStaticQuery, graphql } from "gatsby"
-import { Link } from "gatsby"
+import { useStaticQuery, graphql, Link } from "gatsby"
 
 const MAX_WIDTH = 1400
 const MAIN_WIDTH = 870
@@ -15,7 +14,24 @@ const undasherize = string => {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
+const NavSectionContext = createContext()
+
+function NavSection({ route, label, children }) {
+  return (
+    <li className="mb-8" key={route}>
+      <span className="text-gray-800 text-base+ font-medium">{label}</span>
+      <ul className="ml-2 mt-2 font-normal leading-snug">
+        <NavSectionContext.Provider value={route}>
+          {children}
+        </NavSectionContext.Provider>
+      </ul>
+    </li>
+  )
+}
+
 function NavLink(props) {
+  const sectionRoute = useContext(NavSectionContext)
+
   const isPartiallyActive = ({ isPartiallyCurrent }) => {
     return {
       className: `${
@@ -26,7 +42,15 @@ function NavLink(props) {
     }
   }
 
-  return <Link getProps={isPartiallyActive} {...props} />
+  return (
+    <li className="py-1" key={props.route}>
+      <Link
+        getProps={isPartiallyActive}
+        to={`/docs/${sectionRoute}/${props.route}`}
+        {...props}
+      />
+    </li>
+  )
 }
 
 export default function DocsPage({ path, children }) {
@@ -78,7 +102,7 @@ export default function DocsPage({ path, children }) {
     <Layout>
       <div className="flex-1 bg-white flex">
         <div
-          className="flex-shrink-0 pt-4 bg-gray-100 pt-14"
+          className="flex-shrink-0 pt-4 bg-gray-100 pt-14 border-r border-gray-200"
           style={{
             width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
             paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
@@ -87,22 +111,30 @@ export default function DocsPage({ path, children }) {
           <div className="pl-7">
             <nav className="pr-6 sticky top-0 leading-none">
               <ul className="mt-2">
-                {nav.map(item => (
-                  <li className="mb-8" key={item.route}>
-                    <span className="text-gray-800 text-base+ font-medium">
-                      {undasherize(item.route)}
-                    </span>
-                    <ul className="ml-2 mt-2 font-normal leading-snug">
-                      {item.children.map((child, i) => (
-                        <li className="py-1" key={child.route}>
-                          <NavLink to={`/docs/${item.route}/${child.route}`}>
-                            {undasherize(child.route)}
-                          </NavLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
+                <NavSection route="getting-started" label="Getting started">
+                  <NavLink route="introduction">Introduction</NavLink>
+                  <NavLink route="installation">Installation</NavLink>
+                  <NavLink route="usage">Usage</NavLink>
+                </NavSection>
+
+                <NavSection route="examples" label="Examples">
+                  <NavLink route="react">React</NavLink>
+                  <NavLink route="vue">Vue</NavLink>
+                </NavSection>
+
+                <NavSection route="api" label="API">
+                  <NavLink route="Association">Association</NavLink>
+                  <NavLink route="Collection">Collection</NavLink>
+                  <NavLink route="Db">Db</NavLink>
+                  <NavLink route="DbCollection">DbCollection</NavLink>
+                  <NavLink route="IdentityManager">IdentityManager</NavLink>
+                  <NavLink route="JSONAPISerializer">JSONAPISerializer</NavLink>
+                  <NavLink route="Model">Model</NavLink>
+                  <NavLink route="Response">Response</NavLink>
+                  <NavLink route="Schema">Schema</NavLink>
+                  <NavLink route="Serializer">Serializer</NavLink>
+                  <NavLink route="Server">Server</NavLink>
+                </NavSection>
               </ul>
             </nav>
           </div>

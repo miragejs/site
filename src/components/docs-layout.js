@@ -10,12 +10,9 @@ const MAIN_WIDTH = 870
 const SIDEBAR_WIDTH = (MAX_WIDTH - MAIN_WIDTH) / 2
 
 const undasherize = string => {
-  return (
-    string
-      .replace("-", " ")
-      .charAt(0)
-      .toUpperCase() + string.slice(1)
-  )
+  string = string.replace("-", " ")
+
+  return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 function NavLink(props) {
@@ -55,7 +52,7 @@ export default function DocsPage({ path, children }) {
       children: [
         { route: "introduction" },
         { route: "installation" },
-        { route: "overview" },
+        { route: "usage" },
       ],
     },
     { route: "Examples", children: [{ route: "React" }, { route: "Vue" }] },

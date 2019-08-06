@@ -69,42 +69,40 @@ export default function DocsPage({ path, children }) {
     <Layout>
       <div className="flex-1 bg-white flex">
         <div
-          className="flex-shrink-0 pt-4 bg-gray-100 pt-14 border-r border-gray-200"
+          className="flex-shrink-0 bg-gray-100 border-r border-gray-200"
           style={{
             width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
             paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
           }}
         >
-          <div className="pl-7">
-            <nav className="pr-6 sticky top-0 leading-none">
-              <ul className="mt-2">
-                <NavSection route="getting-started" label="Getting started">
-                  <NavLink route="introduction">Introduction</NavLink>
-                  <NavLink route="installation">Installation</NavLink>
-                  <NavLink route="usage">Usage</NavLink>
-                </NavSection>
+          <nav className="pl-7 pt-14 pr-6 sticky top-0 leading-none h-screen overflow-y-scroll">
+            <ul className="mt-2">
+              <NavSection route="getting-started" label="Getting started">
+                <NavLink route="introduction">Introduction</NavLink>
+                <NavLink route="installation">Installation</NavLink>
+                <NavLink route="usage">Usage</NavLink>
+              </NavSection>
 
-                <NavSection route="examples" label="Examples">
-                  <NavLink route="react">React</NavLink>
-                  <NavLink route="vue">Vue</NavLink>
-                </NavSection>
+              <NavSection route="examples" label="Examples">
+                <NavLink route="react">React</NavLink>
+                <NavLink route="vue">Vue</NavLink>
+              </NavSection>
 
-                <NavSection route="api" label="API">
-                  <NavLink route="Association">Association</NavLink>
-                  <NavLink route="Collection">Collection</NavLink>
-                  <NavLink route="Db">Db</NavLink>
-                  <NavLink route="DbCollection">DbCollection</NavLink>
-                  <NavLink route="IdentityManager">IdentityManager</NavLink>
-                  <NavLink route="JSONAPISerializer">JSONAPISerializer</NavLink>
-                  <NavLink route="Model">Model</NavLink>
-                  <NavLink route="Response">Response</NavLink>
-                  <NavLink route="Schema">Schema</NavLink>
-                  <NavLink route="Serializer">Serializer</NavLink>
-                  <NavLink route="Server">Server</NavLink>
-                </NavSection>
-              </ul>
-            </nav>
-          </div>
+              <NavSection route="api" label="API">
+                <NavLink route="Association">Association</NavLink>
+                <NavLink route="Collection">Collection</NavLink>
+                <NavLink route="Db">Db</NavLink>
+                <NavLink route="DbCollection">DbCollection</NavLink>
+                <NavLink route="IdentityManager">IdentityManager</NavLink>
+                <NavLink route="JSONAPISerializer">JSONAPISerializer</NavLink>
+                <NavLink route="Model">Model</NavLink>
+                <NavLink route="Response">Response</NavLink>
+                <NavLink route="Schema">Schema</NavLink>
+                <NavLink route="Serializer">Serializer</NavLink>
+                <NavLink route="Server">Server</NavLink>
+              </NavSection>
+            </ul>
+          </nav>
         </div>
 
         <div className="flex-1 px-20 pt-12 text-lg leading-relaxed font-normal text-gray-700">

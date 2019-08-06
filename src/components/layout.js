@@ -1,6 +1,11 @@
 import React, { useContext } from "react"
 import Logo from "../assets/images/logo.svg"
 import { Link } from "gatsby"
+import { useStaticQuery, graphql } from "gatsby"
+import DocsLayout from "./docs-layout"
+import IndexLayout from "./index-layout"
+
+const EmptyLayout = props => props.children
 
 const themeClasses = {
   light: {
@@ -28,7 +33,40 @@ function NavLink(props) {
 
 const ThemeContext = React.createContext({ variant: "light" })
 
-export default function({ children, theme = "light" }) {
+export default function(props) {
+  const data = useStaticQuery(graphql`
+    query AllSitePageQuery {
+      allSitePage {
+        nodes {
+          path
+        }
+      }
+    }
+  `)
+
+  // This is all ridiculous, need to replace with Reach Router
+  let knownPaths = data.allSitePage.nodes.map(node => node.path)
+  let isKnownPath = knownPaths.find(knownPath => {
+    return (
+      props.location.pathname === knownPath ||
+      `${props.location.pathname}/` === knownPath
+    )
+  })
+  let isDocsPath = /^\/docs(.+)?/.test(props.location.pathname)
+  let isHomepage = props.location.pathname === "/"
+
+  // defaults
+  let ChildLayout = EmptyLayout
+  let theme = "dark"
+
+  if (isKnownPath && isDocsPath) {
+    theme = "light"
+    ChildLayout = DocsLayout
+  } else if (isHomepage) {
+    theme = "dark"
+    ChildLayout = IndexLayout
+  }
+
   return (
     <ThemeContext.Provider value={theme}>
       <div className="antialiased text-gray-700 font-body font-light leading-normal min-h-screen flex flex-col">
@@ -67,7 +105,9 @@ export default function({ children, theme = "light" }) {
           </div>
         </div>
 
-        <main className="flex-1 flex flex-col">{children}</main>
+        <main className="flex-1 flex flex-col">
+          <ChildLayout {...props} />
+        </main>
       </div>
     </ThemeContext.Provider>
   )

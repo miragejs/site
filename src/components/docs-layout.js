@@ -1,5 +1,4 @@
 import React, { createContext, useContext } from "react"
-import Layout from "./layout"
 import Code from "./code"
 import { MDXProvider } from "@mdx-js/react"
 import { useStaticQuery, graphql, Link } from "gatsby"
@@ -66,94 +65,92 @@ export default function DocsPage({ path, children }) {
   let tableOfContentsItems = mdxPage && mdxPage.tableOfContents.items[0].items
 
   return (
-    <Layout>
-      <div className="flex-1 bg-white flex">
-        <div
-          className="flex-shrink-0 bg-gray-100 border-r border-gray-200"
-          style={{
-            width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
-            paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
-          }}
-        >
-          <nav className="pl-7 pt-14 pr-6 sticky top-0 leading-none h-screen overflow-y-scroll">
-            <ul className="mt-2">
-              <NavSection route="getting-started" label="Getting started">
-                <NavLink route="introduction">Introduction</NavLink>
-                <NavLink route="installation">Installation</NavLink>
-                <NavLink route="usage">Usage</NavLink>
-              </NavSection>
+    <div className="flex-1 bg-white flex">
+      <div
+        className="flex-shrink-0 bg-gray-100 border-r border-gray-200"
+        style={{
+          width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
+          paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
+        }}
+      >
+        <nav className="pl-7 pt-14 pr-6 sticky top-0 leading-none h-screen overflow-y-scroll">
+          <ul className="mt-2">
+            <NavSection route="getting-started" label="Getting started">
+              <NavLink route="introduction">Introduction</NavLink>
+              <NavLink route="installation">Installation</NavLink>
+              <NavLink route="usage">Usage</NavLink>
+            </NavSection>
 
-              <NavSection route="examples" label="Examples">
-                <NavLink route="react">React</NavLink>
-                <NavLink route="vue">Vue</NavLink>
-              </NavSection>
+            <NavSection route="examples" label="Examples">
+              <NavLink route="react">React</NavLink>
+              <NavLink route="vue">Vue</NavLink>
+            </NavSection>
 
-              <NavSection route="api" label="API">
-                <NavLink route="Association">Association</NavLink>
-                <NavLink route="Collection">Collection</NavLink>
-                <NavLink route="Db">Db</NavLink>
-                <NavLink route="DbCollection">DbCollection</NavLink>
-                <NavLink route="IdentityManager">IdentityManager</NavLink>
-                <NavLink route="JSONAPISerializer">JSONAPISerializer</NavLink>
-                <NavLink route="Model">Model</NavLink>
-                <NavLink route="Response">Response</NavLink>
-                <NavLink route="Schema">Schema</NavLink>
-                <NavLink route="Serializer">Serializer</NavLink>
-                <NavLink route="Server">Server</NavLink>
-              </NavSection>
-            </ul>
+            <NavSection route="api" label="API">
+              <NavLink route="Association">Association</NavLink>
+              <NavLink route="Collection">Collection</NavLink>
+              <NavLink route="Db">Db</NavLink>
+              <NavLink route="DbCollection">DbCollection</NavLink>
+              <NavLink route="IdentityManager">IdentityManager</NavLink>
+              <NavLink route="JSONAPISerializer">JSONAPISerializer</NavLink>
+              <NavLink route="Model">Model</NavLink>
+              <NavLink route="Response">Response</NavLink>
+              <NavLink route="Schema">Schema</NavLink>
+              <NavLink route="Serializer">Serializer</NavLink>
+              <NavLink route="Server">Server</NavLink>
+            </NavSection>
+          </ul>
+        </nav>
+      </div>
+
+      <div className="flex-1 px-20 pt-12 text-lg leading-relaxed font-normal text-gray-700">
+        <MDXProvider components={components}>{children}</MDXProvider>
+      </div>
+
+      <div
+        className="flex-shrink-0"
+        style={{
+          width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
+          paddingRight: `calc((100% - 1408px)/ 2)`,
+        }}
+      >
+        <div className="pr-8">
+          <nav className="mt-32 ml-8 pl-6 sticky">
+            {tableOfContentsItems && (
+              <>
+                <p className="uppercase text-xs text-gray-800 font-medium tracking-wider">
+                  On this page
+                </p>
+
+                <ul className="mt-2 font-normal text-sm">
+                  {tableOfContentsItems.map(item => (
+                    <li
+                      key={item.url}
+                      className="my-2 font-medium text-blue-500"
+                    >
+                      {item.title}
+
+                      {item.items && (
+                        <ul className="pl-4">
+                          {item.items.map(item => (
+                            <li
+                              key={item.url}
+                              className="my-2 font-medium text-blue-500"
+                            >
+                              {item.title}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </nav>
         </div>
-
-        <div className="flex-1 px-20 pt-12 text-lg leading-relaxed font-normal text-gray-700">
-          <MDXProvider components={components}>{children}</MDXProvider>
-        </div>
-
-        <div
-          className="flex-shrink-0"
-          style={{
-            width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
-            paddingRight: `calc((100% - 1408px)/ 2)`,
-          }}
-        >
-          <div className="pr-8">
-            <nav className="mt-32 ml-8 pl-6 sticky">
-              {tableOfContentsItems && (
-                <>
-                  <p className="uppercase text-xs text-gray-800 font-medium tracking-wider">
-                    On this page
-                  </p>
-
-                  <ul className="mt-2 font-normal text-sm">
-                    {tableOfContentsItems.map(item => (
-                      <li
-                        key={item.url}
-                        className="my-2 font-medium text-blue-500"
-                      >
-                        {item.title}
-
-                        {item.items && (
-                          <ul className="pl-4">
-                            {item.items.map(item => (
-                              <li
-                                key={item.url}
-                                className="my-2 font-medium text-blue-500"
-                              >
-                                {item.title}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </nav>
-          </div>
-        </div>
       </div>
-    </Layout>
+    </div>
   )
 }
 

@@ -18,7 +18,10 @@ export default function({ children, className }) {
       theme={theme}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre className={className} style={{ ...style }}>
+        <pre
+          className={`subpixel-antialiased ${className}`}
+          style={{ ...style }}
+        >
           {tokens.filter(maybeRemoveLastLine).map((line, i) => (
             <div key={i} {...getLineProps({ line, key: i })}>
               {line.map((token, key) => (

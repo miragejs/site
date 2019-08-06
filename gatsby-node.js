@@ -36,6 +36,17 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
   }
 }
 
+exports.createPages = ({ actions }) => {
+  const { createRedirect } = actions
+
+  createRedirect({
+    fromPath: `/docs`,
+    toPath: `/docs/getting-started/introduction`,
+    isPermanent: true,
+    redirectInBrowser: true,
+  })
+}
+
 // const esdoc = require("esdoc").default
 // const ESDOC_CONFIG = {
 //   source: "./node_modules/@miragejs/server/lib",

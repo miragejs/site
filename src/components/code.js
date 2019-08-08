@@ -22,13 +22,15 @@ export default function({ children, className }) {
           className={`subpixel-antialiased ${className}`}
           style={{ ...style }}
         >
-          {tokens.filter(maybeRemoveLastLine).map((line, i) => (
-            <div key={i} {...getLineProps({ line, key: i })}>
-              {line.map((token, key) => (
-                <span key={key} {...getTokenProps({ token, key })} />
-              ))}
-            </div>
-          ))}
+          <code className="inline-block">
+            {tokens.filter(maybeRemoveLastLine).map((line, i) => (
+              <div key={i} {...getLineProps({ line, key: i })}>
+                {line.map((token, key) => (
+                  <span key={key} {...getTokenProps({ token, key })} />
+                ))}
+              </div>
+            ))}
+          </code>
         </pre>
       )}
     </Highlight>

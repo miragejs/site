@@ -23,6 +23,17 @@ function MobileNavLink(props) {
   const theme = useContext(ThemeContext)
   const baseClasses = `block px-5 py-4`
   const isExternal = props.to.indexOf("http") === 0
+  const linkClasses = {
+    light: {
+      active: "text-gray-900",
+      inactive: "text-gray-600 hover:text-gray-900",
+    },
+    dark: {
+      active: "text-gray-100",
+      inactive: "text-gray-100 hover:text-gray-100",
+    },
+  }
+
   let link
 
   if (isExternal) {
@@ -30,7 +41,7 @@ function MobileNavLink(props) {
       <a
         href={props.to}
         {...props}
-        className={`${baseClasses} ${themeClasses[theme]["inactive"]}`}
+        className={`${baseClasses} ${linkClasses[theme]["inactive"]}`}
       >
         {props.children}
       </a>
@@ -40,7 +51,7 @@ function MobileNavLink(props) {
       let state = isPartiallyCurrent ? "active" : "inactive"
 
       return {
-        className: `${baseClasses} ${themeClasses[theme][state]}`,
+        className: `${baseClasses} ${linkClasses[theme][state]}`,
       }
     }
 
@@ -119,7 +130,6 @@ export default function(props) {
             <div className="mx-auto max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl md:px-8">
               <header
                 className={`
-                  ${theme === "light" ? "bg-gray-100" : ""}
                   ${isShowingMobileNav && theme === "dark" ? "bg-gray-900" : ""}
                 `}
               >

@@ -66,8 +66,13 @@ export default function DocsPage({ path, children }) {
 
   return (
     <div className="bg-white">
-      <div className="text-sm font-medium px-5 py-3 border-b-2 border-gray-100 text-gray-400 2xl:hidden">
-        Contents
+      <div className="flex items-center text-sm font-medium px-5 py-3 border-b-2 border-gray-100 bg-gray-100 text-gray-500 2xl:hidden">
+        Documentation
+        <Caret className="w-3 h-3 mx-2 " />
+        {/* Getting started */}
+        {/* <Ellipsis className="w-3 h-3 mx-2" /> */}
+        {/* <Caret className="w-3 h-3 mx-2 " /> */}
+        Introduction
       </div>
 
       <div className="flex-1 flex">
@@ -109,7 +114,7 @@ export default function DocsPage({ path, children }) {
         </div>
 
         <div
-          className="flex-1 max-w-full px-5 md:px-20 pt-6 md:pt-12 font-normal text-gray-700
+          className="flex-1 max-w-full px-5 md:px-20 pt-8 md:pt-12 font-normal text-gray-700
           text-base leading-copy
           md:text-lg md:leading-relaxed"
         >
@@ -265,4 +270,45 @@ export const Lead = ({ children }) => (
   <p className="font-light my-4 text-gray-900 text-lg md:text-xl leading-normal">
     {children}
   </p>
+)
+
+const Caret = props => (
+  <svg
+    {...props}
+    viewBox="0 0 70 70"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g
+      id="Artboard"
+      stroke="none"
+      strokeWidth="1"
+      fill="none"
+      fillRule="evenodd"
+    >
+      <polyline
+        id="Path"
+        stroke="#979797"
+        strokeWidth="6"
+        points="25 56 46 35 25 14"
+      ></polyline>
+    </g>
+  </svg>
+)
+
+const Ellipsis = props => (
+  <svg
+    {...props}
+    viewBox="0 0 70 70"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+      <g id="Artboard-Copy" className="fill-current">
+        <circle id="Oval" cx="35.5" cy="55.5" r="4.5"></circle>
+        <circle id="Oval-Copy" cx="15.5" cy="55.5" r="4.5"></circle>
+        <circle id="Oval-Copy-2" cx="55.5" cy="55.5" r="4.5"></circle>
+      </g>
+    </g>
+  </svg>
 )

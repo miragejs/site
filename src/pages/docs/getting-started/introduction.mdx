@@ -16,28 +16,62 @@ import { Tabs, Tab } from "../../../components/tabs"
 
 ---
 
-Mirage was originally built to bring conventions to some home-grown HTTP mocking code. It ended up proving most useful when it enabled frontend developers to work on their apps without having to rely on any local or staging backend services as part of their normal development workflow.
+Mirage was originally built to bring some conventions to an HTTP mocking setup that was being across multiple apps. It ended up proving most useful by enabling frontend developers to work on their apps without having to rely on any local or staging backend services as part of their normal development workflow.
 
 Since then, Mirage has focused on making it as easy as possible for developers to maintain a mock server alongside their frontend codebase.
 
 ## How it works
 
-Mirage runs in the browser. It intercepts any `XMLHTTPRequest` or `fetch` requests your JavaScript app makes, letting you mock the response. You can then develop and test your app as if it were talking to a real server.
+Mirage runs in the browser. It intercepts any `XMLHTTPRequest` or `fetch` requests your JavaScript app makes and lets you mock the response. That means you can develop and test your app just like if it were talking to a real server.
 
-<div className="my-8 md:my-10 lg:my-12">
-  <Tabs>
-    <Tab name="index.js">
-      <Snippet name="2-mirage-index" />
-    </Tab>
-    <Tab name="App.js">
-      <Snippet name="2-mirage-app" />
-    </Tab>
-  </Tabs>
-</div>
+For example, given the following React component
+
+```js
+// App.js
+import React, { useState, useEffect } from "react"
+
+export function App() {
+  let [users, setUsers] = useState([])
+
+  useEffect(() => {
+    fetch("/api/users")
+      .then(response => response.json())
+      .then(json => setUsers(json))
+  }, [])
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+we could set up a basic Mirage server to handle the `/api/users` network request it makes:
+
+```js
+// index.js
+import React from "react"
+import ReactDOM from "react-dom"
+import App from "./app"
+import { Server } from "@miragejs/server"
+
+new Server({
+  routes(server) {
+    server.get("/users", () => [
+      { id: "1", name: "Luke" },
+      { id: "2", name: "Leah" },
+      { id: "3", name: "Anakin" },
+    ])
+  },
+})
+
+ReactDOM.render(<App />, document.getElementById("root"))
+```
 
 Importantly, because Mirage mocks at the HTTP boundary, you never need to modify your application code to account for whether your app is talking to Mirage or to your real production backend.
-
-In this way, Mirage lets you write production-ready frontend code, even if your backend API hasn't been written yet.
 
 In addition to intercepting HTTP requests, Mirage provides a mock database and helper functions that make it easy to simulate dynamic backend services.
 

@@ -34,7 +34,7 @@ svg.loading {
 */
 
 pre[class*="language-"] {
-  @apply my-0 rounded-none bg-gray-1000 py-4 px-5 max-w-full overflow-scroll scrolling-touch;
+  @apply my-0 rounded-none bg-gray-1000 py-4 px-5 max-w-full overflow-scroll scrolling-touch subpixel-antialiased;
 }
 @screen md {
   pre[class*="language-"] {

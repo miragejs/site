@@ -85,6 +85,8 @@ module.exports = {
         "2xl": "1440px",
       },
       boxShadow: {
+        default:
+          "0 1px 3px 0 rgba(16, 42, 67, 0.1), 0 1px 2px 0 rgba(16, 42, 67, 0.06)",
         black:
           "0 10px 25px 5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.8)",
       },

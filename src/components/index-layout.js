@@ -10,8 +10,8 @@ export default function IndexPage({ children }) {
   return (
     <div className="relative">
       <div className="absolute inset-x-0 overflow-hidden max-w-full flex justify-center -top-16 lg:top-0">
-        <BackgroundLines className="flex-shrink-0 2xl:hidden" />
-        <BackgroundLinesLg className="flex-shrink-0 hidden 2xl:block" />
+        {/* <BackgroundLines className="flex-shrink-0 2xl:hidden" />
+        <BackgroundLinesLg className="flex-shrink-0 hidden 2xl:block" /> */}
       </div>
 
       <div className="relative z-10">

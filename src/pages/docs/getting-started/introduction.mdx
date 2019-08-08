@@ -16,15 +16,15 @@ import { Tabs, Tab } from "../../../components/tabs"
 
 ---
 
-Mirage was originally built to bring some conventions to an HTTP mocking setup that was being across multiple apps. It ended up proving most useful by enabling frontend developers to work on their apps without having to rely on any local or staging backend services as part of their normal development workflow.
+Mirage was originally built to bring some conventions to an HTTP mocking setup that was used across multiple projects. It ended up proving most useful by enabling frontend developers to work on their apps without having to rely on any local or staging backend services as part of their normal development workflow.
 
 Since then, Mirage has focused on making it as easy as possible for developers to maintain a mock server alongside their frontend codebase.
 
 ## How it works
 
-Mirage runs in the browser. It intercepts any `XMLHTTPRequest` or `fetch` requests your JavaScript app makes and lets you mock the response. That means you can develop and test your app just like if it were talking to a real server.
+Mirage runs in the browser. It intercepts any `XMLHttpRequest` or `fetch` requests your JavaScript app makes and lets you mock the response. That means you can develop and test your app just as if it were talking to a real server.
 
-For example, given the following React component
+For example, if we were working on this React component
 
 ```js
 // App.js

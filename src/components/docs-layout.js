@@ -47,24 +47,7 @@ function NavLink(props) {
   )
 }
 
-const MobileNavSectionContext = createContext()
-
-function MobileNavSection({ route, label, children }) {
-  return (
-    <li className="mb-5" key={route}>
-      <div className="uppercase text-gray-400 text-sm font-medium">{label}</div>
-      <ul>
-        <MobileNavSectionContext.Provider value={route}>
-          {children}
-        </MobileNavSectionContext.Provider>
-      </ul>
-    </li>
-  )
-}
-
-function MobileNavLink(props) {
-  const sectionRoute = useContext(MobileNavSectionContext)
-
+function MobileNavLink({ fullPath, ...otherProps }) {
   const isPartiallyActive = ({ isPartiallyCurrent }) => {
     return {
       className: `block py-1 ${isPartiallyCurrent ? "text-gray-400" : ""}`,
@@ -72,12 +55,8 @@ function MobileNavLink(props) {
   }
 
   return (
-    <li key={props.route}>
-      <Link
-        getProps={isPartiallyActive}
-        to={`/docs/${sectionRoute}/${props.route}`}
-        {...props}
-      />
+    <li key={fullPath}>
+      <Link getProps={isPartiallyActive} to={fullPath} {...otherProps} />
     </li>
   )
 }
@@ -149,9 +128,10 @@ const docsRoutesService = {
     })
   },
 
-  // // Return a subtree of routes under a path
-  // get routesForPath(path) {
-  // }
+  // Return a subtree of routes under a path
+  routesForPath(path) {
+    return this.routes.find(route => route.path === "/docs").routes
+  },
 }
 
 export default function DocsPage({ path, children }) {
@@ -175,12 +155,6 @@ export default function DocsPage({ path, children }) {
   let tableOfContentsItems = mdxPage && mdxPage.tableOfContents.items[0].items
 
   docsRoutesService.activePath = path
-
-  console.log(docsRoutesService.routes)
-
-  let documentationRoutes = docsRoutesService.routes.find(
-    route => route.path === "/docs"
-  ).routes
 
   return (
     <DocsRoutesContext.Provider value={docsRoutesService}>
@@ -217,27 +191,32 @@ export default function DocsPage({ path, children }) {
             <div className="pt-1 pr-5">
               <nav className="border-t border-gray-200 pt-5 pb-4 text-gray-700 text-base">
                 <ul className="pt-2w">
-                  {documentationRoutes.reduce((array, route) => {
-                    let section = (
-                      <MobileNavSection
-                        route={route.path}
-                        label={route.name}
-                        key={route.path}
-                      >
-                        {route.routes.map(route => (
-                          <MobileNavLink
-                            route={route.path}
-                            key={route.path}
-                            onClick={() => setMobileSecondaryNavIsOpen(false)}
-                          >
+                  {docsRoutesService
+                    .routesForPath("/docs")
+                    .reduce((array, route) => {
+                      let section = (
+                        <li className="mb-5" key={route.fullPath}>
+                          <div className="uppercase text-gray-400 text-sm font-medium">
                             {route.name}
-                          </MobileNavLink>
-                        ))}
-                      </MobileNavSection>
-                    )
+                          </div>
+                          <ul>
+                            {route.routes.map(route => (
+                              <MobileNavLink
+                                fullPath={route.fullPath}
+                                key={route.fullPath}
+                                onClick={() =>
+                                  setMobileSecondaryNavIsOpen(false)
+                                }
+                              >
+                                {route.name}
+                              </MobileNavLink>
+                            ))}
+                          </ul>
+                        </li>
+                      )
 
-                    return [...array, section]
-                  }, [])}
+                      return [...array, section]
+                    }, [])}
                 </ul>
               </nav>
             </div>

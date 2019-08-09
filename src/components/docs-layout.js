@@ -83,7 +83,7 @@ function MobileNavLink(props) {
 }
 
 const docsRoutesService = {
-  routes: [
+  _routes: [
     {
       name: "Documentation",
       path: "/docs",
@@ -115,34 +115,47 @@ const docsRoutesService = {
 
   activePath: null,
 
-  get flattenedRoutes() {
-    function flattenRoutes(routes = [], prefix = "") {
-      return routes.reduce((flattenedRoutes, route) => {
+  // Transform _routes to include fullPath
+  get routes() {
+    function transformRoutes(routes = [], prefix = "") {
+      return routes.map(route => {
         let fullPath = `${prefix}${route.path}`
-        let newRoutes = [
-          {
-            name: route.name,
-            path: fullPath,
-          },
-          ...flattenRoutes(route.routes, fullPath),
-        ]
 
-        return [...flattenedRoutes, ...newRoutes]
+        route.fullPath = fullPath
+        route.routes = transformRoutes(route.routes, fullPath)
+
+        return route
       }, [])
     }
 
-    return flattenRoutes(this.routes)
+    return transformRoutes(this._routes)
   },
 
+  // Flatten all routes
+  get flattenedRoutes() {
+    function flatten(routes = []) {
+      return routes.reduce((flattenedRoutes, { name, fullPath, routes }) => {
+        return [...flattenedRoutes, { name, fullPath }, ...flatten(routes)]
+      }, [])
+    }
+
+    return flatten(this.routes)
+  },
+
+  // Return the active route
   get activeRoute() {
     return this.flattenedRoutes.find(route => {
-      return route.path.match(this.activePath.replace(/\/+$/, ""))
+      return route.fullPath.match(this.activePath.replace(/\/+$/, ""))
     })
   },
+
+  // // Return a subtree of routes under a path
+  // get routesForPath(path) {
+  // }
 }
 
 export default function DocsPage({ path, children }) {
-  let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(true)
+  let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(false)
 
   const data = useStaticQuery(graphql`
     query OnThisPageQuery {
@@ -162,6 +175,12 @@ export default function DocsPage({ path, children }) {
   let tableOfContentsItems = mdxPage && mdxPage.tableOfContents.items[0].items
 
   docsRoutesService.activePath = path
+
+  console.log(docsRoutesService.routes)
+
+  let documentationRoutes = docsRoutesService.routes.find(
+    route => route.path === "/docs"
+  ).routes
 
   return (
     <DocsRoutesContext.Provider value={docsRoutesService}>
@@ -198,30 +217,27 @@ export default function DocsPage({ path, children }) {
             <div className="pt-1 pr-5">
               <nav className="border-t border-gray-200 pt-5 pb-4 text-gray-700 text-base">
                 <ul className="pt-2w">
-                  {/* {docsRoutesService.routes.find(route => route.path === '/docs').reduce(() => {
-                    return <MobileNavSection
-                      route="getting-started"
-                      label="Getting started"
-                    >
-                  })} */}
+                  {documentationRoutes.reduce((array, route) => {
+                    let section = (
+                      <MobileNavSection
+                        route={route.path}
+                        label={route.name}
+                        key={route.path}
+                      >
+                        {route.routes.map(route => (
+                          <MobileNavLink
+                            route={route.path}
+                            key={route.path}
+                            onClick={() => setMobileSecondaryNavIsOpen(false)}
+                          >
+                            {route.name}
+                          </MobileNavLink>
+                        ))}
+                      </MobileNavSection>
+                    )
 
-                  <MobileNavSection
-                    route="getting-started"
-                    label="Getting started"
-                  >
-                    <MobileNavLink route="introduction">
-                      Introduction
-                    </MobileNavLink>
-                    <MobileNavLink route="installation">
-                      Installation
-                    </MobileNavLink>
-                    <MobileNavLink route="usage">Usage</MobileNavLink>
-                  </MobileNavSection>
-
-                  <MobileNavSection route="examples" label="Examples">
-                    <MobileNavLink route="react">React</MobileNavLink>
-                    <MobileNavLink route="vue">Vue</MobileNavLink>
-                  </MobileNavSection>
+                    return [...array, section]
+                  }, [])}
                 </ul>
               </nav>
             </div>

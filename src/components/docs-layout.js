@@ -191,32 +191,24 @@ export default function DocsPage({ path, children }) {
             <div className="pt-1 pr-5">
               <nav className="border-t border-gray-200 pt-5 pb-4 text-gray-700 text-base">
                 <ul className="pt-2w">
-                  {docsRoutesService
-                    .routesForPath("/docs")
-                    .reduce((array, route) => {
-                      let section = (
-                        <li className="mb-5" key={route.fullPath}>
-                          <div className="uppercase text-gray-400 text-sm font-medium">
+                  {docsRoutesService.routesForPath("/docs").map(route => (
+                    <li className="mb-5" key={route.fullPath}>
+                      <div className="uppercase text-gray-400 text-sm font-medium">
+                        {route.name}
+                      </div>
+                      <ul>
+                        {route.routes.map(route => (
+                          <MobileNavLink
+                            fullPath={route.fullPath}
+                            key={route.fullPath}
+                            onClick={() => setMobileSecondaryNavIsOpen(false)}
+                          >
                             {route.name}
-                          </div>
-                          <ul>
-                            {route.routes.map(route => (
-                              <MobileNavLink
-                                fullPath={route.fullPath}
-                                key={route.fullPath}
-                                onClick={() =>
-                                  setMobileSecondaryNavIsOpen(false)
-                                }
-                              >
-                                {route.name}
-                              </MobileNavLink>
-                            ))}
-                          </ul>
-                        </li>
-                      )
-
-                      return [...array, section]
-                    }, [])}
+                          </MobileNavLink>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
                 </ul>
               </nav>
             </div>

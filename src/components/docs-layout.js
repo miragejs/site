@@ -1,11 +1,14 @@
-import React, { createContext, useContext } from "react"
+import React, { useState, createContext, useContext } from "react"
 import Code from "./code"
 import { MDXProvider } from "@mdx-js/react"
 import { useStaticQuery, graphql, Link } from "gatsby"
+import { Caret, CaretDownWide } from "./icons"
 
 const MAX_WIDTH = 1400
 const MAIN_WIDTH = 870
 const SIDEBAR_WIDTH = (MAX_WIDTH - MAIN_WIDTH) / 2
+
+const DocsRoutesContext = createContext()
 
 const NavSectionContext = createContext()
 
@@ -27,11 +30,9 @@ function NavLink(props) {
 
   const isPartiallyActive = ({ isPartiallyCurrent }) => {
     return {
-      className: `${
-        isPartiallyCurrent
-          ? "text-gray-900"
-          : "text-gray-600 hover:text-gray-900"
-      }`,
+      className: isPartiallyCurrent
+        ? "text-gray-900"
+        : "text-gray-600 hover:text-gray-900",
     }
   }
 
@@ -46,7 +47,103 @@ function NavLink(props) {
   )
 }
 
+const MobileNavSectionContext = createContext()
+
+function MobileNavSection({ route, label, children }) {
+  return (
+    <li className="mb-5" key={route}>
+      <div className="uppercase text-gray-400 text-sm font-medium">{label}</div>
+      <ul>
+        <MobileNavSectionContext.Provider value={route}>
+          {children}
+        </MobileNavSectionContext.Provider>
+      </ul>
+    </li>
+  )
+}
+
+function MobileNavLink(props) {
+  const sectionRoute = useContext(MobileNavSectionContext)
+
+  const isPartiallyActive = ({ isPartiallyCurrent }) => {
+    return {
+      className: `block py-1 ${isPartiallyCurrent ? "text-gray-400" : ""}`,
+    }
+  }
+
+  return (
+    <li key={props.route}>
+      <Link
+        getProps={isPartiallyActive}
+        to={`/docs/${sectionRoute}/${props.route}`}
+        {...props}
+      />
+    </li>
+  )
+}
+
+const docsRoutesService = {
+  routes: [
+    {
+      name: "Documentation",
+      path: "/docs",
+      routes: [
+        {
+          path: "/getting-started",
+          name: "Getting started",
+          routes: [
+            { name: "Introduction", path: "/introduction" },
+            { name: "Installation", path: "/installation" },
+            { name: "Usage", path: "/usage" },
+          ],
+        },
+        {
+          path: "/examples",
+          name: "Examples",
+          routes: [
+            { name: "React", path: "/react" },
+            { name: "Vue", path: "/vue" },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Examples",
+      path: "/examples",
+    },
+  ],
+
+  activePath: null,
+
+  get flattenedRoutes() {
+    function flattenRoutes(routes = [], prefix = "") {
+      return routes.reduce((flattenedRoutes, route) => {
+        let fullPath = `${prefix}${route.path}`
+        let newRoutes = [
+          {
+            name: route.name,
+            path: fullPath,
+          },
+          ...flattenRoutes(route.routes, fullPath),
+        ]
+
+        return [...flattenedRoutes, ...newRoutes]
+      }, [])
+    }
+
+    return flattenRoutes(this.routes)
+  },
+
+  get activeRoute() {
+    return this.flattenedRoutes.find(route => {
+      return route.path.match(this.activePath.replace(/\/+$/, ""))
+    })
+  },
+}
+
 export default function DocsPage({ path, children }) {
+  let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(true)
+
   const data = useStaticQuery(graphql`
     query OnThisPageQuery {
       allMdx {
@@ -64,108 +161,165 @@ export default function DocsPage({ path, children }) {
   })
   let tableOfContentsItems = mdxPage && mdxPage.tableOfContents.items[0].items
 
+  docsRoutesService.activePath = path
+
   return (
-    <div className="bg-white">
-      <div className="flex items-center text-sm font-medium px-5 py-3 border-b-2 border-gray-100 bg-gray-100 text-gray-500 2xl:hidden">
-        Documentation
-        <Caret className="w-3 h-3 mx-2 " />
-        {/* Getting started */}
-        {/* <Ellipsis className="w-3 h-3 mx-2" /> */}
-        {/* <Caret className="w-3 h-3 mx-2 " /> */}
-        Introduction
-      </div>
+    <DocsRoutesContext.Provider value={docsRoutesService}>
+      <div className="bg-white">
+        <div className="text-sm font-normal pl-5 py-1 text-gray-500 bg-gray-100 2xl:hidden">
+          <div className="flex items-center">
+            Documentation
+            <div
+              className={`flex items-center ${
+                mobileSecondaryNavIsOpen ? "" : ""
+              }`}
+            >
+              <Caret className="w-3 h-3 mx-2" />
+              <span>{docsRoutesService.activeRoute.name}</span>
+            </div>
+            <div className="ml-auto flex items-center">
+              <button
+                onClick={() =>
+                  setMobileSecondaryNavIsOpen(!mobileSecondaryNavIsOpen)
+                }
+                className="flex items-center px-5 py-3 focus:outline-none"
+              >
+                <span
+                  style={{
+                    transform: mobileSecondaryNavIsOpen ? "rotate(180deg)" : "",
+                  }}
+                >
+                  <CaretDownWide className="w-4 h-4" />
+                </span>
+              </button>
+            </div>
+          </div>
+          {mobileSecondaryNavIsOpen && (
+            <div className="pt-1 pr-5">
+              <nav className="border-t border-gray-200 pt-5 pb-4 text-gray-700 text-base">
+                <ul className="pt-2w">
+                  {/* {docsRoutesService.routes.find(route => route.path === '/docs').reduce(() => {
+                    return <MobileNavSection
+                      route="getting-started"
+                      label="Getting started"
+                    >
+                  })} */}
 
-      <div className="flex-1 flex">
-        <div
-          className="flex-shrink-0 bg-gray-100 border-r border-gray-200 hidden 2xl:block"
-          style={{
-            width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
-            paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
-          }}
-        >
-          <nav className="pl-7 pt-14 pr-6 sticky top-0 leading-none h-screen overflow-y-scroll">
-            <ul className="mt-2">
-              <NavSection route="getting-started" label="Getting started">
-                <NavLink route="introduction">Introduction</NavLink>
-                <NavLink route="installation">Installation</NavLink>
-                <NavLink route="usage">Usage</NavLink>
-              </NavSection>
+                  <MobileNavSection
+                    route="getting-started"
+                    label="Getting started"
+                  >
+                    <MobileNavLink route="introduction">
+                      Introduction
+                    </MobileNavLink>
+                    <MobileNavLink route="installation">
+                      Installation
+                    </MobileNavLink>
+                    <MobileNavLink route="usage">Usage</MobileNavLink>
+                  </MobileNavSection>
 
-              <NavSection route="examples" label="Examples">
-                <NavLink route="react">React</NavLink>
-                <NavLink route="vue">Vue</NavLink>
-              </NavSection>
-
-              <NavSection route="api" label="API">
-                <NavLink route="Association">Association</NavLink>
-                <NavLink route="Collection">Collection</NavLink>
-                <NavLink route="Db">Db</NavLink>
-                <NavLink route="DbCollection">DbCollection</NavLink>
-                <NavLink route="IdentityManager">IdentityManager</NavLink>
-                <NavLink route="JSONAPISerializer">JSONAPISerializer</NavLink>
-                <NavLink route="Model">Model</NavLink>
-                <NavLink route="Response">Response</NavLink>
-                <NavLink route="Schema">Schema</NavLink>
-                <NavLink route="Serializer">Serializer</NavLink>
-                <NavLink route="Server">Server</NavLink>
-              </NavSection>
-            </ul>
-          </nav>
+                  <MobileNavSection route="examples" label="Examples">
+                    <MobileNavLink route="react">React</MobileNavLink>
+                    <MobileNavLink route="vue">Vue</MobileNavLink>
+                  </MobileNavSection>
+                </ul>
+              </nav>
+            </div>
+          )}
         </div>
 
-        <div
-          className="flex-1 max-w-full px-5 md:px-20 pt-8 md:pt-12 font-normal text-gray-700
+        <div className="flex-1 flex">
+          <div
+            className="flex-shrink-0 bg-gray-100 border-r border-gray-200 hidden 2xl:block"
+            style={{
+              width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
+              paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
+            }}
+          >
+            <nav className="pl-7 pt-14 pr-6 sticky top-0 leading-none h-screen overflow-y-scroll">
+              <ul className="mt-2">
+                <NavSection route="getting-started" label="Getting started">
+                  <NavLink route="introduction">Introduction</NavLink>
+                  <NavLink route="installation">Installation</NavLink>
+                  <NavLink route="usage">Usage</NavLink>
+                </NavSection>
+
+                <NavSection route="examples" label="Examples">
+                  <NavLink route="react">React</NavLink>
+                  <NavLink route="vue">Vue</NavLink>
+                </NavSection>
+
+                <NavSection route="api" label="API">
+                  <NavLink route="Association">Association</NavLink>
+                  <NavLink route="Collection">Collection</NavLink>
+                  <NavLink route="Db">Db</NavLink>
+                  <NavLink route="DbCollection">DbCollection</NavLink>
+                  <NavLink route="IdentityManager">IdentityManager</NavLink>
+                  <NavLink route="JSONAPISerializer">JSONAPISerializer</NavLink>
+                  <NavLink route="Model">Model</NavLink>
+                  <NavLink route="Response">Response</NavLink>
+                  <NavLink route="Schema">Schema</NavLink>
+                  <NavLink route="Serializer">Serializer</NavLink>
+                  <NavLink route="Server">Server</NavLink>
+                </NavSection>
+              </ul>
+            </nav>
+          </div>
+
+          <div
+            className="flex-1 max-w-full px-5 md:px-20 pt-7 md:pt-12 font-normal text-gray-700
           text-base leading-copy
           md:text-lg md:leading-relaxed"
-        >
-          <MDXProvider components={components}>{children}</MDXProvider>
-        </div>
+          >
+            <MDXProvider components={components}>{children}</MDXProvider>
+          </div>
 
-        <div
-          className="hidden 2xl:block flex-shrink-0"
-          style={{
-            width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
-            paddingRight: `calc((100% - 1408px)/ 2)`,
-          }}
-        >
-          <div className="pr-8">
-            <nav className="mt-32 ml-8 pl-6 sticky">
-              {tableOfContentsItems && (
-                <>
-                  <p className="uppercase text-xs text-gray-800 font-medium tracking-wider">
-                    On this page
-                  </p>
+          <div
+            className="hidden 2xl:block flex-shrink-0"
+            style={{
+              width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
+              paddingRight: `calc((100% - 1408px)/ 2)`,
+            }}
+          >
+            <div className="pr-8">
+              <nav className="mt-32 ml-8 pl-6 sticky">
+                {tableOfContentsItems && (
+                  <>
+                    <p className="uppercase text-xs text-gray-800 font-medium tracking-wider">
+                      On this page
+                    </p>
 
-                  <ul className="mt-2 font-normal text-sm">
-                    {tableOfContentsItems.map(item => (
-                      <li
-                        key={item.url}
-                        className="my-2 font-medium text-blue-500"
-                      >
-                        {item.title}
+                    <ul className="mt-2 font-normal text-sm">
+                      {tableOfContentsItems.map(item => (
+                        <li
+                          key={item.url}
+                          className="my-2 font-medium text-blue-500"
+                        >
+                          {item.title}
 
-                        {item.items && (
-                          <ul className="pl-4">
-                            {item.items.map(item => (
-                              <li
-                                key={item.url}
-                                className="my-2 font-medium text-blue-500"
-                              >
-                                {item.title}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </nav>
+                          {item.items && (
+                            <ul className="pl-4">
+                              {item.items.map(item => (
+                                <li
+                                  key={item.url}
+                                  className="my-2 font-medium text-blue-500"
+                                >
+                                  {item.title}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </nav>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </DocsRoutesContext.Provider>
   )
 }
 
@@ -270,45 +424,4 @@ export const Lead = ({ children }) => (
   <p className="font-light my-4 text-gray-900 text-lg md:text-xl leading-normal">
     {children}
   </p>
-)
-
-const Caret = props => (
-  <svg
-    {...props}
-    viewBox="0 0 70 70"
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <g
-      id="Artboard"
-      stroke="none"
-      strokeWidth="1"
-      fill="none"
-      fillRule="evenodd"
-    >
-      <polyline
-        id="Path"
-        stroke="#979797"
-        strokeWidth="6"
-        points="25 56 46 35 25 14"
-      ></polyline>
-    </g>
-  </svg>
-)
-
-const Ellipsis = props => (
-  <svg
-    {...props}
-    viewBox="0 0 70 70"
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-      <g id="Artboard-Copy" className="fill-current">
-        <circle id="Oval" cx="35.5" cy="55.5" r="4.5"></circle>
-        <circle id="Oval-Copy" cx="15.5" cy="55.5" r="4.5"></circle>
-        <circle id="Oval-Copy-2" cx="55.5" cy="55.5" r="4.5"></circle>
-      </g>
-    </g>
-  </svg>
 )

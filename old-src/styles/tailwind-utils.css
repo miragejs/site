@@ -1,0 +1,12 @@
+@tailwind components;
+@tailwind utilities;
+
+.transition {
+  transition: all 0.25s;
+}
+
+@responsive {
+  .scale-md {
+    transform: scale(1.4);
+  }
+}

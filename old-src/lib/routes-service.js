@@ -1,46 +1,33 @@
 export default class {
   _routes = [
     {
-      name: "Index",
-      path: "/",
-      component: "index",
-    },
-    {
       name: "Documentation",
       path: "/docs",
-      component: "docs",
+      routes: [
+        {
+          path: "/getting-started",
+          name: "Getting started",
+          routes: [
+            { name: "Introduction", path: "/introduction" },
+            { name: "Installation", path: "/installation" },
+            { name: "Usage", path: "/usage" },
+          ],
+        },
+        {
+          path: "/examples",
+          name: "Examples",
+          routes: [
+            { name: "React", path: "/react" },
+            { name: "Vue", path: "/vue" },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Examples",
+      path: "/examples",
     },
   ]
-
-  // _routes = [
-  //   {
-  //     name: "Documentation",
-  //     path: "/docs",
-  //     routes: [
-  //       {
-  //         path: "/getting-started",
-  //         name: "Getting started",
-  //         routes: [
-  //           { name: "Introduction", path: "/introduction" },
-  //           { name: "Installation", path: "/installation" },
-  //           { name: "Usage", path: "/usage" },
-  //         ],
-  //       },
-  //       {
-  //         path: "/examples",
-  //         name: "Examples",
-  //         routes: [
-  //           { name: "React", path: "/react" },
-  //           { name: "Vue", path: "/vue" },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     name: "Examples",
-  //     path: "/examples",
-  //   },
-  // ]
 
   constructor(activePath) {
     this.activePath = activePath
@@ -65,8 +52,8 @@ export default class {
   // Flatten all routes
   get flattenedRoutes() {
     function flatten(routes = []) {
-      return routes.reduce((flattenedRoutes, { routes, ...rest }) => {
-        return [...flattenedRoutes, { ...rest }, ...flatten(routes)]
+      return routes.reduce((flattenedRoutes, { name, fullPath, routes }) => {
+        return [...flattenedRoutes, { name, fullPath }, ...flatten(routes)]
       }, [])
     }
 

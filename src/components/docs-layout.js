@@ -46,12 +46,6 @@ function MobileNav({ routesService }) {
     <div className="text-sm font-normal pl-5 py-1 text-gray-500 bg-gray-100 2xl:hidden">
       <div className="flex items-center">
         Documentation
-        <div
-          className={`flex items-center ${mobileSecondaryNavIsOpen ? "" : ""}`}
-        >
-          <Caret className="w-3 h-3 mx-2" />
-          <span>{routesService.activeRoute.name}</span>
-        </div>
         <div className="ml-auto flex items-center">
           <button
             onClick={() =>

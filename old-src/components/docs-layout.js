@@ -67,7 +67,7 @@ function MobileNav({ routesService }) {
         <div className="pt-1 pr-5">
           <nav className="border-t border-gray-200 pt-5 pb-4 text-gray-700 text-base">
             <ul className="pt-2w">
-              {routesService.routesForPath("/docs").map(route => (
+              {routesService.routesForFullPath("/docs").map(route => (
                 <li className="mb-5" key={route.fullPath}>
                   <div className="uppercase text-gray-400 text-sm font-medium">
                     {route.name}
@@ -127,7 +127,7 @@ export default function DocsPage({ path, children }) {
         >
           <nav className="pl-7 pt-14 pr-6 sticky top-0 leading-none h-screen overflow-y-scroll">
             <ul className="mt-2">
-              {routesService.routesForPath("/docs").map(route => (
+              {routesService.routesForFullPath("/docs").map(route => (
                 <li className="mb-8" key={route.fullPath}>
                   <span className="text-gray-800 text-base+ font-medium">
                     {route.name}

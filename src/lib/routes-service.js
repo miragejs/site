@@ -1,46 +1,54 @@
 export default class {
-  _routes = [
-    {
-      name: "Index",
-      path: "/",
-      component: "index",
-    },
-    {
-      name: "Documentation",
-      path: "/docs",
-      component: "docs",
-    },
-  ]
-
   // _routes = [
   //   {
-  //     name: "Documentation",
-  //     path: "/docs",
-  //     routes: [
-  //       {
-  //         path: "/getting-started",
-  //         name: "Getting started",
-  //         routes: [
-  //           { name: "Introduction", path: "/introduction" },
-  //           { name: "Installation", path: "/installation" },
-  //           { name: "Usage", path: "/usage" },
-  //         ],
-  //       },
-  //       {
-  //         path: "/examples",
-  //         name: "Examples",
-  //         routes: [
-  //           { name: "React", path: "/react" },
-  //           { name: "Vue", path: "/vue" },
-  //         ],
-  //       },
-  //     ],
+  //     name: "Index",
+  //     path: "/",
+  //     component: "index",
   //   },
   //   {
-  //     name: "Examples",
-  //     path: "/examples",
+  //     name: "Documentation",
+  //     path: "docs",
+  //     component: "docs",
   //   },
   // ]
+
+  _routes = [
+    {
+      id: "index",
+      name: "Index",
+      path: "/",
+    },
+    {
+      id: "docs",
+      name: "Documentation",
+      path: "docs",
+      routes: [
+        {
+          id: "getting-started",
+          name: "Getting started",
+          path: "getting-started",
+          routes: [
+            { name: "Introduction", id: "introduction", path: "introduction" },
+            { name: "Installation", id: "installation", path: "installation" },
+            { name: "Usage", id: "usage", path: "usage" },
+          ],
+        },
+        {
+          id: "examples",
+          path: "examples",
+          name: "Examples",
+          routes: [
+            { name: "React", id: "react", path: "react" },
+            { name: "Vue", id: "vue", path: "vue" },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Examples",
+      path: "examples",
+    },
+  ]
 
   constructor(activePath) {
     this.activePath = activePath
@@ -50,7 +58,7 @@ export default class {
   get routes() {
     function transformRoutes(routes = [], prefix = "") {
       return routes.map(route => {
-        let fullPath = `${prefix}${route.path}`
+        let fullPath = `${prefix}/${route.path}`
 
         route.fullPath = fullPath
         route.routes = transformRoutes(route.routes, fullPath)
@@ -81,7 +89,7 @@ export default class {
   }
 
   // Return a subtree of routes under a path
-  routesForPath(path) {
-    return this.routes.find(route => route.path === "/docs").routes
+  routesForFullPath(fullPath) {
+    return this.routes.find(route => route.fullPath === fullPath).routes
   }
 }

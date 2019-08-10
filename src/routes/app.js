@@ -73,7 +73,7 @@ function Header() {
       <div className="flex items-center">
         <Link
           to="/"
-          className="px-5 py-3 2xl:py-2 2xl:px-0"
+          className="px-5 py-3 md:px-0 2xl:py-2 2xl:px-0"
           onClick={() => setIsShowingMobileNav(false)}
         >
           <Logo
@@ -113,7 +113,9 @@ function Header() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex md:w-full">
-          <NavLink to="/docs">Documentation</NavLink>
+          <NavLink to="/docs/getting-started/introduction">
+            Documentation
+          </NavLink>
 
           <div className="ml-auto">
             <a
@@ -145,7 +147,7 @@ function Header() {
             }`}
           >
             <MobileNavLink
-              to="/docs"
+              to="/docs/getting-started/introduction"
               onClick={() => setIsShowingMobileNav(false)}
             >
               Documentation

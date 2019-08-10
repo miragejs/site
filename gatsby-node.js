@@ -40,12 +40,10 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
 exports.createPages = ({ actions }) => {
   const { createPage, createRedirect } = actions
 
-  // createRedirect({
-  //   fromPath: `/docs`,
-  //   toPath: `/docs/getting-started/introduction`,
-  //   isPermanent: true,
-  //   redirectInBrowser: true,
-  // })
+  createRedirect({
+    fromPath: `/docs`,
+    toPath: `/docs/getting-started/introduction`,
+  })
 
   const createPageForAdam = function(options) {
     return createPage({
@@ -56,7 +54,7 @@ exports.createPages = ({ actions }) => {
   }
 
   createPageForAdam({ path: "/" })
-  createPageForAdam({ path: "/docs" })
+  // createPageForAdam({ path: "/docs" })
 }
 
 // const esdoc = require("esdoc").default

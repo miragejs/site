@@ -9,10 +9,3 @@ import "./src/styles/global.css"
 import "./src/styles/tailwind-utils.css"
 import "./src/fonts/Ginto/ginto.css"
 import "./src/fonts/GTAmerica/gt-america.css"
-
-// import React from "react"
-// import App from "./src/routes/app"
-//
-// export function wrapPageElement({ element, props }) {
-//   return <App />
-// }

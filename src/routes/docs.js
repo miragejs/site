@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { MDXProvider } from "@mdx-js/react"
-import { useStaticQuery, graphql, Link } from "gatsby"
+import { useStaticQuery, graphql } from "gatsby"
+import { Link } from "@reach/router"
 import Code from "../components/code"
 import { CaretDownWide } from "../components/icons"
 import RoutesService from "../lib/routes-service"
@@ -158,51 +159,53 @@ function MobileNav({ routesService }) {
 
   return (
     <div className="text-sm font-normal pl-5 py-1 text-gray-500 bg-gray-100 2xl:hidden">
-      <div className="flex items-center">
-        Documentation
-        <div className="ml-auto flex items-center">
-          <button
-            onClick={() =>
-              setMobileSecondaryNavIsOpen(!mobileSecondaryNavIsOpen)
-            }
-            className="flex items-center px-5 py-3 focus:outline-none"
-          >
-            <span
-              style={{
-                transform: mobileSecondaryNavIsOpen ? "rotate(180deg)" : "",
-              }}
+      <div className="max-w-4xl mx-auto px-8">
+        <div className="flex items-center">
+          Documentation
+          <div className="ml-auto flex items-center">
+            <button
+              onClick={() =>
+                setMobileSecondaryNavIsOpen(!mobileSecondaryNavIsOpen)
+              }
+              className="flex items-center px-5 py-3 focus:outline-none"
             >
-              <CaretDownWide className="w-4 h-4" />
-            </span>
-          </button>
+              <span
+                style={{
+                  transform: mobileSecondaryNavIsOpen ? "rotate(180deg)" : "",
+                }}
+              >
+                <CaretDownWide className="w-4 h-4" />
+              </span>
+            </button>
+          </div>
         </div>
+        {mobileSecondaryNavIsOpen && (
+          <div className="pt-1 pr-5">
+            <nav className="border-t border-gray-200 pt-5 pb-4 text-gray-700 text-base">
+              <ul className="pt-2w">
+                {routesService.routesForFullPath("/docs").map(route => (
+                  <li className="mb-5" key={route.fullPath}>
+                    <div className="uppercase text-gray-400 text-sm font-medium">
+                      {route.label}
+                    </div>
+                    <ul>
+                      {route.routes.map(route => (
+                        <MobileNavLink
+                          fullPath={route.fullPath}
+                          key={route.fullPath}
+                          onClick={() => setMobileSecondaryNavIsOpen(false)}
+                        >
+                          {route.label}
+                        </MobileNavLink>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        )}
       </div>
-      {mobileSecondaryNavIsOpen && (
-        <div className="pt-1 pr-5">
-          <nav className="border-t border-gray-200 pt-5 pb-4 text-gray-700 text-base">
-            <ul className="pt-2w">
-              {routesService.routesForFullPath("/docs").map(route => (
-                <li className="mb-5" key={route.fullPath}>
-                  <div className="uppercase text-gray-400 text-sm font-medium">
-                    {route.label}
-                  </div>
-                  <ul>
-                    {route.routes.map(route => (
-                      <MobileNavLink
-                        fullPath={route.fullPath}
-                        key={route.fullPath}
-                        onClick={() => setMobileSecondaryNavIsOpen(false)}
-                      >
-                        {route.label}
-                      </MobileNavLink>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      )}
     </div>
   )
 }

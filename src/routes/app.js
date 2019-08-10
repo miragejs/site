@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react"
 import { Router, Link } from "@reach/router"
-import { useStaticQuery, graphql } from "gatsby"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
 import RoutesService from "../lib/routes-service"
@@ -27,76 +26,42 @@ const themeClasses = {
   },
 }
 
-const ThemeContext = React.createContext({ variant: "light" })
 const routesService = new RoutesService()
 
+export const ThemeContext = React.createContext()
+
 export default function(props) {
+  let [theme, setTheme] = useState("light")
+
   routesService.activePath = props.location.pathname
 
-  const data = useStaticQuery(graphql`
-    query AllSitePageQuery {
-      allSitePage {
-        nodes {
-          path
-        }
-      }
-    }
-  `)
-
-  // This is all ridiculous, need to replace with Reach Router
-  let knownPaths = data.allSitePage.nodes.map(node => node.path)
-  let isKnownPath = knownPaths.find(knownPath => {
-    return (
-      props.location.pathname === knownPath ||
-      `${props.location.pathname}/` === knownPath
-    )
-  })
-  let isDocsPath = /^\/docs(.+)?/.test(props.location.pathname)
-  let isHomepage = props.location.pathname === "/"
-
-  // defaults
-  // let ChildLayout = EmptyLayout
-  let theme = "dark"
-
-  if (isKnownPath && isDocsPath) {
-    theme = "light"
-    // ChildLayout = DocsLayout
-  } else if (isHomepage) {
-    theme = "dark"
-    // ChildLayout = IndexLayout
-  }
-
   return (
-    <>
-      <ThemeContext.Provider value={theme}>
-        <Helmet>
-          <html
-            className={`${theme === "dark" ? "bg-gray-1000" : "bg-white"}`}
-          />
-        </Helmet>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <Helmet>
+        <html className={`${theme === "dark" ? "bg-gray-1000" : "bg-white"}`} />
+      </Helmet>
 
-        <div className="antialiased text-gray-700 font-body font-light leading-normal min-h-screen flex flex-col">
-          <div
-            className={`relative z-10 ${
-              theme === "light" ? "bg-white shadow" : ""
-            }`}
-          >
-            <div className="mx-auto max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl md:px-8">
-              <Header />
-            </div>
+      <div className="antialiased text-gray-700 font-body font-light leading-normal min-h-screen flex flex-col">
+        <div
+          className={`relative z-10 ${
+            theme === "light" ? "bg-white shadow" : ""
+          }`}
+        >
+          <div className="mx-auto max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl md:px-8">
+            <Header />
           </div>
-
-          <main className="flex-1 flex flex-col">
-            <Outlet />
-          </main>
         </div>
-      </ThemeContext.Provider>
-    </>
+
+        <main className="flex-1 flex flex-col">
+          <Outlet />
+        </main>
+      </div>
+    </ThemeContext.Provider>
   )
 }
 
 function Header() {
-  let theme = useContext(ThemeContext)
+  let { theme } = useContext(ThemeContext)
   let [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
 
   return (
@@ -202,7 +167,7 @@ function Header() {
 }
 
 function MobileNavLink(props) {
-  const theme = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext)
   const baseClasses = `block px-5 py-4`
   const isExternal = props.to.indexOf("http") === 0
   const linkClasses = {
@@ -244,7 +209,7 @@ function MobileNavLink(props) {
 }
 
 function NavLink(props) {
-  const theme = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext)
   const isPartiallyActive = ({ isPartiallyCurrent }) => {
     let state = isPartiallyCurrent ? "active" : "inactive"
 

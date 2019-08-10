@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="2717px" height="643px" viewBox="0 0 2717 643" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>background-lines-lg</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-0.2%" y="-0.9%" width="100.4%" height="101.9%" filterUnits="objectBoundingBox" id="bgLgfilter-1">
+            <feGaussianBlur stdDeviation="1.4" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-0.4%" y="-2.0%" width="100.7%" height="103.9%" filterUnits="objectBoundingBox" id="bgLgfilter-2">
+            <feGaussianBlur stdDeviation="2.8" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-0.2%" y="-0.9%" width="100.4%" height="101.9%" filterUnits="objectBoundingBox" id="bgLgfilter-3">
+            <feGaussianBlur stdDeviation="1.4" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-0.2%" y="-1.0%" width="100.4%" height="102.0%" filterUnits="objectBoundingBox" id="bgLgfilter-4">
+            <feGaussianBlur stdDeviation="1.4" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-0.2%" y="-1.1%" width="100.4%" height="102.2%" filterUnits="objectBoundingBox" id="bgLgfilter-5">
+            <feGaussianBlur stdDeviation="1.4" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-0.4%" y="-1.9%" width="100.7%" height="103.8%" filterUnits="objectBoundingBox" id="bgLgfilter-6">
+            <feGaussianBlur stdDeviation="2.8" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="94.8646044%" y1="49.016855%" x2="68.7693606%" y2="49.6251039%" id="bgLglinearGradient-7">
+            <stop stop-color="#05C77E" offset="0%"></stop>
+            <stop stop-color="#05C77E" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="94.8646044%" y1="49.0168558%" x2="68.7693606%" y2="49.6251042%" id="bgLglinearGradient-8">
+            <stop stop-color="#05C77E" offset="0%"></stop>
+            <stop stop-color="#05C77E" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="94.8646044%" y1="49.0168558%" x2="68.7693606%" y2="49.6251042%" id="bgLglinearGradient-9">
+            <stop stop-color="#464646" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-0.2%" y="-1.5%" width="100.5%" height="102.9%" filterUnits="objectBoundingBox" id="bgLgfilter-10">
+            <feGaussianBlur stdDeviation="1.4" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="94.8646044%" y1="49.1112381%" x2="68.7693606%" y2="49.6610943%" id="bgLglinearGradient-11">
+            <stop stop-color="#464646" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="94.8646044%" y1="49.0167688%" x2="68.7693606%" y2="49.625071%" id="bgLglinearGradient-12">
+            <stop stop-color="#464646" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="94.8646044%" y1="49.0289118%" x2="68.7693606%" y2="49.6297014%" id="bgLglinearGradient-13">
+            <stop stop-color="#05C77E" offset="0%"></stop>
+            <stop stop-color="#05C77E" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-0.3%" y="-1.7%" width="100.5%" height="103.3%" filterUnits="objectBoundingBox" id="bgLgfilter-14">
+            <feGaussianBlur stdDeviation="1.4" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="97.5849609%" y1="46.6910692%" x2="14.7773438%" y2="52.0429452%" id="bgLglinearGradient-15">
+            <stop stop-color="#1A1C1D" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#1A1C1D" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="bgLglinearGradient-16">
+            <stop stop-color="#1A1C1D" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#1A1C1D" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="background-lines-lg" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M2717,58 L2717,154.685661 L445,502 L445,405.519615 L2717,58 Z" id="f11" fill="#1E2021" fill-rule="nonzero" filter="url(#bgLgfilter-1)"></path>
+        <path d="M2620.06978,0.826212296 L2717,0.826212296 L2717,82.6856612 L445,430 L445,333.519615 L2620.06978,0.826212296 Z" id="f10" fill="#2A2E2F" fill-rule="nonzero" filter="url(#bgLgfilter-2)"></path>
+        <path d="M2717,84 L2717,180.747423 L445,528.283623 L445,431.741607 L2717,84 Z" id="f9" fill-rule="nonzero" filter="url(#bgLgfilter-3)"></path>
+        <path d="M2717,152 L2717,263.130628 L707,570.215518 L707,459.56934 L2717,152 Z" id="f8" fill="#212425" fill-rule="nonzero" filter="url(#bgLgfilter-4)"></path>
+        <path d="M2717,36.4985381 L445,384 L445,287.476132 L2324.57361,-0.173787704 L2717,-0.173787704 L2717,36.4985381 Z" id="f7" fill="#232627" fill-rule="nonzero" filter="url(#bgLgfilter-5)"></path>
+        <path d="M2717,180 L2717,276.59625 L444.953516,623.664921 L444.953516,527.273801 L2717,180 Z" id="f6" fill="#2A2D2F" fill-rule="nonzero" filter="url(#bgLgfilter-6)"></path>
+        <path d="M445,500 L445,498.467742 L2297,215 L2297,216.532258 L445,500 Z" id="f5" fill="url(#bgLglinearGradient-7)" fill-rule="nonzero"></path>
+        <path d="M62,444 L62,442.46716 L1913.24241,159.007792 C1913.60163,158.952789 1913.93742,159.199403 1913.99242,159.55862 C1913.99747,159.591577 1914,159.62487 1914,159.658211 C1914,160.099065 1913.67818,160.473907 1913.24241,160.540632 L62,444 Z" id="f4" fill="url(#bgLglinearGradient-8)" fill-rule="nonzero"></path>
+        <path d="M261,490 L261,488.46716 L2112.24241,205.007792 C2112.60163,204.952789 2112.93742,205.199403 2112.99242,205.55862 C2112.99747,205.591577 2113,205.62487 2113,205.658211 C2113,206.099065 2112.67818,206.473907 2112.24241,206.540632 L261,490 Z" id="f3" fill="url(#bgLglinearGradient-9)" fill-rule="nonzero" filter="url(#bgLgfilter-10)"></path>
+        <path d="M590.829313,641.826212 L1484.27555,511.002704 C1484.62133,510.952072 1484.94269,511.191341 1484.99332,511.537127 C1484.99777,511.567484 1485,511.598124 1485,511.628804 C1485,512.049288 1484.69159,512.406142 1484.27555,512.467062 L600.830003,641.826212 L590.829313,641.826212 Z" id="f2" fill="url(#bgLglinearGradient-11)" fill-rule="nonzero"></path>
+        <path d="M4.40536496e-13,341.599321 L1591.30772,98.0070679 C1591.63598,97.9568188 1591.94283,98.1821916 1591.99308,98.5104521 C1591.99769,98.5405609 1592,98.5709764 1592,98.601436 C1592,99.0042758 1591.70593,99.3467914 1591.30772,99.4077468 L4.54747351e-13,343 L4.54747351e-13,341.599321 Z" id="foo1" fill="url(#bgLglinearGradient-12)" fill-rule="nonzero"></path>
+        <path d="M366.840869,642.765514 L2013,391 L2013,392.531222 L376.852704,642.765514 L366.840869,642.765514 Z" id="background-lines-lg-group1" fill="url(#bgLglinearGradient-13)" fill-rule="nonzero" filter="url(#bgLgfilter-14)"></path>
+        <rect id="background-lines-lg-gradient2" fill="url(#bgLglinearGradient-15)" x="293" y="0" width="1979" height="643"></rect>
+        <rect id="background-lines-lg-gradient1" fill="url(#bgLglinearGradient-16)" transform="translate(2257.500000, 39.500000) rotate(-180.000000) translate(-2257.500000, -39.500000) " x="1798" y="-4.97379915e-14" width="919" height="79"></rect>
+    </g>
+</svg>

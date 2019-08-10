@@ -4,6 +4,7 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 const fs = require("fs")
+const path = require("path")
 
 // I think this was from an earlier strategy at getting the snippet contents, but
 // we went back to remark because it supports line highlighting
@@ -36,15 +37,37 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
   }
 }
 
-exports.createPages = ({ actions }) => {
-  const { createRedirect } = actions
+exports.onCreatePage = async ({ page, actions }) => {
+  const { createPage } = actions
+  // page.matchPath is a special key that's used for matching pages
+  // only on the client.
+  // if (page.path.match(/^\/app/)) {
+  page.matchPath = "/*"
+  // Update the page.
+  createPage(page)
+  // }
+}
 
-  createRedirect({
-    fromPath: `/docs`,
-    toPath: `/docs/getting-started/introduction`,
-    isPermanent: true,
-    redirectInBrowser: true,
-  })
+exports.createPages = ({ actions }) => {
+  const { createPage, createRedirect } = actions
+
+  // createRedirect({
+  //   fromPath: `/docs`,
+  //   toPath: `/docs/getting-started/introduction`,
+  //   isPermanent: true,
+  //   redirectInBrowser: true,
+  // })
+
+  const createPageForAdam = function(options) {
+    return createPage({
+      path: options.path,
+      matchPath: "/*",
+      component: path.resolve(`./src/pages/index.js`),
+    })
+  }
+
+  createPageForAdam({ path: "/" })
+  createPageForAdam({ path: "/docs" })
 }
 
 // const esdoc = require("esdoc").default

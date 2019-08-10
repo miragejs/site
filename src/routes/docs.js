@@ -9,7 +9,9 @@ const MAX_WIDTH = 1400
 const MAIN_WIDTH = 870
 const SIDEBAR_WIDTH = (MAX_WIDTH - MAIN_WIDTH) / 2
 
-export default function DocsPage({ path, children }) {
+const routesService = new RoutesService()
+
+export default function DocsPage(props) {
   const data = useStaticQuery(graphql`
     query OnThisPageQuery {
       allMdx {
@@ -21,13 +23,17 @@ export default function DocsPage({ path, children }) {
     }
   `)
   let mdxPage = data.allMdx.nodes.find(node => {
+    let didMatch = false
     let match = node.fileAbsolutePath.match(/(\/docs\/.+)\.md[x]?/)
 
-    return match && `${match[1]}/` === path
+    if (match) {
+      let regexp = new RegExp(`${match[1]}/?`)
+      didMatch = match && regexp.test(props.location.pathname)
+    }
+
+    return didMatch
   })
   let tableOfContentsItems = mdxPage && mdxPage.tableOfContents.items[0].items
-
-  let routesService = new RoutesService(path)
 
   return (
     <div className="bg-white">
@@ -63,10 +69,10 @@ export default function DocsPage({ path, children }) {
 
         <div
           className="flex-1 max-w-full px-5 md:px-20 pt-7 md:pt-12 font-normal text-gray-700
-          text-base leading-copy
-          md:text-lg md:leading-relaxed"
+            text-base leading-copy
+            md:text-lg md:leading-relaxed"
         >
-          <MDXProvider components={components}>{children}</MDXProvider>
+          <MDXProvider components={components}>{props.children}</MDXProvider>
         </div>
 
         <div

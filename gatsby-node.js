@@ -37,17 +37,6 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
   }
 }
 
-exports.onCreatePage = async ({ page, actions }) => {
-  const { createPage } = actions
-  // page.matchPath is a special key that's used for matching pages
-  // only on the client.
-  // if (page.path.match(/^\/app/)) {
-  page.matchPath = "/*"
-  // Update the page.
-  createPage(page)
-  // }
-}
-
 exports.createPages = ({ actions }) => {
   const { createPage, createRedirect } = actions
 
@@ -62,7 +51,7 @@ exports.createPages = ({ actions }) => {
     return createPage({
       path: options.path,
       matchPath: "/*",
-      component: path.resolve(`./src/pages/index.js`),
+      component: path.resolve(`./src/routes/app.js`),
     })
   }
 

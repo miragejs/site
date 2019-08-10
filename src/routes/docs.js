@@ -301,7 +301,7 @@ const components = {
   pre: props => <div {...props} />,
 
   code: props => (
-    <div className="sm:rounded-lg overflow-hidden -mx-5 md:mx-auto md:w-5/6 md:shadow-lg my-8 md:my-10 lg:my-12">
+    <div className="sm:rounded-lg overflow-hidden -mx-5 md:mx-0 my-8 md:my-10">
       <Code {...props} />
     </div>
   ),

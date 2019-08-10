@@ -9,90 +9,6 @@ const MAX_WIDTH = 1400
 const MAIN_WIDTH = 870
 const SIDEBAR_WIDTH = (MAX_WIDTH - MAIN_WIDTH) / 2
 
-function NavLink({ fullPath, ...props }) {
-  const isPartiallyActive = ({ isPartiallyCurrent }) => {
-    return {
-      className: isPartiallyCurrent
-        ? "text-gray-900"
-        : "text-gray-600 hover:text-gray-900",
-    }
-  }
-
-  return (
-    <li className="py-1" key={props.route}>
-      <Link getProps={isPartiallyActive} to={fullPath} {...props} />
-    </li>
-  )
-}
-
-function MobileNavLink({ fullPath, ...otherProps }) {
-  const isPartiallyActive = ({ isPartiallyCurrent }) => {
-    return {
-      className: `block py-1 ${isPartiallyCurrent ? "text-gray-400" : ""}`,
-    }
-  }
-
-  return (
-    <li key={fullPath}>
-      <Link getProps={isPartiallyActive} to={fullPath} {...otherProps} />
-    </li>
-  )
-}
-
-function MobileNav({ routesService }) {
-  let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(false)
-
-  return (
-    <div className="text-sm font-normal pl-5 py-1 text-gray-500 bg-gray-100 2xl:hidden">
-      <div className="flex items-center">
-        Documentation
-        <div className="ml-auto flex items-center">
-          <button
-            onClick={() =>
-              setMobileSecondaryNavIsOpen(!mobileSecondaryNavIsOpen)
-            }
-            className="flex items-center px-5 py-3 focus:outline-none"
-          >
-            <span
-              style={{
-                transform: mobileSecondaryNavIsOpen ? "rotate(180deg)" : "",
-              }}
-            >
-              <CaretDownWide className="w-4 h-4" />
-            </span>
-          </button>
-        </div>
-      </div>
-      {mobileSecondaryNavIsOpen && (
-        <div className="pt-1 pr-5">
-          <nav className="border-t border-gray-200 pt-5 pb-4 text-gray-700 text-base">
-            <ul className="pt-2w">
-              {routesService.routesForFullPath("/docs").map(route => (
-                <li className="mb-5" key={route.fullPath}>
-                  <div className="uppercase text-gray-400 text-sm font-medium">
-                    {route.name}
-                  </div>
-                  <ul>
-                    {route.routes.map(route => (
-                      <MobileNavLink
-                        fullPath={route.fullPath}
-                        key={route.fullPath}
-                        onClick={() => setMobileSecondaryNavIsOpen(false)}
-                      >
-                        {route.name}
-                      </MobileNavLink>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      )}
-    </div>
-  )
-}
-
 export default function DocsPage({ path, children }) {
   const data = useStaticQuery(graphql`
     query OnThisPageQuery {
@@ -130,12 +46,12 @@ export default function DocsPage({ path, children }) {
               {routesService.routesForFullPath("/docs").map(route => (
                 <li className="mb-8" key={route.fullPath}>
                   <span className="text-gray-800 text-base+ font-medium">
-                    {route.name}
+                    {route.label}
                   </span>
                   <ul className="ml-2 mt-2 font-normal leading-snug">
                     {route.routes.map(route => (
                       <NavLink fullPath={route.fullPath} key={route.fullPath}>
-                        {route.name}
+                        {route.label}
                       </NavLink>
                     ))}
                   </ul>
@@ -197,6 +113,90 @@ export default function DocsPage({ path, children }) {
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+function NavLink({ fullPath, ...props }) {
+  const isPartiallyActive = ({ isPartiallyCurrent }) => {
+    return {
+      className: isPartiallyCurrent
+        ? "text-gray-900"
+        : "text-gray-600 hover:text-gray-900",
+    }
+  }
+
+  return (
+    <li className="py-1" key={props.route}>
+      <Link getProps={isPartiallyActive} to={fullPath} {...props} />
+    </li>
+  )
+}
+
+function MobileNavLink({ fullPath, ...otherProps }) {
+  const isPartiallyActive = ({ isPartiallyCurrent }) => {
+    return {
+      className: `block py-1 ${isPartiallyCurrent ? "text-gray-400" : ""}`,
+    }
+  }
+
+  return (
+    <li key={fullPath}>
+      <Link getProps={isPartiallyActive} to={fullPath} {...otherProps} />
+    </li>
+  )
+}
+
+function MobileNav({ routesService }) {
+  let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(false)
+
+  return (
+    <div className="text-sm font-normal pl-5 py-1 text-gray-500 bg-gray-100 2xl:hidden">
+      <div className="flex items-center">
+        Documentation
+        <div className="ml-auto flex items-center">
+          <button
+            onClick={() =>
+              setMobileSecondaryNavIsOpen(!mobileSecondaryNavIsOpen)
+            }
+            className="flex items-center px-5 py-3 focus:outline-none"
+          >
+            <span
+              style={{
+                transform: mobileSecondaryNavIsOpen ? "rotate(180deg)" : "",
+              }}
+            >
+              <CaretDownWide className="w-4 h-4" />
+            </span>
+          </button>
+        </div>
+      </div>
+      {mobileSecondaryNavIsOpen && (
+        <div className="pt-1 pr-5">
+          <nav className="border-t border-gray-200 pt-5 pb-4 text-gray-700 text-base">
+            <ul className="pt-2w">
+              {routesService.routesForFullPath("/docs").map(route => (
+                <li className="mb-5" key={route.fullPath}>
+                  <div className="uppercase text-gray-400 text-sm font-medium">
+                    {route.label}
+                  </div>
+                  <ul>
+                    {route.routes.map(route => (
+                      <MobileNavLink
+                        fullPath={route.fullPath}
+                        key={route.fullPath}
+                        onClick={() => setMobileSecondaryNavIsOpen(false)}
+                      >
+                        {route.label}
+                      </MobileNavLink>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      )}
     </div>
   )
 }

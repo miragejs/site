@@ -70,7 +70,7 @@ function MobileNav({ routesService }) {
               {routesService.routesForFullPath("/docs").map(route => (
                 <li className="mb-5" key={route.fullPath}>
                   <div className="uppercase text-gray-400 text-sm font-medium">
-                    {route.name}
+                    {route.label}
                   </div>
                   <ul>
                     {route.routes.map(route => (
@@ -79,7 +79,7 @@ function MobileNav({ routesService }) {
                         key={route.fullPath}
                         onClick={() => setMobileSecondaryNavIsOpen(false)}
                       >
-                        {route.name}
+                        {route.label}
                       </MobileNavLink>
                     ))}
                   </ul>
@@ -130,12 +130,12 @@ export default function DocsPage({ path, children }) {
               {routesService.routesForFullPath("/docs").map(route => (
                 <li className="mb-8" key={route.fullPath}>
                   <span className="text-gray-800 text-base+ font-medium">
-                    {route.name}
+                    {route.label}
                   </span>
                   <ul className="ml-2 mt-2 font-normal leading-snug">
                     {route.routes.map(route => (
                       <NavLink fullPath={route.fullPath} key={route.fullPath}>
-                        {route.name}
+                        {route.label}
                       </NavLink>
                     ))}
                   </ul>

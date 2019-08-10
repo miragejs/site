@@ -1,67 +1,62 @@
 export default class {
-  // _routes = [
-  //   {
-  //     name: "Index",
-  //     path: "/",
-  //     component: "index",
-  //   },
-  //   {
-  //     name: "Documentation",
-  //     path: "docs",
-  //     component: "docs",
-  //   },
-  // ]
-
   _routes = [
     {
-      id: "index",
-      name: "Index",
+      name: "index",
+      label: "Index",
       path: "/",
     },
     {
-      id: "docs",
-      name: "Documentation",
-      path: "docs",
+      name: "docs",
+      label: "Documentation",
+      path: "/docs",
       routes: [
         {
-          id: "getting-started",
-          name: "Getting started",
-          path: "getting-started",
+          name: "getting-started",
+          label: "Getting started",
+          path: "/getting-started",
           routes: [
-            { name: "Introduction", id: "introduction", path: "introduction" },
-            { name: "Installation", id: "installation", path: "installation" },
-            { name: "Usage", id: "usage", path: "usage" },
+            {
+              label: "Introduction",
+              name: "introduction",
+              path: "/introduction",
+            },
+            {
+              label: "Installation",
+              name: "installation",
+              path: "/installation",
+            },
+            { label: "Usage", name: "usage", path: "/usage" },
           ],
         },
         {
-          id: "examples",
-          path: "examples",
-          name: "Examples",
+          name: "examples",
+          path: "/examples",
+          label: "Examples",
           routes: [
-            { name: "React", id: "react", path: "react" },
-            { name: "Vue", id: "vue", path: "vue" },
+            { label: "React", name: "react", path: "/react" },
+            { label: "Vue", name: "vue", path: "/vue" },
           ],
         },
       ],
     },
     {
-      name: "Examples",
+      label: "Examples",
       path: "examples",
     },
   ]
 
-  constructor(activePath) {
-    this.activePath = activePath
-  }
+  activePath = null
 
   // Transform _routes to include fullPath
   get routes() {
-    function transformRoutes(routes = [], prefix = "") {
+    function transformRoutes(routes = [], pathPrefix = "", namePrefix = "") {
       return routes.map(route => {
-        let fullPath = `${prefix}/${route.path}`
+        let fullPath = `${pathPrefix}${route.path}`
+        let fullName = `${namePrefix ? namePrefix + "." : ""}${route.name}`
 
         route.fullPath = fullPath
-        route.routes = transformRoutes(route.routes, fullPath)
+        route.fullName = fullName
+        route.routes = transformRoutes(route.routes, fullPath, fullName)
 
         return route
       }, [])

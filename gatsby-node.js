@@ -59,8 +59,11 @@ exports.createPages = ({ actions }) => {
   createPageForAdam({ path: "/docs/getting-started/introduction" })
 }
 
+// DOC STUFF TODO Extract
+
 let esdoc = require("esdoc").default
 let tmp = require("tmp")
+let slugify = require("@sindresorhus/slugify")
 
 let generateESDoc = function(config) {
   var tmpdir = tmp.dirSync()
@@ -99,7 +102,12 @@ exports.sourceNodes = async ({
     ],
   })
 
-  docNodes.forEach(node => {
+  docNodes.forEach(docNode => {
+    let node = {
+      ...{ slug: slugify(docNode.name) },
+      ...docNode,
+    }
+
     let data = {
       ...node,
       ...{

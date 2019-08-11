@@ -3,8 +3,13 @@
  *
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
+<<<<<<< HEAD
 const fs = require("fs")
 const path = require("path")
+=======
+let fs = require("fs")
+let crypto = require("crypto")
+>>>>>>> put escode in graphql
 
 // I think this was from an earlier strategy at getting the snippet contents, but
 // we went back to remark because it supports line highlighting
@@ -59,51 +64,61 @@ exports.createPages = ({ actions }) => {
   createPageForAdam({ path: "/docs/getting-started/introduction" })
 }
 
-// const esdoc = require("esdoc").default
-// const ESDOC_CONFIG = {
-//   source: "./node_modules/@miragejs/server/lib",
-//   destination: "./",
-//   excludes: ["(node_modules|tests|tmp)"],
-//   plugins: [
-//     {
-//       name: "esdoc-ecmascript-proposal-plugin",
-//       option: {
-//         classProperties: true,
-//         objectRestSpread: true,
-//         doExpressions: true,
-//         functionBind: true,
-//         functionSent: true,
-//         asyncGenerators: true,
-//         decorators: true,
-//         exportExtensions: true,
-//         dynamicImport: true,
-//       },
-//     },
-//     { name: "esdoc-accessor-plugin" },
-//   ],
-// }
-// exports.createPages = async ({ actions: { createPage } }) => {
-//   esdoc.generate(ESDOC_CONFIG)
-//   console.log(fs)
-//   console.log(esdoc)
-//   // debugger
-//
-//   // Example from Gatsby docs
-//   // `getPokemonData` is a function that fetches our data
-//   // const allPokemon = await getPokemonData(["pikachu", "charizard", "squirtle"])
-//   // Create a page that lists all Pokémon.
-//   // createPage({
-//   //   path: `/`,
-//   //   component: require.resolve("./src/templates/all-pokemon.js"),
-//   //   context: { allPokemon },
-//   // })
-//   //
-//   // // Create a page for each Pokémon.
-//   // allPokemon.forEach(pokemon => {
-//   //   createPage({
-//   //     path: `/pokemon/${pokemon.name}/`,
-//   //     component: require.resolve("./src/templates/pokemon.js"),
-//   //     context: { pokemon },
-//   //   })
-//   // })
-// }
+const esdoc = require("esdoc").default
+const ESDOC_CONFIG = {
+  source: "./node_modules/@miragejs/server/lib",
+  destination: "./esdoc",
+  excludes: ["(node_modules|tests|tmp)"],
+  plugins: [
+    {
+      name: "esdoc-ecmascript-proposal-plugin",
+      option: {
+        classProperties: true,
+        objectRestSpread: true,
+        doExpressions: true,
+        functionBind: true,
+        functionSent: true,
+        asyncGenerators: true,
+        decorators: true,
+        exportExtensions: true,
+        dynamicImport: true,
+      },
+    },
+    { name: "esdoc-accessor-plugin" },
+  ],
+}
+
+exports.sourceNodes = ({
+  actions: { createNode },
+  createNodeId,
+  createContentDigest,
+}) => {
+  // esdoc.generate(ESDOC_CONFIG)
+  // let result = esdoc.generate(esdocConfig)
+  let index = fs.readFileSync("./esdoc/index.json")
+  let json = JSON.parse(index)
+
+  json.forEach(node => {
+    let data = {
+      ...node,
+      ...{
+        id: createNodeId(`esdoc-${node.__docId__}`),
+        internal: {
+          type: "ESDoc",
+          contentDigest: createContentDigest(JSON.stringify(node)),
+        },
+      },
+    }
+
+    createNode(data)
+
+    if (node.kind === "class" && node.access === "public") {
+      console.log("TODO create ssr page for", node.name)
+      //   createPage({
+      //     path: `/pokemon/${pokemon.name}/`,
+      //     component: require.resolve("./src/templates/pokemon.js"),
+      //     context: { pokemon },
+      //   })
+    }
+  })
+}

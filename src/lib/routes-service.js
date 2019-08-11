@@ -37,6 +37,18 @@ export default class {
             { label: "Vue", name: "vue", path: "/vue" },
           ],
         },
+        {
+          name: "api",
+          path: "/api",
+          label: "API",
+          routes: [
+            {
+              label: "Class viewer",
+              name: "class-viewer",
+              path: "/class/:classNameSlug",
+            },
+          ],
+        },
       ],
     },
     {

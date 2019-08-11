@@ -3,13 +3,8 @@
  *
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
-<<<<<<< HEAD
 const fs = require("fs")
 const path = require("path")
-=======
-let fs = require("fs")
-let crypto = require("crypto")
->>>>>>> put escode in graphql
 
 // I think this was from an earlier strategy at getting the snippet contents, but
 // we went back to remark because it supports line highlighting
@@ -64,41 +59,47 @@ exports.createPages = ({ actions }) => {
   createPageForAdam({ path: "/docs/getting-started/introduction" })
 }
 
-const esdoc = require("esdoc").default
-const ESDOC_CONFIG = {
-  source: "./node_modules/@miragejs/server/lib",
-  destination: "./esdoc",
-  excludes: ["(node_modules|tests|tmp)"],
-  plugins: [
-    {
-      name: "esdoc-ecmascript-proposal-plugin",
-      option: {
-        classProperties: true,
-        objectRestSpread: true,
-        doExpressions: true,
-        functionBind: true,
-        functionSent: true,
-        asyncGenerators: true,
-        decorators: true,
-        exportExtensions: true,
-        dynamicImport: true,
-      },
-    },
-    { name: "esdoc-accessor-plugin" },
-  ],
+let esdoc = require("esdoc").default
+let tmp = require("tmp")
+
+let generateESDoc = function(config) {
+  var tmpdir = tmp.dirSync()
+  esdoc.generate({ ...config, ...{ destination: tmpdir.name } })
+  let index = fs.readFileSync(`${tmpdir.name}/index.json`)
+  let result = JSON.parse(index)
+  tmpdir.removeCallback()
+
+  return result
 }
 
-exports.sourceNodes = ({
+exports.sourceNodes = async ({
   actions: { createNode },
   createNodeId,
   createContentDigest,
 }) => {
-  // esdoc.generate(ESDOC_CONFIG)
-  // let result = esdoc.generate(esdocConfig)
-  let index = fs.readFileSync("./esdoc/index.json")
-  let json = JSON.parse(index)
+  let docNodes = generateESDoc({
+    source: "./node_modules/@miragejs/server/lib",
+    excludes: ["(node_modules|tests|tmp)"],
+    plugins: [
+      {
+        name: "esdoc-ecmascript-proposal-plugin",
+        option: {
+          classProperties: true,
+          objectRestSpread: true,
+          doExpressions: true,
+          functionBind: true,
+          functionSent: true,
+          asyncGenerators: true,
+          decorators: true,
+          exportExtensions: true,
+          dynamicImport: true,
+        },
+      },
+      { name: "esdoc-accessor-plugin" },
+    ],
+  })
 
-  json.forEach(node => {
+  docNodes.forEach(node => {
     let data = {
       ...node,
       ...{

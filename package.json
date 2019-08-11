@@ -40,7 +40,8 @@
     "react-helmet": "^5.2.1",
     "react-transition-group": "^4.2.1",
     "remark-slug": "^5.1.2",
-    "tailwindcss": "^1.0.5"
+    "tailwindcss": "^1.0.5",
+    "tmp": "^0.1.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.0.0",

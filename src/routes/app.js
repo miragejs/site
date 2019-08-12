@@ -3,6 +3,7 @@ import { Router, Link } from "@reach/router"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
 import RoutesService from "../lib/routes-service"
+import { Close, Menu } from "../components/icons"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -47,7 +48,7 @@ export default function(props) {
             theme === "light" ? "bg-white shadow" : ""
           }`}
         >
-          <div className="mx-auto max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl md:px-8">
+          <div className="mx-auto lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl md:px-8">
             <Header />
           </div>
         </div>
@@ -77,7 +78,7 @@ function Header() {
           onClick={() => setIsShowingMobileNav(false)}
         >
           <Logo
-            className={`w-8 h-8 md:w-10 md:h-16 ${
+            className={`w-8 h-8 ${
               theme === "dark" ? "text-green-500" : "text-gray-900"
             }`}
           />
@@ -92,27 +93,15 @@ function Header() {
             } lg:hidden `}
           >
             {isShowingMobileNav ? (
-              <svg
-                className="fill-current w-4 h-4"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z"></path>
-              </svg>
+              <Close className="w-4 h-4" />
             ) : (
-              <svg
-                className="fill-current w-4 h-4"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-              </svg>
+              <Menu className="w-4 h-4" />
             )}
           </button>
         </div>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex md:w-full">
+        <div className="hidden md:flex md:items-center md:w-full">
           <NavLink to="/docs/getting-started/introduction">
             Documentation
           </NavLink>
@@ -123,7 +112,7 @@ function Header() {
               className={themeClasses[theme]["inactive"]}
             >
               <svg
-                className="fill-current h-7"
+                className="fill-current h-6"
                 viewBox="0 0 16 16"
                 version="1.1"
                 aria-hidden="true"

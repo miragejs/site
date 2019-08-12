@@ -38,7 +38,7 @@ export default function DocsPage(props) {
 
   return (
     <div className="bg-white">
-      <MobileNav routesService={routesService} />
+      <MobileNav />
 
       <div className="flex-1 flex">
         <DesktopNav />
@@ -102,12 +102,12 @@ export default function DocsPage(props) {
   )
 }
 
-function MobileNav({ routesService }) {
+function MobileNav() {
   let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(false)
 
   return (
     <div className="text-sm font-normal text-gray-500 bg-gray-100 2xl:hidden">
-      <div className="pl-5 py-1 max-w-lg mx-auto">
+      <div className="pl-5 py-1 mx-auto md:hidden">
         <div className="flex items-center">
           Documentation
           <div className="ml-auto flex items-center">

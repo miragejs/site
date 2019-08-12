@@ -1,24 +1,12 @@
-import React, { useContext, useEffect } from "react"
+import React from "react"
 import { MDXProvider } from "@mdx-js/react"
 import BackgroundLines from "../assets/images/background-lines.svg"
 import BackgroundLinesLg from "../assets/images/background-lines-lg.svg"
 import SEO from "../components/seo"
 import Code from "../components/code"
 import SignupForm from "../components/signup-form"
-import { ThemeContext } from "./app"
 
 export default function IndexPage({ children }) {
-  // Need to rework this entire implementation. It's too slow. Need to use static props not state.
-  let { setTheme } = useContext(ThemeContext)
-
-  useEffect(() => {
-    setTheme("dark")
-
-    return () => {
-      setTheme("light")
-    }
-  })
-
   return (
     <div className="relative">
       <div className="absolute inset-x-0 overflow-hidden max-w-full flex justify-center -top-16 lg:top-0">

@@ -31,12 +31,12 @@ const routesService = new RoutesService()
 export const ThemeContext = React.createContext()
 
 export default function(props) {
-  let [theme, setTheme] = useState("light")
+  let theme = props.location.pathname === "/" ? "dark" : "light"
 
   routesService.activePath = props.location.pathname
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme }}>
       <Helmet>
         <html className={`${theme === "dark" ? "bg-gray-1000" : "bg-white"}`} />
       </Helmet>

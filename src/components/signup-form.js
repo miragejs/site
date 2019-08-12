@@ -96,7 +96,7 @@ function SignupForm() {
     <div className="relative">
       {didSignup && (
         <div
-          className={`text-lg text-gray-500 ${
+          className={`text-lg text-gray-500 font-medium ${
             isAnimatingFormOut ? "absolute" : ""
           } ${isShowingThankYou ? "opacity-100" : "opacity-0"}`}
           style={{

@@ -41,37 +41,15 @@ export default function DocsPage(props) {
       <MobileNav routesService={routesService} />
 
       <div className="flex-1 flex">
-        <div
-          className="flex-shrink-0 bg-gray-100 border-r border-gray-200 hidden 2xl:block"
-          style={{
-            width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
-            paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
-          }}
-        >
-          <nav className="pl-7 pt-14 pr-6 sticky top-0 leading-none h-screen overflow-y-scroll">
-            <ul className="mt-2">
-              {routesService.routesForFullPath("/docs").map(route => (
-                <li className="mb-8" key={route.fullPath}>
-                  <span className="text-gray-800 text-base+ font-medium">
-                    {route.label}
-                  </span>
-                  <ul className="ml-2 mt-2 font-normal leading-snug">
-                    {route.routes.map(route => (
-                      <NavLink fullPath={route.fullPath} key={route.fullPath}>
-                        {route.label}
-                      </NavLink>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+        <DesktopNav />
 
         <div
-          className="flex-1 max-w-full px-5 md:px-20 pt-7 md:pt-12 font-normal text-gray-700
+          className="flex-1 w-full max-w-lg mx-auto px-5 pt-7 font-normal text-gray-700
             text-base leading-copy
-            md:text-lg md:leading-relaxed"
+            sm:pt-8
+            md:text-lg md:leading-relaxed md:px-20 md:pt-12
+            md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl
+            "
         >
           <MDXProvider components={components}>{props.children}</MDXProvider>
         </div>
@@ -124,42 +102,12 @@ export default function DocsPage(props) {
   )
 }
 
-function NavLink({ fullPath, ...props }) {
-  const isPartiallyActive = ({ isPartiallyCurrent }) => {
-    return {
-      className: isPartiallyCurrent
-        ? "text-gray-900"
-        : "text-gray-600 hover:text-gray-900",
-    }
-  }
-
-  return (
-    <li className="py-1" key={props.route}>
-      <Link getProps={isPartiallyActive} to={fullPath} {...props} />
-    </li>
-  )
-}
-
-function MobileNavLink({ fullPath, ...otherProps }) {
-  const isPartiallyActive = ({ isPartiallyCurrent }) => {
-    return {
-      className: `block py-1 ${isPartiallyCurrent ? "text-gray-400" : ""}`,
-    }
-  }
-
-  return (
-    <li key={fullPath}>
-      <Link getProps={isPartiallyActive} to={fullPath} {...otherProps} />
-    </li>
-  )
-}
-
 function MobileNav({ routesService }) {
   let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(false)
 
   return (
-    <div className="text-sm font-normal pl-5 py-1 text-gray-500 bg-gray-100 2xl:hidden">
-      <div className="max-w-4xl mx-auto px-8">
+    <div className="text-sm font-normal text-gray-500 bg-gray-100 2xl:hidden">
+      <div className="pl-5 py-1 max-w-lg mx-auto">
         <div className="flex items-center">
           Documentation
           <div className="ml-auto flex items-center">
@@ -207,6 +155,70 @@ function MobileNav({ routesService }) {
         )}
       </div>
     </div>
+  )
+}
+
+function MobileNavLink({ fullPath, ...otherProps }) {
+  const isPartiallyActive = ({ isPartiallyCurrent }) => {
+    return {
+      className: `block py-1 ${isPartiallyCurrent ? "text-gray-400" : ""}`,
+    }
+  }
+
+  return (
+    <li key={fullPath}>
+      <Link getProps={isPartiallyActive} to={fullPath} {...otherProps} />
+    </li>
+  )
+}
+
+function DesktopNav() {
+  return (
+    <div
+      className="flex-shrink-0 bg-gray-100 border-r border-gray-200 hidden 2xl:block"
+      style={{
+        width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
+        paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
+      }}
+    >
+      <nav className="pl-7 pt-14 pr-6 sticky top-0 leading-none h-screen overflow-y-scroll">
+        <ul className="mt-2">
+          {routesService.routesForFullPath("/docs").map(route => (
+            <li className="mb-8" key={route.fullPath}>
+              <span className="text-gray-800 text-base+ font-medium">
+                {route.label}
+              </span>
+              <ul className="ml-2 mt-2 font-normal leading-snug">
+                {route.routes.map(route => (
+                  <DesktopNavLink
+                    fullPath={route.fullPath}
+                    key={route.fullPath}
+                  >
+                    {route.label}
+                  </DesktopNavLink>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  )
+}
+
+function DesktopNavLink({ fullPath, ...props }) {
+  const isPartiallyActive = ({ isPartiallyCurrent }) => {
+    return {
+      className: isPartiallyCurrent
+        ? "text-gray-900"
+        : "text-gray-600 hover:text-gray-900",
+    }
+  }
+
+  return (
+    <li className="py-1" key={props.route}>
+      <Link getProps={isPartiallyActive} to={fullPath} {...props} />
+    </li>
   )
 }
 

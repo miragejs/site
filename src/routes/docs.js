@@ -2,7 +2,6 @@ import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { ThreeColumnLayout } from "../components/three-column-layout"
 import { useRouter } from "../hooks/use-router"
-
 import useApiDocs from "../hooks/use-api-docs"
 
 export default function DocsPage(props) {

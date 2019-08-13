@@ -106,8 +106,12 @@ function Header() {
               >
                 Documentation
               </NavLink>
-              <NavLink to="/api">API</NavLink>
-              <NavLink to="/examples">Examples</NavLink>
+              <NavLink to="/api" activeFor="/api/*">
+                API
+              </NavLink>
+              <NavLink to="/examples/main/react" activeFor="/examples/*">
+                Examples
+              </NavLink>
 
               <div className="ml-auto">
                 <a

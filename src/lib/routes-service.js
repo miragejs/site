@@ -28,26 +28,50 @@ export default class {
             { label: "Usage", name: "usage", path: "/usage" },
           ],
         },
-        {
-          name: "examples",
-          path: "/examples",
-          label: "Examples",
-          routes: [
-            { label: "React", name: "react", path: "/react" },
-            { label: "Vue", name: "vue", path: "/vue" },
-          ],
-        },
       ],
     },
     {
       label: "API",
       name: "api",
       path: "/api",
+      routes: [
+        {
+          label: "Main section",
+          name: "main",
+          path: "/main",
+          routes: [
+            {
+              label: "Some class",
+              name: "some-class",
+              path: "/some-class",
+            },
+          ],
+        },
+      ],
     },
     {
       label: "Examples",
       name: "examples",
-      path: "examples",
+      path: "/examples",
+      routes: [
+        {
+          label: "Main",
+          name: "main",
+          path: "/main",
+          routes: [
+            {
+              label: "React",
+              name: "react",
+              path: "/react",
+            },
+            {
+              label: "Vue",
+              name: "vue",
+              path: "/vue",
+            },
+          ],
+        },
+      ],
     },
   ]
 

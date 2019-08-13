@@ -64,38 +64,36 @@ export function DesktopRightNav(props) {
         paddingRight: `calc((100% - 1408px)/ 2)`,
       }}
     >
-      <div className="pr-8">
-        <nav className="mt-32 ml-8 sticky">
-          {props.currentPageTableOfContentsItems && (
-            <>
-              <p className="uppercase text-xs text-gray-800 font-medium tracking-wider">
-                On this page
-              </p>
+      {props.currentPageTableOfContentsItems.length ? (
+        <div className="pr-8">
+          <nav className="mt-32 ml-8 sticky">
+            <p className="uppercase text-xs text-gray-800 font-medium tracking-wider">
+              On this page
+            </p>
 
-              <ul className="mt-2 font-normal text-sm">
-                {props.currentPageTableOfContentsItems.map(item => (
-                  <li key={item.url} className="my-2 font-medium text-blue-500">
-                    {item.title}
+            <ul className="mt-2 font-normal text-sm">
+              {props.currentPageTableOfContentsItems.map(item => (
+                <li key={item.url} className="my-2 font-medium text-blue-500">
+                  {item.title}
 
-                    {item.items && (
-                      <ul className="pl-4">
-                        {item.items.map(item => (
-                          <li
-                            key={item.url}
-                            className="my-2 font-medium text-blue-500"
-                          >
-                            {item.title}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-        </nav>
-      </div>
+                  {item.items && (
+                    <ul className="pl-4">
+                      {item.items.map(item => (
+                        <li
+                          key={item.url}
+                          className="my-2 font-medium text-blue-500"
+                        >
+                          {item.title}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      ) : null}
     </div>
   )
 }

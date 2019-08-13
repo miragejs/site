@@ -7,7 +7,7 @@ const routesService = new RoutesService()
 
 export default function DocsPage(props) {
   return (
-    <ThreeColumnLayout routes={routesService.routesForFullPath("/examples")}>
+    <ThreeColumnLayout routes={routesService.routesForFullPath("/api")}>
       {props.children}
     </ThreeColumnLayout>
   )

@@ -47,7 +47,7 @@ export default function DocsPage(props) {
           className="flex-1 w-full max-w-lg mx-auto px-5 pt-7 font-normal text-gray-700
             text-base leading-copy
             sm:pt-8
-            md:text-lg md:leading-relaxed md:px-20 md:pt-12
+            md:text-lg md:leading-relaxed md:px-20 md:pt-8
             md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl
             "
         >
@@ -106,29 +106,33 @@ function MobileNav() {
   let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(false)
 
   return (
-    <div className="text-sm font-normal text-gray-500 bg-gray-100 2xl:hidden">
-      <div className="pl-5 py-1 mx-auto md:hidden">
-        <div className="flex items-center">
-          Documentation
-          <div className="ml-auto flex items-center">
-            <button
-              onClick={() =>
-                setMobileSecondaryNavIsOpen(!mobileSecondaryNavIsOpen)
-              }
-              className="flex items-center px-5 py-3 focus:outline-none"
-            >
-              <span
-                style={{
-                  transform: mobileSecondaryNavIsOpen ? "rotate(180deg)" : "",
-                }}
-              >
-                <CaretDownWide className="w-4 h-4" />
-              </span>
-            </button>
-          </div>
-        </div>
+    <div
+      className="
+      sm:max-w-lg sm:mx-auto sm:px-5 sm:mt-8
+      md:max-w-3xl md:px-20 md:pt-4
+      2xl:hidden
+    "
+    >
+      <div
+        className="text-sm font-normal text-gray-500 bg-gray-100
+          sm:border
+        "
+      >
+        <button
+          className="w-full px-5 py-3 flex items-center justify-between focus:outline-none"
+          onClick={() => setMobileSecondaryNavIsOpen(!mobileSecondaryNavIsOpen)}
+        >
+          <span>Documentation</span>
+          <span
+            style={{
+              transform: mobileSecondaryNavIsOpen ? "rotate(180deg)" : "",
+            }}
+          >
+            <CaretDownWide className="w-4 h-4" />
+          </span>
+        </button>
         {mobileSecondaryNavIsOpen && (
-          <div className="pt-1 pr-5">
+          <div className="px-5 border-b border-gray-200 sm:border-none">
             <nav className="border-t border-gray-200 pt-5 pb-4 text-gray-700 text-base">
               <ul className="pt-2w">
                 {routesService.routesForFullPath("/docs").map(route => (

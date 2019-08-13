@@ -102,9 +102,9 @@ function Header() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex md:items-center md:w-full">
-          <NavLink to="/docs/getting-started/introduction">
-            Documentation
-          </NavLink>
+          <NavLink to="/docs">Documentation</NavLink>
+          <NavLink to="/api">API</NavLink>
+          <NavLink to="/examples">Examples</NavLink>
 
           <div className="ml-auto">
             <a

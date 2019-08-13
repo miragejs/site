@@ -40,7 +40,13 @@ export default class {
       ],
     },
     {
+      label: "API",
+      name: "api",
+      path: "/api",
+    },
+    {
       label: "Examples",
+      name: "examples",
       path: "examples",
     },
   ]

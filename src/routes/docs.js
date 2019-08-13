@@ -44,25 +44,33 @@ export default function DocsPage(props) {
         <DesktopNav />
 
         <div
-          className="flex-1 w-full max-w-lg mx-auto px-5 pt-7 font-normal text-gray-700
+          className="flex-1 w-full px-5 pt-7 font-normal text-gray-700
             text-base leading-copy
             sm:pt-8
-            md:text-lg md:leading-relaxed md:px-20 md:pt-8
-            md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl
-            "
+            md:leading-relaxed md:pt-8 md:px-20
+            lg:pt-12
+          "
         >
-          <MDXProvider components={components}>{props.children}</MDXProvider>
+          <div
+            className="max-w-md mx-auto
+            md:max-w-2xl md:text-lg
+            lg:ml-0
+            xl:mx-auto
+          "
+          >
+            <MDXProvider components={components}>{props.children}</MDXProvider>
+          </div>
         </div>
 
         <div
-          className="hidden 2xl:block flex-shrink-0"
+          className="hidden xl:block flex-shrink-0"
           style={{
             width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
             paddingRight: `calc((100% - 1408px)/ 2)`,
           }}
         >
           <div className="pr-8">
-            <nav className="mt-32 ml-8 pl-6 sticky">
+            <nav className="mt-32 ml-8 sticky">
               {tableOfContentsItems && (
                 <>
                   <p className="uppercase text-xs text-gray-800 font-medium tracking-wider">
@@ -106,57 +114,60 @@ function MobileNav() {
   let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(false)
 
   return (
-    <div
-      className="
-      sm:max-w-lg sm:mx-auto sm:px-5 sm:pt-8
-      md:max-w-3xl md:px-20 md:pt-12
-      2xl:hidden
-    "
-    >
+    <div className="md:px-20 lg:hidden">
       <div
-        className="text-sm font-normal text-gray-500 bg-gray-100
-          sm:border
+        className="
+          sm:max-w-md sm:mx-auto sm:pt-8
+          md:max-w-2xl md:pt-12
         "
       >
-        <button
-          className="w-full px-5 py-3 flex items-center justify-between focus:outline-none"
-          onClick={() => setMobileSecondaryNavIsOpen(!mobileSecondaryNavIsOpen)}
+        <div
+          className="text-sm font-normal text-gray-500 bg-gray-100
+          sm:border
+        "
         >
-          <span>Contents</span>
-          <span
-            style={{
-              transform: mobileSecondaryNavIsOpen ? "rotate(180deg)" : "",
-            }}
+          <button
+            className="w-full px-5 py-3 flex items-center justify-between focus:outline-none"
+            onClick={() =>
+              setMobileSecondaryNavIsOpen(!mobileSecondaryNavIsOpen)
+            }
           >
-            <CaretDownWide className="w-4 h-4" />
-          </span>
-        </button>
-        {mobileSecondaryNavIsOpen && (
-          <div className="px-5 border-b border-gray-200 sm:border-none">
-            <nav className="border-t border-gray-200 pt-5 pb-4 text-gray-700 text-base">
-              <ul className="pt-2w">
-                {routesService.routesForFullPath("/docs").map(route => (
-                  <li className="mb-5" key={route.fullPath}>
-                    <div className="uppercase text-gray-400 text-sm font-medium">
-                      {route.label}
-                    </div>
-                    <ul>
-                      {route.routes.map(route => (
-                        <MobileNavLink
-                          fullPath={route.fullPath}
-                          key={route.fullPath}
-                          onClick={() => setMobileSecondaryNavIsOpen(false)}
-                        >
-                          {route.label}
-                        </MobileNavLink>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-        )}
+            <span>Contents</span>
+            <span
+              style={{
+                transform: mobileSecondaryNavIsOpen ? "rotate(180deg)" : "",
+              }}
+            >
+              <CaretDownWide className="w-4 h-4" />
+            </span>
+          </button>
+          {mobileSecondaryNavIsOpen && (
+            <div className="px-5 border-b border-gray-200 sm:border-none">
+              <nav className="border-t border-gray-200 pt-5 pb-4 text-gray-700 text-base">
+                <ul className="pt-2w">
+                  {routesService.routesForFullPath("/docs").map(route => (
+                    <li className="mb-5" key={route.fullPath}>
+                      <div className="uppercase text-gray-400 text-sm font-medium">
+                        {route.label}
+                      </div>
+                      <ul>
+                        {route.routes.map(route => (
+                          <MobileNavLink
+                            fullPath={route.fullPath}
+                            key={route.fullPath}
+                            onClick={() => setMobileSecondaryNavIsOpen(false)}
+                          >
+                            {route.label}
+                          </MobileNavLink>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -179,13 +190,13 @@ function MobileNavLink({ fullPath, ...otherProps }) {
 function DesktopNav() {
   return (
     <div
-      className="flex-shrink-0 bg-gray-100 border-r border-gray-200 hidden 2xl:block"
+      className="flex-shrink-0 bg-gray-100 border-r border-gray-200 hidden lg:block min-w-56"
       style={{
         width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
         paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
       }}
     >
-      <nav className="pl-7 pt-14 pr-6 sticky top-0 leading-none h-screen overflow-y-scroll">
+      <nav className="px-8 pt-8 xl:pt-14 sticky top-0 leading-none h-screen overflow-y-scroll">
         <ul className="mt-2">
           {routesService.routesForFullPath("/docs").map(route => (
             <li className="mb-8" key={route.fullPath}>

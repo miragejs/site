@@ -114,6 +114,9 @@ module.exports = {
         "4-75xl": "2.75rem",
         "5-5xl": "3.5rem",
       },
+      minWidth: {
+        "56": "16rem",
+      },
       maxWidth: {
         "1-5xl": "40rem",
         "7xl": "80rem",

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useLayoutEffect } from "react"
+import React, { useState, useContext } from "react"
 import { Router, Link, Redirect, Match } from "@reach/router"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
@@ -43,15 +43,7 @@ export default function(props) {
       </Helmet>
 
       <div className="antialiased text-gray-700 font-body font-light leading-normal min-h-screen flex flex-col">
-        <div
-          className={`relative z-10 ${
-            theme === "dark" ? "bg-gray-1000" : "bg-white shadow"
-          }`}
-        >
-          <div className="mx-auto lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl md:px-8">
-            <Header />
-          </div>
-        </div>
+        <Header />
 
         <main className="flex-1 flex flex-col">
           <Outlet />
@@ -66,96 +58,107 @@ function Header() {
   let [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
 
   return (
-    <header
-      className={`
-        ${isShowingMobileNav && theme === "dark" ? "bg-gray-900" : ""}
-      `}
+    <div
+      className={`relative z-10 ${
+        theme === "dark" ? "bg-gray-1000" : "bg-white shadow"
+      }`}
     >
-      <div className="flex items-center">
-        <Link
-          to="/"
-          className="px-5 py-3 md:px-0 2xl:py-2 2xl:px-0"
-          onClick={() => setIsShowingMobileNav(false)}
+      <div className="mx-auto max-w-8xl md:px-8">
+        <header
+          className={`lg:py-2
+            ${isShowingMobileNav && theme === "dark" ? "bg-gray-900" : ""}
+          `}
         >
-          <Logo
-            className={`w-8 h-8 ${
-              theme === "dark" ? "text-green-500" : "text-gray-900"
-            }`}
-          />
-        </Link>
-
-        {/* Mobile nav button */}
-        <div className="ml-auto md:hidden">
-          <button
-            onClick={() => setIsShowingMobileNav(!isShowingMobileNav)}
-            className={`flex px-5 py-3 2xl:py-2 items-center focus:outline-none ${
-              themeClasses[theme]["inactive"]
-            } lg:hidden `}
-          >
-            {isShowingMobileNav ? (
-              <Close className="w-4 h-4" />
-            ) : (
-              <Menu className="w-4 h-4" />
-            )}
-          </button>
-        </div>
-
-        {/* Desktop nav */}
-        <div className="hidden md:flex md:items-center md:w-full">
-          <NavLink to="/docs/getting-started/introduction" activeFor="/docs/*">
-            Documentation
-          </NavLink>
-          <NavLink to="/api">API</NavLink>
-          <NavLink to="/examples">Examples</NavLink>
-
-          <div className="ml-auto">
-            <a
-              href="https://github.com/miragejs/server"
-              className={themeClasses[theme]["inactive"]}
+          <div className="flex items-center">
+            <Link
+              to="/"
+              className="px-5 py-3 md:px-0"
+              onClick={() => setIsShowingMobileNav(false)}
             >
-              <svg
-                className="fill-current h-6"
-                viewBox="0 0 16 16"
-                version="1.1"
-                aria-hidden="true"
+              <Logo
+                className={`w-8 h-8 ${
+                  theme === "dark" ? "text-green-500" : "text-gray-900"
+                }`}
+              />
+            </Link>
+
+            {/* Mobile nav button */}
+            <div className="ml-auto md:hidden">
+              <button
+                onClick={() => setIsShowingMobileNav(!isShowingMobileNav)}
+                className={`flex px-5 py-3 2xl:py-2 items-center focus:outline-none ${
+                  themeClasses[theme]["inactive"]
+                } lg:hidden `}
               >
-                <path
-                  fillRule="evenodd"
-                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-                ></path>
-              </svg>
-            </a>
+                {isShowingMobileNav ? (
+                  <Close className="w-4 h-4" />
+                ) : (
+                  <Menu className="w-4 h-4" />
+                )}
+              </button>
+            </div>
+
+            {/* Desktop nav */}
+            <div className="hidden md:flex md:items-center md:w-full">
+              <NavLink
+                to="/docs/getting-started/introduction"
+                activeFor="/docs/*"
+              >
+                Documentation
+              </NavLink>
+              <NavLink to="/api">API</NavLink>
+              <NavLink to="/examples">Examples</NavLink>
+
+              <div className="ml-auto">
+                <a
+                  href="https://github.com/miragejs/server"
+                  className={themeClasses[theme]["inactive"]}
+                >
+                  <svg
+                    className="fill-current h-6"
+                    viewBox="0 0 16 16"
+                    version="1.1"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+                    ></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
-        </div>
+
+          {/* Mobile nav */}
+          {isShowingMobileNav && (
+            <nav className="font-medium text-lg">
+              <div
+                className={`border-t border-b ${
+                  theme === "dark" ? "border-gray-800" : "border-gray-200"
+                }`}
+              >
+                <MobileNavLink
+                  to="/docs/getting-started/introduction"
+                  onClick={() => setIsShowingMobileNav(false)}
+                >
+                  Documentation
+                </MobileNavLink>
+              </div>
+
+              <div>
+                <MobileNavLink
+                  to="https://github.com/miragejs/server"
+                  onClick={() => setIsShowingMobileNav(false)}
+                >
+                  GitHub
+                </MobileNavLink>
+              </div>
+            </nav>
+          )}
+        </header>
       </div>
-
-      {/* Mobile nav */}
-      {isShowingMobileNav && (
-        <nav className="font-medium text-lg">
-          <div
-            className={`border-t border-b ${
-              theme === "dark" ? "border-gray-800" : "border-gray-200"
-            }`}
-          >
-            <MobileNavLink
-              to="/docs/getting-started/introduction"
-              onClick={() => setIsShowingMobileNav(false)}
-            >
-              Documentation
-            </MobileNavLink>
-          </div>
-
-          <div>
-            <MobileNavLink
-              to="https://github.com/miragejs/server"
-              onClick={() => setIsShowingMobileNav(false)}
-            >
-              GitHub
-            </MobileNavLink>
-          </div>
-        </nav>
-      )}
-    </header>
+    </div>
   )
 }
 

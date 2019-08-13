@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react"
-import { Router, Link, navigate, redirectTo } from "@reach/router"
+import { Router, Link, Redirect } from "@reach/router"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
 import RoutesService from "../lib/routes-service"
@@ -29,18 +29,12 @@ const themeClasses = {
 
 const routesService = new RoutesService()
 
-export const ThemeContext = React.createContext()
+export const ThemeContext = React.createContext({ theme: "light" })
 
 export default function(props) {
   let theme = props.location.pathname === "/" ? "dark" : "light"
 
   routesService.activePath = props.location.pathname
-
-  console.log(props.location.pathname)
-  // debugger
-  if (props.location.pathname === "/docs") {
-    navigate("/docs/getting-started/introduction")
-  }
 
   return (
     <ThemeContext.Provider value={{ theme }}>
@@ -236,5 +230,10 @@ function Outlet() {
     })
   }
 
-  return <Router>{renderRoutes(routesService.routes)}</Router>
+  return (
+    <Router>
+      <Redirect from="/docs" to="/docs/getting-started/introduction" noThrow />
+      {renderRoutes(routesService.routes)}
+    </Router>
+  )
 }

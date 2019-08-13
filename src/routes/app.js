@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react"
-import { Router, Link } from "@reach/router"
+import { Router, Link, navigate, redirectTo } from "@reach/router"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
 import RoutesService from "../lib/routes-service"
@@ -35,6 +35,12 @@ export default function(props) {
   let theme = props.location.pathname === "/" ? "dark" : "light"
 
   routesService.activePath = props.location.pathname
+
+  console.log(props.location.pathname)
+  // debugger
+  if (props.location.pathname === "/docs") {
+    navigate("/docs/getting-started/introduction")
+  }
 
   return (
     <ThemeContext.Provider value={{ theme }}>

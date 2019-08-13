@@ -43,6 +43,7 @@ exports.createPages = ({ actions }) => {
   createRedirect({
     fromPath: `/docs`,
     toPath: `/docs/getting-started/introduction`,
+    // redirectInBrowser: true,
   })
 
   const createPageForAdam = function(options) {
@@ -55,6 +56,7 @@ exports.createPages = ({ actions }) => {
 
   createPageForAdam({ path: "/" })
   // createPageForAdam({ path: "/docs" })
+  createPageForAdam({ path: "/docs/getting-started/introduction" })
 }
 
 // const esdoc = require("esdoc").default

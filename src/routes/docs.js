@@ -122,7 +122,7 @@ function MobileNav() {
           className="w-full px-5 py-3 flex items-center justify-between focus:outline-none"
           onClick={() => setMobileSecondaryNavIsOpen(!mobileSecondaryNavIsOpen)}
         >
-          <span>Documentation</span>
+          <span>Contents</span>
           <span
             style={{
               transform: mobileSecondaryNavIsOpen ? "rotate(180deg)" : "",

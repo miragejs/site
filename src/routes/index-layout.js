@@ -17,7 +17,7 @@ export default function IndexPage({ children }) {
       <div className="relative z-10">
         <SEO />
 
-        <div className="">
+        <div className="bg-gray-1000">
           <div className="px-5 md:px-8 max-w-lg md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl mx-auto">
             <section className="pt-12 lg:pt-16 2xl:pt-24 pb-20 md:pb-32 xl:pb-40 2xl:pb-48">
               <h1

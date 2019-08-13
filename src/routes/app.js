@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react"
-import { Router, Link, Redirect } from "@reach/router"
+import { Router, Link, Redirect, Match } from "@reach/router"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
 import RoutesService from "../lib/routes-service"
@@ -48,7 +48,11 @@ export default function(props) {
             theme === "light" ? "bg-white shadow" : ""
           }`}
         >
-          <div className="mx-auto lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl md:px-8">
+          <div
+            className={`mx-auto lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl md:px-8 ${
+              theme === "dark" ? "bg-gray-1000" : ""
+            }`}
+          >
             <Header />
           </div>
         </div>
@@ -102,7 +106,9 @@ function Header() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex md:items-center md:w-full">
-          <NavLink to="/docs">Documentation</NavLink>
+          <NavLink to="/docs/getting-started/introduction" activeFor="/docs/*">
+            Documentation
+          </NavLink>
           <NavLink to="/api">API</NavLink>
           <NavLink to="/examples">Examples</NavLink>
 
@@ -199,17 +205,25 @@ function MobileNavLink(props) {
   return link
 }
 
-function NavLink(props) {
+function NavLink({ activeFor, ...props }) {
   const { theme } = useContext(ThemeContext)
-  const isPartiallyActive = ({ isPartiallyCurrent }) => {
-    let state = isPartiallyCurrent ? "active" : "inactive"
 
-    return {
-      className: `ml-12 font-medium ${themeClasses[theme][state]}`,
-    }
-  }
+  activeFor = activeFor || props.to
 
-  return <Link getProps={isPartiallyActive} {...props} />
+  return (
+    <Match path={activeFor}>
+      {({ match }) => {
+        let state = match ? "active" : "inactive"
+
+        return (
+          <Link
+            {...props}
+            className={`ml-12 font-medium ${themeClasses[theme][state]}`}
+          />
+        )
+      }}
+    </Match>
+  )
 }
 
 function Outlet() {

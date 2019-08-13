@@ -108,8 +108,8 @@ function MobileNav() {
   return (
     <div
       className="
-      sm:max-w-lg sm:mx-auto sm:px-5 sm:mt-8
-      md:max-w-3xl md:px-20 md:pt-4
+      sm:max-w-lg sm:mx-auto sm:px-5 sm:pt-8
+      md:max-w-3xl md:px-20 md:pt-12
       2xl:hidden
     "
     >

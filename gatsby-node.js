@@ -40,11 +40,11 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
 exports.createPages = ({ actions }) => {
   const { createPage, createRedirect } = actions
 
-  createRedirect({
-    fromPath: `/docs`,
-    toPath: `/docs/getting-started/introduction`,
-    // redirectInBrowser: true,
-  })
+  // createRedirect({
+  //   fromPath: `/one`,
+  //   toPath: `/one/two/three`,
+  //   redirectInBrowser: true,
+  // })
 
   const createPageForAdam = function(options) {
     return createPage({

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useLayoutEffect } from "react"
 import { Router, Link, Redirect, Match } from "@reach/router"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
@@ -45,14 +45,10 @@ export default function(props) {
       <div className="antialiased text-gray-700 font-body font-light leading-normal min-h-screen flex flex-col">
         <div
           className={`relative z-10 ${
-            theme === "light" ? "bg-white shadow" : ""
+            theme === "dark" ? "bg-gray-1000" : "bg-white shadow"
           }`}
         >
-          <div
-            className={`mx-auto lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl md:px-8 ${
-              theme === "dark" ? "bg-gray-1000" : ""
-            }`}
-          >
+          <div className="mx-auto lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl md:px-8">
             <Header />
           </div>
         </div>

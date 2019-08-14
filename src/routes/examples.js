@@ -1,13 +1,12 @@
 import React from "react"
 import { ThreeColumnLayout } from "../components/three-column-layout"
-import { Router } from "../lib/router"
-
-// This is weird
-const routesService = new Router()
+import { useRouter } from "../hooks/use-router";
 
 export default function DocsPage(props) {
+  let router = useRouter()
+
   return (
-    <ThreeColumnLayout routes={routesService.routesForFullPath("/examples")}>
+    <ThreeColumnLayout routes={router.routesForFullPath("/examples")}>
       {props.children}
     </ThreeColumnLayout>
   )

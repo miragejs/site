@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react"
-import { Router as ReachRouter, Link, Redirect, Match } from "@reach/router"
+import { Router, Link, Redirect, Match } from "@reach/router"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
-import { Router } from "../lib/router"
 import { Close, Menu } from "../components/icons"
+import { useRouter } from "../hooks/use-router"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -30,9 +30,8 @@ const themeClasses = {
 export const RouterContext = React.createContext()
 export const ThemeContext = React.createContext({ theme: "light" })
 
-const router = new Router()
-
 export default function(props) {
+  let router = useRouter()
   let theme = props.location.pathname === "/" ? "dark" : "light"
 
   router.activePath = props.location.pathname
@@ -111,12 +110,12 @@ function Header() {
               >
                 Documentation
               </NavLink>
-              {/* <NavLink to="/api" activeFor="/api/*">
+              <NavLink to="/api" activeFor="/api/*">
                 API
               </NavLink>
               <NavLink to="/examples/main/react" activeFor="/examples/*">
                 Examples
-              </NavLink> */}
+              </NavLink>
 
               <div className="ml-auto">
                 <a
@@ -235,6 +234,8 @@ function NavLink({ activeFor, ...props }) {
 }
 
 function Outlet() {
+  let router = useRouter()
+
   function renderRoutes(routes) {
     return routes.map(route => {
       let explicitComponent =
@@ -253,9 +254,9 @@ function Outlet() {
   }
 
   return (
-    <ReachRouter>
+    <Router>
       <Redirect from="/docs" to="/docs/getting-started/introduction" noThrow />
       {renderRoutes(router.routes)}
-    </ReachRouter>
+    </Router>
   )
 }

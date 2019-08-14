@@ -1,11 +1,11 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { ThreeColumnLayout } from "../components/three-column-layout"
-import { useRouter } from "./useRouter";
+import { useRouter } from "../hooks/use-router"
 
 export default function DocsPage(props) {
-  let routesService = useRouter()
-  
+  let router = useRouter()
+
   const data = useStaticQuery(graphql`
     query OnThisPageQuery {
       allMdx {
@@ -32,7 +32,7 @@ export default function DocsPage(props) {
   // TODO: UPDATE ME from routes= to router=
   return (
     <ThreeColumnLayout
-      routes={routesService.routerFor("/docs")}
+      router={router.routerFor("/docs")}
       currentPageTableOfContentsItems={tableOfContentsItems}
     >
       {props.children}

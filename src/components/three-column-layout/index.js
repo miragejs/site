@@ -14,11 +14,11 @@ export function ThreeColumnLayout(props) {
 
   return (
     <div className="bg-white">
-      <MobileNav routes={props.routes} />
+      <MobileNav routes={props.router} />
 
       <div className="flex-1 flex">
         <DesktopLeftNav
-          routes={props.routes}
+          routes={props.router}
           currentPageTableOfContentsItems={currentPageTableOfContentsItems}
         />
 

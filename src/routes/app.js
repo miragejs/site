@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react"
-import { Router, Link, Redirect, Match } from "@reach/router"
+import { Router as ReachRouter, Link, Redirect, Match } from "@reach/router"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
-import RoutesService from "../lib/routes-service"
+import { Router } from "../lib/router"
 import { Close, Menu } from "../components/icons"
 
 // Glob import all components in the route directory
@@ -27,29 +27,34 @@ const themeClasses = {
   },
 }
 
-const routesService = new RoutesService()
-
+export const RouterContext = React.createContext()
 export const ThemeContext = React.createContext({ theme: "light" })
+
+const router = new Router()
 
 export default function(props) {
   let theme = props.location.pathname === "/" ? "dark" : "light"
 
-  routesService.activePath = props.location.pathname
+  router.activePath = props.location.pathname
 
   return (
-    <ThemeContext.Provider value={{ theme }}>
-      <Helmet>
-        <html className={`${theme === "dark" ? "bg-gray-1000" : "bg-white"}`} />
-      </Helmet>
+    <RouterContext.Provider value={router}>
+      <ThemeContext.Provider value={{ theme }}>
+        <Helmet>
+          <html
+            className={`${theme === "dark" ? "bg-gray-1000" : "bg-white"}`}
+          />
+        </Helmet>
 
-      <div className="antialiased text-gray-700 font-body font-light leading-normal min-h-screen flex flex-col">
-        <Header />
+        <div className="antialiased text-gray-700 font-body font-light leading-normal min-h-screen flex flex-col">
+          <Header />
 
-        <main className="flex-1 flex flex-col">
-          <Outlet />
-        </main>
-      </div>
-    </ThemeContext.Provider>
+          <main className="flex-1 flex flex-col">
+            <Outlet />
+          </main>
+        </div>
+      </ThemeContext.Provider>
+    </RouterContext.Provider>
   )
 }
 
@@ -248,9 +253,9 @@ function Outlet() {
   }
 
   return (
-    <Router>
+    <ReachRouter>
       <Redirect from="/docs" to="/docs/getting-started/introduction" noThrow />
-      {renderRoutes(routesService.routes)}
-    </Router>
+      {renderRoutes(router.routes)}
+    </ReachRouter>
   )
 }

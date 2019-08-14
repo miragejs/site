@@ -31,7 +31,7 @@ export default function DocsPage(props) {
 
   return (
     <ThreeColumnLayout
-      routes={routesService.routesForFullPath("/docs")}
+      router={routesService.routerFor("/docs")}
       currentPageTableOfContentsItems={tableOfContentsItems}
     >
       {props.children}

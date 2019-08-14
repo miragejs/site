@@ -1,10 +1,14 @@
-import React from "react"
+import React, { useContext } from "react"
 import { DesktopLeftNav, DesktopRightNav } from "./desktop-nav"
 import { MobileNav } from "./mobile-nav"
 import { MDXProvider } from "@mdx-js/react"
+import { Link } from "@reach/router"
 import Code from "../code"
+import { RoutesServiceContext } from "../../routes/app"
 
 export function ThreeColumnLayout(props) {
+  let routesService = useContext(RoutesServiceContext)
+
   let currentPageTableOfContentsItems =
     props.currentPageTableOfContentsItems || []
 
@@ -34,6 +38,11 @@ export function ThreeColumnLayout(props) {
           "
           >
             <MDXProvider components={components}>{props.children}</MDXProvider>
+
+            <div className="pt-4 pb-8 flex justify-between">
+              <Link to={routesService.previousRoute.fullPath}>Previous</Link>
+              <Link to={routesService.nextRoute.fullPath}>Next</Link>
+            </div>
           </div>
         </div>
 

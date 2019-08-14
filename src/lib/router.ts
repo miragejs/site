@@ -74,6 +74,19 @@ const allRoutes: RouteDefinition[] = [
   },
 ]
 
+function transformRoutes(routes = [], pathPrefix = "", namePrefix = "") {
+  return routes.map(route => {
+    let fullPath = `${pathPrefix}${route.path}`
+    let fullName = `${namePrefix ? namePrefix + "." : ""}${route.name}`
+
+    route.fullPath = fullPath
+    route.fullName = fullName
+    route.routes = transformRoutes(route.routes, fullPath, fullName)
+
+    return route
+  }, [])
+}
+
 interface RouteDefinition {
   label: string
   name: string
@@ -84,6 +97,7 @@ interface RouteDefinition {
 interface Route {
   label: string
   name: string
+  fullName: string
   path: string
   fullPath: string
   routes: Routes
@@ -92,35 +106,26 @@ interface Route {
 type Routes = Route[]
 
 export class Router {
-  private _routes: RouteDefinition[]
   private _flattenedRoutes: Routes
 
   activePath: String
+  routes: Route[]
+  rootRouter: Router
 
-  constructor() {
-    this._routes = allRoutes
-  }
-
-  // Transform _routes to include fullPath
-  get routes(): Routes {
-    function transformRoutes(routes = [], pathPrefix = "", namePrefix = "") {
-      return routes.map(route => {
-        let fullPath = `${pathPrefix}${route.path}`
-        let fullName = `${namePrefix ? namePrefix + "." : ""}${route.name}`
-
-        route.fullPath = fullPath
-        route.fullName = fullName
-        route.routes = transformRoutes(route.routes, fullPath, fullName)
-
-        return route
-      }, [])
+  constructor(routes?: Route[], rootRouter?: Router) {
+    if (routes) {
+      this.routes = routes
+    } else {
+      this.routes = transformRoutes(allRoutes)
     }
 
-    return transformRoutes(this._routes)
+    if (rootRouter) {
+      this.rootRouter = rootRouter
+    }
   }
 
   // Flatten all routes
-  get flattenedRoutes(): Routes  {
+  get flattenedRoutes(): Routes {
     if (!this._flattenedRoutes) {
       function flatten(routes = []) {
         return routes.reduce((flattenedRoutes, { routes, ...rest }) => {
@@ -136,27 +141,49 @@ export class Router {
 
   // Return the active route
   get activeRoute(): Route {
-    return this.flattenedRoutes.find(route => {
-      return route.fullPath.match(this.activePath.replace(/\/+$/, ""))
-    })
+    if (this.rootRouter) {
+      return this.rootRouter.activeRoute
+    } else {
+      return this.flattenedRoutes.find(route => {
+        return route.fullPath.match(this.activePath.replace(/\/+$/, ""))
+      })
+    }
   }
 
   // Return the previous route
   get previousRoute(): Route {
-    let currentIndex = this.flattenedRoutes.indexOf(this.activeRoute)
+    let match = this.flattenedRoutes.find(
+      route => route.fullName === this.activeRoute.fullName
+    )
 
-    return this.flattenedRoutes[currentIndex - 1]
+    if (match) {
+      let currentIndex = this.flattenedRoutes.indexOf(match)
+      let hasPreviousRoute = currentIndex > 0
+
+      return hasPreviousRoute && this.flattenedRoutes[currentIndex - 1]
+    }
   }
 
   // Return the next route
   get nextRoute(): Route {
-    let currentIndex = this.flattenedRoutes.indexOf(this.activeRoute)
+    let match = this.flattenedRoutes.find(
+      route => route.fullName === this.activeRoute.fullName
+    )
 
-    return this.flattenedRoutes[currentIndex + 1]
+    if (match) {
+      let currentIndex = this.flattenedRoutes.indexOf(match)
+      let hasNextRoute = currentIndex < this.flattenedRoutes.length
+
+      return hasNextRoute && this.flattenedRoutes[currentIndex + 1]
+    }
   }
 
   // Return a subtree of routes under a path
   routerFor(fullPath) {
-    return this.routes.find(route => route.fullPath === fullPath).routes
+    let routesForSubtree = this.routes.find(
+      route => route.fullPath === fullPath
+    ).routes
+
+    return new Router(routesForSubtree, this)
   }
 }

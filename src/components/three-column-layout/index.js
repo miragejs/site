@@ -1,24 +1,21 @@
-import React, { useContext } from "react"
+import React from "react"
 import { DesktopLeftNav, DesktopRightNav } from "./desktop-nav"
 import { MobileNav } from "./mobile-nav"
 import { MDXProvider } from "@mdx-js/react"
 import { Link } from "@reach/router"
 import Code from "../code"
-import { RouterContext } from "../../routes/app"
 
 export function ThreeColumnLayout(props) {
-  let routesService = useContext(RouterContext)
-
   let currentPageTableOfContentsItems =
     props.currentPageTableOfContentsItems || []
 
   return (
     <div className="bg-white">
-      <MobileNav routes={props.router} />
+      <MobileNav routes={props.router.routes} />
 
       <div className="flex-1 flex">
         <DesktopLeftNav
-          routes={props.router}
+          routes={props.router.routes}
           currentPageTableOfContentsItems={currentPageTableOfContentsItems}
         />
 
@@ -40,8 +37,16 @@ export function ThreeColumnLayout(props) {
             <MDXProvider components={components}>{props.children}</MDXProvider>
 
             <div className="pt-4 pb-8 flex justify-between">
-              <Link to={routesService.previousRoute.fullPath}>Previous</Link>
-              <Link to={routesService.nextRoute.fullPath}>Next</Link>
+              <div>
+                {props.router.previousRoute ? (
+                  <Link to={props.router.previousRoute.fullPath}>Previous</Link>
+                ) : null}
+              </div>
+              <div>
+                {props.router.nextRoute ? (
+                  <Link to={props.router.nextRoute.fullPath}>Next</Link>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>

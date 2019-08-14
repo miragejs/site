@@ -136,7 +136,7 @@ export class Router {
   }
 
   // Return a subtree of routes under a path
-  routesForFullPath(fullPath) {
+  routerFor(fullPath) {
     return this.routes.find(route => route.fullPath === fullPath).routes
   }
 }

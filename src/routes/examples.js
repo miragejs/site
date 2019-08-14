@@ -1,9 +1,9 @@
 import React from "react"
 import { ThreeColumnLayout } from "../components/three-column-layout"
-import RoutesService from "../lib/routes-service"
+import { Router } from "../lib/router"
 
 // This is weird
-const routesService = new RoutesService()
+const routesService = new Router()
 
 export default function DocsPage(props) {
   return (

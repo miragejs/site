@@ -4,10 +4,10 @@ import { MobileNav } from "./mobile-nav"
 import { MDXProvider } from "@mdx-js/react"
 import { Link } from "@reach/router"
 import Code from "../code"
-import { RoutesServiceContext } from "../../routes/app"
+import { RouterContext } from "../../routes/app"
 
 export function ThreeColumnLayout(props) {
-  let routesService = useContext(RoutesServiceContext)
+  let routesService = useContext(RouterContext)
 
   let currentPageTableOfContentsItems =
     props.currentPageTableOfContentsItems || []

@@ -182,7 +182,7 @@ export class Router {
   }
 
   // Return a subtree of routes under a path
-  routerFor(fullPath) {
+  routerFor(fullPath: string) {
     let routesForSubtree = this.routes.find(
       route => route.fullPath === fullPath
     ).routes

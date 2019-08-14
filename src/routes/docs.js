@@ -1,11 +1,11 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { ThreeColumnLayout } from "../components/three-column-layout"
-import { Router } from "../lib/router"
-
-const routesService = new Router()
+import { useRouter } from "./useRouter";
 
 export default function DocsPage(props) {
+  let routesService = useRouter()
+  
   const data = useStaticQuery(graphql`
     query OnThisPageQuery {
       allMdx {

@@ -92,13 +92,14 @@ interface Route {
 type Routes = Route[]
 
 export class Router {
+  private _routes: RouteDefinition[]
+  private _flattenedRoutes: Routes
+
+  activePath: String
+
   constructor() {
     this._routes = allRoutes
   }
-
-  _routes: RouteDefinition[]
-  _flattenedRoutes: Routes
-  activePath: String
 
   // Transform _routes to include fullPath
   get routes(): Routes {

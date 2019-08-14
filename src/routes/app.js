@@ -59,7 +59,7 @@ function Header() {
 
   return (
     <div
-      className={`relative z-10 ${
+      className={`relative z-50 ${
         theme === "dark" ? "bg-gray-1000" : "bg-white shadow"
       }`}
     >
@@ -106,12 +106,12 @@ function Header() {
               >
                 Documentation
               </NavLink>
-              <NavLink to="/api" activeFor="/api/*">
+              {/* <NavLink to="/api" activeFor="/api/*">
                 API
               </NavLink>
               <NavLink to="/examples/main/react" activeFor="/examples/*">
                 Examples
-              </NavLink>
+              </NavLink> */}
 
               <div className="ml-auto">
                 <a

@@ -1,4 +1,4 @@
-const allRoutes = [
+const allRoutes: RouteDefinition[] = [
   {
     name: "index",
     label: "Index",
@@ -74,15 +74,34 @@ const allRoutes = [
   },
 ]
 
+interface RouteDefinition {
+  label: string
+  name: string
+  path?: string
+  routes?: RouteDefinition[]
+}
+
+interface Route {
+  label: string
+  name: string
+  path: string
+  fullPath: string
+  routes: Routes
+}
+
+type Routes = Route[]
+
 export class Router {
   constructor() {
     this._routes = allRoutes
   }
 
-  activePath = null
+  _routes: RouteDefinition[]
+  _flattenedRoutes: Routes
+  activePath: String
 
   // Transform _routes to include fullPath
-  get routes() {
+  get routes(): Routes {
     function transformRoutes(routes = [], pathPrefix = "", namePrefix = "") {
       return routes.map(route => {
         let fullPath = `${pathPrefix}${route.path}`
@@ -100,7 +119,7 @@ export class Router {
   }
 
   // Flatten all routes
-  get flattenedRoutes() {
+  get flattenedRoutes(): Routes  {
     if (!this._flattenedRoutes) {
       function flatten(routes = []) {
         return routes.reduce((flattenedRoutes, { routes, ...rest }) => {
@@ -115,21 +134,21 @@ export class Router {
   }
 
   // Return the active route
-  get activeRoute() {
+  get activeRoute(): Route {
     return this.flattenedRoutes.find(route => {
       return route.fullPath.match(this.activePath.replace(/\/+$/, ""))
     })
   }
 
   // Return the previous route
-  get previousRoute() {
+  get previousRoute(): Route {
     let currentIndex = this.flattenedRoutes.indexOf(this.activeRoute)
 
     return this.flattenedRoutes[currentIndex - 1]
   }
 
   // Return the next route
-  get nextRoute() {
+  get nextRoute(): Route {
     let currentIndex = this.flattenedRoutes.indexOf(this.activeRoute)
 
     return this.flattenedRoutes[currentIndex + 1]

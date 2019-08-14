@@ -29,7 +29,6 @@ export default function DocsPage(props) {
   })
   let tableOfContentsItems = mdxPage && mdxPage.tableOfContents.items[0].items
 
-  // TODO: UPDATE ME from routes= to router=
   return (
     <ThreeColumnLayout
       router={router.routerFor("/docs")}

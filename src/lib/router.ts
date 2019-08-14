@@ -127,9 +127,12 @@ export class Router {
   // Flatten all routes
   get flattenedRoutes(): Routes {
     if (!this._flattenedRoutes) {
-      function flatten(routes = []) {
+      function flatten(routes: Route[]) {
         return routes.reduce((flattenedRoutes, { routes, ...rest }) => {
-          return [...flattenedRoutes, { ...rest }, ...flatten(routes)]
+          return [
+            ...flattenedRoutes,
+            ...(routes.length > 0 ? flatten(routes) : rest),
+          ]
         }, [])
       }
 

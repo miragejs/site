@@ -96,7 +96,7 @@ function SignupForm() {
     <div className="relative">
       {didSignup && (
         <div
-          className={`text-lg text-gray-8 font-medium ${
+          className={`text-lg text-gray-500 font-medium ${
             isAnimatingFormOut ? "absolute" : ""
           } ${isShowingThankYou ? "opacity-100" : "opacity-0"}`}
           style={{
@@ -129,7 +129,7 @@ function SignupForm() {
               disabled={isSaving}
               onChange={e => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="form-input bg-white text-gray-600 w-full rounded px-5 py-3 border-2 border-transparent focus:shadow-none focus:border-green-700 md:border-r-0 md:rounded-r-none md:w-96"
+              className="form-input bg-white text-gray-900 w-full rounded px-5 py-3 border-2 border-transparent focus:shadow-none focus:border-green-700 md:border-r-0 md:rounded-r-none md:w-96"
             />
             <Button isRunning={didSignup || isSaving}>Get notified</Button>
           </div>

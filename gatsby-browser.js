@@ -7,3 +7,5 @@
 import "prism-themes/themes/prism-atom-dark.css"
 import "./src/styles/global.css"
 import "./src/styles/tailwind-utils.css"
+import "./src/fonts/Ginto/ginto.css"
+import "./src/fonts/GTAmerica/gt-america.css"

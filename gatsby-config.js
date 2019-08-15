@@ -7,6 +7,7 @@ module.exports = {
     author: `@miragejs`,
   },
   plugins: [
+    `gatsby-plugin-typescript`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -18,7 +19,7 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/src/pages`,
+        path: `${__dirname}/src/routes`,
         name: "pages",
       },
     },
@@ -123,6 +124,7 @@ module.exports = {
         },
       },
     },
+
     `gatsby-plugin-mdx`,
 
     // Make sure this comes at the end!
@@ -136,7 +138,7 @@ module.exports = {
                * @param {object} content
                */
               static extract(content) {
-                return content.match(/[A-Za-z0-9-_:\/]+/g) || []
+                return content.match(/[A-Za-z0-9-_:/]+/g) || []
               }
             },
             extensions: ["js", "ts", "jsx", "tsx", "mdx"],

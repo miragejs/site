@@ -1,9 +1,5 @@
 @tailwind base;
 
-html {
-  @apply bg-gray-900;
-}
-
 @keyframes loadingSpinnerRotate {
   100% {
     transform: rotate(360deg);
@@ -34,11 +30,11 @@ svg.loading {
 */
 
 pre[class*="language-"] {
-  @apply my-0 rounded-none bg-gray-900 py-5 px-5 border-gray-500 max-w-full overflow-scroll scrolling-touch;
+  @apply my-0 rounded-none bg-gray-1000 py-4 px-5 max-w-full overflow-scroll scrolling-touch subpixel-antialiased;
 }
 @screen md {
   pre[class*="language-"] {
-    @apply py-6;
+    /* @apply py-6; */
   }
 }
 
@@ -63,7 +59,7 @@ pre[class*="language-"] {
 }
 
 .gatsby-highlight-code-line {
-  @apply block bg-gray-700 -mx-5 px-4 border-l-4 border-gray-500;
+  @apply block bg-gray-900 -mx-5 px-4 border-l-4 border-gray-600;
 }
 
 /* End Prism styles

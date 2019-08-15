@@ -2,6 +2,9 @@ import Snippet from "../components/snippet"
 import TodoApp from "../components/todo-app"
 import { Tabs, Tab } from "../components/tabs"
 
+import Layout from "./index-layout"
+export default Layout
+
 ## Have you ever worked on a React or Vue app that needed to talk to a backend API before it was ready?
 
 If so, how’d you handle it?
@@ -42,17 +45,17 @@ Weeks later, the server’s ready and you wire up your app — but nothing works
 
 Some screens flash with missing data, others are broken entirely, and worst of all, you have no idea how much of your code needs to be rewritten.
 
-How did this happen?
+What went wrong?
 
 ## You ignored the network for too long.
 
-Code that deals with the network isn't the kind of thing you can just tack on to the end of a sprint.
+Networking code isn't the kind of thing you can just tack onto the end of a sprint.
 
 Think about everything that comes along with making network requests: loading and error states, fetching partial data, caching... not to mention the fact that asynchronous APIs like network requests add _tons_ of new states to each one of your app's existing user flows.
 
-If you don't grapple with this crucial part of your application up front, you're just going to have to rewrite a ton of code when it comes time to deploy your app.
+If you don't grapple with this crucial part of your application up front, you'll have to rewrite a ton of code when it comes time to deploy your app.
 
-You're not doing yourself any favors by writing code that avoids the network. You're just poking holes in reality. And code that ignores reality isn't ready for production.
+You're not doing yourself any favors by writing code that pretends the network doesn't exist. You're just poking holes in reality. And code that ignores reality isn't ready for production.
 
 ## What if you could have the best of both worlds?
 
@@ -87,7 +90,7 @@ With Mirage, you'll never write throwaway network code again.
 
 And it comes with all the power you'd expect from a real server.
 
-You can tweak things like latency, error codes, and HTTP headers. There's an in-memory database that lets you build dynamic features involving persistent data. And you can even write tests against any of this functionality.
+You can tweak things like latency, error codes, and HTTP headers. There's an in-memory database that lets you build dynamic features involving persistent data. And you can even use all this functionality within your tests.
 
 Here's a complete Todo application built with Mirage and React:
 

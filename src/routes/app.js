@@ -87,7 +87,7 @@ function Header() {
             </Link>
 
             {/* Mobile nav button */}
-            <div className="ml-auto md:hidden">
+            {/* <div className="ml-auto md:hidden">
               <button
                 onClick={() => setIsShowingMobileNav(!isShowingMobileNav)}
                 className={`flex px-5 py-3 2xl:py-2 items-center focus:outline-none ${
@@ -100,11 +100,11 @@ function Header() {
                   <Menu className="w-4 h-4" />
                 )}
               </button>
-            </div>
+            </div> */}
 
             {/* Desktop nav */}
             <div className="hidden md:flex md:items-center md:w-full">
-              <NavLink
+              {/* <NavLink
                 to="/docs/getting-started/introduction"
                 activeFor="/docs/*"
               >
@@ -115,7 +115,7 @@ function Header() {
               </NavLink>
               <NavLink to="/examples/main/react" activeFor="/examples/*">
                 Examples
-              </NavLink>
+              </NavLink> */}
 
               <div className="ml-auto">
                 <a

@@ -41,7 +41,7 @@ export function ThreeColumnLayout(props) {
                 {props.router.previousRoute ? (
                   <Link
                     to={props.router.previousRoute.fullPath}
-                    className="text-blue-500"
+                    className="text-blue-500 hover:text-blue-300"
                   >
                     <div className="text-sm">Previous</div>
                     <div className="text-xl">
@@ -54,7 +54,7 @@ export function ThreeColumnLayout(props) {
                 {props.router.nextRoute ? (
                   <Link
                     to={props.router.nextRoute.fullPath}
-                    className="text-blue-500"
+                    className="text-blue-500 hover:text-blue-300"
                   >
                     <div className="text-sm text-right">Next</div>
                     <div className="text-xl">
@@ -94,9 +94,10 @@ const components = {
       className="text-gray-900 font-normal font-title
         text-2xl leading-tight mt-10 mb-4
         md:text-3xl md:mt-14 md:mb-6
+        before-h-8 xl:before-h-12
       "
     >
-      {props.children}
+      <a href={`#${props.id}`}>{props.children}</a>
     </h2>
   ),
 
@@ -107,9 +108,10 @@ const components = {
         mt-12
         mb-5 md:mb-6
         text-2-25xl leading-normal
+        before-h-8 xl:before-h-12
       "
     >
-      {props.children}
+      <a href={`#${props.id}`}>{props.children}</a>
     </h3>
   ),
 

@@ -125,7 +125,13 @@ module.exports = {
       },
     },
 
-    `gatsby-plugin-mdx`,
+    {
+      resolve: "gatsby-plugin-mdx",
+      options: {
+        extensions: [".mdx", ".md"],
+        remarkPlugins: [require("remark-slug")],
+      },
+    },
 
     // Make sure this comes at the end!
     {

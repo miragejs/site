@@ -64,3 +64,21 @@ pre[class*="language-"] {
 
 /* End Prism styles
   ––––––––––––––––––––––––––––––––––––––––––––––––––*/
+
+.xl\:before-h-12:before {
+  display: block;
+  height: 2rem;
+  margin-top: -2rem;
+  visibility: hidden;
+  content: "";
+}
+
+@screen xl {
+  .xl\:before-h-12:before {
+    display: block;
+    height: 3rem;
+    margin-top: -3rem;
+    visibility: hidden;
+    content: "";
+  }
+}

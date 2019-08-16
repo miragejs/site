@@ -14,7 +14,7 @@ export function DesktopLeftNav(props) {
         paddingLeft: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
       }}
     >
-      <nav className="px-8 pt-8 xl:pt-14 sticky top-0 leading-none h-screen overflow-y-scroll">
+      <nav className="px-8 pt-8 xl:pt-12 sticky top-0 leading-none h-screen overflow-y-scroll">
         <ul className="mt-2">
           {props.routes.map(route => (
             <li className="mb-8" key={route.fullPath}>
@@ -65,25 +65,32 @@ export function DesktopRightNav(props) {
       }}
     >
       {props.currentPageTableOfContentsItems.length ? (
-        <div className="pr-8">
-          <nav className="mt-32 ml-8 sticky">
+        <div className="pr-8 sticky top-0">
+          <nav className="pt-12 mt-20 ml-8">
             <p className="uppercase text-xs text-gray-800 font-medium tracking-wider">
               On this page
             </p>
 
-            <ul className="mt-2 font-normal text-sm">
+            <ul className="mt-2 font-normal text-sm leading-snug">
               {props.currentPageTableOfContentsItems.map(item => (
-                <li key={item.url} className="my-2 font-medium text-blue-500">
-                  {item.title}
+                <li key={item.url} className="my-3 font-medium">
+                  <a
+                    className="text-blue-500 hover:text-blue-300"
+                    href={item.url}
+                  >
+                    {item.title}
+                  </a>
 
                   {item.items && (
                     <ul className="pl-4">
                       {item.items.map(item => (
-                        <li
-                          key={item.url}
-                          className="my-2 font-medium text-blue-500"
-                        >
-                          {item.title}
+                        <li key={item.url} className="my-3 font-medium">
+                          <a
+                            className="text-blue-500 hover:text-blue-300"
+                            href={item.url}
+                          >
+                            {item.title}
+                          </a>
                         </li>
                       ))}
                     </ul>

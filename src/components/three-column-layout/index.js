@@ -36,15 +36,31 @@ export function ThreeColumnLayout(props) {
           >
             <MDXProvider components={components}>{props.children}</MDXProvider>
 
-            <div className="pt-4 pb-8 flex justify-between">
+            <div className="flex justify-between pt-4 pb-24 md:pt-8">
               <div>
                 {props.router.previousRoute ? (
-                  <Link to={props.router.previousRoute.fullPath}>Previous</Link>
+                  <Link
+                    to={props.router.previousRoute.fullPath}
+                    className="text-blue-500"
+                  >
+                    <div className="text-sm">Previous</div>
+                    <div className="text-xl">
+                      {props.router.previousRoute.label}
+                    </div>
+                  </Link>
                 ) : null}
               </div>
               <div>
                 {props.router.nextRoute ? (
-                  <Link to={props.router.nextRoute.fullPath}>Next</Link>
+                  <Link
+                    to={props.router.nextRoute.fullPath}
+                    className="text-blue-500"
+                  >
+                    <div className="text-sm text-right">Next</div>
+                    <div className="text-xl">
+                      {props.router.nextRoute.label}
+                    </div>
+                  </Link>
                 ) : null}
               </div>
             </div>

@@ -125,8 +125,6 @@ exports.sourceNodes = async ({
       console.log("TODO create ssr page for", node.name)
       //   createPage({
       //     path: `/pokemon/${pokemon.name}/`,
-      //     component: require.resolve("./src/templates/pokemon.js"),
-      //     context: { pokemon },
       //   })
     }
   })

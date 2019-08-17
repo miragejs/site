@@ -108,7 +108,7 @@ export class Route {
   }
 
   get fullName(): string {
-    return [this.parent && this.parent.name, this.name]
+    return [this.parent && this.parent.fullName, this.name]
       .filter(part => part && part !== "")
       .join(".")
   }

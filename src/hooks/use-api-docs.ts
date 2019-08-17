@@ -1,9 +1,36 @@
 import { useStaticQuery, graphql } from "gatsby"
 
-let byName = (a, b) => (a.name > b.name ? 1 : -1)
+// these two types are really the same, combine them once
+// we finish the graphql query
+
+type ClassNode = {
+  name: string
+  longname: string
+  memberof: string
+  slug: string
+  description: string
+}
+
+type EsdocNode = {
+  name: string
+  longname: string
+  memberof: string
+  kind: string
+  access: string
+}
+
+let byName = (a: { name: string }, b: { name: string }) =>
+  a.name > b.name ? 1 : -1
 
 class ClassDoc {
-  constructor(node, esdoc) {
+  node: ClassNode
+  esdoc: EsdocNode[]
+
+  readonly name: string
+  readonly slug: string
+  readonly description: string
+
+  constructor(node: ClassNode, esdoc: EsdocNode[]) {
     this.node = node
     this.esdoc = esdoc
 
@@ -17,30 +44,26 @@ class ClassDoc {
     })
   }
 
-  get name() {
-    return this.node.name
-  }
-
-  get slug() {
-    return this.node.slug
-  }
-
-  get blocks() {
+  get blocks(): EsdocNode[] {
     return this.esdoc
       .filter(node => node.memberof === this.node.longname)
       .sort(byName)
   }
 
-  get fields() {
+  get fields(): EsdocNode[] {
     return this.blocks.filter(node => node.kind === "member")
   }
 
-  get methods() {
+  get methods(): EsdocNode[] {
     return this.blocks.filter(node => node.kind === "method")
   }
 }
 
-export default function() {
+interface IApiDocsHook {
+  publicClasses: ClassDoc[]
+}
+
+export default function(): IApiDocsHook {
   let data = useStaticQuery(graphql`
     query DocsQuery {
       publicClasses: allEsDoc(
@@ -66,11 +89,11 @@ export default function() {
     }
   `)
 
-  let esdoc = data.allNodes.nodes
+  let esdoc: EsdocNode[] = data.allNodes.nodes
 
   let publicClasses = data.publicClasses.nodes
     .sort(byName)
-    .map(node => new ClassDoc(node, esdoc))
+    .map((node: ClassNode) => new ClassDoc(node, esdoc))
 
   return {
     publicClasses,

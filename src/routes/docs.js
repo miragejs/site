@@ -2,7 +2,6 @@ import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { ThreeColumnLayout } from "../components/three-column-layout"
 import { useRouter } from "../hooks/use-router"
-import useApiDocs from "../hooks/use-api-docs"
 
 export default function DocsPage(props) {
   let router = useRouter()
@@ -29,8 +28,6 @@ export default function DocsPage(props) {
     return didMatch
   })
   let tableOfContentsItems = mdxPage && mdxPage.tableOfContents.items[0].items
-
-  // let { publicClasses } = useApiDocs()
 
   return (
     <ThreeColumnLayout

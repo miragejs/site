@@ -235,18 +235,46 @@ function NavLink({ activeFor, ...props }) {
 
 function Outlet() {
   let router = useRouter()
+  let [, newRouterState] = useState(router.pages)
+
+  // kind of silly, but if our router changes we want to make sure
+  // to re-draw the outlet
+  router.onNewRoute(route => newRouterState(router.pages))
 
   function renderRoutes(routes) {
     return routes.map(route => {
-      let explicitComponent =
+      let implicitModule =
         routeComponentsMap[`./${route.fullName.replace(/\./g, "/")}`]
+      let explicitModule =
+        route.component && routeComponentsMap[`./${route.component}`]
       let EmptyComponent = props => props.children
-      let Component = explicitComponent
-        ? explicitComponent.default
-        : EmptyComponent
+
+      let Component
+
+      // if there's an explicit component defined with the route, we'll
+      // use that. otherwise we'll look at the file system. if neither of
+      // those components exist, we'll render an empty component that yields
+      // its children.
+      if (explicitModule && explicitModule.default) {
+        Component = explicitModule.default
+      } else if (explicitModule && Object.keys(explicitModule).length === 1) {
+        Component = explicitModule[Object.keys(explicitModule)[0]]
+      } else if (explicitModule && Object.keys(explicitModule).length > 1) {
+        throw new Error(
+          `${explicitModule} exports more than one component. We don't know which to render!`
+        )
+      } else if (implicitModule && implicitModule.default) {
+        Component = implicitModule.default
+      } else if (false) {
+        // handle named export from implicit module
+      } else if (false) {
+        // handle an implicit module that exports too many components
+      } else {
+        Component = EmptyComponent
+      }
 
       return (
-        <Component path={route.path} key={route.fullName}>
+        <Component path={route.path} key={route.fullName} meta={route.meta}>
           {renderRoutes(route.routes)}
         </Component>
       )

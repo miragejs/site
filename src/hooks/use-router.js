@@ -3,7 +3,11 @@ import { RouterContext } from "../routes/app"
 import { Router } from "../lib/router"
 
 export function useRouter() {
-  let contextRouter = useContext(RouterContext)
-  let router = contextRouter || new Router()
+  let router = useContext(RouterContext)
+
+  if (!router) {
+    router = new Router()
+  }
+
   return router
 }

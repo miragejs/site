@@ -67,43 +67,51 @@ const allRoutes: RouteDefinition[] = [
   },
 ]
 
-type RouteDefinition = {
+type Meta = {
+  [key: string]: string
+}
+
+interface RouteInfo {
   label: string
   name: string
-  path?: string
+  path: string
+  component?: string
+  meta?: Meta
+}
+
+interface RouteDefinition extends RouteInfo {
   routes?: RouteDefinition[]
+}
+
+interface RouteOptions extends RouteInfo {
+  routes?: Route[]
+  parent?: Route
 }
 
 export class Route {
   label: string
   name: string
   path: string
+  component: string
+  meta: Meta
 
   private _activePath: string
   private _parent: Route
   private _routes: Route[]
 
-  constructor({
-    label,
-    name,
-    path,
-    routes,
-    parent,
-  }: {
-    label: string
-    name: string
-    path: string
-    routes?: Route[]
-    parent?: Route
-  }) {
-    this.label = label
-    this.name = name
-    this.path = path
+  private _onNewRoute: CallableFunction = () => {}
 
-    this.routes = routes ? routes : []
+  constructor(config: RouteOptions) {
+    this.label = config.label
+    this.name = config.name
+    this.path = config.path
+    this.meta = config.meta
+    this.component = config.component
 
-    if (parent) {
-      this.parent = parent
+    this.routes = config.routes ? config.routes : []
+
+    if (config.parent) {
+      this.parent = config.parent
     }
   }
 
@@ -130,11 +138,11 @@ export class Route {
     }
   }
 
-  private get routes(): Route[] {
+  get routes(): Route[] {
     return this._routes
   }
 
-  private set routes(routes: Route[]) {
+  set routes(routes: Route[]) {
     // if we're ever going to remove routes we should address that here
     this._routes = routes
     routes.forEach(route => {
@@ -212,15 +220,29 @@ export class Route {
       label: definition.label,
       name: definition.name,
       path: definition.path,
+      component: definition.component,
+      meta: definition.meta,
     })
 
+    // i think this is recursively backwards, create parents first then children
     if (definition.routes && definition.routes.length > 0) {
       definition.routes.map(childDefinition => route.add(childDefinition))
     }
 
     route.parent = this
 
+    this.didCreateRoute(route)
+
     return route
+  }
+
+  didCreateRoute(route: Route): void {
+    this._onNewRoute(route)
+    this.parent && this.parent.didCreateRoute(route)
+  }
+
+  onNewRoute(callback: (route?: Route) => void): void {
+    this._onNewRoute = callback
   }
 
   find(search: {

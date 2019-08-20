@@ -11,13 +11,19 @@ export default function Api(props) {
 
   publicClasses
     .filter(publicClass => !classRouter.has({ name: publicClass.name }))
-    .forEach(publicClass =>
+    .forEach(publicClass => {
       classRouter.add({
         name: publicClass.name,
         label: publicClass.name,
         path: `/${publicClass.slug}`,
+        component: "api/class-viewer",
+        // maybe: i guess we could store the entire esdoc node as route
+        // meta data, so no static query is needed to fetch data for this route.
+        meta: {
+          className: publicClass.name,
+        },
       })
-    )
+    })
 
   return (
     <ThreeColumnLayout router={router.routerFor("/api")}>

@@ -648,12 +648,13 @@ describe("Route", () => {
         name: "root",
         label: "root",
         path: "/root",
-      })
-      let route = new Route({
-        name: "child1",
-        label: "child1",
-        path: "/child1",
-        parent: router,
+        routes: [
+          new Route({
+            name: "child1",
+            label: "child1",
+            path: "/child1",
+          }),
+        ],
       })
 
       expect(router.find({ fullPath: "/root/child2" })).toBeUndefined()

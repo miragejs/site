@@ -46,17 +46,29 @@ exports.createPages = ({ actions }) => {
   //   redirectInBrowser: true,
   // })
 
-  const createPageForAdam = function(options) {
-    return createPage({
-      path: options.path,
-      matchPath: "/*",
-      component: path.resolve(`./src/routes/app.js`),
-    })
-  }
+  createPage({
+    path: "/",
+    component: path.resolve(`./src/routes/app.js`),
+  })
 
-  createPageForAdam({ path: "/" })
-  // createPageForAdam({ path: "/docs" })
-  createPageForAdam({ path: "/docs/getting-started/introduction" })
+  createPage({
+    path: "/docs/getting-started/introduction",
+    component: path.resolve(`./src/routes/app.js`),
+  })
+
+  createPage({
+    path: "/docs/getting-started/installation",
+    component: path.resolve(`./src/routes/app.js`),
+  })
+
+  createPage({
+    path: "/docs/getting-started/usage",
+    component: path.resolve(`./src/routes/app.js`),
+  })
+
+  // createPageForAdam({ path: "/" })
+  // // createPageForAdam({ path: "/docs" })
+  // createPageForAdam({ path: "/docs/getting-started/introduction" })
 }
 
 // DOC STUFF TODO Extract

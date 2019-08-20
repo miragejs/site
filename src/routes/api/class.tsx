@@ -1,15 +1,11 @@
 import React from "react"
 import useApiDocs from "../../hooks/use-api-docs"
 
-interface ClassViewerProps {
-  meta: { className: string }
-}
-
-export const ClassViewer: React.FC<ClassViewerProps> = function({
-  meta: { className },
-}) {
+export default function(props) {
+  let classSlug = props.classSlug
   let { publicClasses } = useApiDocs()
-  let classDoc = publicClasses.find(doc => doc.name === className)
+  let classDoc = publicClasses.find(doc => doc.slug === classSlug)
+
   return (
     <div>
       <h1 className="text-3xl">{classDoc.name}</h1>

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react"
-import { Router, Link, Redirect, Match } from "@reach/router"
+import { Router, Link, Match } from "@reach/router"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
 import { Close, Menu } from "../components/icons"
@@ -33,6 +33,7 @@ export const ThemeContext = React.createContext({ theme: "light" })
 export default function(props) {
   let router = useRouter()
   let theme = props.location.pathname === "/" ? "dark" : "light"
+  let shouldShowHeaderNav = props.location.pathname !== "/"
 
   router.activePath = props.location.pathname
 
@@ -46,14 +47,10 @@ export default function(props) {
         </Helmet>
 
         <div className="antialiased text-gray-700 font-body font-light leading-normal min-h-screen flex flex-col">
-          <Header />
+          <Header shouldShowHeaderNav={shouldShowHeaderNav} />
 
           <main className="flex-1 flex flex-col">
-            <Router>
-              <Foo path="/docs/getting-started/introduction" />
-              <Bar path="/api" />
-            </Router>
-            {/* <Outlet /> */}
+            <Outlet />
           </main>
         </div>
       </ThemeContext.Provider>
@@ -61,15 +58,7 @@ export default function(props) {
   )
 }
 
-function Foo() {
-  return <p>Foo</p>
-}
-
-function Bar() {
-  return <p>Bar</p>
-}
-
-function Header() {
+function Header({ shouldShowHeaderNav }) {
   let { theme } = useContext(ThemeContext)
   let [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
 
@@ -99,35 +88,41 @@ function Header() {
             </Link>
 
             {/* Mobile nav button */}
-            {/* <div className="ml-auto md:hidden">
-              <button
-                onClick={() => setIsShowingMobileNav(!isShowingMobileNav)}
-                className={`flex px-5 py-3 2xl:py-2 items-center focus:outline-none ${
-                  themeClasses[theme]["inactive"]
-                } lg:hidden `}
-              >
-                {isShowingMobileNav ? (
-                  <Close className="w-4 h-4" />
-                ) : (
-                  <Menu className="w-4 h-4" />
-                )}
-              </button>
-            </div> */}
+            {shouldShowHeaderNav ? (
+              <div className="ml-auto md:hidden">
+                <button
+                  onClick={() => setIsShowingMobileNav(!isShowingMobileNav)}
+                  className={`flex px-5 py-3 2xl:py-2 items-center focus:outline-none ${
+                    themeClasses[theme]["inactive"]
+                  } lg:hidden `}
+                >
+                  {isShowingMobileNav ? (
+                    <Close className="w-4 h-4" />
+                  ) : (
+                    <Menu className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+            ) : null}
 
             {/* Desktop nav */}
             <div className="hidden md:flex md:items-center md:w-full">
-              <NavLink
-                to="/docs/getting-started/introduction"
-                activeFor="/docs/*"
-              >
-                Documentation
-              </NavLink>
-              <NavLink to="/api" activeFor="/api/*">
-                API
-              </NavLink>
-              <NavLink to="/examples/main/react" activeFor="/examples/*">
-                Examples
-              </NavLink>
+              {shouldShowHeaderNav ? (
+                <>
+                  <NavLink
+                    to="/docs/getting-started/introduction"
+                    activeFor="/docs/*"
+                  >
+                    Documentation
+                  </NavLink>
+                  <NavLink to="/api/classes/association" activeFor="/api/*">
+                    API
+                  </NavLink>
+                  <NavLink to="/examples/main/react" activeFor="/examples/*">
+                    Examples
+                  </NavLink>
+                </>
+              ) : null}
 
               <div className="ml-auto">
                 <a

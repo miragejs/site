@@ -40,19 +40,19 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
 exports.createPages = ({ actions }) => {
   const { createPage, createRedirect } = actions
 
-  const createAppPage = function(options) {
+  const createAppPage = function(url) {
     createPage({
-      path: options.path, // dont shadow path module with local path variable
+      path: url, // dont shadow path module with local path variable
       matchPath: "/*",
       component: path.resolve(`./src/routes/app.js`),
     })
   }
 
   // TODO: Create all pages programatically
-  createAppPage({ path: "/" })
-  createAppPage({ path: "/docs/getting-started/introduction" })
-  createAppPage({ path: "/docs/getting-started/installation" })
-  createAppPage({ path: "/docs/getting-started/usage" })
+  createAppPage("/")
+  createAppPage("/docs/getting-started/introduction")
+  createAppPage("/docs/getting-started/installation")
+  createAppPage("/docs/getting-started/usage")
   // createAppPage("/api")
 
   /*
@@ -60,14 +60,14 @@ exports.createPages = ({ actions }) => {
     redirect to nearest page? Note that createRedirect has a redirectInBrowser
     option, but we don't want to use that.
   */
-  // createRedirect({
-  //   from: "/docs",
-  //   to: "/docs/getting-started-/introduction",
-  // })
-  // createRedirect({
-  //   from: "/docs/getting-started",
-  //   to: "/docs/getting-started-/introduction",
-  // })
+  createRedirect({
+    from: "/docs",
+    to: "/docs/getting-started-/introduction",
+  })
+  createRedirect({
+    from: "/docs/getting-started",
+    to: "/docs/getting-started-/introduction",
+  })
 }
 
 // DOC STUFF TODO Extract

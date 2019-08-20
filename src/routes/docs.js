@@ -29,9 +29,13 @@ export default function DocsPage(props) {
   })
   let tableOfContentsItems = mdxPage && mdxPage.tableOfContents.items[0].items
 
+  let docsRouter = router.routerFor("/docs")
+
   return (
     <ThreeColumnLayout
-      router={router.routerFor("/docs")}
+      routes={docsRouter.routes}
+      previousPage={docsRouter.previousPage}
+      nextPage={docsRouter.nextPage}
       currentPageTableOfContentsItems={tableOfContentsItems}
     >
       {props.children}

@@ -35,9 +35,9 @@ const allRoutes: RouteDefinition[] = [
     path: "/api",
     routes: [
       {
-        label: "Classes",
-        name: "classes",
-        path: "/classes",
+        label: "Class",
+        name: "class",
+        path: "/classes/:classSlug",
       },
     ],
   },
@@ -102,7 +102,6 @@ export class Route {
   private _onNewRoute: CallableFunction = () => {}
 
   constructor(config: RouteOptions) {
-    console.log("constructor")
     this.label = config.label
     this.name = config.name
     this.path = config.path

@@ -130,11 +130,11 @@ export class Route {
     }
   }
 
-  get routes(): Route[] {
+  private get routes(): Route[] {
     return this._routes
   }
 
-  set routes(routes: Route[]) {
+  private set routes(routes: Route[]) {
     // if we're ever going to remove routes we should address that here
     this._routes = routes
     routes.forEach(route => {
@@ -147,7 +147,7 @@ export class Route {
     })
   }
 
-  get allRoutes(): Route[] {
+  private get allRoutes(): Route[] {
     let flatten = function(routes: Route[]) {
       return routes.reduce((result, route) => {
         return [...result, ...[route], ...flatten(route.routes)]
@@ -174,32 +174,32 @@ export class Route {
   }
 
   // Return the active route
-  get activeRoute(): Route {
+  get activePage(): Route {
     return this.pages.find(route => {
       return route.fullPath.match(this.activePath.replace(/\/+$/, ""))
     })
   }
 
   // Return the previous route
-  get previousRoute(): Route | undefined {
+  get previousPage(): Route | undefined {
     let match =
-      this.activeRoute &&
-      this.pages.find(route => route.fullName === this.activeRoute.fullName)
+      this.activePage &&
+      this.pages.find(route => route.fullName === this.activePage.fullName)
 
     let currentIndex = match && this.pages.indexOf(match)
-    let hasPreviousRoute = match && currentIndex > 0
-    return hasPreviousRoute ? this.pages[currentIndex - 1] : undefined
+    let hasPreviousPage = match && currentIndex > 0
+    return hasPreviousPage ? this.pages[currentIndex - 1] : undefined
   }
 
   // Return the next route
-  get nextRoute(): Route | undefined {
+  get nextPage(): Route | undefined {
     let match =
-      this.activeRoute &&
-      this.pages.find(route => route.fullName === this.activeRoute.fullName)
+      this.activePage &&
+      this.pages.find(route => route.fullName === this.activePage.fullName)
 
     let currentIndex = match && this.pages.indexOf(match)
-    let hasNextRoute = match && currentIndex < this.pages.length
-    return hasNextRoute ? this.pages[currentIndex + 1] : undefined
+    let hasNextPage = match && currentIndex < this.pages.length
+    return hasNextPage ? this.pages[currentIndex + 1] : undefined
   }
 
   // Return a subtree of routes under a path

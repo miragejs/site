@@ -38,28 +38,26 @@ export function ThreeColumnLayout(props) {
 
             <div className="flex justify-between pt-4 pb-24 md:pt-8">
               <div>
-                {props.router.previousRoute ? (
+                {props.router.previousPage ? (
                   <Link
-                    to={props.router.previousRoute.fullPath}
+                    to={props.router.previousPage.fullPath}
                     className="text-blue-500 hover:text-blue-300"
                   >
                     <div className="text-sm">Previous</div>
                     <div className="text-xl">
-                      {props.router.previousRoute.label}
+                      {props.router.previousPage.label}
                     </div>
                   </Link>
                 ) : null}
               </div>
               <div>
-                {props.router.nextRoute ? (
+                {props.router.nextPage ? (
                   <Link
-                    to={props.router.nextRoute.fullPath}
+                    to={props.router.nextPage.fullPath}
                     className="text-blue-500 hover:text-blue-300"
                   >
                     <div className="text-sm text-right">Next</div>
-                    <div className="text-xl">
-                      {props.router.nextRoute.label}
-                    </div>
+                    <div className="text-xl">{props.router.nextPage.label}</div>
                   </Link>
                 ) : null}
               </div>

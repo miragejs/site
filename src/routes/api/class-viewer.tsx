@@ -1,11 +1,11 @@
 import React from "react"
 import useApiDocs from "../../hooks/use-api-docs"
 
-interface IClassViewerProps {
+interface ClassViewerProps {
   classNameSlug: string
 }
 
-export const ClassViewer: React.FC<IClassViewerProps> = function({
+export const ClassViewer: React.FC<ClassViewerProps> = function({
   classNameSlug,
 }) {
   let { publicClasses } = useApiDocs()

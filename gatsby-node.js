@@ -87,28 +87,28 @@ exports.createPages = ({ actions }) => {
     createRedirect has a redirectInBrowser option, but we don't want to use that.
   */
   createRedirect({
-    from: "/docs",
-    to: "/docs/getting-started-/introduction",
+    fromPath: "/docs",
+    toPath: "/docs/getting-started/introduction",
   })
   createRedirect({
-    from: "/docs/getting-started",
-    to: "/docs/getting-started-/introduction",
+    fromPath: "/docs/getting-started",
+    toPath: "/docs/getting-started/introduction",
   })
   createRedirect({
-    from: "/api",
-    to: "/api/classes/association",
+    fromPath: "/api",
+    toPath: "/api/classes/association",
   })
   createRedirect({
-    from: "/api/classes",
-    to: "/api/classes/association",
+    fromPath: "/api/classes",
+    toPath: "/api/classes/association",
   })
   createRedirect({
-    from: "/examples",
-    to: "/examples/main/react",
+    fromPath: "/examples",
+    toPath: "/examples/main/react",
   })
   createRedirect({
-    from: "/examples/main",
-    to: "/examples/main/react",
+    fromPath: "/examples/main",
+    toPath: "/examples/main/react",
   })
 }
 
@@ -174,11 +174,12 @@ exports.sourceNodes = async ({
 
     createNode(data)
 
-    if (node.kind === "class" && node.access === "public") {
-      console.log("TODO create ssr page for", node.name)
-      //   createPage({
-      //     path: `/pokemon/${pokemon.name}/`,
-      //   })
-    }
+    // TODO: create ssr page for class. But maybe not here... if we can just
+    // query all known pages from the mesh.
+    // if (node.kind === "class" && node.access === "public") {
+    //   //   createPage({
+    //   //     path: `/pokemon/${pokemon.name}/`,
+    //   //   })
+    // }
   })
 }

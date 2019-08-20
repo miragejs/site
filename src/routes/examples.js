@@ -5,8 +5,14 @@ import { useRouter } from "../hooks/use-router"
 export default function DocsPage(props) {
   let router = useRouter()
 
+  let docsRouter = router.routerFor("/examples")
+
   return (
-    <ThreeColumnLayout router={router.routerFor("/examples")}>
+    <ThreeColumnLayout
+      routes={docsRouter.routes}
+      previousPage={docsRouter.previousPage}
+      nextPage={docsRouter.nextPage}
+    >
       {props.children}
     </ThreeColumnLayout>
   )

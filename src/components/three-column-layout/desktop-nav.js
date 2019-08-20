@@ -40,11 +40,11 @@ export function DesktopLeftNav(props) {
 }
 
 function DesktopLeftNavLink({ fullPath, ...props }) {
-  const isPartiallyActive = ({ isPartiallyCurrent }) => {
+  const isPartiallyActive = ({ isCurrent }) => {
     return {
-      className: isPartiallyCurrent
-        ? "text-gray-900"
-        : "text-gray-600 hover:text-gray-900",
+      className: isCurrent
+        ? "text-gray-500"
+        : "text-gray-800 hover:text-gray-500",
     }
   }
 

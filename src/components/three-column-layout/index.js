@@ -11,11 +11,11 @@ export function ThreeColumnLayout(props) {
 
   return (
     <div className="bg-white">
-      <MobileNav routes={props.router.routes} />
+      <MobileNav routes={props.routes} />
 
       <div className="flex-1 flex">
         <DesktopLeftNav
-          routes={props.router.routes}
+          routes={props.routes}
           currentPageTableOfContentsItems={currentPageTableOfContentsItems}
         />
 
@@ -38,27 +38,27 @@ export function ThreeColumnLayout(props) {
 
             <div className="flex justify-between pt-4 pb-24 md:pt-8">
               <div>
-                {props.router.previousRoute ? (
+                {props.previousPage ? (
                   <Link
-                    to={props.router.previousRoute.fullPath}
-                    className="text-blue-500 hover:text-blue-300"
+                    to={props.previousPage.fullPath}
+                    className="block hover:opacity-75"
                   >
                     <div className="text-sm">Previous</div>
-                    <div className="text-xl">
-                      {props.router.previousRoute.label}
+                    <div className="text-blue-500 text-xl">
+                      {props.previousPage.label}
                     </div>
                   </Link>
                 ) : null}
               </div>
               <div>
-                {props.router.nextRoute ? (
+                {props.nextPage ? (
                   <Link
-                    to={props.router.nextRoute.fullPath}
-                    className="text-blue-500 hover:text-blue-300"
+                    to={props.nextPage.fullPath}
+                    className="block hover:opacity-75"
                   >
                     <div className="text-sm text-right">Next</div>
-                    <div className="text-xl">
-                      {props.router.nextRoute.label}
+                    <div className="text-blue-500 text-xl">
+                      {props.nextPage.label}
                     </div>
                   </Link>
                 ) : null}

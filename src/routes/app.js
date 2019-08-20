@@ -147,7 +147,7 @@ function Header({ shouldShowHeaderNav }) {
 
           {/* Mobile nav */}
           {isShowingMobileNav && (
-            <nav className="font-medium text-lg">
+            <nav className="font-medium text-lg md:hidden">
               <div
                 className={`border-t border-b ${
                   theme === "dark" ? "border-gray-800" : "border-gray-200"

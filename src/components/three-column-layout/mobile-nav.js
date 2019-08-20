@@ -10,7 +10,7 @@ export function MobileNav(props) {
       <div
         className="
           sm:max-w-md sm:mx-auto sm:pt-8
-          md:max-w-2xl md:pt-12
+          md:max-w-2-5xl md:pt-12
         "
       >
         <div

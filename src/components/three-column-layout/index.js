@@ -20,7 +20,7 @@ export function ThreeColumnLayout(props) {
         />
 
         <div
-          className="flex-1 w-full px-5 pt-7 font-normal text-gray-700
+          className="flex-1 w-full px-5 pt-7 font-normal text-gray-800
             text-base leading-copy
             sm:pt-8
             md:leading-relaxed md:pt-8 md:px-20
@@ -29,7 +29,7 @@ export function ThreeColumnLayout(props) {
         >
           <div
             className="max-w-md mx-auto
-            md:max-w-2xl md:text-lg
+            md:max-w-2-5xl md:text-lg
             lg:ml-0
             xl:mx-auto
           "
@@ -146,7 +146,7 @@ const components = {
   ),
 
   a: props => (
-    <a {...props} className="underline text-blue-500">
+    <a {...props} className="underline hover:text-blue-500">
       {props.children}
     </a>
   ),
@@ -168,7 +168,7 @@ const components = {
   pre: props => <div {...props} />,
 
   code: props => (
-    <div className="sm:rounded-lg overflow-hidden -mx-5 md:mx-0 my-8 md:my-10">
+    <div className="sm:rounded-lg overflow-hidden -mx-5 md:mx-0 my-8">
       <Code {...props} />
     </div>
   ),

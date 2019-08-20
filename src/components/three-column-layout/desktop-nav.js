@@ -43,8 +43,8 @@ function DesktopLeftNavLink({ fullPath, ...props }) {
   const isPartiallyActive = ({ isCurrent }) => {
     return {
       className: isCurrent
-        ? "text-gray-900"
-        : "text-gray-600 hover:text-gray-900",
+        ? "text-gray-500"
+        : "text-gray-800 hover:text-gray-500",
     }
   }
 

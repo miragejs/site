@@ -41,10 +41,12 @@ export function ThreeColumnLayout(props) {
                 {props.previousPage ? (
                   <Link
                     to={props.previousPage.fullPath}
-                    className="text-blue-500 hover:text-blue-300"
+                    className="block hover:opacity-75"
                   >
                     <div className="text-sm">Previous</div>
-                    <div className="text-xl">{props.previousPage.label}</div>
+                    <div className="text-blue-500 text-xl">
+                      {props.previousPage.label}
+                    </div>
                   </Link>
                 ) : null}
               </div>
@@ -52,10 +54,12 @@ export function ThreeColumnLayout(props) {
                 {props.nextPage ? (
                   <Link
                     to={props.nextPage.fullPath}
-                    className="text-blue-500 hover:text-blue-300"
+                    className="block hover:opacity-75"
                   >
                     <div className="text-sm text-right">Next</div>
-                    <div className="text-xl">{props.nextPage.label}</div>
+                    <div className="text-blue-500 text-xl">
+                      {props.nextPage.label}
+                    </div>
                   </Link>
                 ) : null}
               </div>

@@ -40,19 +40,19 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
 exports.createPages = ({ actions }) => {
   const { createPage, createRedirect } = actions
 
-  function createAppPage(url) {
+  const createAppPage = function(options) {
     createPage({
-      path: url, // dont shadow path module with local path variable
+      path: options.path, // dont shadow path module with local path variable
       matchPath: "/*",
       component: path.resolve(`./src/routes/app.js`),
     })
   }
 
   // TODO: Create all pages programatically
-  createAppPage("/")
-  createAppPage("/docs/getting-started/introduction")
-  createAppPage("/docs/getting-started/installation")
-  createAppPage("/docs/getting-started/usage")
+  createAppPage({ path: "/" })
+  createAppPage({ path: "/docs/getting-started/introduction" })
+  createAppPage({ path: "/docs/getting-started/installation" })
+  createAppPage({ path: "/docs/getting-started/usage" })
   // createAppPage("/api")
 
   /*

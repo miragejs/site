@@ -50,8 +50,8 @@ export default function(props) {
 
           <main className="flex-1 flex flex-col">
             <Router>
-              <Foo path="/" />
-              <Bar path="/docs/getting-started/introduction" />
+              <Foo path="/docs/getting-started/introduction" />
+              <Bar path="/api" />
             </Router>
             {/* <Outlet /> */}
           </main>

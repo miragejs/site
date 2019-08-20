@@ -40,13 +40,7 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
 exports.createPages = ({ actions }) => {
   const { createPage, createRedirect } = actions
 
-  // createRedirect({
-  //   fromPath: `/one`,
-  //   toPath: `/one/two/three`,
-  //   redirectInBrowser: true,
-  // })
-
-  const createPageForAdam = function(options) {
+  const createAppPage = function(options) {
     return createPage({
       path: options.path,
       matchPath: "/*",
@@ -54,9 +48,22 @@ exports.createPages = ({ actions }) => {
     })
   }
 
-  createPageForAdam({ path: "/" })
-  // createPageForAdam({ path: "/docs" })
-  createPageForAdam({ path: "/docs/getting-started/introduction" })
+  // TODO: Create all pages programatically
+  createAppPage({ path: "/" })
+  createAppPage({ path: "/docs/getting-started/introduction" })
+  createAppPage({ path: "/docs/getting-started/installation" })
+  createAppPage({ path: "/docs/getting-started/usage" })
+
+  // TODO: Create all redirects programatically. Automatically redirect
+  // any non-page route to its nearest child page?
+  createRedirect({
+    fromPath: "/docs",
+    toPath: "/docs/getting-started/introduction",
+  })
+  createRedirect({
+    fromPath: "/docs/getting-started",
+    toPath: "/docs/getting-started/introduction",
+  })
 }
 
 // const esdoc = require("esdoc").default

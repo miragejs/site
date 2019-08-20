@@ -104,7 +104,7 @@ function Header() {
 
             {/* Desktop nav */}
             <div className="hidden md:flex md:items-center md:w-full">
-              {/* <NavLink
+              <NavLink
                 to="/docs/getting-started/introduction"
                 activeFor="/docs/*"
               >
@@ -115,7 +115,7 @@ function Header() {
               </NavLink>
               <NavLink to="/examples/main/react" activeFor="/examples/*">
                 Examples
-              </NavLink> */}
+              </NavLink>
 
               <div className="ml-auto">
                 <a

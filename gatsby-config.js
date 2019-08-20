@@ -7,6 +7,7 @@ module.exports = {
     author: `@miragejs`,
   },
   plugins: [
+    `gatsby-plugin-netlify`,
     `gatsby-plugin-typescript`,
     `gatsby-plugin-react-helmet`,
     {

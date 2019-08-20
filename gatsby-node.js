@@ -53,12 +53,38 @@ exports.createPages = ({ actions }) => {
   createAppPage("/docs/getting-started/introduction")
   createAppPage("/docs/getting-started/installation")
   createAppPage("/docs/getting-started/usage")
-  // createAppPage("/api")
+  createAppPage("/api/classes/association")
+  createAppPage("/api/classes/base-route-handler")
+  createAppPage("/api/classes/base-shorthand-route-handler")
+  createAppPage("/api/classes/collection")
+  createAppPage("/api/classes/container")
+  createAppPage("/api/classes/db")
+  createAppPage("/api/classes/db-collection")
+  createAppPage("/api/classes/delete-shorthand-route-handler")
+  createAppPage("/api/classes/function-route-handler")
+  createAppPage("/api/classes/get-shorthand-route-handler")
+  createAppPage("/api/classes/has-many")
+  createAppPage("/api/classes/head-shorthand-route-handler")
+  createAppPage("/api/classes/identity-manager")
+  createAppPage("/api/classes/jsonapi-serializer")
+  createAppPage("/api/classes/model")
+  createAppPage("/api/classes/object-route-handler")
+  createAppPage("/api/classes/polymorphic-collection")
+  createAppPage("/api/classes/post-shorthand-route-handler")
+  createAppPage("/api/classes/put-shorthand-route-handler")
+  createAppPage("/api/classes/response")
+  createAppPage("/api/classes/route-handler")
+  createAppPage("/api/classes/schema")
+  createAppPage("/api/classes/serializer")
+  createAppPage("/api/classes/serializer-registry")
+  createAppPage("/api/classes/server")
+  createAppPage("/examples/main/react")
+  createAppPage("/examples/main/vue")
 
   /*
     TODO: Create all redirects programatically. All non-page routes should
-    redirect to nearest page? Note that createRedirect has a redirectInBrowser
-    option, but we don't want to use that.
+    redirect to nearest page? (More difficult with dynamic routes). Note that
+    createRedirect has a redirectInBrowser option, but we don't want to use that.
   */
   createRedirect({
     from: "/docs",
@@ -67,6 +93,22 @@ exports.createPages = ({ actions }) => {
   createRedirect({
     from: "/docs/getting-started",
     to: "/docs/getting-started-/introduction",
+  })
+  createRedirect({
+    from: "/api",
+    to: "/api/classes/association",
+  })
+  createRedirect({
+    from: "/api/classes",
+    to: "/api/classes/association",
+  })
+  createRedirect({
+    from: "/examples",
+    to: "/examples/main/react",
+  })
+  createRedirect({
+    from: "/examples/main",
+    to: "/examples/main/react",
   })
 }
 

@@ -40,35 +40,34 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
 exports.createPages = ({ actions }) => {
   const { createPage, createRedirect } = actions
 
+  function createAppPage(url) {
+    createPage({
+      path: url, // dont shadow path module with local path variable
+      matchPath: "/*",
+      component: path.resolve(`./src/routes/app.js`),
+    })
+  }
+
+  // TODO: Create all pages programatically
+  createAppPage("/")
+  createAppPage("/docs/getting-started/introduction")
+  createAppPage("/docs/getting-started/installation")
+  createAppPage("/docs/getting-started/usage")
+  // createAppPage("/api")
+
+  /*
+    TODO: Create all redirects programatically. All non-page routes should
+    redirect to nearest page? Note that createRedirect has a redirectInBrowser
+    option, but we don't want to use that.
+  */
   // createRedirect({
-  //   fromPath: `/one`,
-  //   toPath: `/one/two/three`,
-  //   redirectInBrowser: true,
+  //   from: "/docs",
+  //   to: "/docs/getting-started-/introduction",
   // })
-
-  createPage({
-    path: "/",
-    component: path.resolve(`./src/routes/app.js`),
-  })
-
-  createPage({
-    path: "/docs/getting-started/introduction",
-    component: path.resolve(`./src/routes/app.js`),
-  })
-
-  createPage({
-    path: "/docs/getting-started/installation",
-    component: path.resolve(`./src/routes/app.js`),
-  })
-
-  createPage({
-    path: "/docs/getting-started/usage",
-    component: path.resolve(`./src/routes/app.js`),
-  })
-
-  // createPageForAdam({ path: "/" })
-  // // createPageForAdam({ path: "/docs" })
-  // createPageForAdam({ path: "/docs/getting-started/introduction" })
+  // createRedirect({
+  //   from: "/docs/getting-started",
+  //   to: "/docs/getting-started-/introduction",
+  // })
 }
 
 // DOC STUFF TODO Extract

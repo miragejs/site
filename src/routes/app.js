@@ -49,12 +49,24 @@ export default function(props) {
           <Header />
 
           <main className="flex-1 flex flex-col">
-            <Outlet />
+            <Router>
+              <Foo path="/" />
+              <Bar path="/docs/getting-started/introduction" />
+            </Router>
+            {/* <Outlet /> */}
           </main>
         </div>
       </ThemeContext.Provider>
     </RouterContext.Provider>
   )
+}
+
+function Foo() {
+  return <p>Foo</p>
+}
+
+function Bar() {
+  return <p>Bar</p>
 }
 
 function Header() {
@@ -104,7 +116,7 @@ function Header() {
 
             {/* Desktop nav */}
             <div className="hidden md:flex md:items-center md:w-full">
-              {/* <NavLink
+              <NavLink
                 to="/docs/getting-started/introduction"
                 activeFor="/docs/*"
               >
@@ -115,7 +127,7 @@ function Header() {
               </NavLink>
               <NavLink to="/examples/main/react" activeFor="/examples/*">
                 Examples
-              </NavLink> */}
+              </NavLink>
 
               <div className="ml-auto">
                 <a
@@ -235,56 +247,23 @@ function NavLink({ activeFor, ...props }) {
 
 function Outlet() {
   let router = useRouter()
-  let [, newRouterState] = useState(router.pages)
-
-  // kind of silly, but if our router changes we want to make sure
-  // to re-draw the outlet
-  router.onNewRoute(route => newRouterState(router.pages))
 
   function renderRoutes(routes) {
     return routes.map(route => {
-      let implicitModule =
+      let explicitComponent =
         routeComponentsMap[`./${route.fullName.replace(/\./g, "/")}`]
-      let explicitModule =
-        route.component && routeComponentsMap[`./${route.component}`]
       let EmptyComponent = props => props.children
-
-      let Component
-
-      // if there's an explicit component defined with the route, we'll
-      // use that. otherwise we'll look at the file system. if neither of
-      // those components exist, we'll render an empty component that yields
-      // its children.
-      if (explicitModule && explicitModule.default) {
-        Component = explicitModule.default
-      } else if (explicitModule && Object.keys(explicitModule).length === 1) {
-        Component = explicitModule[Object.keys(explicitModule)[0]]
-      } else if (explicitModule && Object.keys(explicitModule).length > 1) {
-        throw new Error(
-          `${explicitModule} exports more than one component. We don't know which to render!`
-        )
-      } else if (implicitModule && implicitModule.default) {
-        Component = implicitModule.default
-      } else if (false) {
-        // handle named export from implicit module
-      } else if (false) {
-        // handle an implicit module that exports too many components
-      } else {
-        Component = EmptyComponent
-      }
+      let Component = explicitComponent
+        ? explicitComponent.default
+        : EmptyComponent
 
       return (
-        <Component path={route.path} key={route.fullName} meta={route.meta}>
+        <Component path={route.path} key={route.fullName}>
           {renderRoutes(route.routes)}
         </Component>
       )
     })
   }
 
-  return (
-    <Router>
-      <Redirect from="/docs" to="/docs/getting-started/introduction" noThrow />
-      {renderRoutes(router.routes)}
-    </Router>
-  )
+  return <Router>{renderRoutes(router.routes)}</Router>
 }

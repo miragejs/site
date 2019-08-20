@@ -102,6 +102,7 @@ export class Route {
   private _onNewRoute: CallableFunction = () => {}
 
   constructor(config: RouteOptions) {
+    console.log("constructor")
     this.label = config.label
     this.name = config.name
     this.path = config.path

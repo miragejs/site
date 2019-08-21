@@ -16,7 +16,8 @@ export default function Api(props) {
       label: "Classes",
       name: "Classes",
       fullPath: "/api/classes",
-      routes: publicClassRoutes,
+      // routes: publicClassRoutes, // Uncomment when ready to show dynamic classes
+      routes: [{ label: "Server", fullPath: "/api/classes/server" }],
     },
   ]
   let activeRoute = publicClassRoutes.find(
@@ -24,16 +25,17 @@ export default function Api(props) {
   )
 
   let previousPage, nextPage
-  if (activeRoute) {
-    let activeIndex = publicClassRoutes.indexOf(activeRoute)
-    if (activeIndex > 0) {
-      previousPage = publicClassRoutes[activeIndex - 1]
-    }
-
-    if (activeIndex < publicClassRoutes.length - 1) {
-      nextPage = publicClassRoutes[activeIndex + 1]
-    }
-  }
+  // Uncomment when ready to show dynamic classes
+  // if (activeRoute) {
+  //   let activeIndex = publicClassRoutes.indexOf(activeRoute)
+  //   if (activeIndex > 0) {
+  //     previousPage = publicClassRoutes[activeIndex - 1]
+  //   }
+  //
+  //   if (activeIndex < publicClassRoutes.length - 1) {
+  //     nextPage = publicClassRoutes[activeIndex + 1]
+  //   }
+  // }
 
   return (
     <ThreeColumnLayout

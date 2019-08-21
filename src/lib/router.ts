@@ -17,6 +17,21 @@ const allRoutes: RouteDefinition[] = [
           { label: "Usage", name: "usage" },
         ],
       },
+      // {
+      //   name: "route-handlers",
+      //   label: "Route handlers",
+      //   routes: [{ label: "Functions", name: "functions" }],
+      // },
+      // {
+      //   name: "data-layer",
+      //   label: "Data layer",
+      //   routes: [{ label: "The Database", name: "database" }],
+      // },
+      // {
+      //   name: "testing",
+      //   label: "Testing",
+      //   routes: [{ label: "Acceptance tests", name: "acceptance-tests" }],
+      // },
     ],
   },
   {

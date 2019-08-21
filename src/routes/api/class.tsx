@@ -9,6 +9,9 @@ export default function(props) {
   return (
     <div>
       <h1 className="text-3xl">{classDoc.name}</h1>
+      <p className="italic">API docs coming soon!</p>
+
+      {/*
       <div className="pt-2">{classDoc.description}</div>
       <div className="pt-4">
         <h2 className="font-semibold">Fields</h2>
@@ -22,6 +25,7 @@ export default function(props) {
           <div key={method.longname}>{method.name}</div>
         ))}
       </div>
+      */}
     </div>
   )
 }

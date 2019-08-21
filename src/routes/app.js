@@ -115,7 +115,7 @@ function Header({ shouldShowHeaderNav }) {
                   >
                     Documentation
                   </NavLink>
-                  <NavLink to="/api/classes/association" activeFor="/api/*">
+                  <NavLink to="/api/classes/server" activeFor="/api/*">
                     API
                   </NavLink>
                   <NavLink to="/examples/main/react" activeFor="/examples/*">

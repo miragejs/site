@@ -40,7 +40,10 @@ export function DesktopLeftNav(props) {
 }
 
 function DesktopLeftNavLink({ fullPath, ...props }) {
-  const isPartiallyActive = ({ isCurrent }) => {
+  const isPartiallyActive = ({ href, location }) => {
+    let isCurrent =
+      location.pathname === href || location.pathname === `${href}/`
+
     return {
       className: isCurrent
         ? "text-gray-500"

@@ -7,24 +7,14 @@ const allRoutes: RouteDefinition[] = [
   {
     name: "docs",
     label: "Documentation",
-    path: "/docs",
     routes: [
       {
         name: "getting-started",
         label: "Getting started",
-        path: "/getting-started",
         routes: [
-          {
-            label: "Introduction",
-            name: "introduction",
-            path: "/introduction",
-          },
-          {
-            label: "Installation",
-            name: "installation",
-            path: "/installation",
-          },
-          { label: "Usage", name: "usage", path: "/usage" },
+          { label: "Introduction", name: "introduction" },
+          { label: "Installation", name: "installation" },
+          { label: "Usage", name: "usage" },
         ],
       },
     ],
@@ -32,7 +22,6 @@ const allRoutes: RouteDefinition[] = [
   {
     label: "API",
     name: "api",
-    path: "/api",
     routes: [
       {
         label: "Class",
@@ -44,43 +33,30 @@ const allRoutes: RouteDefinition[] = [
   {
     label: "Examples",
     name: "examples",
-    path: "/examples",
     routes: [
       {
         label: "Main",
         name: "main",
-        path: "/main",
         routes: [
-          {
-            label: "React",
-            name: "react",
-            path: "/react",
-          },
-          {
-            label: "Vue",
-            name: "vue",
-            path: "/vue",
-          },
+          { label: "React", name: "react" },
+          { label: "Vue", name: "vue" },
         ],
       },
     ],
   },
 ]
 
-type Meta = {
-  [key: string]: string
+interface RouteDefinition {
+  label: string
+  name: string
+  path?: string
+  routes?: RouteDefinition[]
 }
 
 interface RouteInfo {
   label: string
   name: string
   path: string
-  component?: string
-  meta?: Meta
-}
-
-interface RouteDefinition extends RouteInfo {
-  routes?: RouteDefinition[]
 }
 
 interface RouteOptions extends RouteInfo {
@@ -92,8 +68,6 @@ export class Route {
   label: string
   name: string
   path: string
-  component: string
-  meta: Meta
 
   private _activePath: string
   private _parent: Route
@@ -105,8 +79,6 @@ export class Route {
     this.label = config.label
     this.name = config.name
     this.path = config.path
-    this.meta = config.meta
-    this.component = config.component
 
     this.routes = config.routes ? config.routes : []
 
@@ -219,9 +191,8 @@ export class Route {
     let route = new Route({
       label: definition.label,
       name: definition.name,
-      path: definition.path,
-      component: definition.component,
-      meta: definition.meta,
+      path:
+        definition.path !== undefined ? definition.path : `/${definition.name}`,
     })
 
     // i think this is recursively backwards, create parents first then children

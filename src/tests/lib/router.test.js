@@ -20,6 +20,21 @@ describe("Router", () => {
       expect(router.has({ fullPath: "/people/sam" })).toBeTruthy()
     })
   })
+
+  describe("constructor", () => {
+    it("works with RouteDefinitions that have no path", () => {
+      let router = new Router([
+        {
+          name: "people",
+          label: "people",
+          routes: [{ name: "ryan", label: "ryan" }],
+        },
+      ])
+
+      expect(router.has({ fullPath: "/people" })).toBeTruthy()
+      expect(router.has({ fullPath: "/people/ryan" })).toBeTruthy()
+    })
+  })
 })
 
 describe("Route", () => {

@@ -1,5 +1,17 @@
 import React from "react"
 import useApiDocs from "../../hooks/use-api-docs"
+import {
+  H1,
+  H2,
+  H3,
+  P,
+  UL,
+  LI,
+  Strong,
+  A,
+  Pre,
+  Code,
+} from "../../components/ui"
 
 export default function(props) {
   let classSlug = props.classSlug
@@ -8,8 +20,8 @@ export default function(props) {
 
   return (
     <div>
-      <h1 className="text-3xl">{classDoc.name}</h1>
-      <p className="italic">API docs coming soon!</p>
+      <H1>{classDoc.name}</H1>
+      <P>API docs coming soon!</P>
 
       {/*
       <div className="pt-2">{classDoc.description}</div>

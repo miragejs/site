@@ -5,26 +5,32 @@ import { Tabs, Tab } from "../../../components/tabs"
 # Introduction
 
 <Lead>
-  Mirage is a JavaScript library that lets frontend developers mock out backend
-  APIs.
+  Mirage.js is a library that lets frontend developers mock out backend APIs.
 </Lead>
 
 <Lead>
   Unlike other mocking libraries, Mirage makes it easy to recreate dynamic
-  scenarios that are typically only possible with real production servers.
+  scenarios, the kind that are typically only possible when using a real
+  production server.
 </Lead>
 
 ---
 
-Mirage was originally built to bring some conventions to an HTTP mocking setup that was used across multiple projects. It ended up proving most useful by enabling frontend developers to work on their apps without having to rely on any local or staging backend services as part of their normal development workflow.
+Nearly all JavaScript apps interact with an HTTP API. When you reach the point during development where you need to work with dynamic server data, you have a few options:
 
-Since then, Mirage has focused on making it as easy as possible for developers to maintain a mock server alongside their frontend codebase.
+1. **Proxy to a local or hosted version of your actual backend.** This can work if you already have an API, but you often don't. And even if you do, a lot of times you'll want to work with server state that's different from what's on the live API.
+
+2. **Comment out your app's network requests and replace them with dummy data.** This is the fastest option, but it forces you to deal with networking issues down the line, after you've already written a lot of application code.
+
+3. **Use a client-side interceptor to handle your app's network requests.** Some HTTP clients come with mock adapters (e.g. [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter) can be used to mock requests made with [axios](https://github.com/axios/axios)), and there are also standalone tools like [Pretender](https://github.com/pretenderjs/pretender) you can use to intercept your app's network requests in the browser. This is the most flexible approach, but it requires you to start from scratch in each project, and leaves it up to you to enforce conventions across your apps.
+
+Mirage was built to solve these problems. It's a fake server that runs in the client, it can be used in both development and testing, and it brings along enough conventions to get you up and running quickly.
 
 ## How it works
 
 Mirage runs in the browser. It intercepts any `XMLHttpRequest` or `fetch` requests your JavaScript app makes and lets you mock the response. That means you can develop and test your app just as if it were talking to a real server.
 
-For example, if we were working on this React component
+Let's say we were working on this React component:
 
 ```js
 // App.js
@@ -49,7 +55,7 @@ export function App() {
 }
 ```
 
-we could set up a basic Mirage server to handle the `/api/users` network request it makes:
+We could set up a basic Mirage server to handle the `/api/users` network request it makes, like this:
 
 ```js
 // index.js
@@ -59,8 +65,10 @@ import App from "./app"
 import { Server } from "@miragejs/server"
 
 new Server({
-  routes(server) {
-    server.get("/users", () => [
+  baseConfig() {
+    this.namespace = "/api"
+
+    this.get("/users", () => [
       { id: "1", name: "Luke" },
       { id: "2", name: "Leah" },
       { id: "3", name: "Anakin" },
@@ -71,7 +79,7 @@ new Server({
 ReactDOM.render(<App />, document.getElementById("root"))
 ```
 
-Importantly, because Mirage mocks at the HTTP boundary, you never need to modify your application code to account for whether your app is talking to Mirage or to your real production backend.
+Importantly, because Mirage mocks the HTTP boundary instead of the JavaScript code your app uses to make network requests, you never need to modify your application code to account for whether your app is talking to Mirage or to your real production backend.
 
 In addition to intercepting HTTP requests, Mirage provides a mock database and helper functions that make it easy to simulate dynamic backend services.
 
@@ -82,4 +90,4 @@ Mirage borrows concepts from typical server-side frameworks like
 - **factories** and **fixtures** for stubbing data, and
 - **serializers** for formatting HTTP responses
 
-to make it easy to simulate production server behavior.
+to help you quickly configure your mock server.

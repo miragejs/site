@@ -115,7 +115,7 @@ function Header({ shouldShowHeaderNav }) {
                   >
                     Documentation
                   </NavLink>
-                  <NavLink to="/api/classes/association" activeFor="/api/*">
+                  <NavLink to="/api/classes/server" activeFor="/api/*">
                     API
                   </NavLink>
                   <NavLink to="/examples/main/react" activeFor="/examples/*">
@@ -147,7 +147,7 @@ function Header({ shouldShowHeaderNav }) {
 
           {/* Mobile nav */}
           {isShowingMobileNav && (
-            <nav className="font-medium text-lg">
+            <nav className="font-medium text-lg md:hidden">
               <div
                 className={`border-t border-b ${
                   theme === "dark" ? "border-gray-800" : "border-gray-200"

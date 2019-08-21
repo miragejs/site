@@ -4,6 +4,9 @@ import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
 import { Close, Menu } from "../components/icons"
 import { useRouter } from "../hooks/use-router"
+import Docs from "./docs"
+import Introduction from "./docs/getting-started/introduction"
+import Installation from "./docs/getting-started/installation"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -240,25 +243,31 @@ function NavLink({ activeFor, ...props }) {
   )
 }
 
+let memoizedOutlet
+
+function renderRoutes(routes) {
+  return routes.map(route => {
+    let explicitComponent =
+      routeComponentsMap[`./${route.fullName.replace(/\./g, "/")}`]
+    let EmptyComponent = props => props.children
+    let Component = explicitComponent
+      ? explicitComponent.default
+      : EmptyComponent
+
+    return (
+      <Component path={route.path} key={route.fullName}>
+        {renderRoutes(route.routes)}
+      </Component>
+    )
+  })
+}
+
 function Outlet() {
   let router = useRouter()
 
-  function renderRoutes(routes) {
-    return routes.map(route => {
-      let explicitComponent =
-        routeComponentsMap[`./${route.fullName.replace(/\./g, "/")}`]
-      let EmptyComponent = props => props.children
-      let Component = explicitComponent
-        ? explicitComponent.default
-        : EmptyComponent
-
-      return (
-        <Component path={route.path} key={route.fullName}>
-          {renderRoutes(route.routes)}
-        </Component>
-      )
-    })
+  if (!memoizedOutlet) {
+    memoizedOutlet = renderRoutes(router.routes)
   }
 
-  return <Router>{renderRoutes(router.routes)}</Router>
+  return <Router>{memoizedOutlet}</Router>
 }

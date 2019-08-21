@@ -145,7 +145,7 @@ module.exports = {
                * @param {object} content
                */
               static extract(content) {
-                return content.match(/[\w-/:]+(?<!:)/g) || []
+                return content.match(/[\w-/:+]+(?<!:)/g) || []
               }
             },
             extensions: ["js", "ts", "jsx", "tsx", "mdx"],

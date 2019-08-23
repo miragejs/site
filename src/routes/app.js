@@ -269,5 +269,5 @@ function Outlet() {
     memoizedOutlet = renderRoutes(router.routes)
   }
 
-  return <Router>{memoizedOutlet}</Router>
+  return <Router primary={false}>{memoizedOutlet}</Router>
 }

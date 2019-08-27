@@ -64,7 +64,7 @@ export function DesktopRightNav(props) {
       className="hidden xl:block flex-shrink-0"
       style={{
         width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
-        paddingRight: `calc((100% - 1408px)/ 2)`,
+        paddingRight: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
       }}
     >
       {props.currentPageTableOfContentsItems.length ? (

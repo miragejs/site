@@ -1,0 +1,809 @@
+# Factories
+
+One of the main benefits of using Mirage is the ability to quickly put your server into different states.
+
+For example, you might be developing a feature and want to see how the UI renders for both a logged-in user and an anonymous user. This is the kind of thing that's a pain when using a real backend server, but with Mirage it's as simple as flipping a JavaScript variable and watching your app live-reload.
+
+**Factories** are classes that help you organize your data-creation logic, making it easier to define different server states during development or within tests.
+
+Let's see how they work.
+
+## Defining factories
+
+### Your first factory
+
+Say we have a `Movie` model defined in Mirage.
+
+```js
+import { Server, Model } from "@miragejs/server"
+
+new Server({
+  models: {
+    movie: Model,
+  },
+})
+```
+
+To seed Mirage's database with some movies so you can start developing your app, use the `server.create` method in the default scenario:
+
+```js
+import { Server, Model } from "@miragejs/server"
+
+new Server({
+  models: {
+    movie: Model,
+  },
+
+  scenarios: {
+    default(server) {
+      server.create("movie")
+    },
+  },
+})
+```
+
+`server.create` takes the singular hyphenated form of your model's class name as its first argument.
+
+Because we have no Factory defined for a `Movie`, `server.create('movie')` will just create an empty record and insert it into the database:
+
+```js
+// server.db.dump();
+{
+  movies: [{ id: "1" }]
+}
+```
+
+Not a very interesting record.
+
+However, we can pass attributes of our own as the second argument to `server.create`:
+
+```js
+server.create("movie", {
+  title: "Interstellar",
+  releaseDate: "10/26/2014",
+  genre: "Sci-Fi",
+})
+```
+
+Now our database looks like this:
+
+```json
+// server.db.dump()
+
+{
+  "movies": [
+    {
+      "id": "1",
+      "title": "Interstellar",
+      "releaseDate": "10/26/2014",
+      "genre": "Sci-Fi"
+    }
+  ]
+}
+```
+
+and we can actually start developing our UI against realistic data.
+
+This is a great way to start, but it can be cumbersome to manually define every attribute (and relationship) when working on data-driven applications. It would be nice if we had a way to dynamically generate some of these attributes.
+
+Fortunately, Factories let us do just that!
+
+Let's define a Factory for our `Movie` model using the `factories` key of our server options and the `Factory` import:
+
+```js
+import { Server, Model, Factory } from "@miragejs/server"
+
+new Server({
+  models: {
+    movie: Model,
+  },
+
+  factories: {
+    movie: Factory.extend({
+      // factory properties go here
+    }),
+  },
+
+  scenarios: {
+    default(server) {
+      server.create("movie")
+    },
+  },
+})
+```
+
+Right now the Factory is empty. Let's define a property on it:
+
+```js
+import { Server, Model, Factory } from "@miragejs/server"
+
+new Server({
+  models: {
+    movie: Model,
+  },
+
+  factories: {
+    movie: Factory.extend({
+      title: "Movie title",
+    }),
+  },
+
+  scenarios: {
+    default(server) {
+      server.create("movie")
+    },
+  },
+})
+```
+
+Now `server.create('movie')` will use the properties from this factory. The inserted record will look like this:
+
+```json
+{
+  "movies": [{ "id": "1", "title": "Movie title" }]
+}
+```
+
+We can also make this property a function.
+
+```js
+Factory.extend({
+  title(i) {
+    return `Movie ${i}`
+  },
+})
+```
+
+`i` is an incrementing index that lets us make dynamic factory attributes.
+
+If we use the `server.createList` method, we can quickly generate five movies
+
+```js
+server.createList("movie", 5)
+```
+
+and with the above factory definition, our database will now look like this:
+
+```json
+{
+  "movies": [
+    { "id": "1", "title": "Movie 1" },
+    { "id": "2", "title": "Movie 2" },
+    { "id": "3", "title": "Movie 3" },
+    { "id": "4", "title": "Movie 4" },
+    { "id": "5", "title": "Movie 5" }
+  ]
+}
+```
+
+Let's add some more properties to our factory:
+
+```js
+import { Server, Model, Factory } from "@miragejs/server"
+import faker from "faker"
+
+new Server({
+  models: {
+    movie: Model,
+  },
+
+  factories: {
+    movie: Factory.extend({
+      title(i) {
+        return `Movie ${i}`
+      },
+
+      releaseDate() {
+        return faker.date.past().toLocaleDateString()
+      },
+
+      genre(i) {
+        let genres = ["Sci-Fi", "Drama", "Comedy"]
+
+        return genres[i % genres.length]
+      },
+    }),
+  },
+
+  scenarios: {
+    default(server) {
+      // Use factories here
+    },
+  },
+})
+```
+
+Here we've installed the [Faker.js](https://github.com/marak/Faker.js/) library to help us generate random dates.
+
+Now if we create 5 movies in our default scenario
+
+```js
+scenarios: {
+  default(server) {
+    server.createList('movie', 5)
+  },
+}
+```
+
+we'll have this data in our database:
+
+```json
+{
+  "movies": [
+    {
+      "id": "1",
+      "title": "Movie 1",
+      "releaseDate": "5/14/2018",
+      "genre": "Sci-Fi"
+    },
+    {
+      "id": "2",
+      "title": "Movie 2",
+      "releaseDate": "2/22/2019",
+      "genre": "Drama"
+    },
+    {
+      "id": "3",
+      "title": "Movie 3",
+      "releaseDate": "6/2/2018",
+      "genre": "Comedy"
+    },
+    {
+      "id": "4",
+      "title": "Movie 4",
+      "releaseDate": "7/29/2018",
+      "genre": "Sci-Fi"
+    },
+    {
+      "id": "5",
+      "title": "Movie 5",
+      "releaseDate": "6/30/2018",
+      "genre": "Drama"
+    }
+  ]
+}
+```
+
+As you can see, Factories let us rapidly generate different scenarios for our dynamic server data.
+
+### Attribute overrides
+
+Factories are great for defining the "base case" of your models, but there's plenty of times where you'll want to override attributes from your factory with specific values.
+
+The last argument to `create` and `createList` accepts a POJO of attributes that will override anything from your factory.
+
+```js
+// Using only the base factory
+server.create('movie');
+// gives us this object:
+{ id: '1', title: 'Movie 1', releaseDate: '01/01/2000' }
+
+// Passing in specific values to override certain attributes
+server.create('movie', { title: 'Interstellar' });
+// gives us this object:
+{ id: '2', title: 'Interstellar', releaseDate: '01/01/2000' }
+```
+
+Think of your factory attributes as a reasonable "base case" for your models, and then override them in development and testing scenarios as you have need for specific values.
+
+### Dependent attributes
+
+Attributes can depend on other attributes via `this` from within a function. This can be useful for quickly generating things like usernames from names:
+
+```js
+factories: {
+  user: Factory.extend({
+    name() {
+      return faker.name.findName()
+    },
+
+    username() {
+      return this.name.replace(" ", "").toLowerCase()
+    },
+  })
+}
+```
+
+Calling `server.createList('user', 3)` with this factory would generate this data:
+
+```json
+[
+  { "id": "1", "name": "Retha Donnelly", "username": "rethadonnelly" },
+  { "id": "2", "name": "Crystal Schaefer", "username": "crystalschaefer" },
+  { "id": "3", "name": "Jerome Schoen", "username": "jeromeschoen" }
+]
+```
+
+### Relationships
+
+In the same way that you use the ORM to create relational data with the underlying `schema` object
+
+```js
+let nolan = schema.people.create({ name: "Christopher Nolan" })
+
+schema.movies.create({
+  director: nolan,
+  title: "Interstellar",
+})
+```
+
+you can also create relational data with your factories:
+
+```js
+let nolan = server.create("director", { name: "Christopher Nolan" })
+
+server.create("movie", {
+  director: nolan,
+  title: "Interstellar",
+})
+```
+
+`nolan` is a model instance, which is why we can just pass it in as an attribute override when creating the Interstellar movie.
+
+This also works when using `createList`:
+
+```js
+server.create("actor", {
+  movies: server.createList("movie", 3),
+})
+```
+
+In this way you use factories to help you quickly create graphs of relational data:
+
+```js
+server.createList("user", 5).forEach(user => {
+  server.createList("post", 10, { user }).forEach(post => {
+    server.createList("comment", 5, { post })
+  })
+})
+```
+
+This code generates 5 users, each of which has 10 posts with each post having 5 comments. Assuming these relationships are defined in your models, all the foreign keys would be set correctly in Mirage's database.
+
+### The afterCreate hook
+
+In many cases, setting up relationships manually (as shown in the previous section) is perfectly fine. However there are times where it makes more sense to have base case relationships set up for you automatically.
+
+This is where `afterCreate` hook comes in handy. It's a hook that's called after a model has been created using the factory's base attributes. This hook lets you perform additional logic on your newly-created models before they're returned from `create` and `createList`.
+
+Let's see how it works.
+
+Say you have these two models in your app:
+
+```js
+import { Server, Model, belongsTo } from "@miragejs/server"
+
+new Server({
+  models: {
+    user: Model,
+
+    post: Model.extend({
+      user: belongsTo(),
+    }),
+  },
+})
+```
+
+Let's further suppose that in your app, it is never valid to create a post without an associated user.
+
+You can use `afterCreate` to enforce this behavior:
+
+```js
+import { Server, Model, belongsTo, Factory } from "@miragejs/server"
+
+new Server({
+  models: {
+    user: Model,
+
+    post: Model.extend({
+      user: belongsTo(),
+    }),
+  },
+
+  factories: {
+    post: Factory.extend({
+      afterCreate(post, server) {
+        post.update({
+          user: server.create("user"),
+        })
+      },
+    }),
+  },
+})
+```
+
+The first argument to `afterCreate` is the object that was just created (in this case the `post`), and the second is a reference to the Mirage server instance, so that you can invoke other factories or inspect any other server state needed to customize your newly-created object.
+
+In this example our factory will immediately create a user for this post. That means elsewhere the your app (say, a test) you could just create a post
+
+```js
+server.create("post")
+```
+
+and you'd be working with a valid record, since that post would automatically have an associated user created and associated with it.
+
+Now, there's a one problem with the way we've implemented this so far. Our `afterCreate` hook updates the post's user _regardless if that post already had a user associated with it_.
+
+That means that this code
+
+```js
+let jane = server.create("user", { name: "Jane" })
+server.createList("post", 10, { user: jane })
+```
+
+would not work as we expect, since the attribute overrides are used while the object is being created, but the logic in `afterCreate` runs _after_ the post has been created. Thus, this post would be associated with the newly created post from the hook, rather than Jane.
+
+To fix this, we can update our `afterCreate` hook to first check if the newly created post already has a user associated with it, and only if it doesn't will we create a new one and update the relationship:
+
+```js
+Factory.extend({
+  afterCreate(post, server) {
+    if (!post.user) {
+      post.update({
+        user: server.create("user"),
+      })
+    }
+  },
+})
+```
+
+Now callers can pass in specific users
+
+```js
+server.createList("post", 10, { user: jane })
+```
+
+or omit specifying a user if the details of that user aren't important
+
+```js
+server.create("post")
+```
+
+and in both cases they'll end up with a valid `Post` record.
+
+`afterCreate` can also be used to create `hasMany` associations, as well as apply any other relevant creation logic.
+
+### Traits
+
+Traits are an important feature of factories that make it easy to group related attributes. Define them by importing `trait` and adding a new key to your factory.
+
+For example, here we define a trait named `published` on our post factory:
+
+```js
+import { Server, Model, Factory, trait } from "@miragejs/server"
+
+new Server({
+  models: {
+    post: Model,
+  },
+
+  factories: {
+    post: Factory.extend({
+      title: "Lorem ipsum",
+
+      published: trait({
+        isPublished: true,
+        publishedAt: "2010-01-01 10:00:00",
+      }),
+    }),
+  },
+})
+```
+
+You can pass anything into `trait` that you can into the base factory.
+
+We can use our new trait by passing in the name of the trait as a string argument to `create` or `createList`:
+
+```js
+server.create("post", "published")
+server.createList("post", 3, "published")
+```
+
+The created posts will have all the base attributes, as well as everything under the `published` trait.
+
+You can also compose multiple traits together. Given the following factory that has two traits defined
+
+```js
+post: Factory.extend({
+  title: "Lorem ipsum",
+
+  published: trait({
+    isPublished: true,
+    publishedAt: "2010-01-01 10:00:00",
+  }),
+
+  official: trait({
+    isOfficial: true,
+  }),
+})
+```
+
+we can pass our new traits into `create` or `createList` in any order:
+
+```js
+let officialPost = server.create("post", "official")
+let officialPublishedPost = server.create("post", "official", "published")
+```
+
+If multiple traits set the same attribute, the last trait wins.
+
+As always, you can pass in an object of attribute overrides as the last argument, even if you're using a trait:
+
+```js
+server.create("post", "published", { title: "My first post" })
+```
+
+When combined with the `afterCreate()` hook, traits simplify the process of setting up related object graphs.
+
+Here we define a `withComments` trait that creates 3 comments for a newly created post:
+
+```js
+user: Factory.extend({
+  name: "Lorem ipsum",
+
+  withComments: trait({
+    afterCreate(post, server) {
+      server.createList("comment", 3, { post })
+    },
+  }),
+})
+```
+
+We can use this trait to quickly make 10 posts with 3 comments each:
+
+```js
+server.createList("post", 10, "withComments")
+```
+
+Combining traits with the `afterCreate` hook is one of the most powerful features of Mirage factories. Effective use of this technique will dramatically simplify the process of creating different graphs of relational data for your app.
+
+### The association helper
+
+The `association()` helper provides some sugar for creating `belongsTo` relationships.
+
+As we saw earlier, given a `Post` that `belongsTo` a `User`, we were able to use the `afterCreate` hook to pre-wire that relationship:
+
+```js
+import { Server, Factory } from "@miragejs/server"
+
+new Server({
+  factories: {
+    user: Factory.extend({
+      afterCreate(post, server) {
+        if (!post.user) {
+          post.update({
+            user: server("user"),
+          })
+        }
+      },
+    }),
+  },
+})
+```
+
+The `association()` helper effectively replaces this code:
+
+```js
+import { Server, Factory, association } from "@miragejs/server"
+
+new Server({
+  factories: {
+    user: Factory.extend({
+      post: association(),
+    }),
+  },
+})
+```
+
+This should help reduce some of the boilerplate in your factory definitions.
+
+You can also use `association()` within traits. This definition
+
+```js
+post: Factory.extend({
+  withUser: trait({
+    user: association(),
+  }),
+})
+```
+
+would let you write `server.create('post', 'withUser')` to create a post with an associated user.
+
+You can also pass additional traits and overrides to `association()` for the related model's factory:
+
+```js
+post: Factory.extend({
+  withUser: trait({
+    user: association("admin", { role: "editor" }),
+  }),
+})
+```
+
+There is no equivalent helper for `hasMany` relationships, so you can continue to use the `afterCreate` hook to seed those relationships.
+
+## Using factories
+
+### In development
+
+To use your factories to seed your development database, call `server.create` and `server.createList` in your default scenario:
+
+```js
+import { Server, Model, Factory } from "@miragejs/server"
+
+new Server({
+  models: {
+    movie: Model,
+  },
+
+  factories: {
+    movie: Factory.extend({
+      title(i) {
+        return `Movie ${i}`
+      },
+    }),
+  },
+
+  scenarios: {
+    default(server) {
+      server.createList("movie", 10)
+    },
+  },
+})
+```
+
+There's no explicit API for switching scenarios in development, but you can just use JavaScript modules to split things up.
+
+For example, you could create a new file for each scenario that contains some seeding logic
+
+```js
+// mirage/scenarios/admin.js
+export default function(server) {
+  server.create("user", { isAdmin: true })
+}
+```
+
+...export all scenarios as an object from an `index.js` file
+
+```js
+// mirage/scenarios/index.js
+import anonymous from "./anonymous"
+import subscriber from "./subscriber"
+import admin from "./admin"
+
+export default scenarios = {
+  anonymous,
+  subscriber,
+  admin,
+}
+```
+
+...and then import that object into `default.js`.
+
+Now you can quickly switch your development state by changing a single variable:
+
+```js
+// mirage/server.js
+import scenarios from "./scenarios"
+
+// Choose one
+const state =
+  // 'anonymous'
+  // 'subscriber'
+  "admin"
+
+new Server({
+  // other config,
+
+  scenarios: scenarios[state],
+})
+```
+
+This can be handy while developing your app or sharing the different states of a new feature with your team.
+
+### In testing
+
+When you run your server in a `test` environment, the behavior of your server changes slightly.
+
+```js
+new Server({
+  environment: "test", // default is development
+
+  scenarios: {
+    default(server) {
+      // This function is ignored when environment is "test"
+      server.createList("movie", 10)
+    },
+  },
+})
+```
+
+In `test`, Mirage will load all your server config, but it will ignore your default scenario. (It also sets the `timing` to 0 for route handlers and hides logs from the console.)
+
+That means each test starts out with a clean database, giving you the opportunity to set up only the state needed for that test. It also keeps your development scenarios isolated from your tests, so that you don't inadvertently break your test suite while tweaking your development scenario.
+
+To seed Mirage's database within a test, use the `server.create` and `server.createList` methods.
+
+For example, if you're using `@testing-library/react`, your test might look like this:
+
+```js
+let server
+
+beforeEach(() => {
+  server = startMirage()
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+
+test("I see a message if there are no movies", () => {
+  const { getByTestId } = render(<App />)
+  expect(getByTestId("no-movies")).toBeInTheDocument()
+})
+
+test("I see a list of the movies from the server", async () => {
+  server.createList("movie", 5)
+
+  const { getByTestId } = render(<App />)
+  await waitForElement(() => getByTestId("movie-list"))
+
+  expect(getByTestId("movie")).toHaveLength(5)
+})
+```
+
+In the first test, we boot up our Mirage server, but don't seed it with any movies. When we boot up the React app, we assert that there's an element in the document with a message that there were no movies found.
+
+In the second test, we also boot up our Mirage server, but we seed it with 5 movies. This time when we render our React app, we wait for a `movie-list` element to be present. We use `await` because our React app is making a network request, which is asynchronous. Once Mirage responds to that request, we assert that those movies show up in our UI.
+
+Each test starts out with a fresh Mirage server, so none of Mirage's state leaks across tests.
+
+You can read more about testing with Mirage in the Testing section of these guides.
+
+## Factory best practices
+
+In general, it's best to define a model's base factory using only the attributes and relationships that comprise the minimal valid state for that model. You can then use `afterCreate` and traits to define other common states that contain valid, related changes on top of the base case.
+
+This advice goes a long way towards keeping your test suite maintainable.
+
+If you don't use traits and `afterCreate`, your tests will become bogged down in irrelevant details related to setting up the data needed for that test.
+
+```js
+test("I can see the title of a post", async function(assert) {
+  let session = server.create("session")
+  let user = server.create("user", { session })
+  server.create("post", {
+    user,
+    title: "My first post",
+    slug: "my-first-post",
+  })
+
+  await visit("/post/my-first-post")
+
+  assert.dom("h1").hasText("My first post")
+})
+```
+
+This test is only concerned with asserting the title of a post gets rendered to the screen, but it has lots of boilerplate code that's only there to get the post in a valid state.
+
+If we used `afterCreate` instead, the developer writing this test could simply create a post with a specified `title` and `slug`, since those are the only details relevant to the test:
+
+```js
+test("I can see the title of a post", async function(assert) {
+  server.create("post", {
+    title: "My first post",
+    slug: "my-first-post",
+  })
+
+  await visit("/post/my-first-post")
+
+  assert.dom("h1").hasText("My first post")
+})
+```
+
+`afterCreate` could take care of setting up the session and user in valid states, and associating the user with the post, so that the test can stay concise and focused on what it's actually testing.
+
+Effective use of traits and `afterCreate` keeps your test suite less brittle and more robust to changes in your data layer, since tests only declare the bare minimum setup logic needed to verify their assertions.
+
+---
+
+Up next, we'll take a look at how to use Fixtures as an alternative way to seed your database.

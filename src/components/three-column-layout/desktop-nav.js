@@ -21,7 +21,7 @@ export function DesktopLeftNav(props) {
               <span className="text-gray-800 text-base+ font-medium">
                 {route.label}
               </span>
-              <ul className="ml-2 mt-2 font-normal leading-snug">
+              <ul className="ml-2 mt-3 font-normal leading-snug">
                 {route.routes.map(route => (
                   <DesktopLeftNavLink
                     fullPath={route.fullPath}
@@ -46,13 +46,13 @@ function DesktopLeftNavLink({ fullPath, ...props }) {
 
     return {
       className: isCurrent
-        ? "text-gray-500"
-        : "text-gray-800 hover:text-gray-500",
+        ? "text-gray-900"
+        : "text-gray-600 hover:text-gray-900",
     }
   }
 
   return (
-    <li className="py-1" key={props.route}>
+    <li className="pt-1 pb-2" key={props.route}>
       <Link getProps={isPartiallyActive} to={fullPath} {...props} />
     </li>
   )

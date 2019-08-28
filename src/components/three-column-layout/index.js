@@ -34,7 +34,7 @@ export function ThreeColumnLayout(props) {
         />
 
         <div
-          className="flex-1 w-full px-5 pt-7 font-normal text-gray-800
+          className="flex-1 w-full min-w-0 px-5 pt-7 font-normal text-gray-800
             text-base leading-copy
             sm:pt-8
             md:leading-relaxed md:pt-8 md:px-20

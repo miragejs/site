@@ -2,7 +2,7 @@ import React from "react"
 import Highlight, { defaultProps } from "prism-react-renderer"
 
 export default function({ children, className }) {
-  const language = className.replace(/language-/, "")
+  const language = className ? className.replace(/language-/, "") : "text"
   const maybeRemoveLastLine = (token, i, tokens) => {
     let isLastToken = i === tokens.length - 1
     let isEmpty = token.length === 1 && token[0].empty

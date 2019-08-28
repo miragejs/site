@@ -1,0 +1,312 @@
+# Relationships
+
+Once you've defined your models, you can define relationships between them using the `belongsTo` and `hasMany` helpers. Each helper adds some dynamic methods to your model.
+
+## belongsTo
+
+To define a to-one relationship, import the `belongsTo` helper and define a new property on a model that points to another model:
+
+```js
+import { Server, Model, belongsTo } from "@miragejs/server"
+
+new Server({
+  models: {
+    blogPost: Model.extend({
+      author: belongsTo(),
+    }),
+
+    author: Model,
+  },
+})
+```
+
+This defines a `belongsTo` relationship to an `Author` model.
+
+The `belongsTo` helper adds several new properties and methods to your models.
+
+In this case, our `BlogPost` model now gains an `authorId` property, as well as some methods for working with the associated `author` model:
+
+```js
+blogPost.authorId // 1
+blogPost.authorId = 2 // updates the relationship
+blogPost.author // Author instance
+blogPost.author = anotherAuthor
+blogPost.newAuthor(attrs) // new unsaved author
+blogPost.createAuthor(attrs) // new saved author (updates blogPost.authorId in memory only)
+```
+
+Note that that the `createAuthor` method will create a new author and immediately save it to the `db`, but the blog post's foreign key is updated _on this instance only_, and is not immediately persisted to the database. So `blogPost.authorId` will be updated in memory, but if you were to fetch the `blogPost` from the `db` again, the relationship would not be persisted.
+
+To persist the new foreign key, you would need to call `blogPost.save()` after creating the new author.
+
+## hasMany
+
+To define a to-many relationship, use the `hasMany` helper:
+
+```js
+import { Server, Model, hasMany } from "@miragejs/server"
+
+new Server({
+  models: {
+    blogPost: Model.extend({
+      comments: hasMany(),
+    }),
+
+    comment: Model,
+  },
+})
+```
+
+This helper adds a `commentIds` property to the `blogPost` model, as well as some methods for working with the associated `comments` collection:
+
+```js
+blogPost.commentIds // [1, 2, 3]
+blogPost.commentIds = [2, 3] // updates the relationship
+blogPost.comments // array of related comments
+blogPost.comments = [comment1, comment2] // updates the relationship
+blogPost.newComment(attrs) // new unsaved comment
+blogPost.createComment(attrs) // new saved comment (comment.blogPostId is set)
+```
+
+## One to one
+
+A one-to-one relationship can be defined using the `belongsTo` helper on two models:
+
+```js
+import { Server, Model, belongsTo } from "@miragejs/server"
+
+new Server({
+  models: {
+    supplier: Model.extend({
+      account: belongsTo(),
+    }),
+
+    account: Model.extend({
+      supplier: belongsTo(),
+    }),
+  },
+})
+```
+
+By default, Mirage will mark these two relationships as inverses of each other and therefore be able to keep them in sync as they change. For example, if `supplierA.account` was `accountB`, `accountB.supplier` would point back to `supplierA`. And if `supplierA.account` was set to `null`, the `accountB.supplier` side of the relationship would also be set to `null` to keep the relationships in sync.
+
+## One to many
+
+A one-to-many relationship can be defined using the `belongsTo` helper on one model and the `hasMany` helper on an inverse:
+
+```js
+import { Server, Model, belongsTo, hasMany } from "@miragejs/server"
+
+new Server({
+  models: {
+    user: Model.extend({
+      comments: hasMany(),
+    }),
+
+    comment: Model.extend({
+      user: belongsTo(),
+    }),
+  },
+})
+```
+
+Mirage will mark these as inverses of each other, and keep them in sync as they change.
+
+## Many to many
+
+A many-to-many relationship can be defined using the `hasMany` helper on two models:
+
+```js
+import { Server, Model, hasMany } from "@miragejs/server"
+
+new Server({
+  models: {
+    blogPost: Model.extend({
+      tags: hasMany(),
+    }),
+
+    tag: Model.extend({
+      blogPosts: hasMany(),
+    }),
+  },
+})
+```
+
+Mirage will mark these as inverses of each other, and keep them in sync as they change.
+
+## Association options
+
+The following options are available to customize your `belongsTo` and `hasMany` relationship definitions.
+
+### modelName
+
+If your associations model has a different name than the association itself, you can specify the `modelName` on the association.
+
+For example,
+
+```js
+import { Server, Model, belongsTo, hasMany } from "@miragejs/server"
+
+new Server({
+  models: {
+    user: Model,
+
+    annotation: Model,
+
+    blogPost: Model.extend({
+      author: belongsTo("user"),
+      comments: hasMany("annotation"),
+    }),
+  },
+})
+```
+
+would add all the named `author` and `comment` methods as listed above, but use the `User` and `Annotation` models for the actual relationships.
+
+### inverse
+
+Often, relationships can be inverses of each other.
+
+For example, say we had the following two models:
+
+```js
+import { Server, Model, belongsTo, hasMany } from "@miragejs/server"
+
+new Server({
+  models: {
+    blogPost: Model.extend({
+      comments: hasMany(),
+    }),
+
+    comment: Model.extend({
+      blogPost: belongsTo(),
+    }),
+  },
+})
+```
+
+In this case, `blogPost.comments` would point to a collection of Comment models, and each one of those Comment models would have a `comment.blogPost` relationship that pointed back to the original post.
+
+Mirage can often infer that two relationships on two different models are inverses of each other, but sometimes you'll need to be explicit. This typically happens if a model has two relationships that point to the same model type.
+
+For example, suppose we had the following schema:
+
+```js
+import { Server, Model, belongsTo, hasMany } from "@miragejs/server"
+
+new Server({
+  models: {
+    user: Model.extend({
+      blogPosts: hasMany(),
+    }),
+
+    blogPost: Model.extend({
+      author: belongsTo("user"),
+      reviewer: belongsTo("user"),
+    }),
+  },
+})
+```
+
+In this case, Mirage doesn't know which relationship (`blogPost.author` or `blogPost.reviewer`) should by synchronized with the `user.blogPosts` collection. So, you can specify which one is the inverse by using the `inverse` option:
+
+```js
+import { Server, Model, belongsTo, hasMany } from "@miragejs/server"
+
+new Server({
+  models: {
+    user: Model.extend({
+      blogPosts: hasMany(),
+    }),
+
+    blogPost: Model.extend({
+      author: belongsTo("user", { inverse: "blogPosts" }),
+      reviewer: belongsTo("user", { inverse: null }),
+    }),
+  },
+})
+```
+
+Now, if a blog post is added to `user.blogPosts`, that post's `author` will be correctly updated.
+
+### polymorphic
+
+You can specify whether an association is a polymorphic association by passing `{ polymorphic: true }` as an option.
+
+For example, say you have `BlogPost` and `Picture` models that can both have a `Comment`. Here's how the model definitions could look:
+
+```js
+import { Server, Model, belongsTo, hasMany } from "@miragejs/server"
+
+new Server({
+  models: {
+    blogPost: Model.extend({
+      comments: hasMany(),
+    }),
+
+    picture: Model.extend({
+      comments: hasMany(),
+    }),
+
+    comment: Model.extend({
+      commentable: belongsTo({ polymorphic: true }),
+    }),
+  },
+})
+```
+
+We give `Comment` models a `commentable` polymorphic relationships, since the model being commented on could either be a `BlogPost` or a `Picture`. Note that `commentable` doesn't have a type, as there's no validation done on which types of models can exist on that relationship.
+
+Polymorphic associations have slightly different method signatures for their foreign keys and build/create methods.
+
+```js
+let comment = server.schema.comments.create({ text: "foo" })
+
+comment.buildCommentable("blog-post", { title: "Lorem Ipsum" })
+comment.createCommentable("blog-post", { title: "Lorem Ipsum" })
+
+// getter
+comment.commentableId // { id: 1, type: 'blog-post' }
+
+// setter
+comment.commentableId = { id: 2, type: "picture" }
+```
+
+Has-many relationships can also be polymorphic:
+
+```js
+import { Server, Model, belongsTo, hasMany } from "@miragejs/server"
+
+new Server({
+  models: {
+    car: Model,
+
+    watch: Model
+
+    user: Model.extend({
+      things: hasMany({ polymorphic: true })
+    }),
+  },
+})
+```
+
+```js
+let user = server.schema.users.create({ name: "Sam" });
+
+user.buildThing('car', { attrs });
+user.createThing('watch', { attrs });
+
+// getter
+user.thingIds; // [ { id: 1, type: 'car' }, { id: 3, type: 'watch' }, ... ]
+
+// setter
+user.thingIds = [ { id: 2, type: 'watch' }, ... ];
+```
+
+---
+
+Be sure to check out the Schema, Model and Collection API docs to learn about all the available ORM methods.
+
+We'll also cover Serializers in these guides, where you'll learn how to customize the serialized forms of your models and collections to match your production API.
+
+Next, let's take a look at Factories, which leverage your Model definitions to make it easy to create graphs of relational data.

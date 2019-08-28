@@ -65,7 +65,7 @@ import App from "./app"
 import { Server } from "@miragejs/server"
 
 new Server({
-  baseConfig() {
+  routes() {
     this.namespace = "/api"
 
     this.get("/users", () => [

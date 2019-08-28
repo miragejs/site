@@ -44,9 +44,58 @@ new Server({
 })
 ```
 
-This data will be automatically loaded into Mirage's database as its starting data.
+This data will be automatically loaded into Mirage's database as its starting data, unless you have a default scenario defined:
 
-Typically fixtures are extracted to separate files. We can put this data into its own `fixtures/countries.js` file:
+If you have a default scenario defined, Mirage assumes you want to use Factories to seed your data:
+
+```js
+import { Server } from "@miragejs/server"
+
+new Server({
+  fixtures: {
+    countries: [
+      { id: 1, name: "China" },
+      { id: 2, name: "India" },
+      { id: 3, name: "United States" },
+    ],
+  },
+
+  scenarios: {
+    default(server) {
+      // Fixtures won't be loaded automatically, because this function is defined
+
+      server.create("post")
+    },
+  },
+})
+```
+
+But you can use Fixtures in conjunction with Factories by calling `server.loadFixtures` in the default scenario:
+
+```js
+import { Server } from "@miragejs/server"
+
+new Server({
+  fixtures: {
+    countries: [
+      { id: 1, name: "China" },
+      { id: 2, name: "India" },
+      { id: 3, name: "United States" },
+    ],
+  },
+  scenarios: {
+    default(server) {
+      // Load all fixture data into the development db
+      server.loadFixtures()
+
+      // Also create some db data using factories
+      server.create("post")
+    },
+  },
+})
+```
+
+Typically, fixtures are extracted to separate files. We can put our country fixture data into its own `fixtures/countries.js` file and export it as an array:
 
 ```js
 // mirage/fixtures/countries.js
@@ -77,33 +126,63 @@ new Server({
 })
 ```
 
-Because this data will be read directly into Mirage's database, we want to use camelCase for all multi-word attributes. (Mirage uses the camelCasing convention to avoid configuration for things like identifying foreign keys.)
+Many teams find it useful to have certain seed data stored as separate fixture files like this.
+
+## Attribute formatting
+
+Because fixture data is read directly into Mirage's database, it's important to use camelCase for all multi-word attributes. (Mirage uses the camelCasing convention to avoid configuration for things like identifying foreign keys.)
 
 Don't worry if your production API format doesn't use camelCase. We'll be able to customize Mirage's API format in the Serializer layer.
 
-To load our new fixture file into the database during development, we can call `server.loadFixtures` in our `scenarios/default.js` file:
+## loadFixtures helper
+
+As described above, if Mirage detects both fixtures and a default scenario, it won't automatically load the fixture data.
+
+To load Fixtures into the database during development, call `server.loadFixtures` in the default scenario:
 
 ```js
-// mirage/scenarios/default.js
-export default function(server) {
-  server.loadFixtures()
+scenarios: {
+  default(server) {
+    server.loadFixtures()
+  }
 }
 ```
 
-If we have multiple fixtures defined, `server.loadFixtures()` will load every file. You can load files selectively by passing in an argument list of fixture names to `loadFixtures`:
+`server.loadFixtures()` will load all fixtures. You can load fixtures selectively by passing in an argument list of fixture names to `loadFixtures`:
 
 ```js
-// mirage/scenarios/default.js
-export default function(server) {
-  server.loadFixtures("countries", "cities") // only load the countries and cities fixtures
-}
+import { Server, Model } from "@miragejs/server"
+import cities from "./fixtures/cities"
+import countries from "./fixtures/countries"
+import users from "./fixtures/users"
+
+new Server({
+  fixtures: {
+    country: Model,
+    city: Model,
+    user: Model,
+  },
+
+  fixtures: {
+    countries: countries,
+    cities: cities,
+    users: users,
+  },
+
+  scenarios: {
+    default(server) {
+      // only load the countries and cities fixtures
+      server.loadFixtures("countries", "cities")
+    },
+  },
+})
 ```
 
-Just like with factories, fixtures will be ignored during tests. If you want to load fixture data in a test, you can call `this.server.loadFixtures`:
+Just as with the default scenario, Fixtures will be ignored during tests. If you want to load fixture data in a test, you can call `server.loadFixtures`:
 
 ```js
 test("I can see the countries", async function(assert) {
-  this.server.loadFixtures("countries")
+  server.loadFixtures("countries")
 
   await visit("/")
 
@@ -118,14 +197,17 @@ There's no special API for creating relationships using fixtures – you just ne
 Let's say we had these models:
 
 ```js
-// mirage/models/user.js
-export default Model.extend({
-});
+import { Server, Model } from "@miragejs/server"
 
-// mirage/models/post.js
-export default Model.extend({
-  author: belongsTo('user')
-});
+new Server({
+  models: {
+    user: Model,
+
+    post: Model.extend({
+      author: belongsTo("user"),
+    }),
+  },
+})
 ```
 
 Using the ORM we can create two related models:
@@ -141,14 +223,13 @@ schema.posts.create({
 
 If we take a look at Mirage's database after this, we'll see this data:
 
-```js
+```json
 // server.db.dump()
+
 {
-  users: [
-    { id: '1', name: 'Chris Garrett' }
-  ],
-  posts: [
-    { id: '1', authorId: '1', title: 'Coming Soon in Ember Octane' }
+  "users": [{ "id": "1", "name": "Chris Garrett" }],
+  "posts": [
+    { "id": "1", "authorId": "1", "title": "Coming Soon in Ember Octane" }
   ]
 }
 ```
@@ -156,23 +237,30 @@ If we take a look at Mirage's database after this, we'll see this data:
 As you can see, Mirage added an `authorId` foreign key to the post. The convention for belongsTo foreign keys is
 
 ```js
-;`${relationshipName}Id`
+belongsToForeignKey = `${relationshipName}Id`
 ```
 
 In this case, a post gets an `authorId`, even though that relationship points to a `User` model. The relationship name is always used rather than the model name, because models can have multiple relationships that point to the same type of model.
 
-Looking at the database dump above, if you wanted to recreate the same relationship graph using only fixture files, your files would look something like this:
+Looking at the database dump above, if you wanted to recreate the same relationship graph using only Fixtures, your data would just need to match it:
 
 ```js
-// mirage/fixtures/users.js
-export default [
-  { id: '1', name: 'Chris Garrett' }
-];
+import { Server, Model } from "@miragejs/server"
 
-// mirage/fixtures/posts.js
-export default [
-  { id: '1', authorId: '1', title: 'Coming Soon in Ember Octane' }
-];
+new Server({
+  models: {
+    user: Model,
+
+    post: Model.extend({
+      author: belongsTo("user"),
+    }),
+  },
+
+  fixtures: {
+    users: [{ id: "1", name: "Chris Garrett" }],
+    posts: [{ id: "1", authorId: "1", title: "Coming Soon in Ember Octane" }],
+  },
+})
 ```
 
 Once these fixtures are loaded into Mirage, all the ORM methods, Shorthands and Serializers would work as expected.
@@ -180,35 +268,34 @@ Once these fixtures are loaded into Mirage, all the ORM methods, Shorthands and 
 If this happens to be a bi-directional relationship
 
 ```diff
-  // mirage/models/user.js
-  export default Model.extend({
-+   posts: hasMany()
-  });
+  models: {
+    user: Model.extend({
++     posts: hasMany()
+    }),
 
-  // mirage/models/post.js
-  export default Model.extend({
-    author: belongsTo('user')
-  });
+    post: Model.extend({
+      author: belongsTo("user"),
+    }),
+  },
 ```
 
-then Mirage will add an array of foreign keys on the new hasMany association:
+then Mirage will add an array of foreign keys for the new hasMany association:
 
-```js
-// mirage/fixtures/users.js
-export default [
-  { id: '1', postIds: [ '1' ], name: 'Chris Garrett' }
-];
+```json
+// server.db.dump()
 
-// mirage/fixtures/posts.js
-export default [
-  { id: '1', authorId: '1', title: 'Coming Soon in Ember Octane' }
-];
+{
+  "users": [{ "id": "1", "name": "Chris Garrett", "postIds": ["1"] }],
+  "posts": [
+    { "id": "1", "authorId": "1", "title": "Coming Soon in Ember Octane" }
+  ]
+}
 ```
 
 The convention for hasMany relationship foreign keys is
 
 ```js
-;`${singularize(relationshipName)}Ids`
+hasManyForeignKey = `${singularize(relationshipName)}Ids`
 ```
 
 All associations have their own keys, because Mirage supports arbitrary one-way relationships. If two associations are inverses of each other, as in the above case, Mirage will keep the keys on each model in sync provided you use the ORM methods.
@@ -218,3 +305,5 @@ As you can see, maintaining foreign keys and keeping them in sync across fixture
 Still, fixtures can be quite useful in certain situations, so they're a good tool to have in your toolbox.
 
 ---
+
+Next, we'll wrap up the Data Layer guides by covering Serializers, which let us customize how Mirage formats our data before sending it back in response to our app.

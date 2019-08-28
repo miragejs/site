@@ -4,9 +4,6 @@ import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
 import { Close, Menu } from "../components/icons"
 import { useRouter } from "../hooks/use-router"
-import Docs from "./docs"
-import Introduction from "./docs/getting-started/introduction"
-import Installation from "./docs/getting-started/installation"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}

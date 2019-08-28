@@ -11,28 +11,23 @@ export default function TodoApp() {
   let [todos, setTodos] = useState([])
   let [newTodo, setNewTodo] = useState(null)
   let [refresh, setRefresh] = useState(0)
+  let isMounted = useRef(true)
 
   useEffect(() => {
-    // since react testing will unmount our component before
-    // fetch finishes we need to use an abort controller singal
-    let controller = new AbortController()
-    let signal = controller.signal
+    setIsLoading(true)
 
-    let fetchTodos = async () => {
-      setIsLoading(true)
+    fetch("/api/todos")
+      .then(res => res.json())
+      .then(json => {
+        if (isMounted.current) {
+          setTodos(json)
+          setIsLoading(false)
+        }
+      })
 
-      try {
-        let response = await fetch("/api/todos", { signal })
-        let json = await response.json()
-
-        setTodos(json)
-        setIsLoading(false)
-      } catch (e) {}
+    return () => {
+      isMounted.current = false
     }
-
-    fetchTodos()
-
-    return () => controller.abort()
   }, [refresh])
 
   function addTodo(todo) {

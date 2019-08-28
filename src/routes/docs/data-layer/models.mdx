@@ -40,10 +40,8 @@ new Server({
     blogPost: Model,
   },
 
-  scenarios: {
-    default(server) {
-      server.schema.blogPosts.create({ title: "Interstellar" })
-    },
+  seeds(server) {
+    server.schema.blogPosts.create({ title: "Interstellar" })
   },
 })
 ```
@@ -53,10 +51,8 @@ Note that the collection is the pluralized form of the model's model name (the `
 Outside of route handlers, you'll typically create models using Factories via `server.create` rather than via the `schema` directly:
 
 ```js
-scenarios: {
-  default(server) {
-    server.create("blog-post")
-  },
+seeds(server) {
+  server.create("blog-post")
 }
 ```
 

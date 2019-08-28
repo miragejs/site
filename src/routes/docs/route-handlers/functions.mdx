@@ -41,7 +41,7 @@ You can also set a global timing parameter for all routes. Individual timing par
 
 ```js
 new Server({
-  baseConfig() {
+  routes() {
     this.namespace = "api"
     this.timing = 2000
 
@@ -238,7 +238,7 @@ new Server({
   models: {
     author: Model,
   },
-  baseConfig() {
+  routes() {
     this.post("/authors", function(schema, request) {
       let attrs = JSON.parse(request.requestBody).author
 
@@ -274,7 +274,7 @@ If your entire app uses an external (other-origin) API, you can globally configu
 
 ```js
 new Server({
-  baseConfig() {
+  routes() {
     this.urlPrefix = 'https://my.api.com';
 
     // This route will intercept requests to https://my.api.com/contacts

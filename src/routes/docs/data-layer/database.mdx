@@ -8,20 +8,18 @@ Most of your Mirage code will not access the database directly, but rather will 
 
 However, it's good to know that whether or not you use the ORM, you can always interact with the database directly.
 
-For example, you could seed it with some data in the default dev scenario:
+For example, you could seed it with some data using the dev seeds:
 
 ```js
 new Server({
-  scenarios: {
-    default(server) {
-      server.db.loadData({
-        movies: [
-          { title: "Interstellar" },
-          { title: "Inception" },
-          { title: "Dunkirk" },
-        ],
-      })
-    },
+  seeds(server) {
+    server.db.loadData({
+      movies: [
+        { title: "Interstellar" },
+        { title: "Inception" },
+        { title: "Dunkirk" },
+      ],
+    })
   },
 })
 ```

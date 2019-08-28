@@ -10,16 +10,14 @@ Fixtures are nothing more than a conventional way to accomplish the following:
 import { Server } from "@miragejs/server"
 
 new Server({
-  scenarios: {
-    default(server) {
-      server.db.loadData({
-        countries: [
-          { id: 1, name: "China" },
-          { id: 2, name: "India" },
-          { id: 3, name: "United States" },
-        ],
-      })
-    },
+  seeds(server) {
+    server.db.loadData({
+      countries: [
+        { id: 1, name: "China" },
+        { id: 2, name: "India" },
+        { id: 3, name: "United States" },
+      ],
+    })
   },
 })
 ```
@@ -44,9 +42,9 @@ new Server({
 })
 ```
 
-This data will be automatically loaded into Mirage's database as its starting data, unless you have a default scenario defined:
+This data will be automatically loaded into Mirage's database as its starting data, unless you have a seeds function defined.
 
-If you have a default scenario defined, Mirage assumes you want to use Factories to seed your data:
+If you have a seeds function defined, Mirage assumes you want to use Factories to seed your data:
 
 ```js
 import { Server } from "@miragejs/server"
@@ -60,12 +58,10 @@ new Server({
     ],
   },
 
-  scenarios: {
-    default(server) {
-      // Fixtures won't be loaded automatically, because this function is defined
+  seeds(server) {
+    // Fixtures won't be loaded automatically, because this function is defined
 
-      server.create("post")
-    },
+    server.create("post")
   },
 })
 ```
@@ -83,14 +79,13 @@ new Server({
       { id: 3, name: "United States" },
     ],
   },
-  scenarios: {
-    default(server) {
-      // Load all fixture data into the development db
-      server.loadFixtures()
 
-      // Also create some db data using factories
-      server.create("post")
-    },
+  seeds(server) {
+    // Load all fixture data into the development db
+    server.loadFixtures()
+
+    // Also create some db data using factories
+    server.create("post")
   },
 })
 ```
@@ -141,10 +136,8 @@ As described above, if Mirage detects both fixtures and a default scenario, it w
 To load Fixtures into the database during development, call `server.loadFixtures` in the default scenario:
 
 ```js
-scenarios: {
-  default(server) {
-    server.loadFixtures()
-  }
+seeds(server) {
+  server.loadFixtures()
 }
 ```
 
@@ -169,11 +162,9 @@ new Server({
     users: users,
   },
 
-  scenarios: {
-    default(server) {
-      // only load the countries and cities fixtures
-      server.loadFixtures("countries", "cities")
-    },
+  seeds(server) {
+    // only load the countries and cities fixtures
+    server.loadFixtures("countries", "cities")
   },
 })
 ```

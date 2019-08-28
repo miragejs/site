@@ -24,7 +24,7 @@ new Server({
 })
 ```
 
-To seed Mirage's database with some movies so you can start developing your app, use the `server.create` method in the default scenario:
+To seed Mirage's database with some movies so you can start developing your app, use the `server.create` method in your server's seeds:
 
 ```js
 import { Server, Model } from "@miragejs/server"
@@ -34,10 +34,8 @@ new Server({
     movie: Model,
   },
 
-  scenarios: {
-    default(server) {
-      server.create("movie")
-    },
+  seeds(server) {
+    server.create("movie")
   },
 })
 ```
@@ -104,10 +102,8 @@ new Server({
     }),
   },
 
-  scenarios: {
-    default(server) {
-      server.create("movie")
-    },
+  seeds(server) {
+    server.create("movie")
   },
 })
 ```
@@ -128,10 +124,8 @@ new Server({
     }),
   },
 
-  scenarios: {
-    default(server) {
-      server.create("movie")
-    },
+  seeds(server) {
+    server.create("movie")
   },
 })
 ```
@@ -205,23 +199,19 @@ new Server({
     }),
   },
 
-  scenarios: {
-    default(server) {
-      // Use factories here
-    },
+  seeds(server) {
+    // Use factories here
   },
 })
 ```
 
 Here we've installed the [Faker.js](https://github.com/marak/Faker.js/) library to help us generate random dates.
 
-Now if we create 5 movies in our default scenario
+Now if we create 5 movies in our development seeds
 
 ```js
-scenarios: {
-  default(server) {
-    server.createList('movie', 5)
-  },
+seeds(server) {
+  server.createList('movie', 5)
 }
 ```
 
@@ -625,7 +615,7 @@ There is no equivalent helper for `hasMany` relationships, so you can continue t
 
 ### In development
 
-To use your factories to seed your development database, call `server.create` and `server.createList` in your default scenario:
+To use your factories to seed your development database, call `server.create` and `server.createList` in your server's seeds function:
 
 ```js
 import { Server, Model, Factory } from "@miragejs/server"
@@ -643,10 +633,8 @@ new Server({
     }),
   },
 
-  scenarios: {
-    default(server) {
-      server.createList("movie", 10)
-    },
+  seeds(server) {
+    server.createList("movie", 10)
   },
 })
 ```
@@ -694,7 +682,7 @@ const state =
 new Server({
   // other config,
 
-  scenarios: scenarios[state],
+  seeds: scenarios[state],
 })
 ```
 
@@ -708,18 +696,16 @@ When you run your server in a `test` environment, the behavior of your server ch
 new Server({
   environment: "test", // default is development
 
-  scenarios: {
-    default(server) {
-      // This function is ignored when environment is "test"
-      server.createList("movie", 10)
-    },
+  seeds(server) {
+    // This function is ignored when environment is "test"
+    server.createList("movie", 10)
   },
 })
 ```
 
-In `test`, Mirage will load all your server config, but it will ignore your default scenario. (It also sets the `timing` to 0 for route handlers and hides logs from the console.)
+In `test`, Mirage will load all your server config, but it will ignore your seeds. (It also sets the `timing` to 0 for route handlers and hides logs from the console.)
 
-That means each test starts out with a clean database, giving you the opportunity to set up only the state needed for that test. It also keeps your development scenarios isolated from your tests, so that you don't inadvertently break your test suite while tweaking your development scenario.
+That means each test starts out with a clean database, giving you the opportunity to set up only the state needed for that test. It also keeps your development environment isolated from your tests, so that you don't inadvertently break your test suite while tweaking your seeds.
 
 To seed Mirage's database within a test, use the `server.create` and `server.createList` methods.
 

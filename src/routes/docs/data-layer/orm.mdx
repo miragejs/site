@@ -162,7 +162,7 @@ new Server({
     movie: Model.extend(),
   },
 
-  baseConfig() {
+  routes() {
     this.get("/movies/:id", (schema, request) => {
       let id = request.params.id
 
@@ -190,7 +190,7 @@ new Server({
     application: JSONAPISerializer,
   },
 
-  baseConfig() {
+  routes() {
     this.get("/movies/:id", (schema, request) => {
       let id = request.params.id
 
@@ -243,7 +243,7 @@ new Server({
     application: JSONAPISerializer,
   },
 
-  baseConfig() {
+  routes() {
     this.get("/movies/:id", (schema, request) => {
       let id = request.params.id
 

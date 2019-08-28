@@ -8,7 +8,7 @@ The simplest example of a route handler is a function that returns an object:
 import { Server } from "@miragejs/server"
 
 new Server({
-  baseConfig() {
+  routes() {
     this.namespace = "api"
 
     this.get("/movies", () => {
@@ -32,7 +32,7 @@ You can get pretty far using static route handlers like this, and they're a good
 import { Server, Response } from "@miragejs/server"
 
 new Server({
-  baseConfig() {
+  routes() {
     this.namespace = "api"
 
     // Responding to a POST request
@@ -90,7 +90,8 @@ new Server({
   models: {
     movie: Model,
   },
-  baseConfig() {
+
+  routes() {
     this.namespace = "api"
 
     this.get("/movies", () => {
@@ -128,26 +129,26 @@ The last step is to seed the database. Right now, if we sent a request to our ne
 }
 ```
 
-That's because Mirage's database is empty. We can use the **default scenario** to seed our database with some data:
+That's because Mirage's database is empty. We can use **seeds** to start out our database with some initial data:
 
 ```js
 new Server({
   models: {
     movie: Model,
   },
-  scenarios: {
-    default(server) {
-      server.create("movie", { name: "Inception", year: 2010 })
-      server.create("movie", { name: "Interstellar", year: 2014 })
-      server.create("movie", { name: "Dunkirk", year: 2017 })
-    },
-  },
-  baseConfig() {
+
+  routes() {
     this.namespace = "api"
 
     this.get("/movies", (schema, request) => {
       return schema.movies.all()
     })
+  },
+
+  seeds(server) {
+    server.create("movie", { name: "Inception", year: 2010 })
+    server.create("movie", { name: "Interstellar", year: 2014 })
+    server.create("movie", { name: "Dunkirk", year: 2017 })
   },
 })
 ```
@@ -240,15 +241,13 @@ Shorthands make writing your server definition concise, so use them whenever pos
 
 ## Factories
 
-In the example above, we seeded Mirage's database using the `server.create` API in our default scenario:
+In the example above, we seeded Mirage's database using the `server.create` API:
 
 ```js
-scenarios: {
-  default(server) {
-    server.create("movie", { name: "Inception", year: 2010 })
-    server.create("movie", { name: "Interstellar", year: 2014 })
-    server.create("movie", { name: "Dunkirk", year: 2017 })
-  }
+seeds(server) {
+  server.create("movie", { name: "Inception", year: 2010 })
+  server.create("movie", { name: "Interstellar", year: 2014 })
+  server.create("movie", { name: "Dunkirk", year: 2017 })
 }
 ```
 
@@ -331,21 +330,19 @@ server.db.dump()
 
 There's also a `server.createList` API to generate many records at once.
 
-You can use both `server.create` and `server.createList` to invoke your Factories in your default scenario
+You can use both `server.create` and `server.createList` to invoke your Factories in your `seeds` function:
 
 ```js
 import { Server, Factory } from "@miragejs/server"
 
 new Server({
-  scenarios: {
-    default(server) {
-      server.createList("movie", 10)
-    },
+  seeds(server) {
+    server.createList("movie", 10)
   },
 })
 ```
 
-as well as in your testing environment. In a test environment, Mirage will load its routes but ignore the default scenario, giving you the opportunity to set up the database in exactly the state needed for your test:
+as well as in your testing environment. In a test environment, Mirage will load its routes but ignore its seeds, giving you the opportunity to set up the database in exactly the state needed for your test:
 
 ```js
 // app-test.js
@@ -522,7 +519,7 @@ new Server({
     }),
   },
 
-  baseConfig() {
+  routes() {
     this.get("/movies/:id")
   },
 })
@@ -568,7 +565,7 @@ To avoid this, tell Mirage to let unhandled requests pass through:
 
 ```js
 new Server({
-  baseConfig() {
+  routes() {
     // Allow unhandled requests on the current domain to pass through
     this.passthrough()
   },
@@ -581,7 +578,7 @@ When it comes time to build a new feature, you don't have to wait for the API to
 
 ```js
 new Server({
-  baseConfig() {
+  routes() {
     // Mock this route and Mirage will intercept it
     this.get("/movies")
 

@@ -1,6 +1,6 @@
 # Serializers
 
-A serializer is an object responsible for transforming a Model or Collection that's returned from your route handlers
+A _serializer_ is an object responsible for transforming a Model or Collection that's returned from your route handlers:
 
 ```js
 this.get("movies/:id", (schema, request) => {
@@ -8,7 +8,7 @@ this.get("movies/:id", (schema, request) => {
 })
 ```
 
-into a formatted JSON payload
+into a JSON payload that's formatted the way your frontend app expects:
 
 ```json
 // GET /movies/1
@@ -23,8 +23,6 @@ into a formatted JSON payload
   }
 }
 ```
-
-suitable for consumption by your app.
 
 Serializers are the last main part of Mirage's architecture that interacts with the Data Layer, because producing a well-formatted JSON response often involves traversing the relationship graph of your models.
 
@@ -44,7 +42,11 @@ Mirage ships with two other named serializers that match other popular backend f
 
 Depending on your own backend API's format, you'll need to choose the closest serializer as a starting point and customize it to match your production format. We'll talk about that later in this guide.
 
-## Defining serializers
+---
+
+_More guides coming soon!_
+
+<!-- ## Defining serializers
 
 Once you've selected the appropriate serializer, define your default application-wide serializer by exporting it from `/mirage/serializers/application.js`:
 
@@ -238,4 +240,4 @@ The more conventional your backend API is, the less code you'll need to write â€
 
 Be sure to check out the {{docs-link 'Serializer' 'docs.api.item' 'modules/ember-cli-mirage/serializer~Serializer#keyForAttribute'}} and {{docs-link 'JSONAPISerializer' 'docs.api.item' 'modules/ember-cli-mirage/serializers/json-api-serializer~JSONAPISerializer'}} docs to learn about all the hooks available to customize your serializer layer.
 
-Now that we've covered the ins and outs of Mirage's data layer, we're ready to see how we can use Mirage to effectively test our Ember application.
+Now that we've covered the ins and outs of Mirage's data layer, we're ready to see how we can use Mirage to effectively test our Ember application. -->

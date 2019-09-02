@@ -3,8 +3,20 @@
  *
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
+require("source-map-support").install()
+require("ts-node").register({
+  compilerOptions: {
+    module: "commonjs",
+    target: "es2017",
+  },
+})
+
+// require = require("esm")(module)
 const fs = require("fs")
 const path = require("path")
+const Router = require("./src/lib/router").Router
+
+let router = new Router()
 
 // I think this was from an earlier strategy at getting the snippet contents, but
 // we went back to remark because it supports line highlighting
@@ -48,11 +60,13 @@ exports.createPages = ({ actions }) => {
     })
   }
 
-  // TODO: Create all pages programatically
-  createAppPage("/")
-  createAppPage("/docs/getting-started/introduction")
-  createAppPage("/docs/getting-started/installation")
-  createAppPage("/docs/getting-started/usage")
+  router.pages
+    .filter(page => !page.isDynamic)
+    .forEach(page => {
+      createAppPage(page.fullPath)
+    })
+
+  // TODO: Create all API docs pages dynamically
   createAppPage("/api/classes/association")
   createAppPage("/api/classes/base-route-handler")
   createAppPage("/api/classes/base-shorthand-route-handler")
@@ -78,8 +92,6 @@ exports.createPages = ({ actions }) => {
   createAppPage("/api/classes/serializer")
   createAppPage("/api/classes/serializer-registry")
   createAppPage("/api/classes/server")
-  createAppPage("/examples/main/react")
-  createAppPage("/examples/main/vue")
 
   /*
     TODO: Create all redirects programatically. All non-page routes should

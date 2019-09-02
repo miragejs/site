@@ -125,6 +125,10 @@ export class Route {
       .join("")
   }
 
+  get isDynamic(): boolean {
+    return this.path.includes(":")
+  }
+
   get parent(): Route {
     return this._parent
   }

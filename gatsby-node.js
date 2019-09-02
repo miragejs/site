@@ -60,10 +60,11 @@ exports.createPages = ({ actions }) => {
     })
   }
 
-  // TODO: Filter out pages with dynamic segments
-  router.pages.forEach(page => {
-    createAppPage(page.fullPath)
-  })
+  router.pages
+    .filter(page => !page.isDynamic)
+    .forEach(page => {
+      createAppPage(page.fullPath)
+    })
 
   // TODO: Create all API docs pages dynamically
   createAppPage("/api/classes/association")

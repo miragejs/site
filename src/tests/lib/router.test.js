@@ -173,6 +173,18 @@ describe("Route", () => {
     })
   })
 
+  describe("isDynamic", () => {
+    it("is false if the path has no dynamic segment", () => {
+      let route = new Route({ label: "label", name: "name", path: "/home" })
+      expect(route.isDynamic).toBe(false)
+    })
+
+    it("is true if the path has a dynamic segment", () => {
+      let route = new Route({ label: "label", name: "name", path: "/:post_id" })
+      expect(route.isDynamic).toBe(true)
+    })
+  })
+
   describe("pages", () => {
     it("only contains leaf nodes", () => {
       let root = new Route({

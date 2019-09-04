@@ -41,7 +41,13 @@ const allRoutes: RouteDefinition[] = [
       {
         name: "testing",
         label: "Testing",
-        routes: [{ label: "Application tests", name: "application-tests" }],
+        routes: [
+          { label: "Application tests", name: "application-tests" },
+          {
+            label: "Integration and unit tests",
+            name: "integration-and-unit-tests",
+          },
+        ],
       },
     ],
   },

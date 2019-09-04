@@ -1,0 +1,482 @@
+# Application tests
+
+Mirage was originally built to help JavaScript app developers write high-level UI tests, and that's still one of the primary benefits of using Mirage today.
+
+These high-level tests are concerned with verifying the _user flows_ of your application. The user in this case is the actual person who will be using your web app on a computer or mobile device, and working with a keyboard, mouse, or other input device. Therefore, these tests should closely resemble how these people will be interacting with your application in the real world.
+
+Let's consider an example. Take the following user flow that you want to test:
+
+> The user can view the list of movies when visiting the homepage
+
+Most application tests like this actually rely on a given server state, even if they omit it or leave it implicit. And this is where Mirage comes in: it helps you make that server state an explicit part of your tests.
+
+If we were to rewrite the above test to be more complete, we might end up with something like this:
+
+- _Given_ 10 movie resources exist on the server
+- _When_ the user visits the homepage
+- _Then_ they should see a list of 10 movies
+
+Let's see how we can use Mirage to write this test.
+
+## Our first test
+
+This example uses [Cypress](https://www.cypress.io) for syntax, but Mirage works alongside any JavaScript testing harness you have setup.
+
+Assuming Cypress is wired up, we could write this test:
+
+```js
+describe("homepage", function() {
+  it("shows the movies", function() {
+    cy.visit("/")
+
+    cy.get("li.selected").should("have.length", 10)
+  })
+})
+```
+
+Our app runs, but when it makes a network request to `/api/movies` it errors and the test fails. This is where we can bring in Mirage.
+
+Let's import it and start it in `beforeEach`:
+
+```js
+import { Server } from "@miragejs/server"
+
+describe("homepage", function() {
+  let server
+
+  beforeEach(() => {
+    server = new Server()
+  })
+
+  afterEach(() => {
+    server.shutdown()
+  })
+
+  it("shows the movies", function() {
+    cy.visit("/")
+
+    cy.get("li.movie").should("have.length", 10)
+  })
+})
+```
+
+When you start up Mirage, it will start intercepting your app's network requests, just like in development. So the next time you run your test, you should see an error like this:
+
+> Mirage: Your app tried to GET '/api/movies', but there was no route defined to handle this request
+
+Now we can mock out this route.
+
+```diff
+  import { Server, Model } from "@miragejs/server"
+
+  describe("homepage", function() {
+    let server
+
+    beforeEach(() => {
+-     server = new Server()
++     server = new Server({
++       models: {
++         movie: Model
++       },
++
++       routes() {
++         this.namespace = 'api'
++
++         this.resource('movie')
++       }
+      })
+    })
+
+    afterEach(() => {
+      server.shutdown()
+    })
+
+    it("shows the movies", function() {
+      cy.visit("/")
+
+      cy.get("li.movie").should("have.length", 10)
+    })
+  })
+```
+
+Our app now runs, but the test fails. We can look at the logs in our console and see Mirage handled the request to `/api/movies`, but it responded with no data.
+
+That's because Mirage's database is empty.
+
+As you learned in the guides on the Data layer, you can use the `seeds` method to seed Mirage's database with factories and fixtures. But in testing, we already have a natural place to set up our Mirage state – the test itself! So the general practice is to not use seeds, and instead to set up Mirage's database state within each test.
+
+We can do that using the `server.create` and `server.createList` methods:
+
+```js
+import { Server, Model } from "@miragejs/server"
+
+describe("homepage", function() {
+  let server
+
+  beforeEach(() => {
+    server = new Server({
+      models: {
+        movie: Model,
+      },
+
+      routes() {
+        this.namespace = "api"
+
+        this.resource("movie")
+      },
+    })
+  })
+
+  afterEach(() => {
+    server.shutdown()
+  })
+
+  it("shows the movies", function() {
+    server.createList("movie", 10)
+
+    cy.visit("/")
+
+    cy.get("li.movie").should("have.length", 10)
+  })
+})
+```
+
+And now we have a passing test!
+
+After each test, Mirage's server is shutdown and reset, so none of this state will leak across tests.
+
+## Sharing your Mirage server between development and testing
+
+In the example above, we set up a new server directly within our test, but Mirage is best used when your mock server definition is centralized and shared across your development and testing environments. After all, in production your app will talk to a real server that uses a single API contract! Using a single Mirage server thus helps maintain consistency in your mock API contract.
+
+So, if you don't already have a Mirage server that you've started for development, move your server definition somewhere where it's clear that it's going to be used in both the development environment and by your tests:
+
+```
+└── src
+    ├── App.js
+    ├── App.test.js
+    └── mirage.js
+```
+
+Next, export a function you can use to start your Mirage server:
+
+```js
+// src/mirage.js
+import { Server, Model } from "@miragejs/server"
+
+export function startMirage() {
+  return new Server({
+    models: {
+      movie: Model,
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.resource("movie")
+    },
+  })
+}
+```
+
+Now, import this function and use it in your test:
+
+```js
+import { startMirage } from "./mirage"
+
+describe("homepage", function() {
+  let server
+
+  beforeEach(() => {
+    server = startMirage()
+  })
+
+  afterEach(() => {
+    server.shutdown()
+  })
+
+  it("shows the movies", function() {
+    server.createList("movie", 10)
+
+    cy.visit("/")
+
+    cy.get("li.movie").should("have.length", 10)
+  })
+})
+```
+
+You now have a central place to define and update your Mirage server, and an easy way to use it in your tests.
+
+You can also use your `startMirage` function to kick off Mirage in development:
+
+```js
+// index.js
+import React from "react"
+import ReactDOM from "react-dom"
+import App from "./App"
+import { startMirage } from "./mirage"
+
+if (environment === "development") {
+  startMirage()
+}
+
+ReactDOM.render(<App />, document.getElementById("root"))
+```
+
+Ideally, you should make sure your Mirage code doesn't get included in production (unless you're building a prototype). How to accomplish this will depend on your build tooling setup. In the future we will add some more guides that cover this.
+
+## The `test` environment
+
+Mirage has an `environment` option that defaults to `development`. In the development environment, Mirage has a default delay of `50ms` to its requests, logs all its responses to the console, and loads the development `seeds`.
+
+Mirage can also be put into a `test` environment, which will set its delays to 0 (unless otherwise overridden) and suppress all of its logging (so as not to dirty up your CI server logs). It will also ignore the `seeds()` function, so that data can be used solely for development but won't leak into or affect your tests. This helps keep your tests deterministic.
+
+To use the `test` environment in our tests, let's update our `startMirage` function to accept an environment option:
+
+```diff
+  // src/mirage.js
+  import { Server, Model } from "@miragejs/server"
+
+- export function startMirage() {
++ export function startMirage({ environment: 'development' }) {
+    return new Server({
++     environment,
+
+      models: {
+        movie: Model,
+      },
+
+      routes() {
+        this.namespace = "api"
+
+        this.resource("movie")
+      },
+    })
+  }
+```
+
+Now in our tests, we can pass in `test` as the environment, and our tests will run with no delay, we won't get any `seeds()`, and we won't see any logs:
+
+```diff
+  // src/App.test.js
+  import { startMirage } from "./mirage"
+
+  describe("homepage", function() {
+    let server
+
+    beforeEach(() => {
+-     server = startMirage()
++     server = startMirage({ environment: 'test' })
+    })
+
+    afterEach(() => {
+      server.shutdown()
+    })
+
+    it("shows the movies", function() {
+      server.createList("movie", 10)
+
+      cy.visit("/")
+
+      cy.get("li.movie").should("have.length", 10)
+    })
+  })
+```
+
+If you find yourself debugging a test and want to view the network requests going into and out of Mirage, you can enable logging within that test by setting the `server.logging` option to `true`:
+
+```js
+it("shows the movies", function() {
+  server.createList("movie", 10)
+  server.logging = true // enable logs for this test while debugging
+
+  cy.visit("/")
+
+  cy.get("li.movie").should("have.length", 10)
+})
+```
+
+Just delete it when you're done to keep your CI testing logs clean.
+
+## Keeping your tests focused
+
+Factories are important in keeping code that's relevant to a test as close to that test as possible. In the example above, we wanted to verify that the user would see ten movies, given those movies existed on the server. So, the `server.createList('movie', 10)` call was directly in the test.
+
+Say we wanted to test that when the user visits a detail route for a movie titled "Interstellar," they would see that title in an `<h1>` tag. One way to accomplish this would be to hard-code the title into our server's `Movie` factory:
+
+```js
+// src/mirage.js
+import { Server, Model, Factory } from "@miragejs/server"
+
+export function startMirage({ environment: 'development' }) {
+  return new Server({
+    environment,
+
+    models: {
+      movie: Model,
+    },
+
+    factories: {
+      movie: Factory.extend({
+        title: 'Interstellar'
+      })
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.resource("movie")
+    },
+  })
+}
+```
+
+The problem with this approach is that we've just made a change to our shared Mirage server that's very specific to this one test.
+
+Suppose another test needed to verify something different about movies with different titles. Changing the factory to suit that case would break this test.
+
+For this reason, you should use `create` and `createList` to override specific attributes of your model. This will keep code relevant to your test near your test, without making the rest of your test suite brittle.
+
+```js
+// App.test.js
+let server
+
+beforeEach(() => {
+  server = startMirage({ environment: "test" })
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+
+it("shows all the movies", function() {
+  server.createList("movie", 10)
+
+  cy.visit("/")
+
+  cy.get("li.movie").should("have.length", 10)
+})
+
+it("shows the movie's title on the detail route", function() {
+  let movie = this.server.create("movie", {
+    title: "Interstellar",
+  })
+
+  cy.visit(`/${movie.id}`)
+
+  cy.get("h1").should("contain", "Interstallar")
+})
+```
+
+It's also often helpful to use the data from your Mirage server when writing a test, as you can see from the second where Mirage's autogenerated ID is used to visit a dynamic URL for the specific movie.
+
+## Arrange, Act, Assert
+
+Mirage recommends using the [Arrange, Act, Assert approach](https://github.com/testdouble/contributing-tests/wiki/Arrange-Act-Assert) to write tests. You'll sometimes hear this pattern referred to as **AAA testing** ("triple-A testing").
+
+You can see this structure in our test from above:
+
+```js
+it("shows all the movies", function() {
+  // ARRANGE
+  server.createList("movie", 10)
+
+  // ACT
+  cy.visit("/")
+
+  // ASSERT
+  cy.get("li.movie").should("have.length", 10)
+})
+```
+
+There are of course times where it makes sense to break this rule (for example to add some extra assertions near the beginning or middle of a test), but in general you should strive to follow the pattern.
+
+## Testing errors
+
+To test how your app responds to a server error, you can overwrite a route handler directly within a test:
+
+```js
+import { Response } from "@miragejs/server"
+
+it("shows an error if the save attempt fails", function() {
+  server.post("/questions", () => {
+    return new Response(500, {}, { errors: ["The database went on vacation"] })
+  })
+
+  cy.visit("/")
+    .contains("New")
+    .click()
+    .get("input")
+    .type("New question")
+    .contains("Save")
+    .click()
+
+  cy.get("h2").should("contain", "The database went on vacation")
+})
+```
+
+This route handler definition is only in effect for the duration of this test, so as soon as it's over any handler you have defined for POST to `/questions` in your `mirage.js` file will be used again.
+
+## Shared data seeds in testing
+
+The `seeds()` config option is ignored when Mirage's environment is set to `test`, so changes to it won't affect the rest of your test suite.
+
+If there's some logic you'd like to share between your development scenario and your tests, or across multiple tests, you can always make a new plain JavaScript module and import it wherever it's needed.
+
+To use a shared module during development, create the module
+
+```js
+// mirage/scenarios/shared.js
+export default function(server) {
+  server.loadFixtures('countries');
+
+  server.createList('event', 10);
+});
+```
+
+...load it in `seeds()`, so the scenario runs during development:
+
+```js
+// mirage.js
+import sharedScenario from "./scenarios/shared"
+
+new Server({
+  seeds(server) {
+    // Load the shared scenario in development
+    sharedScenario(server)
+
+    // Make some development-specific data
+    server.create("movie", { title: "Interstellar" })
+  },
+})
+```
+
+...and then also load it in your tests (or even in a common test setup function):
+
+```js
+import sharedScenario from "./mirage/scenarios/shared"
+import { startServer } from "./mirage"
+
+let server
+
+beforeEach(() => {
+  server = startServer({ environment: "test" })
+  sharedScenario(server)
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+
+it("shows all the movies", function() {
+  server.createList("movie", 10)
+
+  cy.visit("/")
+
+  cy.get("li.movie").should("have.length", 10)
+})
+```
+
+---
+
+Those are the basics of Application Testing with Mirage! Next let's talk about Integration and Unit tests.

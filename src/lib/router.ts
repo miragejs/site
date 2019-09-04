@@ -38,11 +38,11 @@ const allRoutes: RouteDefinition[] = [
           { label: "Serializers", name: "serializers" },
         ],
       },
-      // {
-      //   name: "testing",
-      //   label: "Testing",
-      //   routes: [{ label: "Acceptance tests", name: "acceptance-tests" }],
-      // },
+      {
+        name: "testing",
+        label: "Testing",
+        routes: [{ label: "Application tests", name: "application-tests" }],
+      },
     ],
   },
   {

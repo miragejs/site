@@ -11,28 +11,25 @@ export default function TodoApp() {
   let [todos, setTodos] = useState([])
   let [newTodo, setNewTodo] = useState(null)
   let [refresh, setRefresh] = useState(0)
-  let isMounted = useRef(true)
 
   useEffect(() => {
+    let isLatestAndMounted = true
     setIsLoading(true)
 
     fetch("/api/todos")
       .then(res => res.json())
       .then(json => {
-        if (isMounted.current) {
+        if (isLatestAndMounted) {
           setTodos(json)
           setIsLoading(false)
         }
       })
-  }, [refresh])
 
-  useEffect(() => {
-    isMounted.current = true
-
+    // If this effect is rerun or the component is unmounted, dont run the callback
     return () => {
-      isMounted.current = false
+      isLatestAndMounted = false
     }
-  })
+  }, [refresh])
 
   function addTodo(todo) {
     setNewTodo(null)

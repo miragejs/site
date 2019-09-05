@@ -4,11 +4,48 @@ At the core of Mirage's data layer is a simple in-memory database. This database
 
 The database is what allows Mirage to mimic a production server, giving you the ability to write complete dynamic features in your app.
 
-Most of your Mirage code will not access the database directly, but rather will interact with it through Mirage's ORM. We'll cover the ORM in the next section of these guides.
+Most of your Mirage code will not access the database directly, but will interact with it through Mirage's ORM instead. We'll cover the ORM in the next section of these guides.
 
-However, it's good to know that whether or not you use the ORM, you can always interact with the database directly.
+For now, let's learn the basics of the database so you feel confident interacting with it directly, even if most of your code ends up using the ORM.
 
-For example, you could seed it with some data using the dev seeds:
+## Basic usage
+
+Mirage's database is really just a JavaScript object with some conventions around it. It's accessible off your `server` instance
+
+```js
+let server = new Server()
+
+server.db // {} the db is empty
+```
+
+You can call `loadData` on it to seed it with some data:
+
+```js
+server.db.loadData({
+  movies: [
+    { title: "Interstellar" },
+    { title: "Inception" },
+    { title: "Dunkirk" },
+  ],
+})
+```
+
+`loadData` takes a object whose keys correspond to database tables, and whose values represent an array of database records.
+
+The database automatically assigns IDs to new records (you can also provide your own). We can access our data using a MongoDB-inspired API:
+
+```js
+// Get all movies
+server.db.movies // [ { id: '1', title: 'Interstellar' }, { id: '2', title: 'Inception' }, { id: '3', title: 'Dunkirk' } ]
+
+// Get the first movie
+server.db.movies[0] // { id: '1', title: 'Interstellar' }
+
+// Insert a new movie
+server.db.movies.insert({ title: "The Dark Knight" })
+```
+
+Mirage has a `seeds` method which is a conventional place to put some initial data into your server during development. You can call `loadData` on the database there:
 
 ```js
 new Server({
@@ -24,7 +61,7 @@ new Server({
 })
 ```
 
-Then you can access that data in your route handlers using the `schema` argument:
+The real power comes from accessing the database in your route handlers. You can get it using the `schema` argument:
 
 ```js
 this.get("/movies", (schema, request) => {
@@ -32,7 +69,7 @@ this.get("/movies", (schema, request) => {
 })
 ```
 
-This route handler would then respond with the data you loaded:
+This route handler now responds with all the data in Mirage's database at the time of the request. That means if you start out with this data;
 
 ```json
 [
@@ -42,12 +79,32 @@ This route handler would then respond with the data you loaded:
 ]
 ```
 
-Note that each record has an `id` field, since the database assigns all new records an auto-incrementing ID.
+but then write a new route handler that inserts data into the `movies` collection
+
+```js
+this.post("/movies", (schema, request) => {
+  let attrs = JSON.parse(request.requestBody)
+
+  return schema.db.movies.insert(attrs)
+})
+```
+
+and use your app to create a new movie, the second time your app makes a GET request to `/movies` it would respond with the new database data:
+
+```json
+[
+  { "id": "1", "title": "Interstellar" },
+  { "id": "2", "title": "Inception" },
+  { "id": "3", "title": "Dunkirk" },
+  { "id": "4", "title": "The Dark Knight" }
+]
+```
+
+As you'll learn in the next section, most of your route handlers will interact with the `schema` ORM object instead of the lower-level database object, but it's still good to know that the database is there if you need it.
 
 The most common place you'll use the database directly is in your tests, where you can access it via `server.db`. It can be useful to assert against the state of Mirage's database to verify that your app's network requests are sending over the correct data.
 
 ```js
-// tests/movie-test.js
 test("I can create a movie", async function(assert) {
   await visit("/movies/new")
   await fillIn(".title", "The Dark Knight")
@@ -60,4 +117,6 @@ test("I can create a movie", async function(assert) {
 
 You can view the rest of the Database APIs in the API reference.
 
-Next, we'll learn about Mirage's ORM.
+---
+
+Next, let's learn about Mirage's ORM.

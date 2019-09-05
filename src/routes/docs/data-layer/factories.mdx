@@ -4,7 +4,7 @@ One of the main benefits of using Mirage is the ability to quickly put your serv
 
 For example, you might be developing a feature and want to see how the UI renders for both a logged-in user and an anonymous user. This is the kind of thing that's a pain when using a real backend server, but with Mirage it's as simple as flipping a JavaScript variable and watching your app live-reload.
 
-**Factories** are classes that help you organize your data-creation logic, making it easier to define different server states during development or within tests.
+Factories are classes that help you organize your data-creation logic, making it easier to define different server states during development or within tests.
 
 Let's see how they work.
 
@@ -24,7 +24,7 @@ new Server({
 })
 ```
 
-To seed Mirage's database with some movies so you can start developing your app, use the `server.create` method in your server's seeds:
+To seed Mirage's database with some movies so you can start developing your app, use the `server.create` method in your server's `seeds`:
 
 ```js
 import { Server, Model } from "@miragejs/server"

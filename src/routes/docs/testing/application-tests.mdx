@@ -25,27 +25,63 @@ This example uses [Cypress](https://www.cypress.io) for syntax, but Mirage works
 Assuming Cypress is wired up, we could write this test:
 
 ```js
-describe("homepage", function() {
-  it("shows the movies", function() {
-    cy.visit("/")
+// homepage-test.js
+it("shows the movies", () => {
+  cy.visit("/")
 
-    cy.get("li.selected").should("have.length", 10)
-  })
+  cy.get("li.selected").should("have.length", 10)
 })
 ```
 
-Our app runs, but when it makes a network request to `/api/movies` it errors and the test fails. This is where we can bring in Mirage.
+Our app runs, but when it makes an HTTP request to `/api/movies` it errors and the test fails. This is where we can bring in Mirage.
 
 Let's import it and start it in `beforeEach`:
 
 ```js
+// homepage-test.js
 import { Server } from "@miragejs/server"
 
-describe("homepage", function() {
+let server
+
+beforeEach(() => {
+  server = new Server()
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+
+it("shows the movies", function() {
+  cy.visit("/")
+
+  cy.get("li.movie").should("have.length", 10)
+})
+```
+
+When you start Mirage, it will intercept your app's network requests, just like in development. So the next time you run your test, you should see an error like this:
+
+> Mirage: Your app tried to GET '/api/movies', but there was no route defined to handle this request
+
+Now we can mock out this route.
+
+```diff
+  import { Server, Model } from "@miragejs/server"
+
   let server
 
   beforeEach(() => {
-    server = new Server()
+-   server = new Server()
++   server = new Server({
++     models: {
++       movie: Model
++     },
++
++     routes() {
++       this.namespace = 'api'
++
++       this.resource('movie')
++     }
+    })
   })
 
   afterEach(() => {
@@ -56,46 +92,6 @@ describe("homepage", function() {
     cy.visit("/")
 
     cy.get("li.movie").should("have.length", 10)
-  })
-})
-```
-
-When you start up Mirage, it will start intercepting your app's network requests, just like in development. So the next time you run your test, you should see an error like this:
-
-> Mirage: Your app tried to GET '/api/movies', but there was no route defined to handle this request
-
-Now we can mock out this route.
-
-```diff
-  import { Server, Model } from "@miragejs/server"
-
-  describe("homepage", function() {
-    let server
-
-    beforeEach(() => {
--     server = new Server()
-+     server = new Server({
-+       models: {
-+         movie: Model
-+       },
-+
-+       routes() {
-+         this.namespace = 'api'
-+
-+         this.resource('movie')
-+       }
-      })
-    })
-
-    afterEach(() => {
-      server.shutdown()
-    })
-
-    it("shows the movies", function() {
-      cy.visit("/")
-
-      cy.get("li.movie").should("have.length", 10)
-    })
   })
 ```
 
@@ -105,39 +101,37 @@ That's because Mirage's database is empty.
 
 As you learned in the guides on the Data layer, you can use the `seeds` method to seed Mirage's database with factories and fixtures. But in testing, we already have a natural place to set up our Mirage state – the test itself! So the general practice is to not use seeds, and instead to set up Mirage's database state within each test.
 
-We can do that using the `server.create` and `server.createList` methods:
+We can do that using the `server.create` and `server.createList` methods, directly in the body of our test:
 
 ```js
 import { Server, Model } from "@miragejs/server"
 
-describe("homepage", function() {
-  let server
+let server
 
-  beforeEach(() => {
-    server = new Server({
-      models: {
-        movie: Model,
-      },
+beforeEach(() => {
+  server = new Server({
+    models: {
+      movie: Model,
+    },
 
-      routes() {
-        this.namespace = "api"
+    routes() {
+      this.namespace = "api"
 
-        this.resource("movie")
-      },
-    })
+      this.resource("movie")
+    },
   })
+})
 
-  afterEach(() => {
-    server.shutdown()
-  })
+afterEach(() => {
+  server.shutdown()
+})
 
-  it("shows the movies", function() {
-    server.createList("movie", 10)
+it("shows the movies", function() {
+  server.createList("movie", 10)
 
-    cy.visit("/")
+  cy.visit("/")
 
-    cy.get("li.movie").should("have.length", 10)
-  })
+  cy.get("li.movie").should("have.length", 10)
 })
 ```
 
@@ -147,7 +141,7 @@ After each test, Mirage's server is shutdown and reset, so none of this state wi
 
 ## Sharing your Mirage server between development and testing
 
-In the example above, we set up a new server directly within our test, but Mirage is best used when your mock server definition is centralized and shared across your development and testing environments. After all, in production your app will talk to a real server that uses a single API contract! Using a single Mirage server thus helps maintain consistency in your mock API contract.
+In the example above, we set up a new server directly within our test, but Mirage is best used when your mock server definition is centralized and shared across your development and testing environments. After all, in production your app will talk to a real server that uses a single API contract! Using a single Mirage server thus helps you maintain a consistent mock API server everywhere it's being used.
 
 So, if you don't already have a Mirage server that you've started for development, move your server definition somewhere where it's clear that it's going to be used in both the development environment and by your tests:
 
@@ -182,6 +176,7 @@ export function startMirage() {
 Now, import this function and use it in your test:
 
 ```js
+// App.test.js
 import { startMirage } from "./mirage"
 
 describe("homepage", function() {
@@ -227,11 +222,11 @@ Ideally, you should make sure your Mirage code doesn't get included in productio
 
 ## The `test` environment
 
-Mirage has an `environment` option that defaults to `development`. In the development environment, Mirage has a default delay of `50ms` to its requests, logs all its responses to the console, and loads the development `seeds`.
+Mirage has an `environment` option that defaults to `development`. In the development environment, Mirage has a delay of `50ms` (which can be customized), logs all its responses to the console, and loads the development `seeds`.
 
-Mirage can also be put into a `test` environment, which will set its delays to 0 (unless otherwise overridden) and suppress all of its logging (so as not to dirty up your CI server logs). It will also ignore the `seeds()` function, so that data can be used solely for development but won't leak into or affect your tests. This helps keep your tests deterministic.
+Mirage can also be put into a `test` environment, which will start out delays at 0 (to keep your tests fast) and suppress all of its logging (so as not to dirty up your CI server logs). It will also ignore the `seeds()` function, so that data can be used solely for development but won't leak into or affect your tests. This helps keep your tests deterministic.
 
-To use the `test` environment in our tests, let's update our `startMirage` function to accept an environment option:
+To use the `test` environment in our tests, let's update our `startMirage` function to accept an environment option, which we'll default to `development`:
 
 ```diff
   // src/mirage.js
@@ -255,7 +250,7 @@ To use the `test` environment in our tests, let's update our `startMirage` funct
   }
 ```
 
-Now in our tests, we can pass in `test` as the environment, and our tests will run with no delay, we won't get any `seeds()`, and we won't see any logs:
+Now in our tests, we can pass in `test` as the environment. Our tests will run with no delay, we won't get any `seeds()`, and we won't see any logs:
 
 ```diff
   // src/App.test.js
@@ -283,12 +278,12 @@ Now in our tests, we can pass in `test` as the environment, and our tests will r
   })
 ```
 
-If you find yourself debugging a test and want to view the network requests going into and out of Mirage, you can enable logging within that test by setting the `server.logging` option to `true`:
+If you find yourself debugging a test and want to view the network requests going in and out of Mirage, you can enable logging within that test by setting the `server.logging` option to `true`:
 
 ```js
 it("shows the movies", function() {
-  server.createList("movie", 10)
   server.logging = true // enable logs for this test while debugging
+  server.createList("movie", 10)
 
   cy.visit("/")
 
@@ -296,7 +291,7 @@ it("shows the movies", function() {
 })
 ```
 
-Just delete it when you're done to keep your CI testing logs clean.
+Just delete it when you're done to keep your CI logs clean.
 
 ## Keeping your tests focused
 
@@ -368,7 +363,13 @@ it("shows the movie's title on the detail route", function() {
 })
 ```
 
-It's also often helpful to use the data from your Mirage server when writing a test, as you can see from the second where Mirage's autogenerated ID is used to visit a dynamic URL for the specific movie.
+In these two tests, we create all the data that's relevant directly within the test.
+
+The first test calls `server.createList('movie', 10)` and doesn't specify any attribute overrides, because the specific details of each movie aren't relevant for the test's assertions.
+
+The second test uses `server.create` with a specific title, since the test is verifying that the title shows up in the UI. You can also see that this test is using Mirage's autogenerated ID to visit a dynamic URL for the specific movie.
+
+There will definitely be times where you'll want to set up some data that's shared across multiple tests, or that's used in both development and in testing. We'll address that further down this page.
 
 ## Arrange, Act, Assert
 

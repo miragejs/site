@@ -24,11 +24,15 @@ export default function TodoApp() {
           setIsLoading(false)
         }
       })
+  }, [refresh])
+
+  useEffect(() => {
+    isMounted.current = true
 
     return () => {
       isMounted.current = false
     }
-  }, [refresh])
+  })
 
   function addTodo(todo) {
     setNewTodo(null)

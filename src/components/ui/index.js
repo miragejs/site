@@ -77,6 +77,15 @@ export const Strong = props => (
   </strong>
 )
 
+export const Blockquote = props => (
+  <blockquote
+    {...props}
+    className="border-l-4 border-gray-200 my-6 ml-4 pl-4 italic"
+  >
+    {props.children}
+  </blockquote>
+)
+
 export const A = props => (
   <a {...props} className="underline hover:text-blue-500">
     {props.children}
@@ -90,8 +99,8 @@ export const HR = props => (
 export const InlineCode = props => (
   <code
     {...props}
-    className="font-mono text-base px-1"
-    style={{ backgroundColor: "rgba(255, 229, 100, 0.2)" }}
+    className="font-mono px-1"
+    style={{ backgroundColor: "rgba(255, 229, 100, 0.2)", fontSize: "0.9em" }}
   >
     {props.children}
   </code>

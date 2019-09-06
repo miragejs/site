@@ -31,13 +31,13 @@ export default function IndexPage({ children }) {
                 Build a production-ready frontend,{" "}
                 <br className="hidden md:inline" />
                 <span className="text-green-500">
-                  even if your API's not ready.
+                  even if your API doesn't exist.
                 </span>
               </h1>
 
               <div className="mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl">
                 <p className="text-gray-500 leading-normal text-lg md:text-xl 2xl:text-2xl">
-                  Mirage.js is an API mocking library that lets you build, test
+                  Mirage JS is an API mocking library that lets you build, test
                   and share a complete working JavaScript application without
                   having to rely on any backend services.
                 </p>

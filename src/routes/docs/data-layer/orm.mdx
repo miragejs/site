@@ -27,14 +27,14 @@ The first problem you'll encounter when writing a route handler is how to transf
 
 Let's say your backend uses [the JSON:API spec](https://jsonapi.org/). Your response to a GET request for `/api/movies/1` should look something like this:
 
-```js
+```json
 // GET /api/movies/1
 {
-  data: {
-    id: '1',
-    type: 'movies',
-    attributes: {
-      title: 'Interstellar'
+  "data": {
+    "id": "1",
+    "type": "movies",
+    "attributes": {
+      "title": "Interstellar"
     }
   }
 }
@@ -60,12 +60,12 @@ this.get("/movies/:id", (schema, request) => {
 
 This works. But let's say our `Movie` model had a few more attributes:
 
-```js
+```json
 {
-  id: '1',
-  title: 'Interstellar',
-  releaseDate: 'October 26, 2014',
-  genre: 'Sci-Fi'
+  "id": "1",
+  "title": "Interstellar",
+  "releaseDate": "October 26, 2014",
+  "genre": "Sci-Fi"
 }
 ```
 
@@ -96,28 +96,28 @@ As you can see, things get complicated pretty fast.
 What if we add relationships to the mix? Let's say a `Movie` has a relationship to a `director`, and it stores that relationship using a `directorId` foreign key:
 
 ```js
-{
-  id: '1',
-  title: 'Interstellar',
-  releaseDate: 'October 26, 2014',
-  genre: 'Sci-Fi',
-  directorId: '23'
+attrs = {
+  id: "1",
+  title: "Interstellar",
+  releaseDate: "October 26, 2014",
+  genre: "Sci-Fi",
+  directorId: "23",
 }
 ```
 
 The expected HTTP response for this model now looks like this
 
-```js
+```json
 {
-  data: {
-    id: '1',
-    type: 'movies',
-    attributes: {
-      title: 'Interstellar'
+  "data": {
+    "id": "1",
+    "type": "movies",
+    "attributes": {
+      "title": "Interstellar"
     },
-    relationships: {
-      directors: {
-        data: { type: 'people', id: '23' }
+    "relationships": {
+      "directors": {
+        "data": { "type": "people", "id": "23" }
       }
     }
   }

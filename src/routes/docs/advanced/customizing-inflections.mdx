@@ -1,0 +1,106 @@
+# Customizing inflections
+
+Mirage relies on an inflector for some of its conventions. An inflector is an object responsible for singularizing and pluralizing words.
+
+For example, suppose you define a `User` model along with a GET shorthand:
+
+```js
+new Server({
+  models: {
+    user: Model,
+  },
+
+  routes() {
+    this.get("/users/:id")
+  },
+})
+```
+
+Mirage uses its inflector to know that "users" is the plural of "user". So, it can automatically take your `user` model definition and create the `schema.users.all()` collection, as well as look at your `/users/:id` shorthand and know it needs to return a single `user` model instance.
+
+Having consistent naming conventions allows Mirage to drastically reduce the boilerplate needed to wire up your mock server, but sometimes you'll find yourself needing to customize the inflection rules used in your domain.
+
+For example, suppose you had a `HeadOfState` model in your application, and everywhere else in your system you treat the plural form of "head-of-state" as "heads-of-state".
+
+If you just set up your server like this
+
+```js
+new Server({
+  models: {
+    headOfState: Model,
+  },
+
+  routes() {
+    this.get("/heads-of-state/:id")
+  },
+})
+```
+
+then Mirage wouldn't work as expected. That's because Mirage's inflector doesn't know about this special case. By default, it pluralizes "head-of-state" to "head-of-states".
+
+You can see this by calling the `server.inflector.pluralize` method:
+
+```js
+let server = new Server({
+  models: {
+    headOfState: Model,
+  },
+})
+
+server.inflector.pluralize("head-of-state") // head-of-states
+```
+
+To fix this, you need to add your own custom inflection rules. Mirage uses [the `inflected` package](https://github.com/martinandert/inflected) for its inflections, which you can customize like this:
+
+```js
+import { inflections } from "inflected"
+import { Server, Model } from "@miragejs/server"
+
+inflections("en", function(inflect) {
+  inflect.irregular("head-of-state", "heads-of-state")
+})
+
+new Server({
+  headOfState: Model,
+
+  routes() {
+    this.get("/heads-of-state/:id")
+  },
+})
+```
+
+Make sure you run your inflections customization code before you `new` up your Mirage server.
+
+Verify your pluralization rules took effect:
+
+```js
+server.inflector.pluralize("head-of-state") // heads-of-state
+```
+
+and now, all of Mirage's shorthands and ORM conventions should work as you expect.
+
+The Inflected package lets you customize plural, singular, irregular and uncountable words:
+
+```js
+inflections('en', function(inflect) {
+  inflect.plural(/^(ox)$/i, '$1$2en');
+  inflect.singular /^(ox)en/i, '$1');
+
+  inflect.irregular('octopus', 'octopi');
+
+  inflect.uncountable('equipment', 'snow');
+});
+```
+
+Check out [the docs on customizing inflections](https://github.com/martinandert/inflected#inflectorinflections) if you need more information.
+
+You can also use a different library entirely or use your own implementation of an inflector by passing a `pluralize` and `singularize` method into your Mirage server as an `inflector` config option:
+
+```js
+new Server({
+  inflector: {
+    pluralize,
+    singularize,
+  },
+})
+```

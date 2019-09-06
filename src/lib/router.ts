@@ -38,11 +38,39 @@ const allRoutes: RouteDefinition[] = [
           { label: "Serializers", name: "serializers" },
         ],
       },
-      // {
-      //   name: "testing",
-      //   label: "Testing",
-      //   routes: [{ label: "Acceptance tests", name: "acceptance-tests" }],
-      // },
+      {
+        name: "testing",
+        label: "Testing",
+        routes: [
+          { label: "Application tests", name: "application-tests" },
+          {
+            label: "Integration and unit tests",
+            name: "integration-and-unit-tests",
+          },
+          {
+            label: "Assertions",
+            name: "assertions",
+          },
+        ],
+      },
+      {
+        name: "advanced",
+        label: "Advanced",
+        routes: [
+          {
+            label: "Simulating cookie responses",
+            name: "simulating-cookie-responses",
+          },
+          {
+            label: "Mocking GUIDs",
+            name: "mocking-guids",
+          },
+          {
+            label: "Customizing inflections",
+            name: "customizing-inflections",
+          },
+        ],
+      },
     ],
   },
   {

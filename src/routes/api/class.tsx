@@ -12,32 +12,49 @@ import {
   Pre,
   Code,
 } from "../../components/ui"
+import { Markdown } from "../../components/markdown"
 
 export default function(props) {
   let classSlug = props.classSlug
   let { publicClasses } = useApiDocs()
-  let classDoc = publicClasses.find(doc => doc.slug === classSlug)
+  let publicClass = publicClasses.find(doc => doc.slug === classSlug)
 
   return (
     <div>
-      <H1>{classDoc.name}</H1>
-      <P>API docs coming soon!</P>
-
-      {/*
-      <div className="pt-2">{classDoc.description}</div>
-      <div className="pt-4">
+      <H1>{publicClass.name}</H1>
+      <div className="pt-2">
+        <Markdown>{publicClass.description}</Markdown>
+      </div>
+      <div className="pt-12">
+        <h2 className="font-semibold text-2xl leading-tight">Accessors</h2>
+        {publicClass.accessors.map(field => (
+          <div key={field.longname}>
+            <div className="">¶</div>
+            <a href={`#${field.longname}`} className="font-mono pt-4 block">
+              {field.kind} <span className="font-semibold">{field.name}:</span>{" "}
+              {field["return"] ? (
+                field["return"].types.map((type, index) => (
+                  <span key={index}>{type}</span>
+                ))
+              ) : (
+                <span className="em">any</span>
+              )}
+            </a>
+          </div>
+        ))}
+      </div>
+      <div className="pt-8">
         <h2 className="font-semibold">Fields</h2>
-        {classDoc.fields.map(field => (
+        {publicClass.fields.map(field => (
           <div key={field.longname}>{field.name}</div>
         ))}
       </div>
-      <div className="pt-4">
+      <div className="pt-8">
         <h2 className="font-semibold">Methods</h2>
-        {classDoc.methods.map(method => (
+        {publicClass.methods.map(method => (
           <div key={method.longname}>{method.name}</div>
         ))}
       </div>
-      */}
     </div>
   )
 }

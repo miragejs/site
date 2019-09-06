@@ -124,7 +124,7 @@ function Header({ showHeaderNav }) {
                   >
                     Documentation
                   </NavLink>
-                  <NavLink to="/api/classes/server" activeFor="/api/*">
+                  <NavLink to="/api/classes/association" activeFor="/api/*">
                     API
                   </NavLink>
                   <NavLink to="/examples/main/react" activeFor="/examples/*">
@@ -158,7 +158,7 @@ function Header({ showHeaderNav }) {
           {isShowingMobileNav && (
             <nav className="font-medium text-lg md:hidden">
               <div
-                className={`border-t border-b ${
+                className={`border-t ${
                   theme === "dark" ? "border-gray-800" : "border-gray-200"
                 }`}
               >
@@ -170,7 +170,24 @@ function Header({ showHeaderNav }) {
                 </MobileNavLink>
               </div>
 
-              <div>
+              <div
+                className={`border-t ${
+                  theme === "dark" ? "border-gray-800" : "border-gray-200"
+                }`}
+              >
+                <MobileNavLink
+                  to="/api/classes/association"
+                  onClick={() => setIsShowingMobileNav(false)}
+                >
+                  API
+                </MobileNavLink>
+              </div>
+
+              <div
+                className={`border-t ${
+                  theme === "dark" ? "border-gray-800" : "border-gray-200"
+                }`}
+              >
                 <MobileNavLink
                   to="https://github.com/miragejs/server"
                   onClick={() => setIsShowingMobileNav(false)}

@@ -17,6 +17,8 @@ type EsdocNode = {
   memberof: string
   kind: string
   access: string
+  return: null | { types: string[] }
+  unknown: { tagName: string }[]
 }
 
 let byName = (a: { name: string }, b: { name: string }) =>
@@ -50,12 +52,24 @@ class ClassDoc {
       .sort(byName)
   }
 
+  get public(): EsdocNode[] {
+    return this.blocks.filter(
+      node =>
+        !node.unknown ||
+        node.unknown.every(unknown => unknown.tagName !== "@hide")
+    )
+  }
+
+  get accessors(): EsdocNode[] {
+    return this.public.filter(node => node.kind === "get")
+  }
+
   get fields(): EsdocNode[] {
-    return this.blocks.filter(node => node.kind === "member")
+    return this.public.filter(node => node.kind === "member")
   }
 
   get methods(): EsdocNode[] {
-    return this.blocks.filter(node => node.kind === "method")
+    return this.public.filter(node => node.kind === "method")
   }
 }
 
@@ -84,6 +98,14 @@ export default function(): IApiDocsHook {
           memberof
           kind
           access
+          return {
+            description
+            types
+          }
+          unknown {
+            tagName
+            tagValue
+          }
         }
       }
     }

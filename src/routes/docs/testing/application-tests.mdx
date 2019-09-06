@@ -139,7 +139,7 @@ And now we have a passing test!
 
 After each test, Mirage's server is shutdown and reset, so none of this state will leak across tests.
 
-## Sharing your Mirage server between development and testing
+## Sharing your server between development and testing
 
 In the example above, we set up a new server directly within our test, but Mirage is best used when your mock server definition is centralized and shared across your development and testing environments. After all, in production your app will talk to a real server that uses a single API contract! Using a single Mirage server thus helps you maintain a consistent mock API server everywhere it's being used.
 
@@ -480,4 +480,4 @@ it("shows all the movies", function() {
 
 ---
 
-Those are the basics of Application Testing with Mirage! Next let's talk about Integration and Unit tests.
+Those are the basics of application testing with Mirage! Let's talk about integration and unit tests next.

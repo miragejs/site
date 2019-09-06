@@ -1,1 +1,97 @@
 # Integration and unit tests
+
+While Mirage was originally designed for acceptance testing, it also works great when writing integration and unit tests.
+
+## Reusing your global server
+
+Let's say you have a data-fetching component, and you want to write a test to verify its behavior.
+
+You could use the `startMirage` convention covered in the previous guide and test your component against your global server definition, just like you would in an application test:
+
+```js
+// UserTable.test.js
+import UserTable from "./UserTable"
+import { startMirage } from "./mirage"
+
+let server
+
+beforeEach(() => {
+  server = startMirage()
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+
+it("fetches the list of countries", async () => {
+  server.createList("user", 5)
+
+  const { getByTestId } = render(<UserTable />)
+
+  await waitForElement(() => getByTestId("users"))
+
+  expect(getByTestId("user-row")).toHaveLength(5)
+})
+```
+
+## Creating one-off servers
+
+You could also create new one-off Mirage servers for the sole purpose of testing your component. This works well for component libraries or reusable data-fetching components, or even for testing data-fetching hooks:
+
+```js
+// useQuery.test.js
+import { Server, Model } from "@miragejs/server"
+import React from "react"
+import { useQuery } from "./useQuery"
+
+function Movies() {
+  const { data } = useQuery("get", "/api/movies")
+
+  return (
+    <>
+      <h1>Movies</h1>
+      {data.movies.map(movie => (
+        <p key={movie.id} data-testid="movie">
+          {movie.title}
+        </p>
+      ))}
+    </>
+  )
+}
+
+let server
+
+beforeEach(() => {
+  server = new Server({
+    environment: "test",
+    models: {
+      movie: Model,
+    },
+    routes() {
+      this.namespace = "api"
+
+      this.resource("movie")
+    },
+  })
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+
+it("can fetch data", async () => {
+  server.createList("movie", 5)
+
+  const { getByTestId } = render(<Movies />)
+
+  await findByText("Movies")
+
+  expect(getAllByTestId("movie")).toHaveLength(5)
+})
+```
+
+---
+
+Now you know how to test anything that depends on the network, from a single component to your entire application!
+
+Next we'll discuss some common ways to assert against your Mirage mock server.

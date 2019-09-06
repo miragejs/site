@@ -2,7 +2,7 @@ const path = require("path")
 
 module.exports = {
   siteMetadata: {
-    title: `Mirage.js • Build, test and demo your JavaScript application without an API`,
+    title: `Mirage JS • Build, test and demo your JavaScript application without an API`,
     description: `Sign up to hear when Mirage is ready`,
     author: `@miragejs`,
   },
@@ -29,8 +29,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Mirage.js`,
-        short_name: `Mirage.js`,
+        name: `Mirage JS`,
+        short_name: `Mirage JS`,
         start_url: `/`,
         background_color: `#1a1b1c`,
         theme_color: `#1a1b1c`,

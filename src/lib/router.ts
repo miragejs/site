@@ -47,6 +47,10 @@ const allRoutes: RouteDefinition[] = [
             label: "Integration and unit tests",
             name: "integration-and-unit-tests",
           },
+          {
+            label: "Assertions",
+            name: "assertions",
+          },
         ],
       },
     ],

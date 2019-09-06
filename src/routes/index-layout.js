@@ -31,7 +31,7 @@ export default function IndexPage({ children }) {
                 Build a production-ready frontend,{" "}
                 <br className="hidden md:inline" />
                 <span className="text-green-500">
-                  even if your API's not ready.
+                  even if your API doesn't exist.
                 </span>
               </h1>
 

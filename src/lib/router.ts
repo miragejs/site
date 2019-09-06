@@ -53,6 +53,24 @@ const allRoutes: RouteDefinition[] = [
           },
         ],
       },
+      {
+        name: "advanced",
+        label: "Advanced",
+        routes: [
+          {
+            label: "Simulating cookie responses",
+            name: "simulating-cookie-responses",
+          },
+          {
+            label: "Mocking GUIDs",
+            name: "mocking-guids",
+          },
+          {
+            label: "Customizing inflections",
+            name: "customizing-inflections",
+          },
+        ],
+      },
     ],
   },
   {

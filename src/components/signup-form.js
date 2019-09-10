@@ -112,8 +112,6 @@ function SignupForm() {
       {(!didSignup || isAnimatingFormOut) && (
         <form
           onSubmit={handleSubmit}
-          action={convertKitUrl}
-          method="post"
           className={didSignup ? "opacity-0" : "opacity-100"}
           style={{
             transition: `opacity ${fadeOutInDelay}s`,

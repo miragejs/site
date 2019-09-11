@@ -52,7 +52,4 @@ if (typeof window !== "undefined") {
   server.logging = process.env.NODE_ENV !== "test"
 }
 
-console.log(server)
-debugger
-
 export default server

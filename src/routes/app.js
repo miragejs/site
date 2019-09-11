@@ -1,9 +1,12 @@
-import React, { useState, useContext } from "react"
+import React, { useState } from "react"
 import { Router, Link, Match } from "@reach/router"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
 import { Close, Menu } from "../components/icons"
+import { ThemeProvider } from "../contexts/theme"
+import { RouterProvider } from "../contexts/router"
 import { useRouter } from "../hooks/use-router"
+import { useTheme } from "../hooks/use-theme"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -27,39 +30,45 @@ const themeClasses = {
   },
 }
 
-export const RouterContext = React.createContext()
-export const ThemeContext = React.createContext({ theme: "light" })
-
 export default function(props) {
-  let router = useRouter()
-  let theme = props.location.pathname === "/" ? "dark" : "light"
-  let shouldShowHeaderNav = props.location.pathname !== "/"
-
-  router.activePath = props.location.pathname
-
   return (
-    <RouterContext.Provider value={router}>
-      <ThemeContext.Provider value={{ theme }}>
-        <Helmet>
-          <html
-            className={`${theme === "dark" ? "bg-gray-1000" : "bg-white"}`}
-          />
-        </Helmet>
-
-        <div className="antialiased text-gray-700 font-body font-light leading-normal min-h-screen flex flex-col">
-          <Header shouldShowHeaderNav={shouldShowHeaderNav} />
-
-          <main className="flex-1 flex flex-col">
-            <Outlet />
-          </main>
-        </div>
-      </ThemeContext.Provider>
-    </RouterContext.Provider>
+    <RouterProvider {...props}>
+      <ThemeProvider {...props}>
+        <AppInner {...props} />
+      </ThemeProvider>
+    </RouterProvider>
   )
 }
 
-function Header({ shouldShowHeaderNav }) {
-  let { theme } = useContext(ThemeContext)
+function AppInner(props) {
+  let { theme } = useTheme()
+  let router = useRouter()
+  // activePage is not set for /api routes, once we fix this we should be able
+  // to remove this conditional logic.
+  let showHeaderNav = true // default
+  if (router.activePage && router.activePage.meta.showHeaderNav !== undefined) {
+    showHeaderNav = router.activePage.meta.showHeaderNav
+  }
+
+  return (
+    <>
+      <Helmet>
+        <html className={`${theme === "dark" ? "bg-gray-1000" : "bg-white"}`} />
+      </Helmet>
+
+      <div className="antialiased text-gray-700 font-body font-light leading-normal min-h-screen flex flex-col">
+        <Header showHeaderNav={showHeaderNav} />
+
+        <main className="flex-1 flex flex-col">
+          <Outlet />
+        </main>
+      </div>
+    </>
+  )
+}
+
+function Header({ showHeaderNav }) {
+  const { theme } = useTheme()
   let [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
 
   return (
@@ -88,7 +97,7 @@ function Header({ shouldShowHeaderNav }) {
             </Link>
 
             {/* Mobile nav button */}
-            {shouldShowHeaderNav ? (
+            {showHeaderNav ? (
               <div className="ml-auto md:hidden">
                 <button
                   onClick={() => setIsShowingMobileNav(!isShowingMobileNav)}
@@ -107,7 +116,7 @@ function Header({ shouldShowHeaderNav }) {
 
             {/* Desktop nav */}
             <div className="hidden md:flex md:items-center md:w-full">
-              {shouldShowHeaderNav ? (
+              {showHeaderNav ? (
                 <>
                   <NavLink
                     to="/docs/getting-started/introduction"
@@ -178,7 +187,7 @@ function Header({ shouldShowHeaderNav }) {
 }
 
 function MobileNavLink(props) {
-  const { theme } = useContext(ThemeContext)
+  const { theme } = useTheme()
   const baseClasses = `block px-5 py-4`
   const isExternal = props.to.indexOf("http") === 0
   const linkClasses = {
@@ -220,7 +229,7 @@ function MobileNavLink(props) {
 }
 
 function NavLink({ activeFor, ...props }) {
-  const { theme } = useContext(ThemeContext)
+  const { theme } = useTheme()
 
   activeFor = activeFor || props.to
 

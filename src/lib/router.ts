@@ -3,6 +3,18 @@ const allRoutes: RouteDefinition[] = [
     name: "index",
     label: "Index",
     path: "/",
+    meta: {
+      theme: "dark",
+      showHeaderNav: false,
+    },
+  },
+  {
+    name: "thanks",
+    label: "Thanks",
+    meta: {
+      theme: "dark",
+      showHeaderNav: false,
+    },
   },
   {
     name: "docs",
@@ -105,12 +117,14 @@ interface RouteDefinition {
   name: string
   path?: string
   routes?: RouteDefinition[]
+  meta?: object
 }
 
 interface RouteInfo {
   label: string
   name: string
   path: string
+  meta?: object
 }
 
 interface RouteOptions extends RouteInfo {
@@ -122,6 +136,7 @@ export class Route {
   label: string
   name: string
   path: string
+  meta: object
 
   private _activePath: string
   private _parent: Route
@@ -133,6 +148,7 @@ export class Route {
     this.label = config.label
     this.name = config.name
     this.path = config.path
+    this.meta = config.meta || {}
 
     this.routes = config.routes ? config.routes : []
 
@@ -251,6 +267,7 @@ export class Route {
       name: definition.name,
       path:
         definition.path !== undefined ? definition.path : `/${definition.name}`,
+      meta: definition.meta || {},
     })
 
     // i think this is recursively backwards, create parents first then children

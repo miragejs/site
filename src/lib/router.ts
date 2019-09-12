@@ -13,7 +13,7 @@ const allRoutes: RouteDefinition[] = [
     label: "Thanks",
     meta: {
       theme: "dark",
-      showHeaderNav: false,
+      // showHeaderNav: false,
     },
   },
   {

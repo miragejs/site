@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import Button from "./button"
 
 let isEmailValid = function(email) {
@@ -34,7 +34,11 @@ function SignupForm() {
   let isError = formState === "error"
   let didSignup = formState === "finished"
 
-  useEffect(() => {
+  function handleChange(event) {
+    event.preventDefault()
+
+    setEmail(event.target.value)
+
     if (isError && error === "invalidEmail" && isEmailValid(email)) {
       // user corrected the invalid email, so lets reset the form state
       resetForm()
@@ -44,7 +48,7 @@ function SignupForm() {
       // user started typing after submitting an empty form, lets reset the form state
       resetForm()
     }
-  }, [isError, error, email])
+  }
 
   let handleSubmit = async function(event) {
     event.preventDefault()
@@ -125,7 +129,7 @@ function SignupForm() {
               name="email_address"
               value={email}
               disabled={isSaving}
-              onChange={e => setEmail(e.target.value)}
+              onChange={handleChange}
               placeholder="Enter your email"
               className="form-input bg-white placeholder-gray-500 text-gray-900 w-full rounded px-5 py-3 border-2 border-transparent focus:shadow-none focus:border-green-700 md:border-r-0 md:rounded-r-none md:w-96"
             />

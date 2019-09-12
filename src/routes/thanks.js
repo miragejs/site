@@ -3,7 +3,7 @@ import BackgroundLines from "../assets/images/background-lines.svg"
 import BackgroundLinesLg from "../assets/images/background-lines-lg.svg"
 import SEO from "../components/seo"
 
-export default function IndexPage({ children }) {
+export default function({ children }) {
   return (
     <div className="relative">
       <div className="relative z-10">

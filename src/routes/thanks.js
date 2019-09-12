@@ -30,7 +30,7 @@ export default function({ children }) {
 
               <div className="mt-8 md:mt-10 2xl:mt-12 max-w-3xl 2xl:max-w-4xl">
                 <p className="text-gray-500 leading-normal text-lg md:text-xl">
-                  You'll receive new updates via email.
+                  You'll now receive new updates via email.
                 </p>
                 <p className="mt-4 text-gray-500 leading-normal text-lg md:text-xl">
                   Here's what you've missed so far:

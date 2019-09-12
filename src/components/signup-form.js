@@ -112,8 +112,8 @@ function SignupForm() {
             Thanks <span className="text-white">{email}</span>!
           </p>
           <p className="mt-2">
-            Check your email soon to confirm your address, so we can keep you up
-            to date.
+            Check your email soon and confirm your address, so we can keep you
+            up to date.
           </p>
         </div>
       )}

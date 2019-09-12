@@ -100,7 +100,7 @@ function SignupForm() {
     <div className="relative">
       {didSignup && (
         <div
-          className={`text-lg text-gray-500 font-medium ${
+          className={`text-lg text-gray-500 leading-norma font-medium ${
             isAnimatingFormOut ? "absolute" : ""
           } ${isShowingThankYou ? "opacity-100" : "opacity-0"}`}
           style={{
@@ -108,8 +108,13 @@ function SignupForm() {
             transition: `opacity ${fadeOutInDelay}s`,
           }}
         >
-          Thanks <span className="text-white">{email}</span>, you're all signed
-          up!
+          <p>
+            Thanks <span className="text-white">{email}</span>!
+          </p>
+          <p className="mt-2">
+            Check your email soon to confirm your address, so we can keep you up
+            to date.
+          </p>
         </div>
       )}
 

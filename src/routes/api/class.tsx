@@ -15,15 +15,35 @@ import {
 
 import { Markdown } from "../../components/markdown"
 
-const ReturnType = function({ esdoc }) {
+let humanizeType = type => (type === "*" ? "any" : type)
+let toJSXCommaList = (prev, curr) => [prev, ", ", curr]
+
+const Params = function({ esdoc }) {
+  return esdoc.params
+    ? esdoc.params
+        .map((param, index) => (
+          <span key={index}>
+            <span className="font-semibold">{param.name}: </span>
+            <Types types={param.types} />
+          </span>
+        ))
+        .reduce(toJSXCommaList)
+    : null
+}
+
+const Returns = function({ esdoc }) {
+  return <Types types={esdoc.return ? esdoc.return.types : ["any"]} />
+}
+
+const Type = function({ esdoc }) {
+  return <Types types={esdoc.type ? esdoc.type.types : ["any"]} />
+}
+
+let Types = function({ types }) {
   return (
-    <div className="italic inline-block">
-      {esdoc.return ? (
-        esdoc.return.types.map((type, index) => <span key={index}>{type}</span>)
-      ) : (
-        <span className="em">any</span>
-      )}
-    </div>
+    <span className="italic">
+      {types.map(humanizeType).reduce(toJSXCommaList)}
+    </span>
   )
 }
 
@@ -39,48 +59,68 @@ export default function(props) {
         <Markdown>{publicClass.description}</Markdown>
       </div>
       {publicClass.fields.length > 0 ? (
-        <div className="pt-12">
-          <h2 className="font-semibold text-2xl leading-tight">Fields</h2>
+        <div>
+          <h2
+            id="Fields"
+            className="font-semibold text-2xl leading-tight pt-12 pb-4"
+          >
+            Fields
+          </h2>
           {publicClass.fields.map(field => (
-            <div key={field.longname} className="pt-6">
-              <h3 id={field.name} className="font-mono">
-                <a href={`#${field.name}`} className="block">
-                  {field.kind}{" "}
+            <div key={field.longname} className="pb-4">
+              <h3 id={field.slug} className="font-mono text-xl pt-6">
+                <a href={`#${field.slug}`} className="block">
                   <span className="font-semibold">{field.name}:</span>{" "}
-                  <ReturnType esdoc={field} />
+                  <Type esdoc={field} />
                 </a>
               </h3>
-              {/* probably need markdown doc block for accessors here */}
+              <div className="text-base">
+                <Markdown>{field.description}</Markdown>
+              </div>
             </div>
           ))}
         </div>
       ) : null}
       {publicClass.accessors.length > 0 ? (
-        <div className="pt-12">
-          <h2 className="font-semibold text-2xl leading-tight">Accessors</h2>
+        <div>
+          <h2
+            id="Accessors"
+            className="font-semibold text-2xl leading-tight pt-12 pb-4"
+          >
+            Accessors
+          </h2>
           {publicClass.accessors.map(accessor => (
-            <div key={accessor.longname} className="pt-6">
-              <h3 id={accessor.name} className="font-mono">
-                <a href={`#${accessor.name}`} className="block">
+            <div key={accessor.longname} className="pb-4">
+              <h3 id={accessor.slug} className="font-mono text-xl pt-6">
+                <a href={`#${accessor.slug}`} className="block">
                   {accessor.kind}{" "}
                   <span className="font-semibold">{accessor.name}:</span>{" "}
-                  <ReturnType esdoc={accessor} />
+                  <Type esdoc={accessor} />
                 </a>
               </h3>
-              {/* probably need markdown doc block for accessors here */}
+              <div className="text-base">
+                <Markdown>{accessor.description}</Markdown>
+              </div>
             </div>
           ))}
         </div>
       ) : null}
-      {publicClass.accessors.length > 0 ? (
-        <div className="pt-16">
-          <h2 className="font-semibold text-2xl leading-tight">Methods</h2>
+      {publicClass.methods.length > 0 ? (
+        <div>
+          <h2
+            id="Methods"
+            className="font-semibold text-2xl leading-tight pt-12 pb-4"
+          >
+            Methods
+          </h2>
           {publicClass.methods.map(method => (
-            <div key={method.longname} className="pt-6">
-              <h3 id={method.name} className="font-mono">
-                <a href={`#${method.name}`} className="block">
-                  <span className="font-semibold">{method.name}</span>():{" "}
-                  <ReturnType esdoc={method} />
+            <div key={method.longname} className="pb-4">
+              <h3 id={method.slug} className="font-mono text-xl pt-6">
+                <a href={`#${method.slug}`} className="block">
+                  <span className="font-semibold">{method.name}</span>
+                  (
+                  <Params esdoc={method} />
+                  ): <Returns esdoc={method} />
                 </a>
               </h3>
               <div className="text-base">

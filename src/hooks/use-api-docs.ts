@@ -8,6 +8,14 @@ type EsdocNode = {
   kind: string
   description: string
   access: string
+  params: null | {
+    description: string
+    name: string
+    optional: boolean
+    spread: boolean
+    types: string[]
+  }
+  type: null | { spread: boolean; types: string[] }
   return: null | { types: string[] }
   undocument: boolean
   unknown: null | { tagName: string }[]
@@ -28,7 +36,7 @@ class ClassDoc {
     this.node = node
     this.esdoc = esdoc
 
-    let fwd = ["name", "slug", "description"]
+    let fwd = ["name", "slug", "description", "params"]
     fwd.forEach(key => {
       Object.defineProperty(this, key, {
         get() {
@@ -90,6 +98,17 @@ export default function(): IApiDocsHook {
       kind
       description
       access
+      params {
+        description
+        name
+        optional
+        spread
+        types
+      }
+      type {
+        spread
+        types
+      }
       return {
         description
         types

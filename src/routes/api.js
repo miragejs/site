@@ -47,7 +47,7 @@ export default function Api(props) {
     .reduce((result, [label, members]) => {
       let items = members.map(member => ({
         title: member.name,
-        url: `#${member.longname}`,
+        url: `#${member.slug}`,
       }))
 
       return [

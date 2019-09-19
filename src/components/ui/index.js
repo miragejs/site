@@ -54,13 +54,13 @@ export const P = props => (
 )
 
 export const OL = props => (
-  <ol {...props} className="ml-8 list-decimal">
+  <ol {...props} className="ml-8 my-5 list-decimal">
     {props.children}
   </ol>
 )
 
 export const UL = props => (
-  <ul {...props} className="ml-8 list-disc">
+  <ul {...props} className="ml-8 my-5 list-disc">
     {props.children}
   </ul>
 )
@@ -84,6 +84,12 @@ export const Blockquote = props => (
   >
     {props.children}
   </blockquote>
+)
+
+export const EM = props => (
+  <em {...props} className="italic">
+    {props.children}
+  </em>
 )
 
 export const A = props => (

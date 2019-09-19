@@ -32,34 +32,33 @@ export default function Api(props) {
   })
 
   let activeIndex = publicClassRoutes.indexOf(activeRoute)
-  let previousPage =
-    activeIndex > 0 ? publicClassRoutes.indexOf(activeRoute) : null
+  let previousPage = activeIndex > 0 ? publicClassRoutes[activeIndex - 1] : null
   let nextPage =
     activeIndex < publicClassRoutes.length - 1
       ? publicClassRoutes[activeIndex + 1]
       : null
 
-  console.log(activePublicClass.blocks)
-
   let tableOfContents = [
-    ["Accessors", activePublicClass.accessors],
     ["Fields", activePublicClass.fields],
+    ["Accessors", activePublicClass.accessors],
     ["Methods", activePublicClass.methods],
-  ].reduce((result, [label, members]) => {
-    let items = members.map(member => ({
-      title: member.name,
-      url: `#${member.longname}`,
-    }))
+  ]
+    .filter(([label, members]) => members.length > 0)
+    .reduce((result, [label, members]) => {
+      let items = members.map(member => ({
+        title: member.name,
+        url: `#${member.longname}`,
+      }))
 
-    return [
-      ...result,
-      {
-        title: label,
-        url: `#${label}`,
-        items,
-      },
-    ]
-  }, [])
+      return [
+        ...result,
+        {
+          title: label,
+          url: `#${label}`,
+          items,
+        },
+      ]
+    }, [])
 
   return (
     <ThreeColumnLayout

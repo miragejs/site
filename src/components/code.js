@@ -1,7 +1,7 @@
 import React from "react"
 import Highlight, { defaultProps } from "prism-react-renderer"
 
-export default function({ children, className }) {
+export default function({ children, className, ...rest }) {
   const language = className ? className.replace(/language-/, "") : "text"
   const maybeRemoveLastLine = (token, i, tokens) => {
     let isLastToken = i === tokens.length - 1
@@ -10,7 +10,7 @@ export default function({ children, className }) {
     return !(isLastToken && isEmpty)
   }
 
-  return (
+  return children ? (
     <Highlight
       {...defaultProps}
       code={children}
@@ -34,7 +34,7 @@ export default function({ children, className }) {
         </pre>
       )}
     </Highlight>
-  )
+  ) : null
 }
 
 let theme = undefined

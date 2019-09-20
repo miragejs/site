@@ -1,40 +1,42 @@
 import { useStaticQuery, graphql } from "gatsby"
 
-// these two types are really the same, combine them once
-// we finish the graphql query
-
-type ClassNode = {
-  name: string
-  longname: string
-  memberof: string
-  slug: string
-  description: string
-}
-
 type EsdocNode = {
   name: string
   longname: string
+  slug: string
   memberof: string
   kind: string
+  description: string
   access: string
+  params: null | {
+    description: string
+    name: string
+    optional: boolean
+    spread: boolean
+    types: string[]
+  }
+  type: null | { spread: boolean; types: string[] }
+  return: null | { types: string[] }
+  undocument: boolean
+  unknown: null | { tagName: string }[]
 }
 
 let byName = (a: { name: string }, b: { name: string }) =>
   a.name > b.name ? 1 : -1
 
 class ClassDoc {
-  node: ClassNode
+  node: EsdocNode
   esdoc: EsdocNode[]
 
   readonly name: string
   readonly slug: string
   readonly description: string
 
-  constructor(node: ClassNode, esdoc: EsdocNode[]) {
+  constructor(node: EsdocNode, esdoc: EsdocNode[]) {
     this.node = node
     this.esdoc = esdoc
 
-    let fwd = ["name", "slug", "description"]
+    let fwd = ["name", "slug", "description", "params"]
     fwd.forEach(key => {
       Object.defineProperty(this, key, {
         get() {
@@ -50,12 +52,34 @@ class ClassDoc {
       .sort(byName)
   }
 
+  get isHidden(): boolean {
+    return (
+      this.node.unknown &&
+      this.node.unknown.some(unknown => unknown.tagName === "@hide")
+    )
+  }
+
+  get public(): EsdocNode[] {
+    return this.blocks.filter(node => {
+      let hasHideTag =
+        node.unknown &&
+        node.unknown.some(unknown => unknown.tagName === "@hide")
+      let isUndocumented = node.undocument
+
+      return !hasHideTag && !isUndocumented
+    })
+  }
+
+  get accessors(): EsdocNode[] {
+    return this.public.filter(node => node.kind === "get")
+  }
+
   get fields(): EsdocNode[] {
-    return this.blocks.filter(node => node.kind === "member")
+    return this.public.filter(node => node.kind === "member")
   }
 
   get methods(): EsdocNode[] {
-    return this.blocks.filter(node => node.kind === "method")
+    return this.public.filter(node => node.kind === "method")
   }
 }
 
@@ -65,25 +89,47 @@ interface IApiDocsHook {
 
 export default function(): IApiDocsHook {
   let data = useStaticQuery(graphql`
+    fragment DocNode on ESDoc {
+      name
+      longname
+      slug
+      undocument
+      memberof
+      kind
+      description
+      access
+      params {
+        description
+        name
+        optional
+        spread
+        types
+      }
+      type {
+        spread
+        types
+      }
+      return {
+        description
+        types
+      }
+      unknown {
+        tagName
+        tagValue
+      }
+    }
+
     query DocsQuery {
       publicClasses: allEsDoc(
         filter: { access: { eq: "public" }, kind: { eq: "class" } }
       ) {
         nodes {
-          name
-          longname
-          memberof
-          slug
-          description
+          ...DocNode
         }
       }
       allNodes: allEsDoc {
         nodes {
-          name
-          longname
-          memberof
-          kind
-          access
+          ...DocNode
         }
       }
     }
@@ -93,7 +139,8 @@ export default function(): IApiDocsHook {
 
   let publicClasses = data.publicClasses.nodes
     .sort(byName)
-    .map((node: ClassNode) => new ClassDoc(node, esdoc))
+    .map((node: EsdocNode) => new ClassDoc(node, esdoc))
+    .filter(classDoc => !classDoc.isHidden)
 
   return {
     publicClasses,

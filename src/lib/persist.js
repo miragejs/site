@@ -11,20 +11,22 @@ function saveDb(server) {
 }
 
 export function addPersist(server) {
-  initialData = server.db.dump()
-  let version = localStorage.getItem("mirage:db:version")
-  let dataString = localStorage.getItem("mirage:db:data")
+  if (typeof window !== "undefined") {
+    initialData = server.db.dump()
+    let version = localStorage.getItem("mirage:db:version")
+    let dataString = localStorage.getItem("mirage:db:data")
 
-  if (dataString && version === currentVersion.toString()) {
-    try {
-      resetDb(server, JSON.parse(dataString))
-    } catch (e) {}
-  }
+    if (dataString && version === currentVersion.toString()) {
+      try {
+        resetDb(server, JSON.parse(dataString))
+      } catch (e) {}
+    }
 
-  let originalHandled = server.pretender.handledRequest
-  server.pretender.handledRequest = function() {
-    originalHandled.call(server.pretender, ...arguments)
-    saveDb(server)
+    let originalHandled = server.pretender.handledRequest
+    server.pretender.handledRequest = function() {
+      originalHandled.call(server.pretender, ...arguments)
+      saveDb(server)
+    }
   }
 }
 

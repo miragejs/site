@@ -1,5 +1,5 @@
 import Snippet from "../components/snippet"
-import TodoApp from "../components/todo-app"
+import TodoApp from "../components/todo-app-with-reset"
 import { Tabs, Tab } from "../components/tabs"
 
 import Layout from "./index-layout"
@@ -94,9 +94,7 @@ You can tweak things like latency, error codes, and HTTP headers. There's an in-
 
 Here's a complete Todo application built with Mirage and React:
 
-<div className="my-12 lg:my-16">
-  <TodoApp />
-</div>
+<TodoApp />
 
 This app is running in the browser, but Mirage is intercepting
 all the React app's network requests. <span className="hidden xl:inline"> (If you take a look at the console, you can see the responses.)</span>

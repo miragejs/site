@@ -1,16 +1,10 @@
 import React, { useEffect, useState, useRef } from "react"
 import Spinner from "./spinner"
-import server from "../server"
-import Replay from "../assets/images/replay.svg"
-import { loadDb, resetDb } from "../lib/persist"
 
-loadDb()
-
-export default function TodoApp() {
+export default function TodoApp({ refresh }) {
   let [isLoading, setIsLoading] = useState(false)
   let [todos, setTodos] = useState([])
   let [newTodo, setNewTodo] = useState(null)
-  let [refresh, setRefresh] = useState(0)
 
   useEffect(() => {
     let isLatestAndMounted = true
@@ -48,13 +42,6 @@ export default function TodoApp() {
     setTodos(todos => [
       ...todos.filter(globalTodo => globalTodo.id !== todo.id),
     ])
-  }
-
-  function resetApp() {
-    if (server) {
-      resetDb()
-      setRefresh(refresh + 1)
-    }
   }
 
   return (
@@ -115,16 +102,6 @@ export default function TodoApp() {
             )}
           </div>
         </div>
-      </div>
-
-      <div className="mt-4">
-        <button
-          onClick={resetApp}
-          className="text-sm md:text-base text-blue-500 focus:outline-none px-3 py-2 mx-auto flex items-center hover:underline"
-        >
-          Reset app
-          <Replay className="ml-1 w-4 h-4" />
-        </button>
       </div>
     </>
   )

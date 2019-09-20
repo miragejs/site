@@ -1,7 +1,17 @@
 import React from "react"
 import { render } from "@testing-library/react"
 import TodoApp from "miragejs/src/components/todo-app"
-import server from "miragejs/src/server"
+import { makeServer } from "miragejs/src/server"
+
+let server
+
+beforeEach(() => {
+  server = makeServer()
+})
+
+afterEach(() => {
+  server.shutdown()
+})
 
 test("It renders the todo app", () => {
   let { getByTestId } = render(<TodoApp />)
@@ -41,5 +51,5 @@ test("it shows a loading spinner while data is being fetched", () => {
 
   // ok now that we've asserted the loading spinner is showing we can
   // resolve the promise our mirage server returned
-  respond()
+  respond([])
 })

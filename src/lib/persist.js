@@ -9,8 +9,9 @@ let currentVersion = 4
 let resetDb
 let loadDb
 
-if (server) {
-  let initialData = server._config.fixtures
+// This is browser code
+if (typeof window !== "undefined") {
+  let initialData = server.db.dump()
   let originalHandled = server.pretender.handledRequest
 
   let saveDb = function() {

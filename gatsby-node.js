@@ -34,20 +34,20 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 
 // Avoid loading @miragejs/server in node, as it will fail the build. Can remove
 // once Mirage works in node.
-exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
-  if (stage === "build-html" || stage === "develop-html") {
-    actions.setWebpackConfig({
-      module: {
-        rules: [
-          {
-            test: /@miragejs\/server/,
-            use: loaders.null(),
-          },
-        ],
-      },
-    })
-  }
-}
+// exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+//   if (stage === "build-html" || stage === "develop-html") {
+//     actions.setWebpackConfig({
+//       module: {
+//         rules: [
+//           {
+//             test: /@miragejs\/server/,
+//             use: loaders.null(),
+//           },
+//         ],
+//       },
+//     })
+//   }
+// }
 
 exports.createPages = ({ actions }) => {
   const { createPage, createRedirect } = actions

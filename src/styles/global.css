@@ -82,3 +82,8 @@ pre[class*="language-"] {
     content: "";
   }
 }
+
+/* REMOVE ME */
+.fill-current group {
+  fill: currentColor;
+}

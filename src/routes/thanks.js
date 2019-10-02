@@ -38,6 +38,24 @@ export default function({ children }) {
                 <ul className="mt-8 text-lg">
                   <li className="my-6">
                     <span className="block text-gray-500 text-sm">
+                      Sep 27, 2019
+                    </span>
+                    <a
+                      className="text-blue-500"
+                      href="https://ckarchive.com/b/k0umh6hl0d87"
+                    >
+                      <span
+                        role="img"
+                        aria-label="book"
+                        className="inline-block"
+                      >
+                        🎥
+                      </span>{" "}
+                      Mirage JS: Demo screencast + API docs
+                    </a>
+                  </li>
+                  <li className="my-6">
+                    <span className="block text-gray-500 text-sm">
                       Sep 9, 2019
                     </span>
                     <a

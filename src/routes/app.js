@@ -112,9 +112,13 @@ function Header({ showHeaderNav }) {
               </span> */}
             </Link>
 
+            {/* Leaving out for now, but want to make this work. Just need to figure out a treatment for homepage. */}
             {/* <span
-              className={`py-4 border-l-2 ${
-                theme === "dark" ? "hidden border-gray-700" : "border-gray-200"
+              style={{ marginLeft: "125px", marginRight: "50px" }}
+              className={`hidden lg:block py-4 border-l ${
+                theme === "dark"
+                  ? "border-gray-700"
+                  : "lg:block border-gray-200"
               }`}
             ></span> */}
 
@@ -137,7 +141,7 @@ function Header({ showHeaderNav }) {
             ) : null}
 
             {/* Desktop nav */}
-            <div className="hidden md:flex md:items-center md:ml-8">
+            <div className="hidden md:flex md:items-center md:ml-8 lg:ml-12">
               {showHeaderNav ? (
                 <>
                   <NavLink
@@ -282,7 +286,7 @@ function NavLink({ activeFor, ...props }) {
         return (
           <Link
             {...props}
-            className={`mr-5 px-1 font-medium ${themeClasses[theme][state]}`}
+            className={`mr-5 lg:mr-7 px-1 font-medium ${themeClasses[theme][state]}`}
           />
         )
       }}

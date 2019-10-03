@@ -44,7 +44,8 @@ export default function IndexPage({ children }) {
 
                 <div className="mt-16">
                   <p className="md:text-lg leading-normal text-white font-medium">
-                    Sign up to get notified when it's ready:
+                    Sign up for updates and to find out when the project's
+                    ready:
                   </p>
                 </div>
                 <div className="mt-4 md:mt-6 2xl:text-lg">
@@ -69,7 +70,7 @@ export default function IndexPage({ children }) {
             </h2>
             <div className="mt-12">
               <p className="md:text-lg leading-normal text-white font-medium">
-                Sign up to get notified when it's ready:
+                Sign up for updates and to find out when the project's ready:
               </p>
             </div>
             <div className="mt-4 md:mt-6">

@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Router, Link, Match } from "@reach/router"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo4.svg"
+import LogoText from "../assets/images/logo-text.svg"
 import Github from "../assets/images/github.svg"
 import Twitter from "../assets/images/twitter.svg"
 import Discord from "../assets/images/discord.svg"
@@ -89,28 +90,33 @@ function Header({ showHeaderNav }) {
           <div className="flex items-center">
             <Link
               to="/"
-              className={`px-5 py-3 md:px-0 flex items-center -ml-8 md:pl-8 flex-shrink-0  ${
-                theme === "dark" ? "text-green-500" : "text-gray-900"
-                // theme === "dark" ? "text-green-500" : "text-green-500"
+              className={`px-5 py-3 md:px-0 flex items-center flex-shrink-0  ${
+                // theme === "dark" ? "text-green-500" : "text-gray-900"
+                theme === "dark" ? "text-green-500" : "text-green-500"
               }`}
-              style={{ width: "268px" }}
               onClick={() => setIsShowingMobileNav(false)}
             >
-              <Logo className="w-10 h-10 fill-current" />
-              <span
-                className={`whitespace-no-wrap ml-2 leading-none text-1-5xl font-title font-bold ${
+              <Logo className="w-8 h-8 md:w-10 md:h-10 fill-current" />
+              <LogoText
+                className={`h-8 w-auto
+                ${theme === "dark" ? "text-gray-100" : "text-gray-900"}
+              `}
+              />
+              {/* <span
+                className={`whitespace-no-wrap ml-1 leading-none tracking-tighter text-1-5xl font-title font-normal ${
                   theme === "dark" ? "text-gray-100" : "text-gray-900"
-                }`}
+                }
+                `}
               >
                 Mirage
-              </span>
+              </span> */}
             </Link>
 
-            <span
+            {/* <span
               className={`py-4 border-l-2 ${
                 theme === "dark" ? "hidden border-gray-700" : "border-gray-200"
               }`}
-            ></span>
+            ></span> */}
 
             {/* Mobile nav button */}
             {showHeaderNav ? (
@@ -131,7 +137,7 @@ function Header({ showHeaderNav }) {
             ) : null}
 
             {/* Desktop nav */}
-            <div className="hidden md:flex md:items-center md:w-full pl-14">
+            <div className="hidden md:flex md:items-center md:ml-8">
               {showHeaderNav ? (
                 <>
                   <NavLink
@@ -148,27 +154,27 @@ function Header({ showHeaderNav }) {
                   </NavLink>
                 </>
               ) : null}
+            </div>
 
-              <div className="ml-auto flex">
-                <a
-                  href="https://github.com/miragejs/server"
-                  className={`mr-5 ${themeClasses[theme]["inactive"]}`}
-                >
-                  <Github className="fill-current h-5" />
-                </a>
-                <a
-                  href="https://twitter.com/miragejs"
-                  className={`mr-5 ${themeClasses[theme]["inactive"]}`}
-                >
-                  <Twitter className="fill-current h-5" />
-                </a>
-                <a
-                  href="https://twitter.com/miragejs"
-                  className={`mr-5 ${themeClasses[theme]["inactive"]}`}
-                >
-                  <Discord className="fill-current h-5" />
-                </a>
-              </div>
+            <div className="hidden md:flex md:items-center md:ml-auto md:flex md:items-center">
+              <a
+                href="https://discord.gg/pPsdsrn"
+                className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
+              >
+                <Discord className="fill-current h-5" />
+              </a>
+              <a
+                href="https://twitter.com/miragejs"
+                className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
+              >
+                <Twitter className="fill-current h-5" />
+              </a>
+              <a
+                href="https://github.com/miragejs/server"
+                className={`px-1 ${themeClasses[theme]["inactive"]}`}
+              >
+                <Github className="fill-current h-5" />
+              </a>
             </div>
           </div>
 
@@ -184,7 +190,7 @@ function Header({ showHeaderNav }) {
                   to="/docs/getting-started/introduction"
                   onClick={() => setIsShowingMobileNav(false)}
                 >
-                  Documentation
+                  Guides
                 </MobileNavLink>
               </div>
 
@@ -276,7 +282,7 @@ function NavLink({ activeFor, ...props }) {
         return (
           <Link
             {...props}
-            className={` ml-12 font-medium ${themeClasses[theme][state]}`}
+            className={`mr-5 px-1 font-medium ${themeClasses[theme][state]}`}
           />
         )
       }}

@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Router, Link, Match } from "@reach/router"
 import Helmet from "react-helmet"
-import Logo from "../assets/images/logo4.svg"
+import Logo from "../assets/images/logo5.svg"
 import LogoText from "../assets/images/logo-text.svg"
 import Github from "../assets/images/github.svg"
 import Twitter from "../assets/images/twitter.svg"

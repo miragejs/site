@@ -1,9 +1,10 @@
 
-<svg width="267px" height="120px" viewBox="0 0 267 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g id="Logo-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Ginto-Medium, Ginto" font-size="75" font-weight="400" letter-spacing="-2.7173913">
+<svg width="318px" height="120px" viewBox="0 0 318 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Logo-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Ginto-Medium, Ginto" font-size="85" font-weight="400" letter-spacing="-1.13333333">
         <g id="Artboard" fill="currentColor">
             <text id="Mirage">
-                <tspan x="17.7569845" y="82">Mirage</tspan>
+                <tspan x="21.1129883" y="86">Mirage</tspan>
+                <!-- <tspan x="21.1129883" y="86">Mirage</tspan> -->
             </text>
         </g>
     </g>

@@ -91,8 +91,8 @@ function Header({ showHeaderNav }) {
             <Link
               to="/"
               className={`px-5 py-3 md:px-0 flex items-center flex-shrink-0  ${
-                // theme === "dark" ? "text-green-500" : "text-gray-900"
-                theme === "dark" ? "text-green-500" : "text-green-500"
+                theme === "dark" ? "text-green-500" : "text-gray-900"
+                // theme === "dark" ? "text-green-500" : "text-green-500"
               }`}
               onClick={() => setIsShowingMobileNav(false)}
             >

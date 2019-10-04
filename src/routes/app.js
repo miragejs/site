@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Router, Link, Match } from "@reach/router"
 import Helmet from "react-helmet"
-import Logo from "../assets/images/logo4.svg"
+import Logo from "../assets/images/logo1.svg"
 import LogoText from "../assets/images/logo-text.svg"
 import Github from "../assets/images/github.svg"
 import Twitter from "../assets/images/twitter.svg"
@@ -91,8 +91,8 @@ function Header({ showHeaderNav }) {
             <Link
               to="/"
               className={`px-5 py-3 md:px-0 flex items-center flex-shrink-0  ${
-                theme === "dark" ? "text-green-500" : "text-gray-900"
-                // theme === "dark" ? "text-green-500" : "text-green-500"
+                // theme === "dark" ? "text-green-500" : "text-gray-900"
+                theme === "dark" ? "text-green-500" : "text-green-500"
               }`}
               onClick={() => setIsShowingMobileNav(false)}
             >

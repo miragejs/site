@@ -1,24 +1,22 @@
 import { Server } from "@miragejs/server"
 
-let server
+export function makeServer() {
+  return new Server({
+    environment: process.env.NODE_ENV,
 
-// Gatsby runs in both Node and the browser, but we only want Mirage in the browser.
-if (typeof window !== "undefined") {
-  server = new Server({
-    fixtures:
-      process.env.NODE_ENV !== "test"
-        ? {
-            todos: [
-              { id: 1, text: "Learn Mirage JS" },
-              { id: 2, text: "Beat God of War" },
-              { id: 3, text: "Buy groceries" },
-            ],
-          }
-        : {},
+    seeds(server) {
+      server.db.loadData({
+        todos: [
+          { id: 1, text: "Learn Mirage JS" },
+          { id: 2, text: "Beat God of War" },
+          { id: 3, text: "Buy groceries" },
+        ],
+      })
+    },
 
-    baseConfig() {
+    routes() {
       // Tell Mirage to ignore unhandled requests to these domains
-      this.passthrough("/**")
+      this.passthrough()
       this.passthrough("https://app.convertkit.com/**")
 
       this.timing = 1000
@@ -48,8 +46,4 @@ if (typeof window !== "undefined") {
       })
     },
   })
-
-  server.logging = process.env.NODE_ENV !== "test"
 }
-
-export default server

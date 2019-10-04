@@ -1,47 +1,37 @@
-import server from "../server"
-
 // secret stuff in here.
 
 // increase this number to bust all locally stored mirage
 // databases
 let currentVersion = 4
+let initialData
 
-let resetDb
-let loadDb
+function saveDb(server) {
+  localStorage.setItem("mirage:db:version", currentVersion)
+  localStorage.setItem("mirage:db:data", JSON.stringify(server.db.dump()))
+}
 
-if (server) {
-  let initialData = server._config.fixtures
-  let originalHandled = server.pretender.handledRequest
-
-  let saveDb = function() {
-    localStorage.setItem("mirage:db:version", currentVersion)
-    localStorage.setItem("mirage:db:data", JSON.stringify(server.db.dump()))
-  }
-
-  resetDb = function(data = initialData) {
-    server.db.emptyData()
-    server.db.loadData(data)
-    saveDb()
-  }
-
-  loadDb = function() {
+export function addPersist(server) {
+  if (typeof window !== "undefined") {
+    initialData = server.db.dump()
     let version = localStorage.getItem("mirage:db:version")
     let dataString = localStorage.getItem("mirage:db:data")
 
     if (dataString && version === currentVersion.toString()) {
       try {
-        resetDb(JSON.parse(dataString))
+        resetDb(server, JSON.parse(dataString))
       } catch (e) {}
     }
 
+    let originalHandled = server.pretender.handledRequest
     server.pretender.handledRequest = function() {
       originalHandled.call(server.pretender, ...arguments)
-      saveDb()
+      saveDb(server)
     }
   }
-} else {
-  resetDb = () => {}
-  loadDb = () => {}
 }
 
-export { loadDb, resetDb }
+export function resetDb(server, data = initialData) {
+  server.db.emptyData()
+  server.db.loadData(data)
+  saveDb(server)
+}

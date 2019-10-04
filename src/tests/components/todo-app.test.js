@@ -13,6 +13,10 @@ afterEach(() => {
   server.shutdown()
 })
 
+test("It blocks the build", () => {
+  expect(true).toBe(false)
+})
+
 test("It renders the todo app", () => {
   let { getByTestId } = render(<TodoApp />)
   expect(getByTestId("todo-app")).toBeInTheDocument()

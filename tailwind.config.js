@@ -131,6 +131,11 @@ module.exports = {
         "7xl": "80rem",
         "8xl": "88rem",
       },
+      width: {
+        "28": "7rem",
+        "34": "8.5rem",
+        "36": "9rem",
+      },
       height: {
         "128": "32rem",
       },

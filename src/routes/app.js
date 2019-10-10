@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import { Router, Link, Match } from "@reach/router"
 import Helmet from "react-helmet"
-import Logo from "../assets/images/logo2.svg"
-import LogoText from "../assets/images/logo-text.svg"
+import Logo from "../assets/images/logo.svg"
+// import LogoDark from "../assets/images/logo-dark.svg"
+// import LogoText from "../assets/images/logo-text-2.svg"
 import Github from "../assets/images/github.svg"
 import Twitter from "../assets/images/twitter.svg"
 import Discord from "../assets/images/discord.svg"
@@ -96,20 +97,15 @@ function Header({ showHeaderNav }) {
               }`}
               onClick={() => setIsShowingMobileNav(false)}
             >
-              <Logo className="w-8 h-8 md:w-10 md:h-10 fill-current" />
-              <LogoText
-                className={`h-8 w-auto
-                ${theme === "dark" ? "text-gray-100" : "text-gray-900"}
+              <Logo
+                className={`
+                ${
+                  theme === "dark"
+                    ? "w-36 py-4 text-gray-100"
+                    : "w-28 text-gray-900"
+                }
               `}
               />
-              {/* <span
-                className={`whitespace-no-wrap ml-1 leading-none tracking-tighter text-1-5xl font-title font-normal ${
-                  theme === "dark" ? "text-gray-100" : "text-gray-900"
-                }
-                `}
-              >
-                Mirage
-              </span> */}
             </Link>
 
             {/* Leaving out for now, but want to make this work. Just need to figure out a treatment for homepage. */}

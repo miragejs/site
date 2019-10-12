@@ -2,8 +2,6 @@ import React, { useState } from "react"
 import { Router, Link, Match } from "@reach/router"
 import Helmet from "react-helmet"
 import Logo from "../assets/images/logo.svg"
-// import LogoDark from "../assets/images/logo-dark.svg"
-// import LogoText from "../assets/images/logo-text-2.svg"
 import Github from "../assets/images/github.svg"
 import Twitter from "../assets/images/twitter.svg"
 import Discord from "../assets/images/discord.svg"
@@ -91,7 +89,7 @@ function Header({ showHeaderNav }) {
           <div className="flex items-center">
             <Link
               to="/"
-              className={`px-5 py-3 md:px-0 flex items-center flex-shrink-0  ${
+              className={`px-5 py-2 md:px-0 flex items-center flex-shrink-0  ${
                 // theme === "dark" ? "text-green-500" : "text-gray-900"
                 theme === "dark" ? "text-green-500" : "text-green-500"
               }`}
@@ -101,8 +99,8 @@ function Header({ showHeaderNav }) {
                 className={`
                 ${
                   theme === "dark"
-                    ? "w-36 py-4 text-gray-100"
-                    : "w-28 text-gray-900"
+                    ? "w-24 md:w-28 lg:w-34 py-2 text-gray-100"
+                    : "w-24 md:w-28 py-2 lg:py-1 text-gray-900"
                 }
               `}
               />

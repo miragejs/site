@@ -99,7 +99,7 @@ function Header({ showHeaderNav }) {
                 className={`
                 ${
                   theme === "dark"
-                    ? "w-24 md:w-28 lg:w-34 py-2 text-gray-100"
+                    ? "w-24 md:w-28 lg:w-34 py-3 text-gray-100"
                     : "w-24 md:w-28 py-2 lg:py-1 text-gray-900"
                 }
               `}

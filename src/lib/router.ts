@@ -104,7 +104,9 @@ const allRoutes: RouteDefinition[] = [
         label: "React",
         name: "react",
         routes: [
-          { label: "Simple Example", name: "simple-example" }
+          { label: "Starting With Fixtures", name: "starting-with-fixtures" },
+          { label: "Resource Helper", name: "resource-helper" },
+          { label: "Using Factories", name: "using-factories" }
         ],
       },
     ],

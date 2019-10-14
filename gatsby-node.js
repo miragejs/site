@@ -85,11 +85,11 @@ exports.createPages = ({ actions }) => {
   })
   createRedirect({
     fromPath: "/examples",
-    toPath: "/examples/react/simple-example",
+    toPath: "/examples/react/starting-with-fixtures",
   })
   createRedirect({
     fromPath: "/examples/react",
-    toPath: "/examples/react/simple-example",
+    toPath: "/examples/react/starting-with-fixtures",
   })
 }
 

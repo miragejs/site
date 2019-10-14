@@ -1,0 +1,215 @@
+# The Resource Helper
+
+This example builds on the previous one concerning fixtures but also
+includes:
+
+* Configuration change to expose the `Country` model as a resource
+* The data class is enhanced to implement all CRUD
+* Jest tests assert all resource requests
+
+## Mirage Configuration
+
+```js
+// src/mirage.js
+
+import { Model, Server } from '@miragejs/server';
+
+let startMirage = function({ environment = 'test' } = {}) {
+  return new Server({
+    environment,
+
+    // fixture data will be loaded when the
+    // Mirage server starts up
+    fixtures: {
+      countries: [
+        { id: 1, name: 'China' },
+        { id: 2, name: 'India' },
+        { id: 3, name: 'United States' }
+      ],
+    },
+
+    // declare the models that Mirage needs
+    // to know how to serve
+    models: {
+      country: Model
+    },
+
+    baseConfig() {
+      // routes below `this.urlPrefix` assignment are
+      // expected to resolve to `https://some.example.com`
+      this.urlPrefix = 'https://some.example.com';
+
+      // ------------------------------ 🎉🎉🎉 New Section 🎉🎉🎉
+      // EXAMPLE: the resource shorthand will expose the
+      // GET/POST/DELETE/PATCH endpoints;
+      // e.g. GET/POST of https://some.example.com/countries
+      this.resource('countries');
+      // ---------------------------------- 🎉🎉🎉 End New 🎉🎉🎉
+
+      // all other API requests are passed
+      // through to their destinations
+      this.passthrough();
+    }
+  });
+};
+
+export { startMirage };
+```
+
+## CRUD Class
+
+This data class implementation serves to example and explain the
+default way that MirageJs responds to the _Resource Helper_
+API endpoints.
+
+**Note:** _this is an example implementation of pushing and pulling
+data from some API endpoint.  Your implementation might or will differ,
+this is why MirageJs allows the
+[customization of Serializers](/docs/data-layer/serializers)._
+
+```js
+// src/data.js
+
+export default class Data {
+  async createCountry(country = { name: null }) {
+    let response = await fetch('https://some.example.com/countries', {
+      body: JSON.stringify({
+        data: {
+          attributes: { name: country.name }
+        }
+      }),
+      method: 'POST'
+    });
+    if (!response.ok) {
+      throw new Error(`Response not 2xx.  Status Code ${response.status}`);
+    }
+    let json = await response.json();
+    return json.country;
+  }
+
+  async deleteCountry(id = -1) {
+    let response = await fetch(`https://some.example.com/countries/${id}`, {
+      method: 'DELETE'
+    });
+    if (!response.ok) {
+      throw new Error(`Response not 2xx.  Status Code ${response.status}`);
+    }
+    return {};
+  }
+
+  async lookupCountries() {
+    let response = await fetch('https://some.example.com/countries');
+    if (!response.ok) {
+      throw new Error(`Response not 2xx.  Status Code ${response.status}`);
+    }
+    let json = await response.json();
+    return json.countries;
+  }
+
+  async lookupCountry(id = -1) {
+    let response = await fetch(`https://some.example.com/countries/${id}`);
+    if (!response.ok) {
+      throw new Error(`Response not 2xx.  Status Code ${response.status}`);
+    }
+    let json = await response.json();
+    return json.country;
+  }
+
+  async updateCountry(country) {
+    let response = await fetch(`https://some.example.com/countries/${country.id}`, {
+      body: JSON.stringify({
+        data: {
+          attributes: { name: country.name }
+        }
+      }),
+      method: 'PATCH'
+    });
+    if (!response.ok) {
+      throw new Error(`Response not 2xx.  Status Code ${response.status}`);
+    }
+    let json = await response.json();
+    return json.country;
+  }
+}
+```
+
+## Testing Resources
+
+These tests confirm that the CRUD operations behind the resource are
+implemented correctly.  Note how the `server.db` is leveraged to obtain
+counts or specific records for test assertions.
+
+```js
+// src/data.test.js
+
+import Data from './data';
+import { startMirage } from './mirage';
+
+// ------------------------------------------------ Before/After
+
+let server; // use the `server` to create data for each test
+
+beforeEach(() => {
+  server = startMirage(); // start MirageJs before each test
+});
+
+afterEach(() => {
+  server.shutdown();  // shutdown the MirageJs server after each test
+});
+
+// ------------------------------------------------------- Tests
+
+
+it('will return all of the countries', done => {
+  new Data().lookupCountries().then(response => {
+    expect(response.length).toBe(3);  // 3 fixture countries
+    done();
+  });
+});
+
+it('will throw 404 when specific user cannot be found', async () => {
+  await expect(new Data().lookupCountry(-1))
+      .rejects
+      .toThrow('Response not 2xx.  Status Code 404'); // MirageJs responds with 404
+});
+
+it('will return the country with id 1', done => {
+  new Data().lookupCountry(1).then(response => {
+    expect(response.name).toBe('China');
+    done();
+  });
+});
+
+it('will delete the country with id 1', done => {
+  expect(server.db.countries.length).toBe(3);
+  new Data().deleteCountry(1).then(response => {
+    expect(server.db.countries.length).toBe(2); // MirageJs will delete resources
+    done();
+  })
+});
+
+it('will create a new country', done => {
+  expect(server.db.countries.length).toBe(3);
+  new Data().createCountry({ name: 'Canada' })
+      .then(response => {
+        expect(response.country.id).toBe("4");
+        expect(server.db.countries.length).toBe(4); // MirageJs can create resources
+        expect(server.db.countries[3].name).toBe('Canada');
+        done();
+      })
+});
+
+it('will update United States to USA', async done => {
+  let country = await new Data().lookupCountry(3);
+  country.name = 'USA';
+  new Data().updateCountry(country).then(response => {
+    expect(server.db.countries[2].name).toBe('USA');  // MirageJs can update resources
+    done();
+  })
+});
+```
+
+## Next Steps
+
+The next example replaces the fixture data with a factory and
+[Faker.js](https://github.com/Marak/faker.js).

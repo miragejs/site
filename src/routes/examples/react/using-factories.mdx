@@ -1,0 +1,221 @@
+# Using Factories
+
+This example builds on the _Resource Helper_ example with the
+following enhancements:
+
+* MirageJs is configured to use a factory instead of a fixture
+* Faker.js is introduced as a development dependency
+* Tests will use MirageJs's `server` to generate `Country`
+records as required
+
+## Faker.js
+
+`faker` is optional.  This configuration example uses it in
+conjunction with MirageJs' factory mechanism.  To learn more visit
+[faker.js](https://github.com/Marak/faker.js).  Installation is
+trivial:
+
+```bash
+yarn add --dev faker
+```
+
+## Configuring A Factory
+
+Start by creating a basic configuration that can be invoked from the setup and
+teardown hooks in Jest.
+
+```js
+// src/mirage.js
+
+import { Factory, Model, Server } from '@miragejs/server';
+import Faker from 'faker';
+
+let startMirage = function({ environment = 'test' } = {}) {
+  return new Server({
+    environment,
+
+    // -------------------------------- 🎉🎉🎉 New Section 🎉🎉🎉
+    // configure Mirage to be aware that it
+    // can be used to generate `Country` records
+    factories: {
+      country: Factory.extend({
+        name: () => Faker.address.country() // using Faker.js
+      })
+    },
+    // ------------------------------------ 🎉🎉🎉 End New 🎉🎉🎉
+
+    // declare the models that Mirage needs
+    // to know how to serve
+    models: {
+      country: Model
+    },
+
+    baseConfig() {
+      // routes below `this.urlPrefix` assignment are
+      // expected to resolve to `https://some.example.com`
+      this.urlPrefix = 'https://some.example.com';
+
+      // EXAMPLE: the resource shorthand will expose the
+      // GET/POST/DELETE/PATCH endpoints;
+      // e.g. GET/POST of https://some.example.com/countries
+      this.resource('countries');
+
+      // all other API requests are passed
+      // through to their destinations
+      this.passthrough();
+    }
+  });
+};
+
+export { startMirage };
+```
+
+## CRUD Class
+
+This is the same CRUD class as described in the _Resource Helper_
+example.
+
+```js
+// src/data.js
+
+export default class Data {
+  async createCountry(country = { name: null }) {
+    let response = await fetch('https://some.example.com/countries', {
+      body: JSON.stringify({
+        data: {
+          attributes: { name: country.name }
+        }
+      }),
+      method: 'POST'
+    });
+    if (!response.ok) {
+      throw new Error(`Response not 2xx.  Status Code ${response.status}`);
+    }
+    let json = await response.json();
+    return json.country;
+  }
+
+  async deleteCountry(id = -1) {
+    let response = await fetch(`https://some.example.com/countries/${id}`, {
+      method: 'DELETE'
+    });
+    if (!response.ok) {
+      throw new Error(`Response not 2xx.  Status Code ${response.status}`);
+    }
+    return {};
+  }
+
+  async lookupCountries() {
+    let response = await fetch('https://some.example.com/countries');
+    if (!response.ok) {
+      throw new Error(`Response not 2xx.  Status Code ${response.status}`);
+    }
+    let json = await response.json();
+    return json.countries;
+  }
+
+  async lookupCountry(id = -1) {
+    let response = await fetch(`https://some.example.com/countries/${id}`);
+    if (!response.ok) {
+      throw new Error(`Response not 2xx.  Status Code ${response.status}`);
+    }
+    let json = await response.json();
+    return json.country;
+  }
+
+  async updateCountry(country) {
+    let response = await fetch(`https://some.example.com/countries/${country.id}`, {
+      body: JSON.stringify({
+        data: {
+          attributes: { name: country.name }
+        }
+      }),
+      method: 'PATCH'
+    });
+    if (!response.ok) {
+      throw new Error(`Response not 2xx.  Status Code ${response.status}`);
+    }
+    let json = await response.json();
+    return json.country;
+  }
+}
+```
+
+## Testing The Data Class
+
+These tests use the MirageJs `server` instance to generate models
+on demand.  The assertions are similar to those from the _Resource
+Helper_ example, save for the fact that data is instead generated
+in each test.
+
+```js
+// src/data.test.js
+
+import Data from './data';
+import { startMirage } from './mirage';
+
+// ------------------------------------------------ Before/After
+
+let server; // use the `server` to create data for each test
+
+beforeEach(() => {
+  server = startMirage(); // start MirageJs before each test
+});
+
+afterEach(() => {
+  server.shutdown();  // shutdown the MirageJs server after each test
+});
+
+// ------------------------------------------------------- Tests
+
+it('will return all of the countries', done => {
+  server.createList('country', 3);  // generating 3 countries
+  new Data().lookupCountries().then(response => {
+    expect(response.length).toBe(3);
+    done();
+  });
+});
+
+it('will throw 404 when specific user cannot be found', async () => {
+  await expect(new Data().lookupCountry(-1))
+      .rejects
+      .toThrow('Response not 2xx.  Status Code 404');
+});
+
+it('will return a specific country', done => {
+  let country = server.create('country'); // generate a country to lookup
+  new Data().lookupCountry(country.id).then(response => {
+    expect(response.name).toBe(country.name);
+    done();
+  });
+});
+
+it('will delete a specific country', done => {
+  let country = server.create('country'); // generate a country to turn around & delete!
+  expect(server.db.countries.length).toBe(1);
+  new Data().deleteCountry(country.id).then(response => {
+    expect(server.db.countries.length).toBe(0);
+    done();
+  })
+});
+
+it('will create a new country', done => {
+  expect(server.db.countries.length).toBe(0);
+  new Data().createCountry({ name: 'Canada' })
+      .then(response => {
+        expect(server.db.countries.length).toBe(1);
+        expect(server.db.countries[0].name).toBe('Canada');
+        done();
+      })
+});
+
+it('will update country to USA', async done => {
+  let country = await new Data().lookupCountry(server.create('country').id);  // generate a country to update
+  country.name = 'USA';
+  expect(server.db.countries.length).toBe(1);
+  new Data().updateCountry(country).then(response => {
+    expect(server.db.countries[0].name).toBe('USA');
+    done();
+  })
+});
+```

@@ -1,0 +1,119 @@
+# Starting With Fixtures
+
+This simple example straps MirageJs into the React application's
+test environment and includes:
+
+* Basic MirageJs configuration assigned to the test environment that
+exposes a `GET` request for `/countries`
+* A native _data_ class that makes a `fetch` request to the `/countries` path
+* Jest test class that asserts the `fetch` requests
+
+## Installation
+
+Review the Getting Started guide's [installation section](/docs/getting-started/installation).
+
+## Mirage Configuration
+
+Start by creating a basic configuration that can be invoked from the setup and
+teardown hooks in Jest.
+
+```js
+// src/mirage.js
+
+import { Model, Server } from '@miragejs/server';
+
+let startMirage = function({ environment = 'test' } = {}) {
+  return new Server({
+    environment,
+
+    // fixture data will be loaded when the
+    // Mirage server starts up
+    fixtures: {
+      countries: [
+        { id: 1, name: 'China' },
+        { id: 2, name: 'India' },
+        { id: 3, name: 'United States' }
+      ],
+    },
+
+    // declare the models that Mirage needs
+    // to know how to serve
+    models: {
+      country: Model
+    },
+
+    baseConfig() {
+      // routes below `this.urlPrefix` assignment are
+      // expected to resolve to `https://some.example.com`
+      this.urlPrefix = 'https://some.example.com';
+
+      // EXAMPLE: a GET request that returns all countries at
+      // https://some.example.com/countries
+      this.get('/countries', (schema/*, request*/) => schema.countries.all());
+
+      // all other API requests are passed
+      // through to their destinations
+      this.passthrough();
+    }
+  });
+};
+
+export { startMirage };
+```
+
+## Fetching Data
+
+Use `fetch` to lookup the `/countries` from the API endpoint
+mapped to `https://some.example.com/countries` in the `mirage.js`
+configuration.
+
+```js
+// src/data.js
+
+export default class Data {
+  async lookupCountries() {
+    let response = await fetch('https://some.example.com/countries');
+    if (!response.ok) {
+      throw new Error(`Response not 2xx.  Status Code ${response.status}`);
+    }
+    let json = await response.json();
+    return json.countries;
+  }
+}
+```
+
+## Testing
+
+Jest will start and stop the MirageJs server during setup/teardown.
+
+```js
+// src/data.test.js
+
+import Data from './data';
+import { startMirage } from './mirage';
+
+// ------------------------------------------------ Before/After
+
+let server; // use the `server` to create data for each test
+
+beforeEach(() => {
+  server = startMirage(); // start MirageJs before each test
+});
+
+afterEach(() => {
+  server.shutdown();  // shutdown the MirageJs server after each test
+});
+
+// ------------------------------------------------------- Tests
+
+it('will return all of the countries', done => {
+  new Data().lookupCountries().then(response => {
+    expect(response.length).toBe(3);  // 3 countries defined in fixtures
+    done();
+  });
+});
+```
+
+## Next Steps
+
+The next example will build on this by leveraging MirageJs' _Resource Helper_.

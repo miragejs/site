@@ -147,7 +147,7 @@ function Header({ showHeaderNav }) {
                   <NavLink to="/api/classes/association" activeFor="/api/*">
                     API
                   </NavLink>
-                  <NavLink to="/examples/react/simple-example" activeFor="/examples/*">
+                  <NavLink to="/examples/react/starting-with-fixtures" activeFor="/examples/*">
                     Examples
                   </NavLink>
                 </>

@@ -3,6 +3,19 @@ import BackgroundLines from "../assets/images/background-lines.svg"
 import BackgroundLinesLg from "../assets/images/background-lines-lg.svg"
 import SEO from "../components/seo"
 
+// https://ckarchive.com/b/p9ueh9h434wg
+
+function EmailUpdate({ date, slug, children }) {
+  return (
+    <li className="my-6">
+      <span className="block text-gray-500 text-sm">{date}</span>
+      <a className="text-blue-500" href={`https://ckarchive.com/b/${slug}`}>
+        {children}
+      </a>
+    </li>
+  )
+}
+
 export default function({ children }) {
   return (
     <div className="relative">
@@ -36,53 +49,36 @@ export default function({ children }) {
                   Here's what you've missed so far:
                 </p>
                 <ul className="mt-8 text-lg">
-                  <li className="my-6">
-                    <span className="block text-gray-500 text-sm">
-                      Sep 27, 2019
-                    </span>
-                    <a
-                      className="text-blue-500"
-                      href="https://ckarchive.com/b/k0umh6hl0d87"
+                  <EmailUpdate date="Oct 25, 2019" slug="p9ueh9h434wg">
+                    Mirage JS Update #4:{" "}
+                    <span
+                      role="img"
+                      aria-label="scientist"
+                      className="inline-block"
                     >
-                      <span
-                        role="img"
-                        aria-label="book"
-                        className="inline-block"
-                      >
-                        🎥
-                      </span>{" "}
-                      Mirage JS: Demo screencast + API docs
-                    </a>
-                  </li>
-                  <li className="my-6">
-                    <span className="block text-gray-500 text-sm">
-                      Sep 9, 2019
-                    </span>
-                    <a
-                      className="text-blue-500"
-                      href="https://ckarchive.com/b/e5uph7h0m9x7"
+                      👨‍🔬
+                    </span>{" "}
+                    UI Testing with React, plus a new package name and logo!
+                  </EmailUpdate>
+                  <EmailUpdate date="Sep 27, 2019" slug="k0umh6hl0d87">
+                    <span
+                      role="img"
+                      aria-label="camera"
+                      className="inline-block"
                     >
-                      <span
-                        role="img"
-                        aria-label="book"
-                        className="inline-block"
-                      >
-                        📖
-                      </span>{" "}
-                      New guides for Mirage JS
-                    </a>
-                  </li>
-                  <li className="my-6">
-                    <span className="block text-gray-500 text-sm">
-                      Aug 21, 2019
-                    </span>
-                    <a
-                      className="text-blue-500"
-                      href="https://ckarchive.com/b/5quvh7hmmzqq"
-                    >
-                      Mirage.js – First update!
-                    </a>
-                  </li>
+                      🎥
+                    </span>{" "}
+                    Mirage JS: Demo screencast + API docs
+                  </EmailUpdate>
+                  <EmailUpdate date="Sep 9, 2019" slug="e5uph7h0m9x7">
+                    <span role="img" aria-label="book" className="inline-block">
+                      📖
+                    </span>{" "}
+                    New guides for Mirage JS
+                  </EmailUpdate>
+                  <EmailUpdate date="Aug 21, 2019" slug="5quvh7hmmzqq">
+                    Mirage.js – First update!
+                  </EmailUpdate>
                 </ul>
               </div>
             </section>

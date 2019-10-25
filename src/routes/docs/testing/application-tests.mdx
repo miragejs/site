@@ -39,7 +39,7 @@ Let's import it and start it in `beforeEach`:
 
 ```js
 // homepage-test.js
-import { Server } from "@miragejs/server"
+import { Server } from "miragejs"
 
 let server
 
@@ -65,7 +65,7 @@ When you start Mirage, it will intercept your app's network requests, just like 
 Now we can mock out this route.
 
 ```diff
-  import { Server, Model } from "@miragejs/server"
+  import { Server, Model } from "miragejs"
 
   let server
 
@@ -104,7 +104,7 @@ As you learned in the guides on the Data layer, you can use the `seeds` method t
 We can do that using the `server.create` and `server.createList` methods, directly in the body of our test:
 
 ```js
-import { Server, Model } from "@miragejs/server"
+import { Server, Model } from "miragejs"
 
 let server
 
@@ -156,7 +156,7 @@ Next, export a function you can use to start your Mirage server:
 
 ```js
 // src/mirage.js
-import { Server, Model } from "@miragejs/server"
+import { Server, Model } from "miragejs"
 
 export function startMirage() {
   return new Server({
@@ -230,7 +230,7 @@ To use the `test` environment in our tests, let's update our `startMirage` funct
 
 ```diff
   // src/mirage.js
-  import { Server, Model } from "@miragejs/server"
+  import { Server, Model } from "miragejs"
 
 - export function startMirage() {
 + export function startMirage({ environment: 'development' }) {
@@ -301,7 +301,7 @@ Say we wanted to test that when the user visits a detail route for a movie title
 
 ```js
 // src/mirage.js
-import { Server, Model, Factory } from "@miragejs/server"
+import { Server, Model, Factory } from "miragejs"
 
 export function startMirage({ environment: 'development' }) {
   return new Server({
@@ -397,7 +397,7 @@ There are of course times where it makes sense to break this rule (for example t
 To test how your app responds to a server error, you can overwrite a route handler directly within a test:
 
 ```js
-import { Response } from "@miragejs/server"
+import { Response } from "miragejs"
 
 it("shows an error if the save attempt fails", function() {
   server.post("/questions", () => {

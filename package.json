@@ -18,7 +18,6 @@
   "dependencies": {
     "@mdx-js/mdx": "^1.1.0",
     "@mdx-js/react": "^1.0.27",
-    "@miragejs/server": "0.1.27",
     "@reach/router": "^1.2.1",
     "@sindresorhus/slugify": "^0.9.1",
     "@tailwindcss/custom-forms": "^0.2.0",
@@ -76,6 +75,7 @@
     "eslint-plugin-react-hooks": "1.5.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^24.9.0",
+    "miragejs": "^0.1.31",
     "react-test-renderer": "^16.8.6",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.3"

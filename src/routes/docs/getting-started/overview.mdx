@@ -5,7 +5,7 @@ Mirage lets you simulate API responses by writing **route handlers**.
 The simplest example of a route handler is a function that returns an object:
 
 ```js
-import { Server } from "@miragejs/server"
+import { Server } from "miragejs"
 
 new Server({
   routes() {
@@ -29,7 +29,7 @@ Now whenever your app makes a GET request to `/api/movies`, Mirage will respond 
 You can get pretty far using static route handlers like this, and they're a good way to get comfortable working with Mirage. All the HTTP verbs work, there's a `timing` option you can use to simulate a slow server, and you can even return a custom `Response` to see how your app behaves when it receives an error from your API.
 
 ```js
-import { Server, Response } from "@miragejs/server"
+import { Server, Response } from "miragejs"
 
 new Server({
   routes() {
@@ -84,7 +84,7 @@ Mirage has a **Data layer** to help you write a more powerful server implementat
 First, we'll tell Mirage that we have a dynamic `Movie` model:
 
 ```js
-import { Server, Model } from "@miragejs/server"
+import { Server, Model } from "miragejs"
 
 new Server({
   models: {
@@ -258,7 +258,7 @@ While it's nice to be able to pass in every attribute for each record, sometimes
 We can create a Factory for our `Movie` model like this:
 
 ```js
-import { Server, Model, Factory } from "@miragejs/server"
+import { Server, Model, Factory } from "miragejs"
 
 new Server({
   models: {
@@ -333,7 +333,7 @@ There's also a `server.createList` API to generate many records at once.
 You can use both `server.create` and `server.createList` to invoke your Factories in your `seeds` function:
 
 ```js
-import { Server, Factory } from "@miragejs/server"
+import { Server, Factory } from "miragejs"
 
 new Server({
   seeds(server) {
@@ -381,7 +381,7 @@ Dealing with relationships is always tricky, and mocking endpoints that deal wit
 Let's say your `Movie` has many `CastMembers`. You can declare this relationship in your model:
 
 ```js
-import { Server, hasMany, belongsTo } from "@miragejs/server"
+import { Server, hasMany, belongsTo } from "miragejs"
 
 new Server({
   models: {
@@ -479,7 +479,7 @@ This is why Mirage serializers exist. **Serializers** let you customize the form
 Mirage ships with a few named serializers that match popular backend formats:
 
 ```js
-import { Server, JSONAPISerializer } from "@miragejs/server"
+import { Server, JSONAPISerializer } from "miragejs"
 
 new Server({
   serializers: {
@@ -491,7 +491,7 @@ new Server({
 You can also extend from the base class and use its formatting hooks to write your own:
 
 ```js
-import { Server, Serializer } from "@miragejs/server"
+import { Server, Serializer } from "miragejs"
 
 new Server({
   serializers: {

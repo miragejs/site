@@ -2,7 +2,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import App from "./app"
-import { Server } from "@miragejs/server"
+import { Server } from "miragejs"
 
 let server = new Server()
 
@@ -12,8 +12,5 @@ server.get("/users", () => [
   { id: "3", name: "Anakin" },
 ])
 
-ReactDOM.render(
-  <App />,
-  document.getElementById("root")
-)
+ReactDOM.render(<App />, document.getElementById("root"))
 ```

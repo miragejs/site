@@ -15,7 +15,7 @@ Let's see how they work.
 Say we have a `Movie` model defined in Mirage.
 
 ```js
-import { Server, Model } from "@miragejs/server"
+import { Server, Model } from "miragejs"
 
 new Server({
   models: {
@@ -27,7 +27,7 @@ new Server({
 To seed Mirage's database with some movies so you can start developing your app, use the `server.create` method in your server's `seeds`:
 
 ```js
-import { Server, Model } from "@miragejs/server"
+import { Server, Model } from "miragejs"
 
 new Server({
   models: {
@@ -89,7 +89,7 @@ Fortunately, Factories let us do just that!
 Let's define a Factory for our `Movie` model using the `factories` key of our server options and the `Factory` import:
 
 ```js
-import { Server, Model, Factory } from "@miragejs/server"
+import { Server, Model, Factory } from "miragejs"
 
 new Server({
   models: {
@@ -111,7 +111,7 @@ new Server({
 Right now the Factory is empty. Let's define a property on it:
 
 ```js
-import { Server, Model, Factory } from "@miragejs/server"
+import { Server, Model, Factory } from "miragejs"
 
 new Server({
   models: {
@@ -173,7 +173,7 @@ and with the above factory definition, our database will now look like this:
 Let's add some more properties to our factory:
 
 ```js
-import { Server, Model, Factory } from "@miragejs/server"
+import { Server, Model, Factory } from "miragejs"
 import faker from "faker"
 
 new Server({
@@ -361,7 +361,7 @@ Let's see how it works.
 Say you have these two models in your app:
 
 ```js
-import { Server, Model, belongsTo } from "@miragejs/server"
+import { Server, Model, belongsTo } from "miragejs"
 
 new Server({
   models: {
@@ -379,7 +379,7 @@ Let's further suppose that in your app, it is never valid to create a post witho
 You can use `afterCreate` to enforce this behavior:
 
 ```js
-import { Server, Model, belongsTo, Factory } from "@miragejs/server"
+import { Server, Model, belongsTo, Factory } from "miragejs"
 
 new Server({
   models: {
@@ -460,7 +460,7 @@ Traits are an important feature of factories that make it easy to group related 
 For example, here we define a trait named `published` on our post factory:
 
 ```js
-import { Server, Model, Factory, trait } from "@miragejs/server"
+import { Server, Model, Factory, trait } from "miragejs"
 
 new Server({
   models: {
@@ -554,7 +554,7 @@ The `association()` helper provides some sugar for creating `belongsTo` relation
 As we saw earlier, given a `Post` that `belongsTo` a `User`, we were able to use the `afterCreate` hook to pre-wire that relationship:
 
 ```js
-import { Server, Factory } from "@miragejs/server"
+import { Server, Factory } from "miragejs"
 
 new Server({
   factories: {
@@ -574,7 +574,7 @@ new Server({
 The `association()` helper effectively replaces this code:
 
 ```js
-import { Server, Factory, association } from "@miragejs/server"
+import { Server, Factory, association } from "miragejs"
 
 new Server({
   factories: {
@@ -618,7 +618,7 @@ There is no equivalent helper for `hasMany` relationships, so you can continue t
 To use your factories to seed your development database, call `server.create` and `server.createList` in your server's seeds function:
 
 ```js
-import { Server, Model, Factory } from "@miragejs/server"
+import { Server, Model, Factory } from "miragejs"
 
 new Server({
   models: {

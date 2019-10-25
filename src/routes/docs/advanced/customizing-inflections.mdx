@@ -54,7 +54,7 @@ To fix this, you need to add your own custom inflection rules. Mirage uses [the 
 
 ```js
 import { inflections } from "inflected"
-import { Server, Model } from "@miragejs/server"
+import { Server, Model } from "miragejs"
 
 inflections("en", function(inflect) {
   inflect.irregular("head-of-state", "heads-of-state")

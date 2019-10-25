@@ -141,7 +141,7 @@ To start, we can tell Mirage about our application's schema by defining Mirage m
 Let's define a `Movie` model.
 
 ```js
-import { Server, Model } from "@miragejs/server"
+import { Server, Model } from "miragejs"
 
 new Server({
   models: {
@@ -155,7 +155,7 @@ Mirage models are _schemaless in attributes_, in that they don't require you to 
 With the `Movie` model defined, we can update our route handler to use the ORM to respond with a Mirage model instance:
 
 ```js
-import { Server, Model } from "@miragejs/server"
+import { Server, Model } from "miragejs"
 
 new Server({
   models: {
@@ -179,7 +179,7 @@ By returning an instance of a Mirage model from a route handler instead of a pla
 Mirage ships with a JSONAPISerializer out of the box, so if we set it as our Application serializer
 
 ```js
-import { Server, Model, JSONAPISerializer } from "@miragejs/server"
+import { Server, Model, JSONAPISerializer } from "miragejs"
 
 new Server({
   models: {
@@ -228,7 +228,7 @@ Let's say our `Movie` has a belongs-to relationship with a `director`:
 
 ```js
 // mirage/models/movie.js
-import { Server, Model, belongsTo, JSONAPISerializer } from "@miragejs/server"
+import { Server, Model, belongsTo, JSONAPISerializer } from "miragejs"
 
 new Server({
   models: {

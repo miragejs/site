@@ -115,7 +115,7 @@ exports.sourceNodes = async ({
   createContentDigest,
 }) => {
   let docNodes = generateESDoc({
-    source: "./node_modules/@miragejs/server/lib",
+    source: "./node_modules/miragejs/lib",
     excludes: ["(node_modules|tests|tmp)"],
     plugins: [
       {

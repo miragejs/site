@@ -1,3 +1,110 @@
 # React
 
-Coming soon!
+Setting up Mirage with Create React App is easy, it only requires a single configuration file.
+
+Let's get started by first install the `miragejs` package.
+
+```text
+yarn add -D miragejs
+```
+
+or
+
+```text
+npm install --save-dev miragejs
+```
+
+## Defining the server
+
+Create a new file, `src/server.js`, that will hold the code for our mock server. To get started quickly, let's use the following server definition. Paste this code into the new `server.js` file.
+
+```js
+// src/server.js
+
+import { Server, Model, Factory } from "miragejs"
+
+export function makeServer({ environment = "development" } = {}) {
+  let server = new Server({
+    environment,
+
+    routes() {
+      this.namespace = "api"
+
+      this.get("/users", () => {
+        return {
+          users: [
+            {
+              id: 1,
+              name: "Bob",
+            },
+            {
+              id: 2,
+              name: "Alice",
+            },
+          ],
+        }
+      })
+    },
+  })
+
+  return server
+}
+```
+
+This server creates a single endpoint, `/api/users`, that responds with a JSON payload containing two users, Bob and Alice. That's it!
+
+> You might be thinking, why are we creating and exporting a new function `makeServer` instead of just starting the server in this file. There are often times when we want to quickly make new isolated servers, such as when we are writing tests. We recommend every Mirage application use this `makeServer` pattern.
+
+## Starting the server
+
+Now that we have our server defined, let's get it running.
+
+Open your React app's `src/index.js` file, import the `makeServer` function, and invoke it.
+
+```diff
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
++ import { makeServer } from "./server";
+
++ makeServer();
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
+## Using the server
+
+Now all we need to do is have our app start using data from the Mirage server. Let's have the app component fetch our two users.
+
+```jsx
+// src/App.js
+import { useState, useEffect } from "react"
+
+export default function App() {
+  let [users, setUsers] = useState([])
+
+  useEffect(() => {
+    let fetchUsers = async function() {
+      let res = await fetch("/api/users")
+      let json = await res.json()
+      setUsers(json.users)
+    }
+
+    fetchUsers()
+  }, [])
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+That's it! Our component will now render a list with both of our users, Bob and Alice.
+
+> It's worth pointing out that this simple App component highlights one of the main benefits of using Mirage. In this example the component is using mock data, but there's no mock code inside the component! From the point of view of the component it's making real network requests and fetching real data. This makes testing different states and writing code before your API is ready a breeze with Mirage.
+
+There's so much more to Mirage too! Now that you have the server running inside your React app, take a our guides on [Models](/docs/data-layer/models), [Factories](/docs/data-layer/factories), and [Route handlers](/docs/route-handlers/functions).

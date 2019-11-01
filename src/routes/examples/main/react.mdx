@@ -1,17 +1,15 @@
 # React
 
-Setting up Mirage with Create React App is easy, it only requires a single configuration file.
+Setting up Mirage with a React app is easy, whether you're using Create React App or some other environment. You only need a single file.
 
-Let's get started by first installing the `miragejs` package.
+Make sure you have Mirage installed in your project:
 
-```text
-yarn add -D miragejs
-```
-
-or
-
-```text
+```bash
+# Using npm
 npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
 ```
 
 ## Defining the server
@@ -21,7 +19,7 @@ Create a new file, `src/server.js`, that will hold the code for our mock server.
 ```js
 // src/server.js
 
-import { Server, Model, Factory } from "miragejs"
+import { Server } from "miragejs"
 
 export function makeServer({ environment = "development" } = {}) {
   let server = new Server({
@@ -51,15 +49,15 @@ export function makeServer({ environment = "development" } = {}) {
 }
 ```
 
-This server creates a single endpoint, `/api/users`, that responds with a JSON payload containing two users, Bob and Alice. That's it!
+This server defines a single endpoint, `/api/users`, that responds with a JSON payload containing two users, Bob and Alice. That's it!
 
-> You might be thinking, why are we creating and exporting a new function `makeServer` instead of just starting the server in this file. There are often times when we want to quickly make new isolated servers, such as when we are writing tests. We recommend every Mirage application use this `makeServer` pattern.
+Here, we're exporting a `makeServer` function that will let us customize our Mirage server in the development and testing environments. This is one good approach, but feel free to customize this file however you like. The only thing that's Mirage-specific is the call to `new Server()`.
 
-## Starting the server
+## Using our server in Development
 
-Now that we have our server defined, let's get it running.
+Now that we have our server defined, let's get it running in development.
 
-Open your React app's `src/index.js` file, import the `makeServer` function, and invoke it.
+We'll open our React app's `src/index.js` file, import the `makeServer` function, and invoke it in development.
 
 ```diff
 import React from "react";
@@ -67,17 +65,18 @@ import ReactDOM from "react-dom";
 import App from "./App";
 + import { makeServer } from "./server";
 
-+ makeServer();
++ if (process.env.NODE_ENV !== 'production') {
++   makeServer();
++ }
 
 ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
-## Using the server
-
-Now all we need to do is have our app start using data from the Mirage server. Let's have the app component fetch our two users.
+Now Mirage is running when our app boots up in development! If we write code that fetches data from the network, for example in our App component, we'll see Mirage handle that request with the two users from our `routes()` config:
 
 ```jsx
 // src/App.js
+
 import { useState, useEffect } from "react"
 
 export default function App() {
@@ -94,9 +93,11 @@ export default function App() {
   }, [])
 
   return (
-    <ul>
+    <ul data-testid="users">
       {users.map(user => (
-        <li key={user.id}>{user.name}</li>
+        <li key={user.id} data-testid={`user-${user.id}`}>
+          {user.name}
+        </li>
       ))}
     </ul>
   )
@@ -105,6 +106,145 @@ export default function App() {
 
 That's it! Our component will now render a list with both of our users, Bob and Alice.
 
-> It's worth pointing out that this simple App component highlights one of the main benefits of using Mirage. In this example the component is using mock data, but there's no mock code inside the component! From the point of view of the component it's making real network requests and fetching real data. This makes testing different states and writing code before your API is ready a breeze with Mirage.
+# Using our server in Testing
 
-There's so much more to Mirage too! Now that you have the server running inside your React app, take a our guides on [Models](/docs/data-layer/models), [Factories](/docs/data-layer/factories), and [Route handlers](/docs/route-handlers/functions).
+Next, let's use our Mirage server to test our App component.
+
+> For this next section we're going to use Jest with React Testing Library. If you're unfamiliar with these libraries take a look at their [guides](https://testing-library.com/docs/react-testing-library/intro).
+
+Create a new test for the App component in `src/__tests__/App.test.js`. To get started, copy in the following Jest code.
+
+```js
+// src/__tests__/App.test.js
+
+import React from "react";
+import {
+  render,
+  waitForElement,
+} from "@testing-library/react";
+import App from "../App";
+import { makeServer } from "../server";
+
+let server;
+
+beforeEach(() => {
+  server = makeServer({ environment: "test" });
+});
+
+afterEach(() => {
+  server.shutdown();
+});
+
+it("loads the users from our server", () => {
+  const { getByTestId } = render(<App />);
+
+  await waitForElement(() => getByTestId("user-1"));
+  await waitForElement(() => getByTestId("user-2"));
+
+  expect(getByTestId("user-1")).toHaveTextContent("Bob");
+  expect(getByTestId("user-2")).toHaveTextContent("Alice");
+});
+```
+
+Let's talk about what's going on in this test file.
+
+In the `beforeEach` hook we're creating a new server using the same `makeServer` function we defined earlier. We're initializing our server with a `test` environment, which optimizes Mirage from running inside of tests.
+
+In the `afterEach` hook we're calling `server.shutdown()`, which will destroy our Mirage server. This ensures that every test we write has its own isolated server and no server state is shared between any two tests.
+
+Finally, our test renders our App component and asserts that the names Bob and Alice show up on the page.
+
+While this test covers the data loading functionality of our component there's something missing. When we test components like this, we maximize our confidence in them by testing them in various states. When dealing with a data loading component like our App component, we want to be able to answer questions like "What happens when the server has no users?" or "What does our component render if the backend 500s?"
+
+This is where Mirage shines, it has the ability to quickly create and test these scenarios, which makes answering those questions a breeze.
+
+Let's go back to our `src/server.js` file and make a small change to its definition.
+
+```diff
+// src/server.js
+
+- import { Server } from "miragejs"
++ import { Server, Model } from "miragejs"
+
+export function makeServer({ environment = "development" } = {}) {
+  let server = new Server({
+    environment,
+
++   models: {
++     user: Model
++   },
+
+    routes() {
+      this.namespace = "api"
+
+-     this.get("/users", () => {
+-       return {
+-         users: [
+-           {
+-             id: 1,
+-             name: "Bob",
+-           },
+-           {
+-             id: 2,
+-             name: "Alice",
+-          },
+-        ],
+-      }
+-    })
+
++    this.get('/users', (schema) => {
++      return schema.users.all();
++    });
+   },
+  })
+
+  return server
+}
+```
+
+With this change we're telling Mirage that `users` are a first class [model](/docs/data-layer/models) in our server. We're also changing the `/api/users` endpoint to respond with all users in the server, instead of a static list containing only Bob and Alice.
+
+Now we have the ability to test our server in various states. Let's use Mirage to create a test with a single user.
+
+```js
+// src/__tests__/App.test.js
+
+it("loads the a single user from our server", () => {
+  server.create('user', { name: 'John' });
+
+  const { getByTestId } = render(<App />);
+
+  await waitForElement(() => getByTestId("user-1"));
+
+  expect(getByTestId("user-1")).toHaveTextContent("John");
+});
+```
+
+By using `server.create()` we are taking advantage of Mirage's [factories](http://localhost:8000/docs/data-layer/factories) to define data that is specifically tailored to each test.
+
+We can also use Mirage to test error responses from our server.
+
+```js
+// src/__tests__/App.test.js
+
+import { Response } from "miragejs"
+
+it("handles error responses from the server", () => {
+  server.get("/users", () => {
+    return new Response(
+      500,
+      {},
+      { errors: ["The database is on vacation."]}
+    )
+  });
+
+  const { getByTestId } = render(<App />);
+
+  await waitForElement(() => getByTestId("server-error"));
+
+  expect(getByTestId("server-error"))
+    .toHaveTextContent("The database is on vacation.");
+});
+```
+
+That's it for getting Mirage into a React app, but there's so much more that Mirage can do! Take a look at the [guides](/docs/getting-started/introduction) to explore more of the API.

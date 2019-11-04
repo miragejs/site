@@ -72,7 +72,7 @@ import App from "./App";
 ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
-Now Mirage is running when our app boots up in development! If we write code that fetches data from the network, for example in our App component, we'll see Mirage handle that request with the two users from our `routes()` config:
+Mirage is now running when our app boots up in development! As the application attempts to fetch data from the network, Mirage will step in to handle the request. The following App component fetches the two users that were defined in our `routes()` config:
 
 ```jsx
 // src/App.js
@@ -148,13 +148,13 @@ it("loads the users from our server", () => {
 
 Let's talk about what's going on in this test file.
 
-In the `beforeEach` hook we're creating a new server using the same `makeServer` function we defined earlier. We're initializing our server with a `test` environment, which optimizes Mirage from running inside of tests.
+In the `beforeEach` hook we're creating a new server using the same `makeServer` function we defined earlier. We're initializing our server with a `test` environment, which optimizes Mirage to run inside of tests.
 
 In the `afterEach` hook we're calling `server.shutdown()`, which will destroy our Mirage server. This ensures that every test we write has its own isolated server and no server state is shared between any two tests.
 
 Finally, our test renders our App component and asserts that the names Bob and Alice show up on the page.
 
-While this test covers the data loading functionality of our component there's something missing. When we test components like this, we maximize our confidence in them by testing them in various states. When dealing with a data loading component like our App component, we want to be able to answer questions like "What happens when the server has no users?" or "What does our component render if the backend 500s?"
+While this test covers the data loading functionality of our component there's something missing. Testing components like this will maximize our confidence in them being able to take on various states. However, we also must be able to answer additional questions like: "What happens when the server has no users?", or "What does our component render if the backend 500's?"
 
 This is where Mirage shines, it has the ability to quickly create and test these scenarios, which makes answering those questions a breeze.
 

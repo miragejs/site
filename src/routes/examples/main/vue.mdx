@@ -60,6 +60,8 @@ Now that we have our server defined, let's get it running in development.
 We'll open our Vue app's `src/main.js` file, import the `makeServer` function, and invoke it in development.
 
 ```diff
+// src/main.js
+
 import Vue from 'vue'
 import App from './App.vue'
 + import { makeServer } from "./server";

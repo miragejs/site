@@ -85,11 +85,15 @@ exports.createPages = ({ actions }) => {
   })
   createRedirect({
     fromPath: "/examples",
-    toPath: "/examples/main/react",
+    toPath: "/examples/react/development",
   })
   createRedirect({
-    fromPath: "/examples/main",
-    toPath: "/examples/main/react",
+    fromPath: "/examples/react",
+    toPath: "/examples/react/development",
+  })
+  createRedirect({
+    fromPath: "/examples/vue",
+    toPath: "/examples/vue/development",
   })
 }
 

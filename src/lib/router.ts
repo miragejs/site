@@ -101,12 +101,17 @@ const allRoutes: RouteDefinition[] = [
     name: "examples",
     routes: [
       {
-        label: "Main",
-        name: "main",
+        label: "React",
+        name: "react",
         routes: [
-          { label: "React", name: "react" },
-          { label: "Vue", name: "vue" },
+          { label: "Development", name: "development" },
+          { label: "Testing library", name: "testing-library" },
         ],
+      },
+      {
+        label: "Vue",
+        name: "vue",
+        routes: [{ label: "Development", name: "development" }],
       },
     ],
   },

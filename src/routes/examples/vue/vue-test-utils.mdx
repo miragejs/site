@@ -1,0 +1,125 @@
+# Vue Test Utils
+
+Let's use Mirage to test our data fetching App component. We're going to use the same server we defined in the [development](/examples/vue/development) example.
+
+Here's the Vue component we'll be testing.
+
+```html
+// src/App.vue
+
+<template>
+  <div v-if="serverError" data-testid="server-error">{{ serverError }}</div>
+  <div v-else>
+    <ul id="users">
+      <li
+        v-for="user in users"
+        v-bind:key="user.id"
+        :data-testid="'user-' + user.id"
+      >
+        {{ user.name }}
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "app",
+
+    data() {
+      return {
+        users: [],
+        serverError: null,
+      }
+    },
+
+    created: async function() {
+      let response = await fetch("/api/users")
+      let json = await response.json()
+
+      if (response.ok) {
+        this.users = json.users
+      } else {
+        this.serverError = json.error
+      }
+    },
+  }
+</script>
+```
+
+Create a new test for the component in `src/App.spec.js`.
+
+```js
+// src/App.spec.js
+
+import { mount } from "@vue/test-utils"
+import { makeServer } from "./server"
+import App from "./App.vue"
+
+let server
+
+beforeEach(() => {
+  server = makeServer({ environment: "test" })
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+
+// This helper method returns a promise that resolves
+// once the selector enters the wrapper's dom.
+const waitFor = function(wrapper, selector) {
+  return new Promise(resolve => {
+    const timer = setInterval(() => {
+      const userEl = wrapper.findAll(selector)
+      if (userEl.length > 0) {
+        clearInterval(timer)
+        resolve()
+      }
+    }, 100)
+  })
+}
+
+it("it fetches users from the server", async () => {
+  server.create("user", { id: 1, name: "Luke" })
+  server.create("user", { id: 2, name: "Leia" })
+
+  const wrapper = mount(App)
+
+  // lets wait for our vue component to finish loading data
+  // we know it's done when the data-testid enters the dom.
+  await waitFor(wrapper, '[data-testid="user-1"]')
+  await waitFor(wrapper, '[data-testid="user-2"]')
+
+  expect(wrapper.find('[data-testid="user-1"]').text()).toBe("Luke")
+  expect(wrapper.find('[data-testid="user-2"]').text()).toBe("Leia")
+})
+```
+
+We can also test error responses from our server as well.
+
+```js
+// src/__tests__/App.test.js
+
+import { Response } from "miragejs"
+
+it("handles error responses from the server", async () => {
+  server.get("/users", () => {
+    return new Response(
+      500,
+      {},
+      {
+        error: "The database is on vacation.",
+      }
+    )
+  })
+
+  const wrapper = mount(App)
+
+  await waitFor(wrapper, '[data-testid="server-error"]')
+
+  expect(wrapper.find('[data-testid="server-error"]').text()).toBe(
+    "The database is on vacation."
+  )
+})
+```

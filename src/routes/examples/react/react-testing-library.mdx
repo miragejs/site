@@ -2,15 +2,33 @@
 
 Let's use Mirage to test our data fetching App component. We're going to use the same server we defined in the [development](/examples/react/development) example.
 
-Here's the JSX for the component we'll be testing.
+Here's the component we'll be testing.
 
 ```jsx
 // src/App.js
 
-export default function App() {
-  // ...
+import { useState, useEffect } from "react"
 
-  return didError ? (
+export default function App() {
+  let [users, setUsers] = useState([])
+  let [serverError, setServerError] = useState()
+
+  useEffect(() => {
+    let fetchUsers = async function() {
+      let res = await fetch("/api/users")
+      let json = await res.json()
+
+      if (response.ok) {
+        setUsers(json.users)
+      } else {
+        setServerError(json.error)
+      }
+    }
+
+    fetchUsers()
+  }, [])
+
+  return serverError ? (
     <div data-testid="server-error">{serverError}</div>
   ) : (
     <ul data-testid="users">
@@ -66,7 +84,13 @@ import { Response } from "miragejs"
 
 it("handles error responses from the server", async () => {
   server.get("/users", () => {
-    return new Response(500, {}, { errors: ["The database is on vacation."] })
+    return new Response(
+      500,
+      {},
+      {
+        error: "The database is on vacation.",
+      }
+    )
   })
 
   const { getByTestId } = render(<App />)

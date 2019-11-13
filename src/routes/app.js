@@ -72,7 +72,8 @@ function AppInner(props) {
 
 function Header({ showHeaderNav }) {
   const { theme } = useTheme()
-  let [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
+  const [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
+  const router = useRouter()
 
   return (
     <div
@@ -139,7 +140,7 @@ function Header({ showHeaderNav }) {
               {showHeaderNav ? (
                 <>
                   <NavLink
-                    to="/docs/getting-started/introduction"
+                    to={router.routerFor("/docs").pages[0].fullPath}
                     activeFor="/docs/*"
                   >
                     Guides
@@ -147,7 +148,10 @@ function Header({ showHeaderNav }) {
                   <NavLink to="/api/classes/association" activeFor="/api/*">
                     API
                   </NavLink>
-                  <NavLink to="/examples/main/react" activeFor="/examples/*">
+                  <NavLink
+                    to={router.routerFor("/examples").pages[0].fullPath}
+                    activeFor="/examples/*"
+                  >
                     Examples
                   </NavLink>
                 </>

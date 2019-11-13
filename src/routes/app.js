@@ -149,10 +149,10 @@ function Header({ showHeaderNav }) {
                     API
                   </NavLink>
                   <NavLink
-                    to={router.routerFor("/examples").pages[0].fullPath}
-                    activeFor="/examples/*"
+                    to={router.routerFor("/quickstarts").pages[0].fullPath}
+                    activeFor="/quickstarts/*"
                   >
-                    Examples
+                    Quickstarts
                   </NavLink>
                 </>
               ) : null}

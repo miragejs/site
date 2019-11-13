@@ -2,10 +2,10 @@ import React from "react"
 import { ThreeColumnLayout } from "../components/three-column-layout"
 import { useRouter } from "../hooks/use-router"
 
-export default function ExamplesPage(props) {
+export default function QuickstartsPage(props) {
   let router = useRouter()
 
-  let docsRouter = router.routerFor("/examples")
+  let docsRouter = router.routerFor("/quickstarts")
 
   return (
     <ThreeColumnLayout

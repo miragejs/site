@@ -84,16 +84,16 @@ exports.createPages = ({ actions }) => {
     toPath: "/api/classes/association",
   })
   createRedirect({
-    fromPath: "/examples",
-    toPath: "/examples/react/development",
+    fromPath: "/quickstarts",
+    toPath: "/quickstarts/react/development",
   })
   createRedirect({
-    fromPath: "/examples/react",
-    toPath: "/examples/react/development",
+    fromPath: "/quickstarts/react",
+    toPath: "/quickstarts/react/development",
   })
   createRedirect({
-    fromPath: "/examples/vue",
-    toPath: "/examples/vue/development",
+    fromPath: "/quickstarts/vue",
+    toPath: "/quickstarts/vue/development",
   })
 }
 

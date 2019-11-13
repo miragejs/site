@@ -97,8 +97,8 @@ const allRoutes: RouteDefinition[] = [
     ],
   },
   {
-    label: "Examples",
-    name: "examples",
+    label: "Quickstarts",
+    name: "quickstarts",
     routes: [
       {
         label: "React",

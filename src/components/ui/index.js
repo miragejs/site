@@ -13,7 +13,7 @@ export const H1 = props => (
     {...props}
     className="text-gray-900 font-title font-normal leading-tight
       mb-6 text-4xl
-      md:mb-8 md:text-5xl
+      md:mb-8 md:text-4-5xl
     "
   >
     {props.children}

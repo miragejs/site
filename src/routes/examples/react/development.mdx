@@ -1,0 +1,103 @@
+# React development
+
+First, make sure you have Mirage installed:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Defining the server
+
+Create a new file, `src/server.js`, that will hold the code for our mock server.
+
+```js
+// src/server.js
+
+import { Server, Model } from "miragejs"
+
+export function makeServer({ environment = "development" } = {}) {
+  let server = new Server({
+    environment,
+
+    models: {
+      user: Model,
+    },
+
+    seeds(server) {
+      server.create("user", { name: "Bob" })
+      server.create("user", { name: "Alice" })
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.get("/users", schema => {
+        return schema.users.all()
+      })
+    },
+  })
+
+  return server
+}
+```
+
+## Using the server in Development
+
+Now that we have our server defined, let's get it running in development.
+
+We'll open our React app's `src/index.js` file, import the `makeServer` function, and invoke it in development.
+
+```diff
+// src/index.js
+
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
++ import { makeServer } from "./server";
+
++ if (process.env.NODE_ENV === 'development') {
++   makeServer();
++ }
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
+As the application attempts to fetch data from the network, Mirage will step in to handle the request.
+
+The following App component fetches the two users that were defined in our `seeds()` config:
+
+```jsx
+// src/App.js
+
+import { useState, useEffect } from "react"
+
+export default function App() {
+  let [users, setUsers] = useState([])
+
+  useEffect(() => {
+    let fetchUsers = async function() {
+      let res = await fetch("/api/users")
+      let json = await res.json()
+      setUsers(json.users)
+    }
+
+    fetchUsers()
+  }, [])
+
+  return (
+    <ul data-testid="users">
+      {users.map(user => (
+        <li key={user.id} data-testid={`user-${user.id}`}>
+          {user.name}
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+That's it! Our component will now render a list with both of our users, Bob and Alice.

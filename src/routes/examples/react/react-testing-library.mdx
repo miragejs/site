@@ -1,0 +1,104 @@
+# React Testing Library
+
+Let's use Mirage to test our data fetching App component. We're going to use the same server we defined in the [development](/examples/react/development) example.
+
+Here's the component we'll be testing.
+
+```jsx
+// src/App.js
+
+import { useState, useEffect } from "react"
+
+export default function App() {
+  let [users, setUsers] = useState([])
+  let [serverError, setServerError] = useState()
+
+  useEffect(() => {
+    let fetchUsers = async function() {
+      let res = await fetch("/api/users")
+      let json = await res.json()
+
+      if (response.ok) {
+        setUsers(json.users)
+      } else {
+        setServerError(json.error)
+      }
+    }
+
+    fetchUsers()
+  }, [])
+
+  return serverError ? (
+    <div data-testid="server-error">{serverError}</div>
+  ) : (
+    <ul data-testid="users">
+      {users.map(user => (
+        <li key={user.id} data-testid={`user-${user.id}`}>
+          {user.name}
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+Create a new test for the App component in `src/__tests__/App.test.js`.
+
+```js
+// src/__tests__/App.test.js
+
+import React from "react"
+import { render, waitForElement } from "@testing-library/react"
+import App from "../App"
+import { makeServer } from "../server"
+
+let server
+
+beforeEach(() => {
+  server = makeServer({ environment: "test" })
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+
+it("loads the users from our server", async () => {
+  server.create("user", { name: "Luke" })
+  server.create("user", { name: "Leia" })
+
+  const { getByTestId } = render(<App />)
+  await waitForElement(() => getByTestId("user-1"))
+  await waitForElement(() => getByTestId("user-2"))
+
+  expect(getByTestId("user-1")).toHaveTextContent("Luke")
+  expect(getByTestId("user-2")).toHaveTextContent("Leia")
+})
+```
+
+We can also test error responses from our server as well.
+
+```js
+// src/__tests__/App.test.js
+
+import { Response } from "miragejs"
+
+it("handles error responses from the server", async () => {
+  server.get("/users", () => {
+    return new Response(
+      500,
+      {},
+      {
+        error: "The database is on vacation.",
+      }
+    )
+  })
+
+  const { getByTestId } = render(<App />)
+
+  await waitForElement(() => getByTestId("server-error"))
+
+  expect(getByTestId("server-error")).toHaveTextContent(
+    "The database is on vacation."
+  )
+})
+```

@@ -1,0 +1,104 @@
+# Vue development
+
+First, make sure you have Mirage installed:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Defining the server
+
+Create a new file, `src/server.js`, that will hold the code for our mock server.
+
+```js
+// src/server.js
+
+import { Server, Model } from "miragejs"
+
+export function makeServer({ environment = "development" } = {}) {
+  let server = new Server({
+    environment,
+
+    models: {
+      user: Model,
+    },
+
+    seeds(server) {
+      server.create("user", { name: "Bob" })
+      server.create("user", { name: "Alice" })
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.get("/users", schema => {
+        return schema.users.all()
+      })
+    },
+  })
+
+  return server
+}
+```
+
+## Using the server in Development
+
+Now that we have our server defined, let's get it running in development.
+
+We'll open our Vue app's `src/main.js` file, import the `makeServer` function, and invoke it in development.
+
+```diff
+// src/main.js
+
+import Vue from 'vue'
+import App from './App.vue'
++ import { makeServer } from "./server";
+
+Vue.config.productionTip = false
+
++ if (process.env.NODE_ENV === 'development') {
++   makeServer();
++ }
+
+new Vue({
+  render: h => h(App),
+}).$mount('#app')
+```
+
+As the application attempts to fetch data from the network, Mirage will step in to handle the request.
+
+The following App component fetches the two users that were defined in our `seeds()` config:
+
+```html
+// src/App.vue
+
+<template>
+  <ul id="users">
+    <li v-for="user in users" v-bind:key="user.id">{{ user.name }}</li>
+  </ul>
+</template>
+
+<script>
+  export default {
+    name: "app",
+
+    data() {
+      return {
+        users: [],
+      }
+    },
+
+    created: async function() {
+      let response = await fetch("/api/users")
+      let json = await response.json()
+      this.users = json.users
+    },
+  }
+</script>
+```
+
+That's it! Our component will now render a list with both of our users, Bob and Alice.

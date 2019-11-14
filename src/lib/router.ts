@@ -5,7 +5,6 @@ const allRoutes: RouteDefinition[] = [
     path: "/",
     meta: {
       theme: "dark",
-      showHeaderNav: false,
     },
   },
   {
@@ -13,7 +12,6 @@ const allRoutes: RouteDefinition[] = [
     label: "Thanks",
     meta: {
       theme: "dark",
-      // showHeaderNav: false,
     },
   },
   {

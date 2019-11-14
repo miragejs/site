@@ -136,7 +136,10 @@ function Header({ showHeaderNav }) {
             ) : null}
 
             {/* Desktop nav */}
-            <div className="hidden md:flex md:items-center md:ml-8 lg:ml-12">
+            <div
+              className={`hidden md:flex md:items-center md:ml-8 lg:ml-16
+                ${theme === "dark" ? "pt-1" : ""}`}
+            >
               {showHeaderNav ? (
                 <>
                   <NavLink

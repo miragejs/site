@@ -1,14 +1,72 @@
-# Vue Test Utils
+# Mock Network Requests in Vue Test Utils with Mirage
 
-Let's use Mirage to test our data fetching App component. We're going to use the same server we defined in the [development](/quickstarts/vue/development) example.
+Use your Mirage server to test your Vue application under different server scenarios using [Vue Test Utils](https://vue-test-utils.vuejs.org/).
+
+> This is a quickstart guide for people already using Vue Test Utils in their Vue apps.
+
+## Step 1: Install Mirage
+
+First, make sure you have Mirage installed:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Step 2: Define your server
+
+Create a new `server.js` file and define your mock server.
+
+Here's a basic example:
+
+```js
+// src/server.js
+import { Server, Model } from "miragejs"
+
+export function makeServer({ environment = "development" } = {}) {
+  let server = new Server({
+    environment,
+
+    models: {
+      user: Model,
+    },
+
+    seeds(server) {
+      server.create("user", { name: "Bob" })
+      server.create("user", { name: "Alice" })
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.get("/users", schema => {
+        return schema.users.all()
+      })
+    },
+  })
+
+  return server
+}
+```
+
+> In a Vue CLI, put this file in `src/server.js` so that changes to it trigger rebuilds.
+
+## Step 3: Create a test file that users Mirage
 
 Here's the Vue component we'll be testing.
 
 ```html
-// src/App.vue
-
+<!--  src/App.vue -->
 <template>
-  <div v-if="serverError" data-testid="server-error">{{ serverError }}</div>
+  <div v-if="serverError" data-testid="server-error">
+    {{ serverError }}
+  </div>
+  <div v-else-if="users.length === 0" data-testid="no-users">
+    No users!
+  </div>
   <div v-else>
     <ul id="users">
       <li
@@ -33,25 +91,25 @@ Here's the Vue component we'll be testing.
       }
     },
 
-    created: async function() {
-      let response = await fetch("/api/users")
-      let json = await response.json()
-
-      if (response.ok) {
-        this.users = json.users
-      } else {
-        this.serverError = json.error
-      }
+    created() {
+      fetch("/api/users")
+        .then(res => res.json())
+        .then(json => {
+          if (json.error) {
+            this.serverError = json.error
+          } else {
+            this.users = json.users
+          }
+        })
     },
   }
 </script>
 ```
 
-Create a new test for the component in `src/App.spec.js`.
+Create a new `src/App.spec.js` file, import your `makeServer` function, and start and shutdown Mirage using `beforeEach` and `afterEach`, making sure to pass the `test` environment to Mirage:
 
 ```js
 // src/App.spec.js
-
 import { mount } from "@vue/test-utils"
 import { makeServer } from "./server"
 import App from "./App.vue"
@@ -64,6 +122,38 @@ beforeEach(() => {
 
 afterEach(() => {
   server.shutdown()
+})
+```
+
+## Step 4: Write tests using your Mirage server
+
+Use your tests to seed Mirage with different data scenarios, then assert against the state of your UI.
+
+> In the `test` environment, Mirage doesn't load its database `seeds`, so that the server starts out empty for each test run.
+
+```js
+it("shows the users from our server", async () => {
+  server.create("user", { id: 1, name: "Luke" })
+  server.create("user", { id: 2, name: "Leia" })
+
+  const wrapper = mount(App)
+
+  // let's wait for our vue component to finish loading data
+  // we know it's done when the data-testid enters the dom.
+  await waitFor(wrapper, '[data-testid="user-1"]')
+  await waitFor(wrapper, '[data-testid="user-2"]')
+
+  expect(wrapper.find('[data-testid="user-1"]').text()).toBe("Luke")
+  expect(wrapper.find('[data-testid="user-2"]').text()).toBe("Leia")
+})
+
+it("shows a message if there are no users", async () => {
+  // Don't create any users
+
+  const wrapper = mount(App)
+  await waitFor(wrapper, '[data-testid="no-users"]')
+
+  expect(wrapper.find('[data-testid="no-users"]').text()).toBe("No users!")
 })
 
 // This helper method returns a promise that resolves
@@ -79,31 +169,20 @@ const waitFor = function(wrapper, selector) {
     }, 100)
   })
 }
-
-it("it fetches users from the server", async () => {
-  server.create("user", { id: 1, name: "Luke" })
-  server.create("user", { id: 2, name: "Leia" })
-
-  const wrapper = mount(App)
-
-  // lets wait for our vue component to finish loading data
-  // we know it's done when the data-testid enters the dom.
-  await waitFor(wrapper, '[data-testid="user-1"]')
-  await waitFor(wrapper, '[data-testid="user-2"]')
-
-  expect(wrapper.find('[data-testid="user-1"]').text()).toBe("Luke")
-  expect(wrapper.find('[data-testid="user-2"]').text()).toBe("Leia")
-})
 ```
 
-We can also test error responses from our server as well.
+## Step 5: Alter your Mirage server to test different server states
+
+In addition to different data scenarios, you can use your tests to reconfigure your Mirage server to test new situations.
+
+For example, you can test an error state like this:
 
 ```js
-// src/__tests__/App.test.js
-
+// src/App.spec.js
 import { Response } from "miragejs"
 
 it("handles error responses from the server", async () => {
+  // Override Mirage's route handler for /users, just for this test
   server.get("/users", () => {
     return new Response(
       500,
@@ -123,3 +202,5 @@ it("handles error responses from the server", async () => {
   )
 })
 ```
+
+Because of the way we setup Mirage using `beforeEach` and `afterEach`, each test will get a fresh Mirage server based on your main server definition. Any overrides you make within a test will be isolated to that test.

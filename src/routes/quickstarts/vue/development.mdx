@@ -1,4 +1,10 @@
-# Vue development
+# Setup a Vue app with Mirage for Development
+
+Mock your Vue app's networking code so you can develop your Vue app without any backend services.
+
+> This is a quickstart guide for people familiar with Mirage. If you're brand new to Mirage, take a look at the [Overview](/docs/getting-started/overview).
+
+## Step 1: Install Mirage
 
 First, make sure you have Mirage installed:
 
@@ -10,13 +16,14 @@ npm install --save-dev miragejs
 yarn add --dev miragejs
 ```
 
-## Defining the server
+## Step 2: Define your server
 
-Create a new file, `src/server.js`, that will hold the code for our mock server.
+Create a new `server.js` file and define your mock server.
+
+Here's a basic example:
 
 ```js
 // src/server.js
-
 import { Server, Model } from "miragejs"
 
 export function makeServer({ environment = "development" } = {}) {
@@ -45,11 +52,11 @@ export function makeServer({ environment = "development" } = {}) {
 }
 ```
 
-## Using the server in Development
+> In a Vue CLI, put this file in `src/server.js` so that changes to it trigger rebuilds.
 
-Now that we have our server defined, let's get it running in development.
+## Step 3: Use your server in development
 
-We'll open our Vue app's `src/main.js` file, import the `makeServer` function, and invoke it in development.
+Open your Vue app's bootstrap file (`src/main.js` in Vue CLI), import your `makeServer` function, and call it in the development environment:
 
 ```diff
 // src/main.js
@@ -69,9 +76,9 @@ new Vue({
 }).$mount('#app')
 ```
 
-As the application attempts to fetch data from the network, Mirage will step in to handle the request.
+Now, whenever your application makes a network request in development, Mirage will intercept that request and respond with the data from your server definition.
 
-The following App component fetches the two users that were defined in our `seeds()` config:
+For example, given the server definition above, the following component would fetch the users `Bob` and `Alice` that we defined in `seeds`:
 
 ```html
 // src/App.vue
@@ -92,13 +99,15 @@ The following App component fetches the two users that were defined in our `seed
       }
     },
 
-    created: async function() {
-      let response = await fetch("/api/users")
-      let json = await response.json()
-      this.users = json.users
+    created() {
+      fetch("/api/users")
+        .then(res => res.json)
+        .then(json => {
+          this.users = json.users
+        })
     },
   }
 </script>
 ```
 
-That's it! Our component will now render a list with both of our users, Bob and Alice.
+You can now continue to develop your Vue app, mocking out your backend API endpoints with Mirage as you go.

@@ -8,10 +8,12 @@
     "Ryan Toronto <ryanto@gmail.com>"
   ],
   "scripts": {
+    "clean": "gatsby clean",
     "build": "npm run test && gatsby build",
     "dev": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
+    "develop": "npm run clean && gatsby develop -H 0.0.0.0",
     "serve": "gatsby serve",
     "test": "jest"
   },
@@ -76,6 +78,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^24.9.0",
     "miragejs": "^0.1.31",
+    "react-syntax-highlighter": "^11.0.2",
     "react-test-renderer": "^16.8.6",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.3"

@@ -59,21 +59,21 @@ export function makeServer({ environment = "development" } = {}) {
 Open your Vue app's bootstrap file (`src/main.js` in Vue CLI), import your `makeServer` function, and call it in the development environment:
 
 ```diff
-// src/main.js
+  // src/main.js
 
-import Vue from 'vue'
-import App from './App.vue'
+  import Vue from 'vue'
+  import App from './App.vue'
 + import { makeServer } from "./server";
 
-Vue.config.productionTip = false
+  Vue.config.productionTip = false
 
 + if (process.env.NODE_ENV === 'development') {
 +   makeServer();
 + }
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+  new Vue({
+    render: h => h(App),
+  }).$mount('#app')
 ```
 
 Now, whenever your application makes a network request in development, Mirage will intercept that request and respond with the data from your server definition.
@@ -81,8 +81,7 @@ Now, whenever your application makes a network request in development, Mirage wi
 For example, given the server definition above, the following component would fetch the users `Bob` and `Alice` that we defined in `seeds`:
 
 ```html
-// src/App.vue
-
+<!-- src/App.vue -->
 <template>
   <ul id="users">
     <li v-for="user in users" v-bind:key="user.id">{{ user.name }}</li>

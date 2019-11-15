@@ -59,18 +59,18 @@ export function makeServer({ environment = "development" } = {}) {
 Open your React app's bootstrap file (`src/index.js` in a Create React App), import your `makeServer` function, and call it in the development environment:
 
 ```diff
-// src/index.js
+  // src/index.js
 
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
+  import React from "react";
+  import ReactDOM from "react-dom";
+  import App from "./App";
 + import { makeServer } from "./server";
 
 + if (process.env.NODE_ENV === 'development') {
 +   makeServer();
 + }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+  ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 Now, whenever your application makes a network request in development, Mirage will intercept that request and respond with the data from your server definition.

@@ -42,9 +42,7 @@ const renderers = {
   link: A,
   thematicBreak: HR,
   inlineCode: props => <InlineCode children={props.children} />,
-  code: props => (
-    <Code children={props.value} className={`language-${props.language}`} />
-  ),
+  code: props => <Code children={props.value} language={props.language} />,
 }
 
 export function Markdown(props) {

@@ -1,17 +1,6 @@
 import React from "react"
 import useApiDocs from "../../hooks/use-api-docs"
-import {
-  H1,
-  H2,
-  H3,
-  P,
-  UL,
-  LI,
-  Strong,
-  A,
-  Pre,
-  Code,
-} from "../../components/ui"
+import { H1 } from "../../components/ui"
 
 import { Markdown } from "../../components/markdown"
 

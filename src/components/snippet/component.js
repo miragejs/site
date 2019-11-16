@@ -8,8 +8,8 @@ export default function Snippet({ name }) {
       allFile(filter: { absolutePath: { regex: "/snippets/" } }) {
         nodes {
           name
-          childMarkdownRemark {
-            rawMarkdownBody
+          fields {
+            content
           }
         }
       }
@@ -17,7 +17,7 @@ export default function Snippet({ name }) {
   `)
   let snippets = data.allFile.nodes.map(node => ({
     name: node.name,
-    body: node.childMarkdownRemark.rawMarkdownBody,
+    body: node.fields.content,
   }))
 
   let snippet = snippets.find(snippet => snippet.name === name)

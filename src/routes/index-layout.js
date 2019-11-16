@@ -170,9 +170,22 @@ const components = {
 
   pre: props => <div {...props} />,
 
-  code: props => (
-    <div className="sm:rounded-lg overflow-hidden -mx-5 md:mx-auto md:w-5/6 md:shadow-lg my-8 md:my-10 lg:my-12">
-      <Code {...props} />
-    </div>
-  ),
+  // MDX assigns a className of something like `language-jsx{1,5-10}`
+  code: ({ className, children }) => {
+    let props = { children }
+    let languageMatch = className.match("language-([^{]+)")
+    if (languageMatch) {
+      props.language = languageMatch[1]
+    }
+    let highlightedLinesMatch = className.match("{(.+)}")
+    if (highlightedLinesMatch) {
+      props.highlightedLines = highlightedLinesMatch[1]
+    }
+
+    return (
+      <div className="sm:rounded-lg overflow-hidden -mx-5 md:mx-auto md:w-5/6 md:shadow-lg my-8 md:my-10 lg:my-12">
+        <Code {...props} />
+      </div>
+    )
+  },
 }

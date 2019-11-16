@@ -104,5 +104,19 @@ const components = {
   hr: HR,
   inlineCode: InlineCode,
   pre: Pre,
-  code: Code,
+
+  // MDX assigns a className of something like `language-jsx{1,5-10}`
+  code: ({ className, children }) => {
+    let props = { children }
+    let languageMatch = className.match("language-([^{]+)")
+    if (languageMatch) {
+      props.language = languageMatch[1]
+    }
+    let highlightedLinesMatch = className.match("{(.+)}")
+    if (highlightedLinesMatch) {
+      props.highlightedLines = highlightedLinesMatch[1]
+    }
+
+    return <Code {...props} />
+  },
 }

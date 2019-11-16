@@ -10,6 +10,7 @@ module.exports = {
       transparent: "transparent",
       white: "white",
       black: "black",
+      editor: "#282c34",
       gray: {
         100: "#F7FAFC",
         200: "#E4ECF0",

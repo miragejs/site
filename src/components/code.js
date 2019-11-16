@@ -2,39 +2,46 @@ import React from "react"
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 // import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism"
+import rangeParser from "parse-numeric-range"
 
 export default function(props) {
-  let language = props.className ? props.className.replace("language-", "") : ""
+  let language = props.language || ""
+
+  let highlightedLines = props.highlightedLines
+    ? rangeParser.parse(props.highlightedLines)
+    : []
+
+  // Filter out any empty lines at end
+  let reversedLines = props.children.split("\n").reverse()
+  let firstNonEmptyIndex = reversedLines.findIndex(line => line !== "")
+  let lines = reversedLines
+    .filter((line, index) => index >= firstNonEmptyIndex)
+    .reverse()
 
   return (
     <SyntaxHighlighter
       style={theme}
       language={language}
-      className={`subpixel-antialiased text-sm ${props.className}`}
+      className={`subpixel-antialiased text-sm language-${language}`}
       customStyle={{ padding: "1rem 1.25rem" }}
+      wrapLines={true}
+      lineProps={lineNumber => {
+        let props = {}
+        if (highlightedLines.includes(lineNumber)) {
+          props.style = {
+            display: "block",
+            background: "#343b46", // dark:303641 bright:3D4452 medium: ##343b46
+            margin: "0 -1.25rem",
+            padding: "0 1.25rem",
+          }
+        }
+        return props
+      }}
     >
-      {props.children}
+      {lines.join("\n")}
     </SyntaxHighlighter>
   )
 }
-
-// import SyntaxHighlighter from "react-syntax-highlighter"
-// import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs"
-
-// export default function(props) {
-//   console.log(atomOneDark)
-
-//   debugger
-//   return (
-//     <SyntaxHighlighter
-//       className="subpixel-antialiased text-sm"
-//       customStyle={{ padding: "1rem 1.25rem" }}
-//       style={theme}
-//     >
-//       {props.children}
-//     </SyntaxHighlighter>
-//   )
-// }
 
 const colors = {
   green: "#8CC570",
@@ -46,6 +53,7 @@ const colors = {
   brightYellow: "#ECBE70",
   blue: "#40B1F5",
   cyan: "#19B9C4",
+  orange: "#DB975C",
 }
 
 const theme = {
@@ -86,8 +94,6 @@ const theme = {
     MozHyphens: "none",
     msHyphens: "none",
     hyphens: "none",
-    padding: "1em",
-    margin: ".5em 0",
     overflow: "auto",
     borderRadius: "0.3em",
     background: "#282c34",
@@ -136,10 +142,10 @@ const theme = {
     color: colors.brightYellow,
   },
   boolean: {
-    color: "#99CC99",
+    color: colors.orange,
   },
   constant: {
-    color: "#99CC99",
+    color: colors.orange,
   },
   symbol: {
     color: "#f92672",

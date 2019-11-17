@@ -118,7 +118,7 @@ const components = {
     }
 
     return (
-      <div className="sm:rounded-lg overflow-hidden my-8">
+      <div className="sm:rounded-lg overflow-hidden my-8 -mx-5 md:mx-auto">
         <Code {...props} />
       </div>
     )

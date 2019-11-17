@@ -117,6 +117,10 @@ const components = {
       props.highlightedLines = highlightedLinesMatch[1]
     }
 
-    return <Code {...props} />
+    return (
+      <div className="sm:rounded-lg overflow-hidden my-8">
+        <Code {...props} />
+      </div>
+    )
   },
 }

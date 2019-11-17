@@ -22,17 +22,14 @@ export default function(props) {
     <SyntaxHighlighter
       style={theme}
       language={language}
-      className={`subpixel-antialiased text-sm language-${language}`}
-      customStyle={{ padding: "1rem 1.25rem" }}
+      className={`language-${language} subpixel-antialiased text-sm- md:text-sm py-4 px-5 overflow-auto scrolling-touch`}
       wrapLines={true}
       lineProps={lineNumber => {
         let props = {}
         if (highlightedLines.includes(lineNumber)) {
+          props.className = "block -mx-5 px-5 bg-green-500"
           props.style = {
-            display: "block",
             background: "#343b46", // dark:303641 bright:3D4452 medium: ##343b46
-            margin: "0 -1.25rem",
-            padding: "0 1.25rem",
           }
         }
         return props
@@ -59,15 +56,11 @@ const colors = {
 const theme = {
   'code[class*="language-"]': {
     color: colors.gray,
-    // textShadow: "0 1px rgba(0, 0, 0, 0.3)",
-    // fontFamily:
-    //   "Inconsolata, Monaco, Consolas, 'Courier New', Courier, monospace",
     direction: "ltr",
     textAlign: "left",
     whiteSpace: "pre",
     wordSpacing: "normal",
     wordBreak: "normal",
-    // lineHeight: "1.5",
     MozTabSize: "4",
     OTabSize: "4",
     tabSize: "4",
@@ -78,15 +71,11 @@ const theme = {
   },
   'pre[class*="language-"]': {
     color: colors.gray,
-    // textShadow: "0 1px rgba(0, 0, 0, 0.3)",
-    // fontFamily:
-    // "Inconsolata, Monaco, Consolas, 'Courier New', Courier, monospace",
     direction: "ltr",
     textAlign: "left",
     whiteSpace: "pre",
     wordSpacing: "normal",
     wordBreak: "normal",
-    // lineHeight: "1.5",
     MozTabSize: "4",
     OTabSize: "4",
     tabSize: "4",
@@ -94,8 +83,6 @@ const theme = {
     MozHyphens: "none",
     msHyphens: "none",
     hyphens: "none",
-    overflow: "auto",
-    borderRadius: "0.3em",
     background: "#282c34",
   },
   ':not(pre) > code[class*="language-"]': {
@@ -122,7 +109,6 @@ const theme = {
   ".namespace": {
     Opacity: ".7",
   },
-
   "property-access": {
     color: colors.blue,
   },
@@ -156,7 +142,6 @@ const theme = {
   number: {
     color: colors.yellow,
   },
-
   selector: {
     color: colors.green,
   },

@@ -4,9 +4,6 @@
  * See: https://www.gatsbyjs.org/docs/browser-apis/
  */
 
-// import "prism-themes/themes/prism-atom-dark.css"
-// import "prism-themes/themes/prism-vs.css"
-
 import "./src/styles/global.css"
 import "./src/styles/tailwind-utils.css"
 import "./src/fonts/Ginto/ginto.css"

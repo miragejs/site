@@ -8,7 +8,7 @@ function Tabs({ children }) {
   let [activeTab, setActiveTab] = useState(0)
 
   return (
-    <div className="sm:bg-gray-1000 sm:rounded-lg sm:overflow-hidden sm:-mx-5 md:mx-auto md:w-5/6 md:shadow-lg">
+    <div className="sm:bg-editor sm:rounded-lg sm:overflow-hidden sm:-mx-5 md:mx-auto md:w-5/6 md:shadow-lg">
       <div className="flex text-center sm:border-b sm:border-gray-700 sm:px-5 sm:pt-1">
         {children.map((tab, i) => (
           <button

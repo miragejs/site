@@ -83,7 +83,7 @@ Mirage has a **Data layer** to help you write a more powerful server implementat
 
 First, we'll tell Mirage that we have a dynamic `Movie` model:
 
-```js
+```js{4-6}
 import { Server, Model } from "miragejs"
 
 new Server({
@@ -131,7 +131,7 @@ The last step is to seed the database. Right now, if we sent a request to our ne
 
 That's because Mirage's database is empty. We can use **seeds** to start out our database with some initial data:
 
-```js
+```js{14-18}
 new Server({
   models: {
     movie: Model,
@@ -257,7 +257,7 @@ While it's nice to be able to pass in every attribute for each record, sometimes
 
 We can create a Factory for our `Movie` model like this:
 
-```js
+```js{7-9}
 import { Server, Model, Factory } from "miragejs"
 
 new Server({
@@ -265,9 +265,7 @@ new Server({
     movie: Model,
   },
   factories: {
-    movie: Factory.extend({
-      // Factory properties go here
-    }),
+    movie: Factory.extend({}),
   },
 })
 ```
@@ -275,19 +273,29 @@ new Server({
 We can then define some properties on our Factory. They can be simple types like Booleans, Strings or Numbers, or functions that return dynamic data:
 
 ```js
-movie: Factory.extend({
-  title(i) {
-    return `Movie ${i}` // Movie 1, Movie 2, etc.
+import { Server, Model, Factory } from "miragejs"
+
+new Server({
+  models: {
+    movie: Model,
   },
 
-  year() {
-    let min = 1950
-    let max = 2019
+  factories: {
+    movie: Factory.extend({
+      title(i) {
+        return `Movie ${i}` // Movie 1, Movie 2, etc.
+      },
 
-    return Math.floor(Math.random() * (max - min + 1)) + min
+      year() {
+        let min = 1950
+        let max = 2019
+
+        return Math.floor(Math.random() * (max - min + 1)) + min
+      },
+
+      rating: "PG-13",
+    }),
   },
-
-  rating: "PG-13",
 })
 ```
 

@@ -18,9 +18,8 @@ const Router = require("./src/lib/router").Router
 
 let router = new Router()
 
-// I think this was from an earlier strategy at getting the snippet contents, but
-// we went back to remark because it supports line highlighting
-exports.onCreateNode = ({ node, getNode, actions }) => {
+// This is added so we can get the contents of the snippets files in our Snippet component
+exports.onCreateNode = ({ node, actions }) => {
   const { createNodeField } = actions
 
   if (node.internal.type === "File" && node.absolutePath.match(/snippets/)) {

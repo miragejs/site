@@ -1,378 +1,204 @@
 import React from "react"
-import Highlight, { defaultProps } from "prism-react-renderer"
 
-export default function({ children, className, ...rest }) {
-  const language = className ? className.replace(/language-/, "") : "text"
-  const maybeRemoveLastLine = (token, i, tokens) => {
-    let isLastToken = i === tokens.length - 1
-    let isEmpty = token.length === 1 && token[0].empty
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
+// import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism"
+import rangeParser from "parse-numeric-range"
 
-    return !(isLastToken && isEmpty)
-  }
+export default function(props) {
+  let language = props.language || ""
 
-  return children ? (
-    <Highlight
-      {...defaultProps}
-      code={children}
+  let highlightedLines = props.highlightedLines
+    ? rangeParser.parse(props.highlightedLines)
+    : []
+
+  // Filter out any empty lines at end
+  let reversedLines = props.children.split("\n").reverse()
+  let firstNonEmptyIndex = reversedLines.findIndex(line => line !== "")
+  let lines = reversedLines
+    .filter((line, index) => index >= firstNonEmptyIndex)
+    .reverse()
+
+  return (
+    <SyntaxHighlighter
+      style={theme}
       language={language}
-      theme={theme}
+      className={`language-${language} subpixel-antialiased text-sm- md:text-sm py-4 px-5 overflow-auto scrolling-touch`}
+      wrapLines={true}
+      lineProps={lineNumber => {
+        let props = {}
+        if (highlightedLines.includes(lineNumber)) {
+          props.className = "block -mx-5 px-5 bg-green-500"
+          props.style = {
+            background: "#343b46", // dark:303641 bright:3D4452 medium: ##343b46
+          }
+        }
+        return props
+      }}
     >
-      {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre
-          className={`subpixel-antialiased ${className}`}
-          style={{ ...style }}
-        >
-          <code className="inline-block">
-            {tokens.filter(maybeRemoveLastLine).map((line, i) => (
-              <div key={i} {...getLineProps({ line, key: i })}>
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token, key })} />
-                ))}
-              </div>
-            ))}
-          </code>
-        </pre>
-      )}
-    </Highlight>
-  ) : null
+      {lines.join("\n")}
+    </SyntaxHighlighter>
+  )
 }
 
-let theme = undefined
+const colors = {
+  green: "#8CC570",
+  purple: "#D373E3",
+  red: "#F16372",
+  gray: "#A9B2C0",
+  darkGray: "#5A6371",
+  yellow: "#DB975C",
+  brightYellow: "#ECBE70",
+  blue: "#40B1F5",
+  cyan: "#19B9C4",
+  orange: "#DB975C",
+}
 
-// From StencilJs
-// let theme = {
-//   plain: {
-//     // backgroundColor: "#212431", //#212431
-//     color: "#e4e4e4",
-//   },
-//   styles: [
-//     {
-//       types: ["comment"],
-//       style: {
-//         color: "#7b878e",
-//         fontStyle: "italic",
-//       },
-//     },
-//     {
-//       types: ["prolog", "doctype", "cdata"],
-//       style: {
-//         color: "#7b878e",
-//       },
-//     },
-//     {
-//       types: ["namespace"],
-//       style: {
-//         opacity: 0.7,
-//       },
-//     },
-//     {
-//       types: ["tag", "operator"],
-//       style: {
-//         color: "#bebec5",
-//       },
-//     },
-//     {
-//       types: ["boolean", "number"],
-//       style: {
-//         color: "#a77afe",
-//       },
-//     },
-//     {
-//       types: ["atrule", "deleted", "important", "keyword", "plain"],
-//       style: {
-//         color: "#c678dd",
-//       },
-//     },
-//     {
-//       types: ["class-name", "builtin"],
-//       style: {
-//         color: "#e6c07b",
-//       },
-//     },
-//     {
-//       types: ["function"],
-//       style: {
-//         color: "#61aeee",
-//       },
-//     },
-//     {
-//       types: ["string"],
-//       style: {
-//         color: "#98c379",
-//       },
-//     },
-//     //   {
-//     //     types: ["tag-id", "selector", "atrule-id"],
-//     //     style: {
-//     //       color: "#eeebff",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: ["attr-name"],
-//     //     style: {
-//     //       color: "#c4b9fe",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: [
-//     //       "string",
-//     //       "entity",
-//     //       "url",
-//     //       "attr-value",
-//     //       "keyword",
-//     //       "control",
-//     //       "directive",
-//     //       "unit",
-//     //       "statement",
-//     //       "regex",
-//     //       "at-rule",
-//     //       "placeholder",
-//     //       "variable",
-//     //     ],
-//     //     style: {
-//     //       color: "#ffcc99",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: ["deleted"],
-//     //     style: {
-//     //       textDecorationLine: "line-through",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: ["inserted"],
-//     //     style: {
-//     //       textDecorationLine: "underline",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: ["italic"],
-//     //     style: {
-//     //       fontStyle: "italic",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: ["important", "bold"],
-//     //     style: {
-//     //       fontWeight: "bold",
-//     //     },
-//     //   },
-//     //   {
-//     //     types: ["important"],
-//     //     style: {
-//     //       color: "#c4b9fe",
-//     //     },
-//     //   },
-//   ],
-// }
-
-// var colors = {
-//   char: "#D8DEE9",
-//   comment: "#999999",
-//   keyword: "#ffa7c4",
-//   primitive: "#5a9bcf",
-//   string: "#8dc891",
-//   variable: "#d7deea",
-//   boolean: "#ff8b50",
-//   punctuation: "#5FB3B3",
-//   tag: "#fc929e",
-//   function: "#79b6f2",
-//   className: "#FAC863",
-//   method: "#6699CC",
-//   operator: "#fc929e",
-// }
-//
-// var theme /*: PrismTheme */ = {
-//   plain: {
-//     backgroundColor: "#282c34",
-//     color: "#ffffff",
-//   },
-//   styles: [
-//     {
-//       types: ["attr-name"],
-//       style: {
-//         color: colors.keyword,
-//       },
-//     },
-//     {
-//       types: ["attr-value"],
-//       style: {
-//         color: colors.string,
-//       },
-//     },
-//     {
-//       types: ["comment", "block-comment", "prolog", "doctype", "cdata"],
-//       style: {
-//         color: colors.comment,
-//       },
-//     },
-//     {
-//       types: [
-//         "property",
-//         "number",
-//         "function-name",
-//         "constant",
-//         "symbol",
-//         "deleted",
-//       ],
-//       style: {
-//         color: colors.primitive,
-//       },
-//     },
-//     {
-//       types: ["boolean"],
-//       style: {
-//         color: colors.boolean,
-//       },
-//     },
-//     {
-//       types: ["tag"],
-//       style: {
-//         color: colors.tag,
-//       },
-//     },
-//     {
-//       types: ["string"],
-//       style: {
-//         color: colors.string,
-//       },
-//     },
-//     {
-//       types: ["punctuation"],
-//       style: {
-//         color: colors.string,
-//       },
-//     },
-//     {
-//       types: ["selector", "char", "builtin", "inserted"],
-//       style: {
-//         color: colors.char,
-//       },
-//     },
-//     {
-//       types: ["function"],
-//       style: {
-//         color: colors.function,
-//       },
-//     },
-//     {
-//       types: ["operator", "entity", "url", "variable"],
-//       style: {
-//         color: colors.variable,
-//       },
-//     },
-//     {
-//       types: ["keyword"],
-//       style: {
-//         color: colors.keyword,
-//       },
-//     },
-//     {
-//       types: ["at-rule", "class-name"],
-//       style: {
-//         color: colors.className,
-//       },
-//     },
-//     {
-//       types: ["important"],
-//       style: {
-//         fontWeight: "400",
-//       },
-//     },
-//     {
-//       types: ["bold"],
-//       style: {
-//         fontWeight: "bold",
-//       },
-//     },
-//     {
-//       types: ["italic"],
-//       style: {
-//         fontStyle: "italic",
-//       },
-//     },
-//     {
-//       types: ["namespace"],
-//       style: {
-//         opacity: 0.7,
-//       },
-//     },
-//   ],
-// }
-
-// var theme /*: PrismTheme */ = {
-//   // github
-//   plain: {
-//     color: "#393A34",
-//     // backgroundColor: "#f6f8fa",
-//     backgroundColor: "#fafafa",
-//   },
-//   styles: [
-//     {
-//       types: ["comment", "prolog", "doctype", "cdata"],
-//       style: {
-//         color: "#999988",
-//         fontStyle: "italic",
-//       },
-//     },
-//     {
-//       types: ["namespace"],
-//       style: {
-//         opacity: 0.7,
-//       },
-//     },
-//     {
-//       types: ["string", "attr-value"],
-//       style: {
-//         color: "#e3116c",
-//       },
-//     },
-//     {
-//       types: ["punctuation", "operator"],
-//       style: {
-//         color: "#393A34",
-//       },
-//     },
-//     {
-//       types: [
-//         "entity",
-//         "url",
-//         "symbol",
-//         "number",
-//         "boolean",
-//         "variable",
-//         "constant",
-//         "property",
-//         "regex",
-//         "inserted",
-//       ],
-//       style: {
-//         color: "#36acaa",
-//       },
-//     },
-//     {
-//       types: ["atrule", "keyword", "attr-name", "selector"],
-//       style: {
-//         color: "#00a4db",
-//       },
-//     },
-//     {
-//       types: ["function", "deleted", "tag"],
-//       style: {
-//         color: "#d73a49",
-//       },
-//     },
-//     {
-//       types: ["function-variable"],
-//       style: {
-//         color: "#6f42c1",
-//       },
-//     },
-//     {
-//       types: ["tag", "selector", "keyword"],
-//       style: {
-//         color: "#00009f",
-//       },
-//     },
-//   ],
-// }
+const theme = {
+  'code[class*="language-"]': {
+    color: colors.gray,
+    direction: "ltr",
+    textAlign: "left",
+    whiteSpace: "pre",
+    wordSpacing: "normal",
+    wordBreak: "normal",
+    MozTabSize: "4",
+    OTabSize: "4",
+    tabSize: "4",
+    WebkitHyphens: "none",
+    MozHyphens: "none",
+    msHyphens: "none",
+    hyphens: "none",
+  },
+  'pre[class*="language-"]': {
+    color: colors.gray,
+    direction: "ltr",
+    textAlign: "left",
+    whiteSpace: "pre",
+    wordSpacing: "normal",
+    wordBreak: "normal",
+    MozTabSize: "4",
+    OTabSize: "4",
+    tabSize: "4",
+    WebkitHyphens: "none",
+    MozHyphens: "none",
+    msHyphens: "none",
+    hyphens: "none",
+    background: "#282c34",
+  },
+  ':not(pre) > code[class*="language-"]': {
+    background: "#282c34",
+    padding: ".1em",
+    borderRadius: ".3em",
+  },
+  comment: {
+    color: colors.darkGray,
+    fontStyle: "italic",
+  },
+  prolog: {
+    color: colors.darkGray,
+  },
+  doctype: {
+    color: colors.darkGray,
+  },
+  cdata: {
+    color: colors.darkGray,
+  },
+  punctuation: {
+    color: colors.gray,
+  },
+  ".namespace": {
+    Opacity: ".7",
+  },
+  "property-access": {
+    color: colors.blue,
+  },
+  property: {
+    color: colors.red,
+  },
+  keyword: {
+    color: colors.purple,
+  },
+  tag: {
+    color: colors.red,
+  },
+  "maybe-class-name": {
+    color: colors.red,
+  },
+  "class-name": {
+    color: colors.brightYellow,
+  },
+  boolean: {
+    color: colors.orange,
+  },
+  constant: {
+    color: colors.orange,
+  },
+  symbol: {
+    color: "#f92672",
+  },
+  deleted: {
+    color: "#f92672",
+  },
+  number: {
+    color: colors.yellow,
+  },
+  selector: {
+    color: colors.green,
+  },
+  "attr-name": {
+    color: colors.green,
+  },
+  string: {
+    color: colors.green,
+  },
+  char: {
+    color: colors.green,
+  },
+  builtin: {
+    color: colors.green,
+  },
+  inserted: {
+    color: colors.green,
+  },
+  variable: {
+    color: colors.red,
+  },
+  operator: {
+    color: colors.cyan,
+  },
+  entity: {
+    color: colors.brightYellow,
+    cursor: "help",
+  },
+  url: {
+    color: colors.red,
+  },
+  ".language-css .token.string": {
+    color: "#87C38A",
+  },
+  ".style .token.string": {
+    color: "#87C38A",
+  },
+  atrule: {
+    color: colors.brightYellow,
+  },
+  "attr-value": {
+    color: colors.brightYellow,
+  },
+  function: {
+    color: colors.blue,
+  },
+  regex: {
+    color: "#E9C062",
+  },
+  important: {
+    color: "#fd971f",
+    fontWeight: "bold",
+  },
+  bold: {
+    fontWeight: "bold",
+  },
+  italic: {
+    fontStyle: "italic",
+  },
+}

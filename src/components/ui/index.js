@@ -114,8 +114,9 @@ export const InlineCode = props => (
 
 export const Pre = props => <div {...props} />
 
-export const Code = props => (
-  <div className="sm:rounded-lg overflow-hidden -mx-5 md:mx-0 my-8">
-    <CodeComponent {...props} />
-  </div>
+export const Code = ({ className, ...rest }) => (
+  <CodeComponent
+    className={`sm:rounded-lg overflow-hidden -mx-5 md:mx-0 my-8 ${className}`}
+    {...rest}
+  />
 )

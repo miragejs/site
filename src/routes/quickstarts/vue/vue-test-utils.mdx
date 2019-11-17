@@ -59,14 +59,16 @@ export function makeServer({ environment = "development" } = {}) {
 Here's the Vue component we'll be testing.
 
 ```html
-<!--  src/App.vue -->
+<!-- src/App.vue -->
 <template>
   <div v-if="serverError" data-testid="server-error">
     {{ serverError }}
   </div>
+
   <div v-else-if="users.length === 0" data-testid="no-users">
     No users!
   </div>
+
   <div v-else>
     <ul id="users">
       <li

@@ -1,19 +1,15 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
+import Code from "../code"
 
-/*
-  This component uses childMarkdownRemark, because it supports line highlighting.
-
-  It'd be nice to figure out how to get it to use our <Code> component.
-*/
 export default function Snippet({ name }) {
   const data = useStaticQuery(graphql`
     query SnippetsQuery {
       allFile(filter: { absolutePath: { regex: "/snippets/" } }) {
         nodes {
           name
-          childMarkdownRemark {
-            html
+          fields {
+            content
           }
         }
       }
@@ -21,10 +17,24 @@ export default function Snippet({ name }) {
   `)
   let snippets = data.allFile.nodes.map(node => ({
     name: node.name,
-    html: node.childMarkdownRemark.html,
+    body: node.fields.content,
   }))
 
   let snippet = snippets.find(snippet => snippet.name === name)
 
-  return <div dangerouslySetInnerHTML={{ __html: snippet.html }} />
+  let lines = snippet.body.split("\n")
+  let codeblockArgs = lines.shift()
+  let props = {}
+  let matchLanguage = codeblockArgs.match(/```([^{]+)/)
+  if (matchLanguage) {
+    props.language = matchLanguage[1]
+  }
+  let matchHighlightedLines = codeblockArgs.match(/{(.+)}/)
+  if (matchHighlightedLines) {
+    props.highlightedLines = matchHighlightedLines[1]
+  }
+  let indexClosingTicks = lines.indexOf("```")
+  lines = lines.filter((line, index) => index < indexClosingTicks)
+
+  return <Code {...props}>{lines.join("\n")}</Code>
 }

@@ -21,50 +21,6 @@ svg.loading {
     loadingSpinnerRotate 0.7s steps(12, end) infinite;
 }
 
-/* Prism / Syntax highlighting styles
-  ––––––––––––––––––––––––––––––––––––––––––––––––––
-
-  Originally these were in snippet/style.css, but CSS loading order is brittle/random
-  and we ran into specificity issues. Putting these here to ensure they come after the
-  atom-dark import in gatsby-browser.js.
-*/
-
-pre[class*="language-"] {
-  @apply my-0 rounded-none bg-gray-1000 py-4 px-5 max-w-full overflow-scroll scrolling-touch subpixel-antialiased;
-}
-@screen md {
-  pre[class*="language-"] {
-    /* @apply py-6; */
-  }
-}
-
-code[class*="language-"],
-pre[class*="language-"] {
-  @apply text-sm- font-mono;
-}
-/* This is for code highlighted from MDX. It's coupled with text-sm- above. */
-.token-line:not(:last-child) {
-  min-height: 1.2rem;
-}
-
-@screen md {
-  code[class*="language-"],
-  pre[class*="language-"] {
-    @apply text-sm;
-  }
-  /* This is for code highlighted from MDX. It's coupled with the text-sm above. */
-  .token-line:not(:last-child) {
-    min-height: 1.3rem;
-  }
-}
-
-.gatsby-highlight-code-line {
-  @apply block bg-gray-900 -mx-5 px-4 border-l-4 border-gray-600;
-}
-
-/* End Prism styles
-  ––––––––––––––––––––––––––––––––––––––––––––––––––*/
-
 .xl\:before-h-12:before {
   display: block;
   height: 2rem;

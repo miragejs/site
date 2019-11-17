@@ -22,7 +22,7 @@
     "@mdx-js/react": "^1.0.27",
     "@reach/router": "^1.2.1",
     "@sindresorhus/slugify": "^0.9.1",
-    "@tailwindcss/custom-forms": "^0.2.0",
+    "@tailwindcss/custom-forms": "^0.2.1",
     "autoprefixer": "^9.6.1",
     "gatsby": "2.17.15",
     "gatsby-image": "^2.2.8",

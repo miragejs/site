@@ -13,7 +13,6 @@ import {
   Strong,
   EM,
   A,
-  Pre,
   Code,
 } from "./ui"
 

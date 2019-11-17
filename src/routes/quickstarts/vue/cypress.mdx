@@ -1,0 +1,218 @@
+# Mock Network Requests in Cypress with Mirage
+
+Use your Mirage server to test your Vue application under different server scenarios using [@vue/cli-plugin-e2e-cypress](https://www.npmjs.com/package/@vue/cli-plugin-e2e-cypress).
+
+> This is a quickstart guide for people already using `@vue/cli-plugin-e2e-cypress` in their Vue apps.
+
+## Step 1: Install Mirage
+
+First, make sure you have Mirage installed:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Step 2: Define your server
+
+Create a new `src/server.js` file and define your mock server.
+
+Here's a basic example:
+
+```js
+// src/server.js
+import { Server, Model } from "miragejs"
+
+export function makeServer({ environment = "development" } = {}) {
+  let server = new Server({
+    environment,
+
+    models: {
+      user: Model,
+    },
+
+    seeds(server) {
+      server.create("user", { name: "Bob" })
+      server.create("user", { name: "Alice" })
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.get("/users", schema => {
+        return schema.users.all()
+      })
+    },
+  })
+
+  return server
+}
+```
+
+## Step 3: Register the Mirage Cypress command
+
+Add the following Mirage bootstrapping code and command to your `tests/e2e/support/commands.js` file:
+
+```js
+// tests/e2e/support/commands.js
+let mirageFunctions = []
+
+beforeEach(() => {
+  mirageFunctions = []
+
+  cy.window({ log: false }).then(win => {
+    if (win.server) {
+      win.server.shutdown()
+      win.server = null
+    }
+  })
+})
+
+Cypress.on("window:before:load", win => {
+  win.mirageFunctions = mirageFunctions
+  win.runCypressMirageFunctions = function() {
+    win.mirageFunctions.forEach(f => f(win.server))
+  }
+})
+
+Cypress.Commands.add("mirage", userFunction => {
+  cy.window({ log: false }).then(win => {
+    if (win.server) {
+      userFunction(win.server)
+    } else {
+      mirageFunctions.push(userFunction)
+    }
+  })
+})
+```
+
+## Step 4: Start Mirage when Cypress is enabled
+
+In your Vue app's `main.js`, start Mirage and run any Mirage Cypress functions if `window.Cypress` is true.
+
+```js
+import Vue from "vue"
+import App from "./App.vue"
+import { makeServer } from "./server"
+
+if (window.Cypress) {
+  window.server = makeServer({ environment: "test" })
+  window.runCypressMirageFunctions()
+}
+
+Vue.config.productionTip = false
+
+new Vue({
+  render: h => h(App),
+}).$mount("#app")
+```
+
+> In the `test` environment, Mirage doesn't load its database `seeds`, so that the server starts out empty for each test run.
+
+## Step 5: Pick a component to test
+
+Here's the Vue component we'll be testing.
+
+```html
+<!--  src/App.vue -->
+<template>
+  <div v-if="serverError" data-testid="server-error">
+    {{ serverError }}
+  </div>
+  <div v-else-if="users.length === 0" data-testid="no-users">
+    No users!
+  </div>
+  <div v-else>
+    <ul>
+      <li
+        v-for="user in users"
+        v-bind:key="user.id"
+        :data-testid="'user-' + user.id"
+      >
+        {{ user.name }}
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "app",
+
+    data() {
+      return {
+        users: [],
+        serverError: null,
+      }
+    },
+
+    created() {
+      fetch("/api/users")
+        .then(res => res.json())
+        .then(json => {
+          if (json.error) {
+            this.serverError = json.error
+          } else {
+            this.users = json.users
+          }
+        })
+    },
+  }
+</script>
+```
+
+## Step 6: Write tests using your Mirage server
+
+Create a new `tests/e2e/specs/App.spec.js` file and use this test to seed Mirage with different data scenarios. Then assert against the state of your UI.
+
+```js
+// tests/e2e/specs/App.spec.js
+it("shows the users from our server", () => {
+  cy.mirage(server => {
+    server.create("user", { id: 1, name: "Luke" })
+    server.create("user", { id: 2, name: "Leia" })
+  })
+
+  cy.visit("/")
+
+  cy.get('[data-testid="user-1"]').contains("Luke")
+  cy.get('[data-testid="user-2"]').contains("Leia")
+})
+
+it("shows a message if there are no users", () => {
+  // Don't create any users
+
+  cy.visit("/")
+
+  cy.get('[data-testid="no-users"]').should("be.visible")
+})
+```
+
+## Step 7: Alter your Mirage server to test different server states
+
+In addition to different data scenarios, you can use your tests to reconfigure your Mirage server to test new situations.
+
+For example, you can test an error state like this:
+
+```js
+// tests/e2e/specs/App.spec.js
+it("handles error responses from the server", () => {
+  cy.mirage(server => {
+    // Override Mirage's route handler for /users, just for this test
+    server.get("/users", () => {
+      return { error: "The database is on vacation." }
+    })
+  })
+
+  cy.visit("/")
+
+  cy.get('[data-testid="server-error"]').contains(
+    "The database is on vacation."
+  )
+})
+```
+
+Because of the way Mirage integrates with Cypress each test will get a fresh Mirage server based on your main server definition. Any overrides you make within a test will be isolated to that test.

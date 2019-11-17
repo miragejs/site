@@ -6950,15 +6950,15 @@ gatsby-page-utils@^0.0.30:
     micromatch "^3.1.10"
     slash "^3.0.0"
 
-gatsby-plugin-manifest@^2.2.5:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-manifest/-/gatsby-plugin-manifest-2.2.5.tgz#cfa3f5a5f02989e9a15a3b08b11548be45af11e8"
-  integrity sha512-7Zpf/jz2LNk7AkjdQJ5cOFcuGUvSbXYV+lfRY9rZwQCyE/fDVjjb5lbdDsCLKvFfWqJuPft3P5FPE6Az7sKpCw==
+gatsby-plugin-manifest@^2.2.28:
+  version "2.2.28"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-manifest/-/gatsby-plugin-manifest-2.2.28.tgz#17464f404c58b748ebd34efbf783a6f5b0f85f1b"
+  integrity sha512-VvpVF4uE2IkNW+WXN8UvB2slU3tldR054beyvmOAt4HkKgnRLBU8j78yGrEhzdUHqbt2wgroI2KI9VYMiicG4Q==
   dependencies:
-    "@babel/runtime" "^7.0.0"
-    gatsby-core-utils "^1.0.4"
-    semver "^5.6.0"
-    sharp "^0.22.1"
+    "@babel/runtime" "^7.7.2"
+    gatsby-core-utils "^1.0.19"
+    semver "^5.7.1"
+    sharp "^0.23.2"
 
 gatsby-plugin-mdx@^1.0.24:
   version "1.0.24"

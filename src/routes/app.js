@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Router, Link, Match } from "@reach/router"
-import Helmet from "react-helmet"
+import { Helmet } from "react-helmet"
 import Logo from "../assets/images/logo.svg"
 import Github from "../assets/images/github.svg"
 import Twitter from "../assets/images/twitter.svg"
@@ -10,6 +10,7 @@ import { ThemeProvider } from "../contexts/theme"
 import { RouterProvider } from "../contexts/router"
 import { useRouter } from "../hooks/use-router"
 import { useTheme } from "../hooks/use-theme"
+import SEO from "../components/seo"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -53,11 +54,18 @@ function AppInner(props) {
     showHeaderNav = router.activePage.meta.showHeaderNav
   }
 
+  let title
+  if (router.activePage && router.activePage.label) {
+    title = router.activePage.label
+  }
+
   return (
     <>
       <Helmet>
         <html className={`${theme === "dark" ? "bg-gray-1000" : "bg-white"}`} />
       </Helmet>
+
+      <SEO title={title} />
 
       <div className="antialiased text-gray-700 font-body font-light leading-normal min-h-screen flex flex-col">
         <Header showHeaderNav={showHeaderNav} />
@@ -122,9 +130,7 @@ function Header({ showHeaderNav }) {
               <div className="ml-auto md:hidden">
                 <button
                   onClick={() => setIsShowingMobileNav(!isShowingMobileNav)}
-                  className={`flex px-5 py-3 2xl:py-2 items-center focus:outline-none ${
-                    themeClasses[theme]["inactive"]
-                  } lg:hidden `}
+                  className={`flex px-5 py-3 2xl:py-2 items-center focus:outline-none ${themeClasses[theme]["inactive"]} lg:hidden `}
                 >
                   {isShowingMobileNav ? (
                     <Close className="w-4 h-4" />

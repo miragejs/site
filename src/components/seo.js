@@ -7,7 +7,7 @@
 
 import React from "react"
 import PropTypes from "prop-types"
-import Helmet from "react-helmet"
+import { Helmet } from "react-helmet"
 import { useStaticQuery, graphql } from "gatsby"
 
 function SEO({ title, description, image, lang, meta }) {
@@ -51,9 +51,7 @@ function SEO({ title, description, image, lang, meta }) {
         lang,
       }}
       title={title ? title : site.siteMetadata.title}
-      titleTemplate={
-        title ? `%s | ${site.siteMetadata.title}` : site.siteMetadata.title
-      }
+      titleTemplate={title ? `%s • Mirage JS` : site.siteMetadata.title}
       meta={[
         {
           name: `description`,

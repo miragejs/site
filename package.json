@@ -23,7 +23,7 @@
     "@reach/router": "^1.2.1",
     "@sindresorhus/slugify": "^0.9.1",
     "@tailwindcss/custom-forms": "^0.2.1",
-    "autoprefixer": "^9.6.1",
+    "autoprefixer": "^9.7.2",
     "gatsby": "2.17.15",
     "gatsby-image": "^2.2.33",
     "gatsby-plugin-manifest": "^2.2.28",

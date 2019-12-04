@@ -24,7 +24,7 @@
     "@sindresorhus/slugify": "^0.9.1",
     "@tailwindcss/custom-forms": "^0.2.1",
     "autoprefixer": "^9.7.3",
-    "gatsby": "2.17.15",
+    "gatsby": "2.18.6",
     "gatsby-image": "^2.2.34",
     "gatsby-plugin-manifest": "^2.2.31",
     "gatsby-plugin-mdx": "^1.0.59",

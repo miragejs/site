@@ -62,7 +62,7 @@
     "esdoc": "miragejs/esdoc#015a3426b2e53b2b0270a9c00133780db3f1d144",
     "esdoc-accessor-plugin": "^1.0.0",
     "esdoc-ecmascript-proposal-plugin": "^1.0.0",
-    "eslint": "6.6.0",
+    "eslint": "6.7.2",
     "eslint-config-react-app": "^5.0.2",
     "eslint-plugin-flowtype": "4.5.2",
     "eslint-plugin-import": "2.x",

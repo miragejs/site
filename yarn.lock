@@ -115,18 +115,6 @@
     "@babel/traverse" "^7.7.4"
     "@babel/types" "^7.7.4"
 
-"@babel/helper-create-class-features-plugin@^7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@babel/helper-create-class-features-plugin/-/helper-create-class-features-plugin-7.7.0.tgz#bcdc223abbfdd386f94196ae2544987f8df775e8"
-  integrity sha512-MZiB5qvTWoyiFOgootmRSDV1udjIqJW/8lmxgzKq6oDqxdmHUjeP2ZUOmgHdYjmUVNABqRrHjYAYRvj8Eox/UA==
-  dependencies:
-    "@babel/helper-function-name" "^7.7.0"
-    "@babel/helper-member-expression-to-functions" "^7.7.0"
-    "@babel/helper-optimise-call-expression" "^7.7.0"
-    "@babel/helper-plugin-utils" "^7.0.0"
-    "@babel/helper-replace-supers" "^7.7.0"
-    "@babel/helper-split-export-declaration" "^7.7.0"
-
 "@babel/helper-create-class-features-plugin@^7.7.4":
   version "7.7.4"
   resolved "https://registry.yarnpkg.com/@babel/helper-create-class-features-plugin/-/helper-create-class-features-plugin-7.7.4.tgz#fce60939fd50618610942320a8d951b3b639da2d"
@@ -242,13 +230,6 @@
   dependencies:
     "@babel/types" "^7.0.0"
 
-"@babel/helper-member-expression-to-functions@^7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@babel/helper-member-expression-to-functions/-/helper-member-expression-to-functions-7.7.0.tgz#472b93003a57071f95a541ea6c2b098398bcad8a"
-  integrity sha512-QaCZLO2RtBcmvO/ekOLp8p7R5X2JriKRizeDpm5ChATAFWrrYDcDxPuCIBXKyBjY+i1vYSdcUTMIb8psfxHDPA==
-  dependencies:
-    "@babel/types" "^7.7.0"
-
 "@babel/helper-member-expression-to-functions@^7.7.4":
   version "7.7.4"
   resolved "https://registry.yarnpkg.com/@babel/helper-member-expression-to-functions/-/helper-member-expression-to-functions-7.7.4.tgz#356438e2569df7321a8326644d4b790d2122cb74"
@@ -301,13 +282,6 @@
   dependencies:
     "@babel/types" "^7.0.0"
 
-"@babel/helper-optimise-call-expression@^7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@babel/helper-optimise-call-expression/-/helper-optimise-call-expression-7.7.0.tgz#4f66a216116a66164135dc618c5d8b7a959f9365"
-  integrity sha512-48TeqmbazjNU/65niiiJIJRc5JozB8acui1OS7bSd6PgxfuovWsvjfWSzlgx+gPFdVveNzUdpdIg5l56Pl5jqg==
-  dependencies:
-    "@babel/types" "^7.7.0"
-
 "@babel/helper-optimise-call-expression@^7.7.4":
   version "7.7.4"
   resolved "https://registry.yarnpkg.com/@babel/helper-optimise-call-expression/-/helper-optimise-call-expression-7.7.4.tgz#034af31370d2995242aa4df402c3b7794b2dcdf2"
@@ -347,16 +321,6 @@
     "@babel/helper-optimise-call-expression" "^7.0.0"
     "@babel/traverse" "^7.4.4"
     "@babel/types" "^7.4.4"
-
-"@babel/helper-replace-supers@^7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@babel/helper-replace-supers/-/helper-replace-supers-7.7.0.tgz#d5365c8667fe7cbd13b8ddddceb9bd7f2b387512"
-  integrity sha512-5ALYEul5V8xNdxEeWvRsBzLMxQksT7MaStpxjJf9KsnLxpAKBtfw5NeMKZJSYDa0lKdOcy0g+JT/f5mPSulUgg==
-  dependencies:
-    "@babel/helper-member-expression-to-functions" "^7.7.0"
-    "@babel/helper-optimise-call-expression" "^7.7.0"
-    "@babel/traverse" "^7.7.0"
-    "@babel/types" "^7.7.0"
 
 "@babel/helper-replace-supers@^7.7.4":
   version "7.7.4"
@@ -6968,18 +6932,18 @@ gatsby-telemetry@^1.1.37:
     stack-utils "1.0.2"
     uuid "3.3.3"
 
-gatsby-transformer-sharp@^2.3.5:
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/gatsby-transformer-sharp/-/gatsby-transformer-sharp-2.3.5.tgz#014f46ec464cf5c6ff57a948bf43ea7a9c3452e2"
-  integrity sha512-fBPGK/TeBl26+E8owi83APrCWvwfM2dXTyZm/aM1mb/PjXNPg9lsO9cKPZy7hj5s3VLaLsRxVwKk5BaWA05/ew==
+gatsby-transformer-sharp@^2.3.6:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/gatsby-transformer-sharp/-/gatsby-transformer-sharp-2.3.6.tgz#5747e40da295eb21f3187c38fec3ca5d363ee2a4"
+  integrity sha512-7BnppSw9RFE6QnsFMRcH8MXWQZZM9KCW53xu95abHEslHo8lYnn5vKaeuCrNMKa+jwaMcmllvYfPmTsZquaH3A==
   dependencies:
-    "@babel/runtime" "^7.7.2"
+    "@babel/runtime" "^7.7.4"
     bluebird "^3.7.1"
     fs-extra "^8.1.0"
     potrace "^2.1.2"
     probe-image-size "^4.1.1"
     semver "^5.7.1"
-    sharp "^0.23.2"
+    sharp "^0.23.3"
 
 gatsby@2.17.15:
   version "2.17.15"
@@ -13733,7 +13697,7 @@ shallowequal@^1.0.1, shallowequal@^1.1.0:
   resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
   integrity sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==
 
-sharp@^0.23.2, sharp@^0.23.3:
+sharp@^0.23.3:
   version "0.23.3"
   resolved "https://registry.yarnpkg.com/sharp/-/sharp-0.23.3.tgz#549770a4c671b9bd221f00639452a3eb803a0ed1"
   integrity sha512-pjT4zyviQteXMC1Z8USIiSwQFQbZTlU5J59/UoygE25hh+sSb7PSYI/MZ2MCB1COtxWQuoUAaG3TYIOLon26Mg==

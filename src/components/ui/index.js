@@ -3,7 +3,7 @@ import CodeComponent from "../code"
 
 // More prominent than P but not a Heading
 export const Lead = ({ children }) => (
-  <p className="font-light my-4 text-gray-900 text-lg md:text-xl leading-normal">
+  <p className="my-4 text-lg font-light leading-normal text-gray-900 md:text-xl">
     {children}
   </p>
 )
@@ -11,10 +11,7 @@ export const Lead = ({ children }) => (
 export const H1 = props => (
   <h1
     {...props}
-    className="text-gray-900 font-title font-normal leading-tight
-      mb-6 text-4xl
-      md:mb-8 md:text-4-5xl
-    "
+    className="mb-6 text-4xl font-normal leading-tight text-gray-900 font-title md:mb-8 md:text-4-5xl "
   >
     {props.children}
   </h1>
@@ -23,11 +20,7 @@ export const H1 = props => (
 export const H2 = props => (
   <h2
     {...props}
-    className="text-gray-900 font-normal font-title
-      text-2xl leading-tight mt-10 mb-4
-      md:text-3xl md:mt-14 md:mb-6
-      before-h-8 xl:before-h-12
-    "
+    className="mt-10 mb-4 text-2xl font-normal leading-tight text-gray-900 font-title md:text-3xl md:mt-14 md:mb-6 before-h-8 xl:before-h-12 "
   >
     <a href={`#${props.id}`}>{props.children}</a>
   </h2>
@@ -36,12 +29,7 @@ export const H2 = props => (
 export const H3 = props => (
   <h3
     {...props}
-    className="text-gray-900 font-normal font-title
-      mt-12
-      mb-5 md:mb-6
-      text-2-25xl leading-normal
-      before-h-8 xl:before-h-12
-    "
+    className="mt-12 mb-5 font-normal leading-normal text-gray-900 font-title md:mb-6 text-2-25xl before-h-8 xl:before-h-12 "
   >
     <a href={`#${props.id}`}>{props.children}</a>
   </h3>
@@ -54,13 +42,13 @@ export const P = props => (
 )
 
 export const OL = props => (
-  <ol {...props} className="ml-8 my-5 list-decimal">
+  <ol {...props} className="my-5 ml-8 list-decimal">
     {props.children}
   </ol>
 )
 
 export const UL = props => (
-  <ul {...props} className="ml-8 my-5 list-disc">
+  <ul {...props} className="my-5 ml-8 list-disc">
     {props.children}
   </ul>
 )
@@ -80,7 +68,7 @@ export const Strong = props => (
 export const Blockquote = props => (
   <blockquote
     {...props}
-    className="border-l-4 border-gray-200 my-6 ml-4 pl-4 italic"
+    className="pl-4 my-6 ml-4 italic border-l-4 border-gray-200"
   >
     {props.children}
   </blockquote>
@@ -99,13 +87,13 @@ export const A = props => (
 )
 
 export const HR = props => (
-  <hr {...props} className="border-t border-gray-300 mt-6 mb-8 md:my-8" />
+  <hr {...props} className="mt-6 mb-8 border-t border-gray-300 md:my-8" />
 )
 
 export const InlineCode = props => (
   <code
     {...props}
-    className="font-mono px-1"
+    className="px-1 font-mono"
     style={{ backgroundColor: "rgba(255, 229, 100, 0.2)", fontSize: "0.9em" }}
   >
     {props.children}

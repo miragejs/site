@@ -1,11 +1,8 @@
-import { Tabs, Tab } from "../../../components/tabs"
-import Snippet from "../../../components/snippet"
-
 # Mock Network Requests in Cypress with Mirage
 
 Use your Mirage server to test your application under different server scenarios using [Cypress](https://www.cypress.io/).
 
-> This is a quickstart guide for people already using `cypress` in their apps.
+> This is a quickstart guide for people already using Cypress in their apps.
 
 ## Step 1: Install Mirage
 
@@ -55,9 +52,9 @@ export function makeServer({ environment = "development" } = {}) {
 }
 ```
 
-## Step 3: Add the Mirage Cypress configuration
+## Step 3: Configure Cypress to define a proxy function for your app's API requests
 
-Add the following Mirage bootstrapping code and command to your `cypress/support/index.js` file:
+Add the following code to your `cypress/support/index.js` file:
 
 ```js
 // cypress/support/index.js
@@ -77,7 +74,9 @@ Cypress.on("window:before:load", win => {
 })
 ```
 
-## Step 4: Start Mirage when Cypress is enabled
+This code defines a `handleFromCypress` function on your application's `window` object. In the next step, we'll configure your app to call this function whenever it makes a network request and Cypress is running.
+
+## Step 4: Proxy your app's network requests
 
 In your app's bootstrapping file, start Mirage if `window.Cypress` is true.
 
@@ -89,7 +88,8 @@ In your app's bootstrapping file, start Mirage if `window.Cypress` is true.
 import { Server } from "miragejs"
 
 if (window.Cypress) {
-  let cyInterceptor = new Server({
+  new Server({
+    environment: "test",
     routes() {
       let methods = ["get", "put", "patch", "post", "delete"]
       methods.forEach(method => {
@@ -99,26 +99,16 @@ if (window.Cypress) {
       })
     },
   })
-  cyInterceptor.logging = false
 }
 ```
 
-## Step 5: Pick a component to test
+This code is setting up a second Mirage server, but its sole purpose is to act as a proxy for our application's network requests. This is because our real configured Mirage server is going to be running alongside our Cypress code, so that our tests have access to it.
 
-Here's the component we'll be testing.
+The two Mirage servers are linked through the `handleFromCypress` function, which allows our test code to mock out network requests coming from the application's window.
 
-<Tabs>
-  <Tab name="React">
-    <Snippet name="cypress-quickstart-react-component" />
-  </Tab>
-  <Tab name="Vue">
-    <Snippet name="cypress-quickstart-vue-component" />
-  </Tab>
-</Tabs>
+## Step 5: Write tests using your Mirage server
 
-## Step 6: Write tests using your Mirage server
-
-Create a new `tests/e2e/specs/App.spec.js` file and use this test to seed Mirage with different data scenarios. Then assert against the state of your UI.
+Create a new `cypress/integration/app.spec.js` file, import your `makeServer` function, and start and shutdown Mirage before and after each test. You can then seed Mirage with a different data scenario in each test, and use the test to assert against the state of your UI.
 
 ```js
 import { makeServer } from "../../src/server"
@@ -152,9 +142,11 @@ it("shows a message if there are no users", () => {
 })
 ```
 
-> In the `test` environment, Mirage doesn't load its database `seeds`, so that the server starts out empty for each test run.
+Note that we pass in `environment: test` option into our `makeServer` function, so that Mirage doesn't load its database seeds. That way, the server starts out empty for each test run, and in the beginning of our tests we can use `server.create` to set up our data scenario.
 
-## Step 7: Alter your Mirage server to test different server states
+The test environment also disables logging and latency, so that by default your CI test logs will be clean and your tests will be fast. You can set `server.logging = true` if you're writing a test and want to see all the network requests logged to the console.
+
+## Step 6: Alter your Mirage server to test different server states
 
 In addition to different data scenarios, you can use your tests to reconfigure your Mirage server to test new situations.
 

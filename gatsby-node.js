@@ -94,6 +94,14 @@ exports.createPages = ({ actions }) => {
     fromPath: "/quickstarts/vue",
     toPath: "/quickstarts/vue/development",
   })
+  createRedirect({
+    fromPath: "/quickstarts/vue/cypress",
+    toPath: "/quickstarts/cypress/setup",
+  })
+  createRedirect({
+    fromPath: "/quickstarts/cypress",
+    toPath: "/quickstarts/cypress/setup",
+  })
 }
 
 // DOC STUFF TODO Extract

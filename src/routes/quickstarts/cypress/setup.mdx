@@ -1,3 +1,6 @@
+import { Tabs, Tab } from "../../../components/tabs"
+import Snippet from "../../../components/snippet"
+
 # Mock Network Requests in Cypress with Mirage
 
 Use your Mirage server to test your application under different server scenarios using [Cypress](https://www.cypress.io/).
@@ -104,53 +107,14 @@ if (window.Cypress) {
 
 Here's the component we'll be testing.
 
-```html
-<!--  src/App.vue -->
-<template>
-  <div v-if="serverError" data-testid="server-error">
-    {{ serverError }}
-  </div>
-  <div v-else-if="users.length === 0" data-testid="no-users">
-    No users!
-  </div>
-  <div v-else>
-    <ul>
-      <li
-        v-for="user in users"
-        v-bind:key="user.id"
-        :data-testid="'user-' + user.id"
-      >
-        {{ user.name }}
-      </li>
-    </ul>
-  </div>
-</template>
-
-<script>
-  export default {
-    name: "app",
-
-    data() {
-      return {
-        users: [],
-        serverError: null,
-      }
-    },
-
-    created() {
-      fetch("/api/users")
-        .then(res => res.json())
-        .then(json => {
-          if (json.error) {
-            this.serverError = json.error
-          } else {
-            this.users = json.users
-          }
-        })
-    },
-  }
-</script>
-```
+<Tabs>
+  <Tab name="React">
+    <Snippet name="cypress-quickstart-react-component" />
+  </Tab>
+  <Tab name="Vue">
+    <Snippet name="cypress-quickstart-vue-component" />
+  </Tab>
+</Tabs>
 
 ## Step 6: Write tests using your Mirage server
 

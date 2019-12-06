@@ -165,13 +165,5 @@ exports.sourceNodes = async ({
     }
 
     createNode(data)
-
-    // TODO: create ssr page for class. But maybe not here... if we can just
-    // query all known pages from the mesh.
-    // if (node.kind === "class" && node.access === "public") {
-    //   //   createPage({
-    //   //     path: `/pokemon/${pokemon.name}/`,
-    //   //   })
-    // }
   })
 }

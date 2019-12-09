@@ -52,7 +52,7 @@ export function makeServer({ environment = "development" } = {}) {
 }
 ```
 
-## Step 3: Configure Cypress to define a proxy function for your app's API requests
+## Step 3: Have Cypress define a proxy function for your app's API requests
 
 Add the following code to your `cypress/support/index.js` file:
 
@@ -74,11 +74,11 @@ Cypress.on("window:before:load", win => {
 })
 ```
 
-This code defines a `handleFromCypress` function on your application's `window` object. In the next step, we'll configure your app to call this function whenever it makes a network request and Cypress is running.
+This code defines a `handleFromCypress` function on your application's `window` object. In the next step, we'll configure your app to call this function whenever it makes a network request while Cypress is running.
 
 ## Step 4: Proxy your app's network requests
 
-In your app's bootstrapping file, start Mirage if `window.Cypress` is true.
+In your app's bootstrapping file, use Mirage to proxy your app's API requests to the `handleFromCypress` function when Cypress is running.
 
 > Create React App users, this code goes in `src/index.js`
 
@@ -102,9 +102,9 @@ if (window.Cypress) {
 }
 ```
 
-This code is setting up a second Mirage server, but its sole purpose is to act as a proxy for our application's network requests. This is because our real configured Mirage server is going to be running alongside our Cypress code, so that our tests have access to it.
+Now, whenever Cypress boots up your app, this code will delegate your app's network requests to the `handleFromCypress` function that we defined in the previous step.
 
-The two Mirage servers are linked through the `handleFromCypress` function, which allows our test code to mock out network requests coming from the application's window.
+Once we start our real configured Mirage server alongside our Cypress code, it will start intercepting the requests from that function.
 
 ## Step 5: Write tests using your Mirage server
 
@@ -144,7 +144,7 @@ it("shows a message if there are no users", () => {
 
 Note that we pass in `environment: test` option into our `makeServer` function, so that Mirage doesn't load its database seeds. That way, the server starts out empty for each test run, and in the beginning of our tests we can use `server.create` to set up our data scenario.
 
-The test environment also disables logging and latency, so that by default your CI test logs will be clean and your tests will be fast. You can set `server.logging = true` if you're writing a test and want to see all the network requests logged to the console.
+The test environment also disables logging and latency, so that by default your CI test logs will be clean and your tests will be fast.
 
 ## Step 6: Alter your Mirage server to test different server states
 

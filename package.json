@@ -18,7 +18,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@mdx-js/mdx": "^1.5.1",
+    "@mdx-js/mdx": "^1.5.2",
     "@mdx-js/react": "^1.5.1",
     "@reach/router": "^1.2.1",
     "@sindresorhus/slugify": "^0.9.1",

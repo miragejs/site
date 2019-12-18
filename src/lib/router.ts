@@ -111,9 +111,13 @@ const allRoutes: RouteDefinition[] = [
         name: "vue",
         routes: [
           { label: "Development", name: "development" },
-          { label: "Cypress", name: "cypress" },
           { label: "Vue Test Utils", name: "vue-test-utils" },
         ],
+      },
+      {
+        label: "Cypress",
+        name: "cypress",
+        routes: [{ label: "Setup", name: "setup" }],
       },
     ],
   },

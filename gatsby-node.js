@@ -94,6 +94,14 @@ exports.createPages = ({ actions }) => {
     fromPath: "/quickstarts/vue",
     toPath: "/quickstarts/vue/development",
   })
+  createRedirect({
+    fromPath: "/quickstarts/vue/cypress",
+    toPath: "/quickstarts/cypress/setup",
+  })
+  createRedirect({
+    fromPath: "/quickstarts/cypress",
+    toPath: "/quickstarts/cypress/setup",
+  })
 }
 
 // DOC STUFF TODO Extract
@@ -157,13 +165,5 @@ exports.sourceNodes = async ({
     }
 
     createNode(data)
-
-    // TODO: create ssr page for class. But maybe not here... if we can just
-    // query all known pages from the mesh.
-    // if (node.kind === "class" && node.access === "public") {
-    //   //   createPage({
-    //   //     path: `/pokemon/${pokemon.name}/`,
-    //   //   })
-    // }
   })
 }

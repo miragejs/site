@@ -1,0 +1,172 @@
+# Mock Network Requests in Cypress with Mirage
+
+Use your Mirage server to test your application under different server scenarios using [Cypress](https://www.cypress.io/).
+
+> This is a quickstart guide for people already using Cypress in their apps.
+
+## Step 1: Install Mirage
+
+First, make sure you have Mirage installed:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Step 2: Define your server
+
+Create a new `src/server.js` file and define your mock server.
+
+Here's a basic example:
+
+```js
+// src/server.js
+import { Server, Model } from "miragejs"
+
+export function makeServer({ environment = "development" } = {}) {
+  let server = new Server({
+    environment,
+
+    models: {
+      user: Model,
+    },
+
+    seeds(server) {
+      server.create("user", { name: "Bob" })
+      server.create("user", { name: "Alice" })
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.get("/users", schema => {
+        return schema.users.all()
+      })
+    },
+  })
+
+  return server
+}
+```
+
+## Step 3: Have Cypress define a proxy function for your app's API requests
+
+Add the following code to your `cypress/support/index.js` file:
+
+```js
+// cypress/support/index.js
+Cypress.on("window:before:load", win => {
+  win.handleFromCypress = function(request) {
+    return fetch(request.url, {
+      method: request.method,
+      body: request.requestBody,
+    }).then(res => {
+      if (res.headers.map["content-type"] === "application/json") {
+        return res.json()
+      } else {
+        return ""
+      }
+    })
+  }
+})
+```
+
+This code defines a `handleFromCypress` function on your application's `window` object. In the next step, we'll configure your app to call this function whenever it makes a network request while Cypress is running.
+
+## Step 4: Proxy your app's network requests
+
+In your app's bootstrapping file, use Mirage to proxy your app's API requests to the `handleFromCypress` function when Cypress is running.
+
+> Create React App users, this code goes in `src/index.js`
+
+> Vue CLI users, this code goes in `src/main.js`.
+
+```js
+import { Server } from "miragejs"
+
+if (window.Cypress) {
+  new Server({
+    environment: "test",
+    routes() {
+      let methods = ["get", "put", "patch", "post", "delete"]
+      methods.forEach(method => {
+        this[method]("/*", (schema, request) => {
+          return window.handleFromCypress(request)
+        })
+      })
+    },
+  })
+}
+```
+
+Now, whenever Cypress boots up your app, this code will delegate your app's network requests to the `handleFromCypress` function that we defined in the previous step.
+
+Once we start our real configured Mirage server alongside our Cypress code, it will start intercepting the requests from that function.
+
+## Step 5: Write tests using your Mirage server
+
+Create a new `cypress/integration/app.spec.js` file, import your `makeServer` function, and start and shutdown Mirage before and after each test. You can then seed Mirage with a different data scenario in each test, and use the test to assert against the state of your UI.
+
+```js
+import { makeServer } from "../../src/server"
+
+let server
+
+beforeEach(() => {
+  server = makeServer({ environment: "test" })
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+
+it("shows the users from our server", () => {
+  server.create("user", { id: 1, name: "Luke" })
+  server.create("user", { id: 2, name: "Leia" })
+
+  cy.visit("/")
+
+  cy.get('[data-testid="user-1"]').contains("Luke")
+  cy.get('[data-testid="user-2"]').contains("Leia")
+})
+
+it("shows a message if there are no users", () => {
+  // Don't create any users
+
+  cy.visit("/")
+
+  cy.get('[data-testid="no-users"]').should("be.visible")
+})
+```
+
+Note that we pass in `environment: test` option into our `makeServer` function, so that Mirage doesn't load its database seeds. That way, the server starts out empty for each test run, and in the beginning of our tests we can use `server.create` to set up our data scenario.
+
+The test environment also disables logging and latency, so that by default your CI test logs will be clean and your tests will be fast.
+
+## Step 6: Alter your Mirage server to test different server states
+
+In addition to different data scenarios, you can use your tests to reconfigure your Mirage server to test new situations.
+
+For example, you can test an error state like this:
+
+```js
+import { Response } from "miragejs"
+
+it("handles error responses from the server", () => {
+  // Override Mirage's route handler for /users, just for this test
+  server.get("/users", () => {
+    return new Response(500, {}, { error: "The database is on vacation." })
+  })
+
+  cy.visit("/")
+
+  cy.get('[data-testid="server-error"]').contains(
+    "The database is on vacation."
+  )
+})
+```
+
+Because of the way Mirage integrates with Cypress each test will get a fresh Mirage server based on your main server definition. Any overrides you make within a test will be isolated to that test.

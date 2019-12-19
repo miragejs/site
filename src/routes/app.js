@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Router, Link, Match } from "@reach/router"
 import { Helmet } from "react-helmet"
+import LogoAndName from "../assets/images/logo-and-name.svg"
 import Logo from "../assets/images/logo.svg"
 import Github from "../assets/images/github.svg"
 import Twitter from "../assets/images/twitter.svg"
@@ -11,6 +12,7 @@ import { RouterProvider } from "../contexts/router"
 import { useRouter } from "../hooks/use-router"
 import { useTheme } from "../hooks/use-theme"
 import SEO from "../components/seo"
+import SignupForm from "../components/signup-form"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -73,6 +75,46 @@ function AppInner(props) {
         <main className="flex flex-col flex-1">
           <Outlet />
         </main>
+
+        <footer className="pt-16 pb-12 bg-gray-1000">
+          <div className="px-5">
+            <p className="font-medium text-white">
+              Sign up to for occasional project updates:
+            </p>
+            <div className="mt-4">
+              <SignupForm />
+            </div>
+          </div>
+
+          <div className="mt-16 text-lg text-center">
+            <div>
+              <p className="py-1 font-medium tracking-wide text-gray-600 uppercase">
+                Docs
+              </p>
+              <ul>
+                <li className="py-1 text-white">API</li>
+                <li className="py-1 text-white">Guides</li>
+                <li className="py-1 text-white">Examples</li>
+              </ul>
+            </div>
+
+            <div className="mt-10">
+              <p className="py-1 font-medium tracking-wide text-gray-600 uppercase">
+                Community
+              </p>
+              <ul>
+                <li className="py-1 text-white">GitHub</li>
+                <li className="py-1 text-white">Discord</li>
+                <li className="py-1 text-white">Twitter</li>
+                <li className="py-1 text-white">YouTube</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-16">
+            <Logo className="w-8 mx-auto" />
+          </div>
+        </footer>
       </div>
     </>
   )
@@ -104,7 +146,7 @@ function Header({ showHeaderNav }) {
               }`}
               onClick={() => setIsShowingMobileNav(false)}
             >
-              <Logo
+              <LogoAndName
                 className={`
                 ${
                   theme === "dark"

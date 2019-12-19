@@ -24,6 +24,13 @@ module.exports = {
         name: "pages",
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/src/snippets`,
+        name: "snippets",
+      },
+    },
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     {

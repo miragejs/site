@@ -67,10 +67,10 @@ function AppInner(props) {
 
       <SEO title={title} />
 
-      <div className="antialiased text-gray-700 font-body font-light leading-normal min-h-screen flex flex-col">
+      <div className="flex flex-col min-h-screen antialiased leading-normal text-gray-700 font-body">
         <Header showHeaderNav={showHeaderNav} />
 
-        <main className="flex-1 flex flex-col">
+        <main className="flex flex-col flex-1">
           <Outlet />
         </main>
       </div>
@@ -167,31 +167,31 @@ function Header({ showHeaderNav }) {
               ) : null}
             </div>
 
-            <div className="hidden md:flex md:items-center md:ml-auto md:flex md:items-center">
+            <div className="hidden md:flex md:items-center md:ml-auto">
               <a
                 href="https://discord.gg/pPsdsrn"
                 className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
               >
-                <Discord className="fill-current h-5" />
+                <Discord className="h-5 fill-current" />
               </a>
               <a
                 href="https://twitter.com/miragejs"
                 className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
               >
-                <Twitter className="fill-current h-5" />
+                <Twitter className="h-5 fill-current" />
               </a>
               <a
                 href="https://github.com/miragejs/server"
                 className={`px-1 ${themeClasses[theme]["inactive"]}`}
               >
-                <Github className="fill-current h-5" />
+                <Github className="h-5 fill-current" />
               </a>
             </div>
           </div>
 
           {/* Mobile nav */}
           {isShowingMobileNav && (
-            <nav className="font-medium text-lg md:hidden">
+            <nav className="text-lg font-medium md:hidden">
               <div
                 className={`border-t ${
                   theme === "dark" ? "border-gray-800" : "border-gray-200"

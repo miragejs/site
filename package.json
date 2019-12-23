@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@mdx-js/mdx": "^1.5.2",
-    "@mdx-js/react": "^1.5.2",
+    "@mdx-js/react": "^1.5.3",
     "@reach/router": "^1.2.1",
     "@sindresorhus/slugify": "^0.9.1",
     "@tailwindcss/custom-forms": "^0.2.1",

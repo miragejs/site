@@ -1,19 +1,19 @@
 import React from "react"
-import BackgroundLines from "../assets/images/background-lines.svg"
-import BackgroundLinesLg from "../assets/images/background-lines-lg.svg"
-import Rings from "../assets/images/rings.svg"
-import QuoteOpen from "../assets/images/quote-open.svg"
-import QuoteClose from "../assets/images/quote-close.svg"
-import Browsers from "../assets/images/homepage-image-2.svg"
-import HomepageImage3 from "../assets/images/homepage-image-3.svg"
+import { ReactComponent as Rings } from "../assets/images/rings.svg"
+import { ReactComponent as QuoteOpen } from "../assets/images/quote-open.svg"
+import { ReactComponent as QuoteClose } from "../assets/images/quote-close.svg"
+import { ReactComponent as Browsers } from "../assets/images/homepage-image-2.svg"
+import { ReactComponent as HomepageImage3 } from "../assets/images/homepage-image-3.svg"
 import SEO from "../components/seo"
-import Code from "../components/code"
-import SignupForm from "../components/signup-form"
 import Img from "gatsby-image"
 import { useStaticQuery, graphql } from "gatsby"
 import Snippet from "../components/snippet"
+import { Link } from "@reach/router"
+import { useRouter } from "../hooks/use-router"
+import { SectionWithLines } from "../components/ui"
 
 export default function IndexPage() {
+  const router = useRouter()
   const data = useStaticQuery(graphql`
     query {
       homepageVideo: file(relativePath: { eq: "homepage-placeholder1.png" }) {
@@ -38,12 +38,7 @@ export default function IndexPage() {
       <div className="relative z-10">
         <SEO />
 
-        <section className="bg-gray-1000">
-          <div className="absolute inset-x-0 flex justify-center max-w-full overflow-hidden -top-16 xl:top-0">
-            <BackgroundLines className="flex-shrink-0 2xl:hidden" />
-            <BackgroundLinesLg className="flex-shrink-0 hidden 2xl:block" />
-          </div>
-
+        <SectionWithLines>
           <div className="relative z-10 max-w-lg mx-auto md:px-8 md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl">
             <div className="pt-8 pb-20 lg:pt-16 2xl:pt-24 md:pb-32 xl:pb-40 2xl:pb-48">
               <Container>
@@ -64,9 +59,12 @@ export default function IndexPage() {
                 </div>
 
                 <div className="mt-8">
-                  <button className="w-full py-3 text-lg font-medium text-center text-white bg-green-500 rounded">
+                  <Link
+                    to={router.routerFor("/docs").pages[0].fullPath}
+                    className="block w-full py-3 text-lg font-medium text-center text-white bg-green-500 rounded"
+                  >
                     Get started
-                  </button>
+                  </Link>
                 </div>
               </Container>
 
@@ -105,10 +103,19 @@ export default function IndexPage() {
               </div>
             </div>
           </div>
-        </section>
+        </SectionWithLines>
 
         <section className="relative py-16 overflow-hidden bg-white">
-          <Rings className="absolute top-0 z-0" />
+          <div
+            className="absolute inset-x-0 top-0 z-10 block pointer-events-none"
+            style={{
+              height: "160px",
+              backgroundImage:
+                "linear-gradient(rgb(255, 255, 255) 25%, rgba(255, 255, 255, 0) 100%)",
+            }}
+          ></div>
+
+          <Rings className="absolute z-0" style={{ top: "-60px" }} />
 
           <div className="relative z-10">
             <Container>
@@ -119,9 +126,9 @@ export default function IndexPage() {
               <div className="mt-4">
                 <Text color="dark-gray">
                   Say goodbye to configuring and running painful backend
-                  environments just to hack on the dynamic parts of your
-                  frontend. Mirage runs alongside the rest of your frontend
-                  code, so there’s no new infrastruture for you to learn.{" "}
+                  environments just to hack on your frontend. Mirage runs
+                  alongside the rest of your frontend code, so there’s no new
+                  infrastruture for you to learn.{" "}
                 </Text>
               </div>
             </Container>
@@ -202,13 +209,13 @@ export default function IndexPage() {
           <Container>
             <Title>
               Share a <span className="text-green-500">fully-working UI</span>{" "}
-              without needing a backend.
+              without running a backend.
             </Title>
 
             <div className="mt-4">
               <Text color="dark-gray">
-                Because Mirage realistically mocks out your full API server, you
-                can share a clickable, working prototype of your JavaScript
+                Because Mirage realistically mocks out your entire API server,
+                you can share a clickable, working prototype of your JavaScript
                 application without needing to run any backend services.
               </Text>
             </div>
@@ -260,9 +267,9 @@ export default function IndexPage() {
               </div>
 
               <div className="mt-8">
-                <button className="w-full py-3 text-lg font-medium text-center text-white bg-green-500 rounded">
+                <a className="w-full py-3 text-lg font-medium text-center text-white bg-green-500 rounded">
                   Get started
-                </button>
+                </a>
               </div>
             </Container>
           </div>

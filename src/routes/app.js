@@ -1,11 +1,11 @@
 import React, { useState } from "react"
 import { Router, Link, Match } from "@reach/router"
 import { Helmet } from "react-helmet"
-import LogoAndName from "../assets/images/logo-and-name.svg"
-import Logo from "../assets/images/logo.svg"
-import Github from "../assets/images/github.svg"
-import Twitter from "../assets/images/twitter.svg"
-import Discord from "../assets/images/discord.svg"
+import { ReactComponent as LogoAndName } from "../assets/images/logo-and-name.svg"
+import { ReactComponent as Logo } from "../assets/images/logo.svg"
+import { ReactComponent as Github } from "../assets/images/github.svg"
+import { ReactComponent as Twitter } from "../assets/images/twitter.svg"
+import { ReactComponent as Discord } from "../assets/images/discord.svg"
 import { Close, Menu } from "../components/icons"
 import { ThemeProvider } from "../contexts/theme"
 import { RouterProvider } from "../contexts/router"
@@ -111,8 +111,10 @@ function AppInner(props) {
             </div>
           </div>
 
-          <div className="mt-16">
-            <Logo className="w-8 mx-auto" />
+          <div className="flex justify-center mt-16">
+            <Link to="/" className="block p-1">
+              <Logo className="w-8" />
+            </Link>
           </div>
         </footer>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react"
-import Spinner from "../assets/images/loading-spinner.svg"
+import { ReactComponent as Spinner } from "../assets/images/loading-spinner.svg"
 
 function useWindowWidth() {
   let isBrowser = typeof window !== "undefined"
@@ -133,7 +133,7 @@ function Button({ isRunning = false, children }) {
           top: `${spinnerTop}px`,
         }}
       >
-        <Spinner className="h-5 w-5 loading" />
+        <Spinner className="w-5 h-5 loading" />
       </span>
     </button>
   )

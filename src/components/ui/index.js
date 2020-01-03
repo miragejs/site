@@ -1,4 +1,5 @@
 import React from "react"
+import bg from "../../assets/images/background-lines.png"
 import CodeComponent from "../code"
 
 // More prominent than P but not a Heading
@@ -107,4 +108,17 @@ export const Code = ({ className, ...rest }) => (
     className={`sm:rounded-lg overflow-hidden -mx-5 md:mx-0 my-8 ${className}`}
     {...rest}
   />
+)
+
+export const SectionWithLines = ({ children }) => (
+  <section
+    className="bg-no-repeat bg-gray-1000"
+    style={{
+      backgroundSize: "100% 600px, 1800px",
+      backgroundPosition: "center top, calc(50% - 405px) 18px",
+      backgroundImage: `linear-gradient(45deg, rgba(26,28,29,1) 40%, rgba(26,28,29,0) 100%), url(${bg})`,
+    }}
+  >
+    {children}
+  </section>
 )

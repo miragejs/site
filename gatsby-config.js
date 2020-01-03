@@ -45,26 +45,27 @@ module.exports = {
         icon: `src/assets/images/mirage-favicon.svg`,
       },
     },
+
     `gatsby-plugin-postcss`,
+
+    //       filters: [
+    //         function(value) {
+    //           if (value.tagname === "feGaussianBlur") {
+    //             let newNode = { ...this.node }
+
+    //             // Set color-interpolation-filters for Safari
+    //             // https://stackoverflow.com/questions/24295043/svg-gaussian-blur-in-safari-unexpectedly-lightens-image
+    //             newNode.props.colorInterpolationFilters = "sRGB"
+
+    //             this.update(newNode)
+    //           }
+    //         },
+    //       ],
     {
-      resolve: "gatsby-plugin-react-svg",
+      resolve: "gatsby-plugin-svgr",
       options: {
-        rule: {
-          include: /assets/,
-          filters: [
-            function(value) {
-              if (value.tagname === "feGaussianBlur") {
-                let newNode = { ...this.node }
-
-                // Set color-interpolation-filters for Safari
-                // https://stackoverflow.com/questions/24295043/svg-gaussian-blur-in-safari-unexpectedly-lightens-image
-                newNode.props.colorInterpolationFilters = "sRGB"
-
-                this.update(newNode)
-              }
-            },
-          ],
-        },
+        prettier: false,
+        svgo: true, // Use the .svgo.yml file to config SVGO
       },
     },
 

@@ -1,5 +1,5 @@
 import React from "react"
-import { ReactComponent as Rings } from "../assets/images/rings.svg"
+import ringsUrl, { ReactComponent as Rings } from "../assets/images/rings.svg"
 import { ReactComponent as QuoteOpen } from "../assets/images/quote-open.svg"
 import { ReactComponent as QuoteClose } from "../assets/images/quote-close.svg"
 import { ReactComponent as Browsers } from "../assets/images/homepage-image-2.svg"
@@ -23,7 +23,7 @@ export default function IndexPage() {
           }
         }
       }
-      testimonial1: file(relativePath: { eq: "homepage-testimonial-1.png" }) {
+      testimonial1: file(relativePath: { eq: "testimonial-roman.jpeg" }) {
         childImageSharp {
           fluid(maxWidth: 120) {
             ...GatsbyImageSharpFluid_noBase64
@@ -39,40 +39,46 @@ export default function IndexPage() {
         <SEO />
 
         <SectionWithLines>
-          <div className="relative z-10 max-w-lg mx-auto md:px-8 md:max-w-3xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-8xl">
+          <div className="relative z-10 md:px-8">
             <div className="pt-8 pb-20 lg:pt-16 2xl:pt-24 md:pb-32 xl:pb-40 2xl:pb-48">
+              <Gutters>
+                <Container>
+                  <h1 className="tracking-tight text-white leading-tighter text-4-5xl font-title md:text-4-75xl md:leading-tighter lg:text-5xl 2xl:text-5-5xl ">
+                    Build complete frontend features,{" "}
+                    <br className="hidden md:inline" />
+                    <span className="text-green-500">
+                      even if your API doesn't exist.
+                    </span>
+                  </h1>
+
+                  <div className="max-w-3xl mt-8 md:mt-10 2xl:mt-12 2xl:max-w-4xl">
+                    <Text color="light-gray">
+                      Mirage JS is an API mocking library that lets you build,
+                      test and share a complete working JavaScript application
+                      without having to rely on any backend services.
+                    </Text>
+                  </div>
+
+                  <div className="mt-8">
+                    <Link
+                      to={router.routerFor("/docs").pages[0].fullPath}
+                      className="block w-full py-3 text-lg font-medium text-center text-white bg-green-500 rounded"
+                    >
+                      Get started
+                    </Link>
+                  </div>
+                </Container>
+              </Gutters>
+
+              <div className="mt-16"></div>
+
               <Container>
-                <h1 className="tracking-tight text-white leading-tighter text-4-5xl font-title md:text-4-75xl md:leading-tighter lg:text-5xl 2xl:text-5-5xl ">
-                  Build complete frontend features,{" "}
-                  <br className="hidden md:inline" />
-                  <span className="text-green-500">
-                    even if your API doesn't exist.
-                  </span>
-                </h1>
-
-                <div className="max-w-3xl mt-8 md:mt-10 2xl:mt-12 2xl:max-w-4xl">
-                  <Text color="light-gray">
-                    Mirage JS is an API mocking library that lets you build,
-                    test and share a complete working JavaScript application
-                    without having to rely on any backend services.
-                  </Text>
-                </div>
-
-                <div className="mt-8">
-                  <Link
-                    to={router.routerFor("/docs").pages[0].fullPath}
-                    className="block w-full py-3 text-lg font-medium text-center text-white bg-green-500 rounded"
-                  >
-                    Get started
-                  </Link>
-                </div>
+                <Img fluid={data.homepageVideo.childImageSharp.fluid} />
               </Container>
 
-              <div className="mt-16">
-                <Img fluid={data.homepageVideo.childImageSharp.fluid} />
-              </div>
+              <div className="mt-12"></div>
 
-              <div className="mt-12">
+              <Gutters>
                 <Container>
                   <div className="flex -mx-4">
                     <div className="w-1/4 px-4">
@@ -100,102 +106,113 @@ export default function IndexPage() {
                     </div>
                   </div>
                 </Container>
-              </div>
+              </Gutters>
             </div>
           </div>
         </SectionWithLines>
 
-        <section className="relative py-16 overflow-hidden bg-white">
-          <div
-            className="absolute inset-x-0 top-0 z-10 block pointer-events-none"
-            style={{
-              height: "160px",
-              backgroundImage:
-                "linear-gradient(rgb(255, 255, 255) 25%, rgba(255, 255, 255, 0) 100%)",
-            }}
-          ></div>
-
-          <Rings className="absolute z-0" style={{ top: "-60px" }} />
-
+        <section
+          className="relative py-16 overflow-hidden bg-white bg-no-repeat"
+          style={{
+            backgroundPosition: "center top, center top -43px",
+            backgroundImage: `linear-gradient(rgba(255,255,255,.6) 80%, rgba(255,255,255,1) 95%), url(${ringsUrl})`,
+            backgroundSize: "100%, 1100px",
+          }}
+        >
           <div className="relative z-10">
-            <Container>
-              <Title>
-                The <span className="text-green-500">best DX</span> for frontend
-                development.
-              </Title>
-              <div className="mt-4">
-                <Text color="dark-gray">
-                  Say goodbye to configuring and running painful backend
-                  environments just to hack on your frontend. Mirage runs
-                  alongside the rest of your frontend code, so there’s no new
-                  infrastruture for you to learn.{" "}
-                </Text>
-              </div>
-            </Container>
+            <Gutters>
+              <Container>
+                <Title>
+                  The <span className="text-green-500">best DX</span> for
+                  frontend development.
+                </Title>
 
-            <div className="mt-8">
-              <div className="px-2">
+                <div className="mt-4"></div>
+
+                <Text color="dark-gray">
+                  Say goodbye to configuring painful backend environments just
+                  to hack on your UI. Mirage runs alongside the rest of your
+                  frontend code, so there’s no new infrastruture for you to
+                  learn.
+                </Text>
+              </Container>
+            </Gutters>
+
+            <div className="mt-8"></div>
+
+            <div className="px-2">
+              <Container>
                 <div className="overflow-hidden rounded-lg">
                   <Snippet name="homepage-1" />
                 </div>
-              </div>
+              </Container>
             </div>
           </div>
         </section>
 
-        <section className="py-16 bg-green-500">
-          <Container>
-            <div className="relative">
-              <QuoteOpen className="absolute w-20" />
-              <QuoteClose className="absolute bottom-0 right-0 w-20" />
-              <div className="pt-8 pb-6">
-                <p className="text-lg text-white">
-                  Honestly, I can't recommend this tool enough. Finally an
-                  idiomatic way for a frontend developer to prototype and test
-                  an entire feature without touching a real API! Productivity
-                  just goes through the roof.
-                </p>
-              </div>
-            </div>
+        <section className="bg-green-500">
+          <div className="pt-16"></div>
 
-            <div className="flex items-center justify-center mt-6">
-              <Img
-                className="w-24 mr-4 rounded-full"
-                fluid={data.testimonial1.childImageSharp.fluid}
-              />
-              <div className="flex-shrink-0 leading-none">
-                <p className="text-lg font-medium text-white">Roman Sandler</p>
-                <p className="mt-2 text-green-200">Founder of Brixton Apps</p>
+          <Gutters>
+            <Container>
+              <div className="relative">
+                <QuoteOpen className="absolute w-20" />
+                <QuoteClose className="absolute bottom-0 right-0 w-20" />
+                <div className="pt-8 pb-6">
+                  <p className="text-lg text-white">
+                    Honestly, I can't recommend this tool enough. Finally an
+                    idiomatic way for a frontend developer to prototype and test
+                    an entire feature without touching a real API! Productivity
+                    just goes through the roof.
+                  </p>
+                </div>
               </div>
-            </div>
-          </Container>
+
+              <div className="flex items-center justify-center mt-6">
+                <Img
+                  className="w-24 mr-4 rounded-full"
+                  fluid={data.testimonial1.childImageSharp.fluid}
+                />
+                <div className="flex-shrink-0 leading-none">
+                  <p className="text-lg font-medium text-white">
+                    Roman Sandler
+                  </p>
+                  <p className="mt-2 text-green-200">Founder of Brixton Apps</p>
+                </div>
+              </div>
+            </Container>
+          </Gutters>
+
+          <div className="pb-16"></div>
         </section>
 
         <section className="relative pt-16 bg-gray-100">
           <div className="relative z-10">
-            <Container>
-              <Title>
-                Write{" "}
-                <span className="text-green-500">high-level UI tests</span> that
-                stress your networking code.
-              </Title>
+            <Gutters>
+              <Container>
+                <Title>
+                  Write{" "}
+                  <span className="text-green-500">high-level UI tests</span>{" "}
+                  that stress your networking code.
+                </Title>
 
-              <div className="mt-4">
-                <Text color="dark-gray">
-                  Mirage lets you put your API into any state needed to stress
-                  some piece of dynamic functionality in your app. Test how your
-                  app handles 0 blog posts, 10, or 1000 – or even how it behaves
-                  when your server is slow or returns an error. No messy network
-                  mocking code or handcrafting API respones – just real-world
-                  scenarios validating the entire functionality of your full
-                  application.
-                </Text>
-              </div>
+                <div className="mt-4">
+                  <Text color="dark-gray">
+                    Mirage lets you put your API into any state needed to stress
+                    some piece of dynamic functionality in your app. Test how
+                    your app handles 0 blog posts, 10, or 1000 – or even how it
+                    behaves when your server is slow or returns an error. No
+                    messy network mocking code or handcrafting API respones –
+                    just real-world scenarios validating the entire
+                    functionality of your full application.
+                  </Text>
+                </div>
 
-              <div className="mt-16">
-                <Browsers className="max-w-full" />
-              </div>
-            </Container>
+                <div className="mt-16">
+                  <Browsers className="max-w-full" />
+                </div>
+              </Container>
+            </Gutters>
           </div>
 
           <div className="absolute bottom-0 z-0 w-full text-white">
@@ -206,20 +223,23 @@ export default function IndexPage() {
         </section>
 
         <section className="pt-24 pb-16 bg-white">
-          <Container>
-            <Title>
-              Share a <span className="text-green-500">fully-working UI</span>{" "}
-              without running a backend.
-            </Title>
+          <Gutters>
+            <Container>
+              <Title>
+                Share a <span className="text-green-500">fully-working UI</span>{" "}
+                without running a backend.
+              </Title>
 
-            <div className="mt-4">
-              <Text color="dark-gray">
-                Because Mirage realistically mocks out your entire API server,
-                you can share a clickable, working prototype of your JavaScript
-                application without needing to run any backend services.
-              </Text>
-            </div>
-          </Container>
+              <div className="mt-4">
+                <Text color="dark-gray">
+                  Because Mirage realistically mocks out your entire API server,
+                  you can share a clickable, working prototype of your
+                  JavaScript application without needing to run any backend
+                  services.
+                </Text>
+              </div>
+            </Container>
+          </Gutters>
 
           <div className="mt-12">
             <HomepageImage3 className="mx-auto w-72" />
@@ -227,51 +247,60 @@ export default function IndexPage() {
         </section>
 
         <section className="py-16 bg-gray-600">
-          <Container>
-            <div className="relative">
-              <QuoteOpen className="absolute w-20" />
-              <QuoteClose className="absolute bottom-0 right-0 w-20" />
-              <div className="pt-8 pb-6">
-                <p className="text-lg text-white">
-                  Reminder: If there is one single piece of software born in
-                  2015 that has change the way I build software, it's Mirage. It
-                  just enables a different way of doing frontend/backend
-                  collaboration. Use it now. Gold.
-                </p>
+          <Gutters>
+            <Container>
+              <div className="relative">
+                <QuoteOpen className="absolute w-20" />
+                <QuoteClose className="absolute bottom-0 right-0 w-20" />
+                <div className="pt-8 pb-6">
+                  <p className="text-lg text-white">
+                    Reminder: If there is one single piece of software born in
+                    2015 that has change the way I build software, it's Mirage.
+                    It just enables a different way of doing frontend/backend
+                    collaboration. Use it now. Gold.
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-center justify-center mt-6">
-              <Img
-                className="w-24 mr-4 rounded-full"
-                fluid={data.testimonial1.childImageSharp.fluid}
-              />
-              <div className="flex-shrink-0 leading-none">
-                <p className="text-lg font-medium text-white">Roman Sandler</p>
-                <p className="mt-2 text-gray-300">Founder of Brixton Apps</p>
+              <div className="flex items-center justify-center mt-6">
+                <Img
+                  className="w-24 mr-4 rounded-full"
+                  fluid={data.testimonial1.childImageSharp.fluid}
+                />
+                <div className="flex-shrink-0 leading-none">
+                  <p className="text-lg font-medium text-white">
+                    Roman Sandler
+                  </p>
+                  <p className="mt-2 text-gray-300">Founder of Brixton Apps</p>
+                </div>
               </div>
-            </div>
-          </Container>
+            </Container>
+          </Gutters>
         </section>
 
         <section className="pt-24 pb-32 bg-white">
           <div className="text-center">
-            <Container>
-              <Title>Ready to start using Mirage in your app?</Title>
+            <Gutters>
+              <Container>
+                <Title>Ready to use Mirage?</Title>
 
-              <div className="mt-4">
-                <Text color="dark-gray">
-                  Mirage works with all major JavaScript frameworks, libraries
-                  and test runners.
-                </Text>
-              </div>
+                <div className="max-w-xs mx-auto mt-4">
+                  <Text color="dark-gray">
+                    Mirage works with all major JavaScript frameworks, libraries
+                    and test runners.
+                  </Text>
+                </div>
 
-              <div className="mt-8">
-                <a className="w-full py-3 text-lg font-medium text-center text-white bg-green-500 rounded">
-                  Get started
-                </a>
-              </div>
-            </Container>
+                <div className="mt-8">
+                  <Link
+                    to={router.routerFor("/docs").pages[0].fullPath}
+                    className="w-full px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded"
+                  >
+                    Get started
+                  </Link>
+                </div>
+              </Container>
+            </Gutters>
           </div>
         </section>
 
@@ -321,8 +350,12 @@ function ProgressBar({ progress }) {
   )
 }
 
-function Container({ children }) {
+function Gutters({ children }) {
   return <div className="px-5">{children}</div>
+}
+
+function Container({ children }) {
+  return <div className="max-w-lg mx-auto">{children}</div>
 }
 
 function Title({ children }) {

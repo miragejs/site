@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import Button from "./button"
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react"
+import { ReactComponent as Spinner } from "../assets/images/loading-spinner.svg"
 
 let isEmailValid = function(email) {
   // eslint-disable-next-line
@@ -7,7 +7,7 @@ let isEmailValid = function(email) {
   return re.test(email)
 }
 
-function SignupForm() {
+export default function SignupForm() {
   // configure
   let fadeOutInDelay = 0.4
   let feedbackDelay = 900
@@ -100,7 +100,7 @@ function SignupForm() {
     <div className="relative">
       {didSignup && (
         <div
-          className={`text-lg text-gray-500 leading-norma font-medium ${
+          className={`text-lg text-gray-500 ${
             isAnimatingFormOut ? "absolute" : ""
           } ${isShowingThankYou ? "opacity-100" : "opacity-0"}`}
           style={{
@@ -127,7 +127,7 @@ function SignupForm() {
           }}
           onTransitionEnd={e => handleTransitionEnd(e)}
         >
-          <div className="md:inline-flex md:shadow-black">
+          <div className="flex md:inline-flex shadow-black">
             <input
               type="email"
               required
@@ -136,9 +136,9 @@ function SignupForm() {
               disabled={isSaving}
               onChange={handleChange}
               placeholder="Enter your email"
-              className="form-input bg-white placeholder-gray-500 text-gray-900 w-full rounded px-5 py-3 border-2 border-transparent focus:shadow-none focus:border-green-700 md:border-r-0 md:rounded-r-none md:w-96"
+              className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700 md:w-96"
             />
-            <Button isRunning={didSignup || isSaving}>Get notified</Button>
+            <Button isRunning={didSignup || isSaving}>Subscribe</Button>
           </div>
           {isError && (
             <div className="mt-5">
@@ -155,4 +155,140 @@ function SignupForm() {
   )
 }
 
-export default SignupForm
+function useWindowWidth() {
+  let isBrowser = typeof window !== "undefined"
+  const [width, setWidth] = useState(isBrowser ? window.innerWidth : 0)
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth)
+
+    if (isBrowser) {
+      window.addEventListener("resize", handleResize)
+    }
+
+    return () => {
+      isBrowser && window.removeEventListener("resize", handleResize)
+    }
+  }, [isBrowser])
+
+  return width
+}
+
+function Button({ isRunning = false, children }) {
+  // configure
+  let buttonExpandDuration = 0.25
+  let spinnerOpacityDuration = 0.25
+
+  // state
+  let spinnerEl = useRef(null)
+  let windowWidth = useWindowWidth()
+
+  let [shouldUseTransitions, setShouldUseTransitions] = useState(false)
+  let [spinnerWidth, setSpinnerWidth] = useState(0)
+  let [spinnerTop, setSpinnerTop] = useState(0)
+  let [isNudged, setIsNudged] = useState(isRunning)
+  let [isShowingSpinner, setIsShowingSpinner] = useState(isRunning)
+  let [isWideButton, setIsWideButton] = useState(false)
+
+  let nudgeAmount = isWideButton ? 0 : spinnerWidth * 0.75
+  let spinnerOffset = isWideButton ? spinnerWidth * 0.75 : nudgeAmount + 1
+
+  // this grabs the size of the spinner
+  // we need to render at least once before we know what spinnerWidth
+  // actually is. so we'll useLayoutEffect to  make the re-render sync
+  // before the browser paints the button
+  useLayoutEffect(() => {
+    let verticalSpacing =
+      spinnerEl.current.parentElement.offsetHeight -
+      spinnerEl.current.offsetHeight
+    setSpinnerWidth(spinnerEl.current.offsetWidth)
+    setSpinnerTop(verticalSpacing / 2)
+    setIsWideButton(windowWidth < 768)
+  }, [windowWidth])
+
+  useEffect(() => {
+    // we'll start animating things here as state changes.
+    // if we dont know the spinnerWidth we're going to exit,
+    // because without that we can really animate.
+    if (!spinnerWidth) {
+      return
+    }
+
+    // if we have the spinnerWidth we know we've done at least
+    // one render. that means that we can start animating, so we'll
+    // enable transitions
+    setShouldUseTransitions(true)
+  }, [spinnerWidth])
+
+  // For smaller buttons we'll stagger the animation so the next
+  // nudges and then the spinner comes in
+  useEffect(() => {
+    if (!isWideButton) {
+      if (isRunning) {
+        isNudged ? setIsShowingSpinner(true) : setIsNudged(true)
+      } else {
+        isShowingSpinner ? setIsShowingSpinner(false) : setIsNudged(false)
+      }
+    }
+  }, [isRunning, isWideButton, isNudged, isShowingSpinner])
+
+  // for large buttons we don't need to nudge, so we wont stagger
+  // the animation
+  useEffect(() => {
+    if (isWideButton) {
+      setIsShowingSpinner(isRunning)
+      setIsNudged(isRunning)
+    }
+  }, [isRunning, isWideButton])
+
+  let handleTransitionEnd = function(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsNudged(isRunning)
+    setIsShowingSpinner(isRunning)
+  }
+
+  return (
+    <button
+      disabled={isRunning}
+      onTransitionEnd={e => handleTransitionEnd(e)}
+      className={`px-4 py-2 md:px-8 text-white ${
+        isNudged ? "bg-green-900 opacity-50" : "bg-green-700"
+      } ${isRunning && "cursor-not-allowed"}
+      relative rounded bg-green-700 hover:bg-green-900 focus:outline-none focus:outline-shadow rounded-l-none`}
+      style={{
+        transition: shouldUseTransitions
+          ? `background-color ${buttonExpandDuration}s, color ${buttonExpandDuration}s`
+          : "",
+      }}
+    >
+      <div
+        onTransitionEnd={e => handleTransitionEnd(e)}
+        style={{
+          transform: isNudged
+            ? `translateX(${-nudgeAmount}px)`
+            : `translateX(0)`,
+          transition: shouldUseTransitions
+            ? `transform ${buttonExpandDuration}s`
+            : "",
+        }}
+      >
+        {children}
+      </div>
+      <span
+        ref={spinnerEl}
+        onTransitionEnd={e => handleTransitionEnd(e)}
+        className={`absolute ${isShowingSpinner ? "opacity-100" : "opacity-0"}`}
+        style={{
+          transition: shouldUseTransitions
+            ? `opacity ${spinnerOpacityDuration}s`
+            : "",
+          right: `${spinnerOffset}px`,
+          top: `${spinnerTop}px`,
+        }}
+      >
+        <Spinner className="w-5 h-5 loading" />
+      </span>
+    </button>
+  )
+}

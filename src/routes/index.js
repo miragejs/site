@@ -139,16 +139,16 @@ export default function IndexPage() {
         </SectionWithLines>
 
         <section
-          className="relative py-16 overflow-hidden bg-white bg-no-repeat"
+          className="relative py-16 overflow-hidden bg-white bg-no-repeat md:py-24"
           style={{
             backgroundPosition: "center top, center top -43px",
             backgroundImage: `linear-gradient(rgba(255,255,255,.6) 80%, rgba(255,255,255,1) 95%), url(${ringsUrl})`,
             backgroundSize: "100%, 1100px",
           }}
         >
-          <div className="relative z-10">
+          <div className="relative z-10 md:text-center">
             <Gutters>
-              <Container>
+              <div className="max-w-lg mx-auto md:max-w-xl">
                 <Title>
                   The <span className="text-green-500">best DX</span> for
                   frontend development.
@@ -162,31 +162,29 @@ export default function IndexPage() {
                   frontend code, so there’s no new infrastruture for you to
                   learn.
                 </Text>
-              </Container>
+              </div>
             </Gutters>
 
             <div className="mt-8"></div>
 
             <div className="px-2">
-              <Container>
+              <div className="max-w-lg mx-auto md:max-w-xl">
                 <div className="overflow-hidden rounded-lg">
                   <Snippet name="homepage-1" />
                 </div>
-              </Container>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="bg-green-500">
-          <div className="pt-16"></div>
-
+        <section className="py-16 bg-green-500 md:py-20">
           <Gutters>
-            <Container>
+            <div className="max-w-lg mx-auto">
               <div className="relative">
-                <QuoteOpen className="absolute w-20" />
-                <QuoteClose className="absolute bottom-0 right-0 w-20" />
+                <QuoteOpen className="absolute w-20 md:-ml-10" />
+                <QuoteClose className="absolute bottom-0 right-0 w-20 md:-mr-10" />
                 <div className="pt-8 pb-6">
-                  <p className="text-lg text-white">
+                  <p className="text-lg text-white max-w-measure">
                     Honestly, I can't recommend this tool enough. Finally an
                     idiomatic way for a frontend developer to prototype and test
                     an entire feature without touching a real API! Productivity
@@ -207,51 +205,46 @@ export default function IndexPage() {
                   <p className="mt-2 text-green-200">Founder of Brixton Apps</p>
                 </div>
               </div>
-            </Container>
+            </div>
           </Gutters>
-
-          <div className="pb-16"></div>
         </section>
 
-        <section className="relative pt-16 bg-gray-100">
-          <div className="relative z-10">
-            <Gutters>
-              <Container>
-                <Title>
-                  Write{" "}
-                  <span className="text-green-500">high-level UI tests</span>{" "}
-                  that stress your networking code.
-                </Title>
-
-                <div className="mt-4">
-                  <Text color="dark-gray">
-                    Mirage lets you put your API into any state needed to stress
-                    some piece of dynamic functionality in your app. Test how
-                    your app handles 0 blog posts, 10, or 1000 – or even how it
-                    behaves when your server is slow or returns an error. No
-                    messy network mocking code or handcrafting API respones –
-                    just real-world scenarios validating the entire
-                    functionality of your full application.
-                  </Text>
-                </div>
-
-                <div className="mt-16">
-                  <Browsers className="max-w-full" />
-                </div>
-              </Container>
-            </Gutters>
-          </div>
-
-          <div className="absolute bottom-0 z-0 w-full text-white">
-            <svg className="w-full fill-current" viewBox="0 0 100 35">
-              <polygon points="0,18 0,35 100,35 100,0" />
-            </svg>
-          </div>
-        </section>
-
-        <section className="pt-24 pb-16 bg-white">
+        <section
+          className="relative pt-16 bg-gray-100 md:pt-24 md:text-center"
+          style={{
+            background: `linear-gradient(172deg, rgb(243, 245, 247) 85%, #fff 85%)`,
+          }}
+        >
           <Gutters>
-            <Container>
+            <div className="max-w-lg mx-auto md:max-w-xl">
+              <Title>
+                Write{" "}
+                <span className="text-green-500">high-level UI tests</span> that
+                stress your networking code.
+              </Title>
+
+              <div className="mt-4">
+                <Text color="dark-gray">
+                  Mirage lets you put your API into any state needed to stress
+                  some piece of dynamic functionality in your app. Test how your
+                  app handles 0 blog posts, 10, or 1000 – or even how it behaves
+                  when your server is slow or returns an error. No messy network
+                  mocking code or handcrafting API respones – just real-world
+                  scenarios validating the entire functionality of your full
+                  application.
+                </Text>
+              </div>
+
+              <div className="mt-16">
+                <Browsers className="max-w-full" />
+              </div>
+            </div>
+          </Gutters>
+        </section>
+
+        <section className="pt-24 pb-16 bg-white md:pt-32 md:text-center">
+          <Gutters>
+            <div className="max-w-lg mx-auto md:max-w-xl">
               <Title>
                 Share a <span className="text-green-500">fully-working UI</span>{" "}
                 without running a backend.
@@ -265,7 +258,7 @@ export default function IndexPage() {
                   services.
                 </Text>
               </div>
-            </Container>
+            </div>
           </Gutters>
 
           <div className="mt-12">
@@ -273,12 +266,12 @@ export default function IndexPage() {
           </div>
         </section>
 
-        <section className="py-16 bg-gray-600">
+        <section className="py-16 bg-gray-600 md:py-20">
           <Gutters>
-            <Container>
+            <div className="max-w-lg mx-auto">
               <div className="relative">
-                <QuoteOpen className="absolute w-20" />
-                <QuoteClose className="absolute bottom-0 right-0 w-20" />
+                <QuoteOpen className="absolute w-20 md:-ml-10" />
+                <QuoteClose className="absolute bottom-0 right-0 w-20 md:-mr-10" />
                 <div className="pt-8 pb-6">
                   <p className="text-lg text-white">
                     Reminder: If there is one single piece of software born in
@@ -301,7 +294,7 @@ export default function IndexPage() {
                   <p className="mt-2 text-gray-300">Founder of Brixton Apps</p>
                 </div>
               </div>
-            </Container>
+            </div>
           </Gutters>
         </section>
 
@@ -387,7 +380,7 @@ function Container({ children }) {
 
 function Title({ children }) {
   return (
-    <h2 className="text-3xl leading-tight text-gray-1000 font-title">
+    <h2 className="text-3xl leading-tight md:text-4xl text-gray-1000 font-title">
       {children}
     </h2>
   )

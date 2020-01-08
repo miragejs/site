@@ -76,45 +76,53 @@ function AppInner(props) {
           <Outlet />
         </main>
 
-        <footer className="pt-16 pb-12 bg-gray-1000">
-          <div className="px-5">
-            <p className="font-medium text-white">
-              Sign up to for occasional project updates:
-            </p>
-            <div className="mt-4">
-              <SignupForm />
-            </div>
-          </div>
-
-          <div className="mt-16 text-lg text-center">
-            <div>
-              <p className="py-1 font-medium tracking-wide text-gray-600 uppercase">
-                Docs
+        <footer className="w-full pt-16 pb-12 bg-gray-1000">
+          <div className="max-w-lg mx-auto md:max-w-2xl">
+            <div className="px-5">
+              <p className="text-sm text-white md:text-base">
+                Sign up for occasional project updates:
               </p>
-              <ul>
-                <li className="py-1 text-white">API</li>
-                <li className="py-1 text-white">Guides</li>
-                <li className="py-1 text-white">Examples</li>
-              </ul>
+              <div className="mt-4">
+                <SignupForm />
+              </div>
             </div>
 
-            <div className="mt-10">
-              <p className="py-1 font-medium tracking-wide text-gray-600 uppercase">
-                Community
-              </p>
-              <ul>
-                <li className="py-1 text-white">GitHub</li>
-                <li className="py-1 text-white">Discord</li>
-                <li className="py-1 text-white">Twitter</li>
-                <li className="py-1 text-white">YouTube</li>
-              </ul>
-            </div>
-          </div>
+            <div className="px-5">
+              <div className="flex mt-16 -mx-3 text-lg">
+                <div className="w-1/2 px-3">
+                  <p className="py-1 pl-4 font-medium tracking-wide text-gray-600 uppercase md:pl-0">
+                    Docs
+                  </p>
+                  <div className="pl-4 border-l border-gray-800 md:pl-0 md:border-none">
+                    <ul>
+                      <li className="py-1 text-white">API</li>
+                      <li className="py-1 text-white">Guides</li>
+                      <li className="py-1 text-white">Examples</li>
+                    </ul>
+                  </div>
+                </div>
 
-          <div className="flex justify-center mt-16">
-            <Link to="/" className="block p-1">
-              <Logo className="w-8" />
-            </Link>
+                <div className="w-1/2 px-3">
+                  <p className="py-1 pl-4 font-medium tracking-wide text-gray-600 uppercase md:pl-0">
+                    Community
+                  </p>
+                  <div className="pl-4 border-l border-gray-800 md:pl-0 md:border-none">
+                    <ul>
+                      <li className="py-1 text-white">GitHub</li>
+                      <li className="py-1 text-white">Discord</li>
+                      <li className="py-1 text-white">Twitter</li>
+                      <li className="py-1 text-white">YouTube</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center px-5 pt-8 mt-12 md:justify-start">
+              <Link to="/" className="block p-1">
+                <Logo className="w-8" />
+              </Link>
+            </div>
           </div>
         </footer>
       </div>

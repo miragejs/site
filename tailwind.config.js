@@ -93,6 +93,7 @@ module.exports = {
         "2-5xl": "45rem",
         "7xl": "80rem",
         "8xl": "88rem",
+        measure: "35em",
       },
       width: {
         "28": "7rem",

@@ -11,6 +11,7 @@ import Snippet from "../components/snippet"
 import { Link } from "@reach/router"
 import { useRouter } from "../hooks/use-router"
 import { SectionWithLines } from "../components/ui"
+import { Caret } from "../components/icons"
 
 export default function IndexPage() {
   const router = useRouter()
@@ -39,19 +40,19 @@ export default function IndexPage() {
         <SEO />
 
         <SectionWithLines>
-          <div className="relative z-10 md:px-8">
-            <div className="pt-8 pb-20 lg:pt-16 2xl:pt-24 md:pb-32 xl:pb-40 2xl:pb-48">
-              <Gutters>
-                <Container>
+          <div className="pt-8 pb-20 md:pt-16 lg:pt-16 2xl:pt-24 md:pb-32 xl:pb-40 2xl:pb-48">
+            <Gutters>
+              <Container>
+                <div className="md:text-center">
                   <h1 className="tracking-tight text-white leading-tighter text-4-5xl font-title md:text-4-75xl md:leading-tighter lg:text-5xl 2xl:text-5-5xl ">
                     Build complete frontend features,{" "}
-                    <br className="hidden md:inline" />
+                    <br className="hidden md:block" />
                     <span className="text-green-500">
                       even if your API doesn't exist.
                     </span>
                   </h1>
 
-                  <div className="max-w-3xl mt-8 md:mt-10 2xl:mt-12 2xl:max-w-4xl">
+                  <div className="flex justify-center mt-8 md:mt-10 2xl:mt-12">
                     <Text color="light-gray">
                       Mirage JS is an API mocking library that lets you build,
                       test and share a complete working JavaScript application
@@ -59,55 +60,81 @@ export default function IndexPage() {
                     </Text>
                   </div>
 
-                  <div className="mt-8">
+                  <div className="flex mt-8 md:justify-center">
                     <Link
                       to={router.routerFor("/docs").pages[0].fullPath}
-                      className="block w-full py-3 text-lg font-medium text-center text-white bg-green-500 rounded"
+                      className="flex items-center justify-center block w-full px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded md:w-auto"
                     >
-                      Get started
+                      Get started <Caret className="inline w-4 ml-1" />
                     </Link>
                   </div>
-                </Container>
-              </Gutters>
-
-              <div className="mt-16"></div>
-
-              <Container>
-                <Img fluid={data.homepageVideo.childImageSharp.fluid} />
+                </div>
               </Container>
+            </Gutters>
 
-              <div className="mt-12"></div>
+            <div className="mt-16"></div>
 
-              <Gutters>
-                <Container>
+            <Container>
+              <Img fluid={data.homepageVideo.childImageSharp.fluid} />
+            </Container>
+
+            <div className="mt-12"></div>
+
+            <Gutters>
+              <Container>
+                <div className="flex -mx-4">
+                  <div className="w-1/4 px-4">
+                    <ProgressBar progress={66} />
+                  </div>
+                  <div className="w-1/4 px-4">
+                    <ProgressBar progress={0} />
+                  </div>
+                  <div className="w-1/4 px-4">
+                    <ProgressBar progress={0} />
+                  </div>
+                  <div className="w-1/4 px-4">
+                    <ProgressBar progress={0} />
+                  </div>
+                </div>
+
+                <div className="mt-8 md:hidden">
+                  <p className="font-medium text-white">Create a Server</p>
+                </div>
+
+                <div className="hidden mt-3 md:block">
                   <div className="flex -mx-4">
                     <div className="w-1/4 px-4">
-                      <ProgressBar progress={66} />
+                      <p className="font-medium text-center text-white">
+                        Create a server
+                      </p>
                     </div>
                     <div className="w-1/4 px-4">
-                      <ProgressBar progress={0} />
+                      <p className="font-medium text-center text-gray-700">
+                        Use the database
+                      </p>
                     </div>
                     <div className="w-1/4 px-4">
-                      <ProgressBar progress={0} />
+                      <p className="font-medium text-center text-gray-700">
+                        Seed with factories
+                      </p>
                     </div>
                     <div className="w-1/4 px-4">
-                      <ProgressBar progress={0} />
+                      <p className="font-medium text-center text-gray-700">
+                        Write a test
+                      </p>
                     </div>
                   </div>
+                </div>
 
-                  <div className="mt-8">
-                    <p className="font-medium text-white">Create a Server</p>
-                    <div className="mt-3">
-                      <Text color="light-gray">
-                        Import and use Mirage right alongside the rest of your
-                        frontend JavaScript code – no separate server process
-                        for you to manage in yet-another terminal tab.
-                      </Text>
-                    </div>
-                  </div>
-                </Container>
-              </Gutters>
-            </div>
+                <div className="mt-3 md:mt-8 md:text-center md:flex md:justify-center">
+                  <Text color="light-gray">
+                    Import and use Mirage right alongside the rest of your
+                    frontend JavaScript code – no separate server process for
+                    you to manage in yet-another terminal tab.
+                  </Text>
+                </div>
+              </Container>
+            </Gutters>
           </div>
         </SectionWithLines>
 
@@ -351,11 +378,11 @@ function ProgressBar({ progress }) {
 }
 
 function Gutters({ children }) {
-  return <div className="px-5">{children}</div>
+  return <div className="px-5 md:px-8">{children}</div>
 }
 
 function Container({ children }) {
-  return <div className="max-w-lg mx-auto">{children}</div>
+  return <div className="max-w-lg mx-auto md:max-w-full">{children}</div>
 }
 
 function Title({ children }) {
@@ -376,5 +403,7 @@ function Text({ children, color }) {
     throw new Error("<Text> requires a color.")
   }
 
-  return <p className={`${styles[color]}`}>{children}</p>
+  return (
+    <p className={`${styles[color]} md:text-lg max-w-measure`}>{children}</p>
+  )
 }

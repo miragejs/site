@@ -140,52 +140,62 @@ export default function IndexPage() {
         </SectionWithLines>
 
         <section
-          className="relative py-16 overflow-hidden bg-white bg-no-repeat md:py-24"
+          className="relative py-16 overflow-hidden bg-white bg-no-repeat xl:py-32 md:py-24"
           style={{
             backgroundPosition: "center top, center top -43px",
-            backgroundImage: `linear-gradient(rgba(255,255,255,.6) 80%, rgba(255,255,255,1) 95%), url(${ringsUrl})`,
+            backgroundImage: `linear-gradient(rgba(255,255,255,.75) 80%, rgba(255,255,255,1) 95%), url(${ringsUrl})`,
             backgroundSize: "100%, 1100px",
           }}
         >
-          <div className="relative z-10 md:text-center">
-            <Gutters>
-              <div className="max-w-lg mx-auto md:max-w-xl">
-                <Title>
-                  The <span className="text-green-500">best DX</span> for
-                  frontend development.
-                </Title>
+          <div className="relative z-10 max-w-6xl mx-auto md:text-center xl:text-left">
+            <div className="xl:flex xl:-mx-8">
+              <div className="xl:w-1/2 xl:pt-10 xl:px-8">
+                <div className="px-5 md:px-8 xl:px-0">
+                  <div className="max-w-lg mx-auto md:max-w-xl">
+                    <Title>
+                      The <span className="text-green-500">best DX</span> for
+                      frontend development.
+                    </Title>
 
-                <div className="mt-4"></div>
+                    <div className="mt-4"></div>
 
-                <Text color="dark-gray">
-                  Say goodbye to configuring painful backend environments just
-                  to hack on your UI. Mirage runs alongside the rest of your
-                  frontend code, so there’s no new infrastruture for you to
-                  learn.
-                </Text>
+                    <Text color="dark-gray">
+                      Say goodbye to configuring painful backend environments
+                      just to hack on your UI. Mirage runs alongside the rest of
+                      your frontend code, so there’s no new infrastruture for
+                      you to learn.
+                    </Text>
+                    <div className="mt-4">
+                      <Text color="dark-gray">
+                        New collaborators can clone your frontend codebase, run
+                        npm install, and have a complete local offline dev
+                        environment up and running in seconds, without ever
+                        configuring any environment variables or auth tokens.
+                      </Text>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </Gutters>
 
-            <div className="mt-8"></div>
-
-            <div className="px-2">
-              <div className="max-w-lg mx-auto md:max-w-xl">
-                <div className="overflow-hidden rounded-lg">
-                  <Snippet name="homepage-1" />
+              <div className="px-2 mt-8 xl:ml-auto xl:w-1/2 xl:mt-0 xl:px-8">
+                <div className="max-w-lg mx-auto md:max-w-xl">
+                  <div className="overflow-hidden rounded-lg">
+                    <Snippet name="homepage-1" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="py-16 bg-green-500 md:py-20">
+        <section className="py-16 bg-green-500 md:py-20 xl:py-24">
           <Gutters>
-            <div className="max-w-lg mx-auto">
+            <div className="max-w-lg mx-auto xl:max-w-2xl">
               <div className="relative">
-                <QuoteOpen className="absolute w-20 md:-ml-10" />
-                <QuoteClose className="absolute bottom-0 right-0 w-20 md:-mr-10" />
-                <div className="pt-8 pb-6">
-                  <p className="text-lg text-white max-w-measure">
+                <QuoteOpen className="absolute w-20 text-green-600 fill-current md:-ml-10" />
+                <QuoteClose className="absolute bottom-0 right-0 w-20 text-green-600 fill-current md:-mr-5" />
+                <div className="relative pt-8 pb-6">
+                  <p className="text-lg text-white xl:text-xl max-w-measure">
                     Honestly, I can't recommend this tool enough. Finally an
                     idiomatic way for a frontend developer to prototype and test
                     an entire feature without touching a real API! Productivity
@@ -211,33 +221,47 @@ export default function IndexPage() {
         </section>
 
         <section
-          className="relative pt-16 bg-gray-100 md:pt-24 md:text-center"
+          className="relative pt-16 bg-gray-100 md:pt-24 md:text-center xl:text-left"
           style={{
             background: `linear-gradient(172deg, rgb(243, 245, 247) 85%, #fff 85%)`,
           }}
         >
           <Gutters>
-            <div className="max-w-lg mx-auto md:max-w-xl">
-              <Title>
-                Write{" "}
-                <span className="text-green-500">high-level UI tests</span> that
-                stress your networking code.
-              </Title>
+            <div className="max-w-lg mx-auto md:max-w-xl xl:max-w-6xl">
+              <div className="xl:flex xl:-mx-8">
+                <div className="xl:w-1/2 xl:px-8">
+                  <div className="xl:pt-12">
+                    <Title>
+                      Write{" "}
+                      <span className="text-green-500">
+                        high-level UI tests
+                      </span>{" "}
+                      that stress your networking code.
+                    </Title>
 
-              <div className="mt-4">
-                <Text color="dark-gray">
-                  Mirage lets you put your API into any state needed to stress
-                  some piece of dynamic functionality in your app. Test how your
-                  app handles 0 blog posts, 10, or 1000 – or even how it behaves
-                  when your server is slow or returns an error. No messy network
-                  mocking code or handcrafting API respones – just real-world
-                  scenarios validating the entire functionality of your full
-                  application.
-                </Text>
-              </div>
+                    <div className="mt-4">
+                      <Text color="dark-gray">
+                        Mirage lets you put your API into any state needed to
+                        stress some piece of dynamic functionality in your app.
+                        Test how your app handles 0 blog posts, 10, or 1000 – or
+                        even how it behaves when your server is slow or returns
+                        an error.
+                      </Text>
 
-              <div className="max-w-xl mx-auto mt-16">
-                <Browsers className="max-w-full" />
+                      <div className="mt-4">
+                        <Text color="dark-gray">
+                          No messy network mocking code or handcrafting API
+                          respones. Just real-world scenarios validating the
+                          entire functionality of your full application.
+                        </Text>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="max-w-xl mx-auto mt-16 xl:w-1/2 xl:px-8 xl:mt-0">
+                  <Browsers className="max-w-full" />
+                </div>
               </div>
             </div>
           </Gutters>
@@ -267,14 +291,14 @@ export default function IndexPage() {
           </div>
         </section>
 
-        <section className="py-16 bg-gray-600 md:py-20">
+        <section className="py-16 bg-gray-600 md:py-20 xl:py-24">
           <Gutters>
-            <div className="max-w-lg mx-auto">
+            <div className="max-w-lg mx-auto xl:max-w-2xl">
               <div className="relative">
-                <QuoteOpen className="absolute w-20 md:-ml-10" />
-                <QuoteClose className="absolute bottom-0 right-0 w-20 md:-mr-10" />
-                <div className="pt-8 pb-6">
-                  <p className="text-lg text-white">
+                <QuoteOpen className="absolute w-20 text-gray-500 opacity-50 fill-current md:-ml-10" />
+                <QuoteClose className="absolute bottom-0 right-0 w-20 text-gray-500 opacity-50 fill-current md:-mr-5" />
+                <div className="relative pt-8 pb-6">
+                  <p className="text-lg text-white xl:text-xl max-w-measure">
                     Reminder: If there is one single piece of software born in
                     2015 that has change the way I build software, it's Mirage.
                     It just enables a different way of doing frontend/backend
@@ -350,7 +374,7 @@ function Container({ children }) {
 
 function Title({ children }) {
   return (
-    <h2 className="text-3xl leading-tight md:text-4xl text-gray-1000 font-title">
+    <h2 className="text-3xl leading-tight md:text-4xl text-gray-1000 xl:text-4-5xl font-title">
       {children}
     </h2>
   )

@@ -1,5 +1,5 @@
 import React from "react"
-import bg from "../../assets/images/background-lines.png"
+import bg from "../../assets/images/background-lines2.png"
 import CodeComponent from "../code"
 
 // More prominent than P but not a Heading
@@ -109,14 +109,21 @@ export const Code = ({ className, ...rest }) => (
     {...rest}
   />
 )
+export function AspectRatio({ ratio, children }) {
+  return (
+    <div class="relative" style={{ paddingBottom: `${(1 / ratio) * 100}%` }}>
+      <div class="absolute w-full h-full inset-0">{children}</div>
+    </div>
+  )
+}
 
 export const SectionWithLines = ({ children }) => (
   <section
     className="bg-no-repeat bg-gray-1000"
     style={{
-      backgroundSize: "100% 600px, 1800px",
-      backgroundPosition: "center top, calc(50% - 405px) 18px",
-      backgroundImage: `linear-gradient(45deg, rgba(26,28,29,1) 40%, rgba(26,28,29,0) 100%), url(${bg})`,
+      backgroundSize: "100% 620px, 2300px",
+      backgroundPosition: "center top, calc(50% + 225px) -9px",
+      backgroundImage: `linear-gradient(45deg, rgb(26, 28, 29) 39%, rgba(26, 28, 29, 0) 65%, rgba(26, 28, 29, 0) 68%, rgba(26, 28, 29) 100%), url(${bg})`,
     }}
   >
     {children}

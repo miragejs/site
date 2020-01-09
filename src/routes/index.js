@@ -1,4 +1,5 @@
 import React from "react"
+import movieUrl from "../assets/clip.mp4"
 import ringsUrl, { ReactComponent as Rings } from "../assets/images/rings.svg"
 import { ReactComponent as QuoteOpen } from "../assets/images/quote-open.svg"
 import { ReactComponent as QuoteClose } from "../assets/images/quote-close.svg"
@@ -10,7 +11,7 @@ import { useStaticQuery, graphql } from "gatsby"
 import Snippet from "../components/snippet"
 import { Link } from "@reach/router"
 import { useRouter } from "../hooks/use-router"
-import { SectionWithLines } from "../components/ui"
+import { SectionWithLines, AspectRatio } from "../components/ui"
 import { Caret } from "../components/icons"
 
 export default function IndexPage() {
@@ -63,7 +64,7 @@ export default function IndexPage() {
                   <div className="flex mt-8 md:justify-center">
                     <Link
                       to={router.routerFor("/docs").pages[0].fullPath}
-                      className="flex items-center justify-center block w-full px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded md:w-auto"
+                      className="flex items-center justify-center block w-full px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded md:py-2 md:w-auto"
                     >
                       Get started <Caret className="inline w-4 ml-1" />
                     </Link>
@@ -75,15 +76,17 @@ export default function IndexPage() {
             <div className="mt-16"></div>
 
             <div className="md:px-8">
-              <Container>
-                <Img fluid={data.homepageVideo.childImageSharp.fluid} />
-              </Container>
+              <div className="max-w-lg mx-auto md:max-w-3xl">
+                <AspectRatio ratio={16 / 9}>
+                  <video autoPlay muted loop playsInline src={movieUrl}></video>
+                </AspectRatio>
+              </div>
             </div>
 
             <div className="mt-12"></div>
 
             <Gutters>
-              <Container>
+              <div className="max-w-lg mx-auto md:max-w-3xl">
                 <div className="flex -mx-4">
                   <div className="w-1/4 px-4">
                     <ProgressBar progress={66} />
@@ -131,7 +134,7 @@ export default function IndexPage() {
                     you to manage in yet-another terminal tab.
                   </Text>
                 </div>
-              </Container>
+              </div>
             </Gutters>
           </div>
         </SectionWithLines>

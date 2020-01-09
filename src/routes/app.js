@@ -339,7 +339,7 @@ function Footer() {
 
   return (
     <footer className="px-5 pt-16 pb-12 md:pb-20 bg-gray-1000">
-      <div className="max-w-lg mx-auto md:max-w-xl">
+      <div className="max-w-lg mx-auto md:max-w-xl lg:max-w-2xl">
         <div className="">
           <div className="flex -mx-3 md:text-lg">
             <div className="w-1/2 px-3">
@@ -388,7 +388,9 @@ function Footer() {
           </div>
         </div>
 
-        <div className="my-10 md:my-12 md:border-t md:border-gray-800" />
+        <div className="py-10 md:py-12">
+          <div className="md:border-t md:border-gray-800" />
+        </div>
 
         <div className="md:flex md:items-end">
           <div className="md:w-3/4">

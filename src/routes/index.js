@@ -74,9 +74,11 @@ export default function IndexPage() {
 
             <div className="mt-16"></div>
 
-            <Container>
-              <Img fluid={data.homepageVideo.childImageSharp.fluid} />
-            </Container>
+            <div className="md:px-8">
+              <Container>
+                <Img fluid={data.homepageVideo.childImageSharp.fluid} />
+              </Container>
+            </div>
 
             <div className="mt-12"></div>
 
@@ -104,29 +106,25 @@ export default function IndexPage() {
                 <div className="hidden mt-3 md:block">
                   <div className="flex -mx-4">
                     <div className="w-1/4 px-4">
-                      <p className="font-medium text-center text-white">
-                        Create a server
-                      </p>
+                      <p className="text-center text-white ">Create a server</p>
                     </div>
                     <div className="w-1/4 px-4">
-                      <p className="font-medium text-center text-gray-700">
+                      <p className="text-center text-gray-700 ">
                         Use the database
                       </p>
                     </div>
                     <div className="w-1/4 px-4">
-                      <p className="font-medium text-center text-gray-700">
+                      <p className="text-center text-gray-700 ">
                         Seed with factories
                       </p>
                     </div>
                     <div className="w-1/4 px-4">
-                      <p className="font-medium text-center text-gray-700">
-                        Write a test
-                      </p>
+                      <p className="text-center text-gray-700 ">Write a test</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-3 md:mt-8 md:text-center md:flex md:justify-center">
+                <div className="mt-3 md:mt-10 md:text-center md:flex md:justify-center">
                   <Text color="light-gray">
                     Import and use Mirage right alongside the rest of your
                     frontend JavaScript code – no separate server process for
@@ -235,7 +233,7 @@ export default function IndexPage() {
                 </Text>
               </div>
 
-              <div className="mt-16">
+              <div className="max-w-xl mx-auto mt-16">
                 <Browsers className="max-w-full" />
               </div>
             </div>
@@ -323,37 +321,6 @@ export default function IndexPage() {
             </Gutters>
           </div>
         </section>
-
-        {/* <div className="mt-16">
-          <p className="font-medium leading-normal text-white md:text-lg">
-            Sign up for updates and to find out when the project's
-            ready:
-          </p>
-        </div>
-        <div className="mt-4 md:mt-6 2xl:text-lg">
-          <SignupForm />
-        </div> */}
-
-        {/* <section className="py-4 pb-12 bg-white md:py-8 md:pb-16">
-          <div className="max-w-lg px-5 mx-auto md:max-w-1-5xl lg:max-w-3xl lg:px-10"></div>
-        </section>
-
-        <section className="pt-20 xl:pt-32 pb-72">
-          <div className="max-w-lg px-5 mx-auto text-center md:px-8 md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
-            <h2 className="leading-tight tracking-tight text-white font-title text-2-5xl md:text-3-5xl lg:text-4-5xl md:leading-snug">
-              Interested in Mirage and the <br className="hidden sm:inline" />{" "}
-              frontend-first workflow?
-            </h2>
-            <div className="mt-12">
-              <p className="font-medium leading-normal text-white md:text-lg">
-                Sign up for updates and to find out when the project's ready:
-              </p>
-            </div>
-            <div className="mt-4 md:mt-6">
-              <SignupForm />
-            </div>
-          </div>
-        </section> */}
       </div>
     </div>
   )

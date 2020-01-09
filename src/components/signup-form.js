@@ -127,7 +127,7 @@ export default function SignupForm() {
           }}
           onTransitionEnd={e => handleTransitionEnd(e)}
         >
-          <div className="flex md:inline-flex shadow-black">
+          <div className="flex shadow-black">
             <input
               type="email"
               required
@@ -136,7 +136,7 @@ export default function SignupForm() {
               disabled={isSaving}
               onChange={handleChange}
               placeholder="Enter your email"
-              className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700 md:w-96"
+              className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700"
             />
             <Button isRunning={didSignup || isSaving}>Subscribe</Button>
           </div>

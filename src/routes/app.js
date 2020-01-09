@@ -76,55 +76,7 @@ function AppInner(props) {
           <Outlet />
         </main>
 
-        <footer className="w-full pt-16 pb-12 bg-gray-1000">
-          <div className="max-w-lg mx-auto md:max-w-2xl">
-            <div className="px-5">
-              <p className="text-sm text-white md:text-base">
-                Sign up for occasional project updates:
-              </p>
-              <div className="mt-4">
-                <SignupForm />
-              </div>
-            </div>
-
-            <div className="px-5">
-              <div className="flex mt-16 -mx-3 text-lg">
-                <div className="w-1/2 px-3">
-                  <p className="py-1 pl-4 font-medium tracking-wide text-gray-600 uppercase md:pl-0">
-                    Docs
-                  </p>
-                  <div className="pl-4 border-l border-gray-800 md:pl-0 md:border-none">
-                    <ul>
-                      <li className="py-1 text-white">API</li>
-                      <li className="py-1 text-white">Guides</li>
-                      <li className="py-1 text-white">Examples</li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="w-1/2 px-3">
-                  <p className="py-1 pl-4 font-medium tracking-wide text-gray-600 uppercase md:pl-0">
-                    Community
-                  </p>
-                  <div className="pl-4 border-l border-gray-800 md:pl-0 md:border-none">
-                    <ul>
-                      <li className="py-1 text-white">GitHub</li>
-                      <li className="py-1 text-white">Discord</li>
-                      <li className="py-1 text-white">Twitter</li>
-                      <li className="py-1 text-white">YouTube</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-center px-5 pt-8 mt-12 md:justify-start">
-              <Link to="/" className="block p-1">
-                <Logo className="w-8" />
-              </Link>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   )
@@ -380,4 +332,62 @@ function Outlet() {
   }
 
   return <Router primary={false}>{memoizedOutlet}</Router>
+}
+
+function Footer() {
+  return (
+    <footer className="px-5 pt-16 pb-12 md:pb-20 bg-gray-1000">
+      <div className="max-w-lg mx-auto md:max-w-xl">
+        <div className="">
+          <div className="flex -mx-3 md:text-lg">
+            <div className="w-1/2 px-3">
+              <p className="py-1 pl-3 text-sm tracking-wide text-gray-600 uppercase md:text-base md:pl-0">
+                Docs
+              </p>
+              <div className="pl-3 mt-1 border-l border-gray-800 md:pl-0 md:border-none">
+                <ul>
+                  <li className="py-1 text-white">API</li>
+                  <li className="py-1 text-white">Guides</li>
+                  <li className="py-1 text-white">Examples</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="w-1/2 px-3">
+              <p className="py-1 pl-3 text-sm tracking-wide text-gray-600 uppercase md:text-base md:pl-0">
+                Community
+              </p>
+              <div className="pl-3 mt-1 border-l border-gray-800 md:pl-0 md:border-none">
+                <ul>
+                  <li className="py-1 text-white">GitHub</li>
+                  <li className="py-1 text-white">Discord</li>
+                  <li className="py-1 text-white">Twitter</li>
+                  <li className="py-1 text-white">YouTube</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="my-10 md:my-12 md:border-t md:border-gray-800" />
+
+        <div className="md:flex md:items-end">
+          <div className="md:w-3/4">
+            <p className="text-sm text-white md:text-base">
+              Sign up for occasional project updates:
+            </p>
+            <div className="mt-3">
+              <SignupForm />
+            </div>
+          </div>
+
+          <div className="flex justify-center mt-16 md:w-1/4 md:mt-0 md:justify-end">
+            <Link to="/" className="block p-1">
+              <Logo className="w-8 md:w-10" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
 }

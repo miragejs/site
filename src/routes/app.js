@@ -335,6 +335,8 @@ function Outlet() {
 }
 
 function Footer() {
+  let router = useRouter()
+
   return (
     <footer className="px-5 pt-16 pb-12 md:pb-20 bg-gray-1000">
       <div className="max-w-lg mx-auto md:max-w-xl">
@@ -346,9 +348,21 @@ function Footer() {
               </p>
               <div className="pl-3 mt-1 border-l border-gray-800 md:pl-0 md:border-none">
                 <ul>
-                  <li className="py-1 text-white">API</li>
-                  <li className="py-1 text-white">Guides</li>
-                  <li className="py-1 text-white">Examples</li>
+                  <li className="py-1 text-white">
+                    <Link to="/api/classes/association">API</Link>
+                  </li>
+                  <li className="py-1 text-white">
+                    <Link to={router.routerFor("/docs").pages[0].fullPath}>
+                      Guides
+                    </Link>
+                  </li>
+                  <li className="py-1 text-white">
+                    <Link
+                      to={router.routerFor("/quickstarts").pages[0].fullPath}
+                    >
+                      Quickstarts
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -359,10 +373,15 @@ function Footer() {
               </p>
               <div className="pl-3 mt-1 border-l border-gray-800 md:pl-0 md:border-none">
                 <ul>
-                  <li className="py-1 text-white">GitHub</li>
-                  <li className="py-1 text-white">Discord</li>
-                  <li className="py-1 text-white">Twitter</li>
-                  <li className="py-1 text-white">YouTube</li>
+                  <li className="py-1 text-white">
+                    <a href="https://github.com/miragejs/server">GitHub</a>
+                  </li>
+                  <li className="py-1 text-white">
+                    <a href="https://discord.gg/pPsdsrn">Discord</a>
+                  </li>
+                  <li className="py-1 text-white">
+                    <a href="https://twitter.com/miragejs">Twitter</a>
+                  </li>
                 </ul>
               </div>
             </div>

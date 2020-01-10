@@ -26,7 +26,7 @@
     "autoprefixer": "^9.7.3",
     "gatsby": "2.17.15",
     "gatsby-image": "^2.2.38",
-    "gatsby-plugin-manifest": "^2.2.34",
+    "gatsby-plugin-manifest": "^2.2.37",
     "gatsby-plugin-mdx": "^1.0.64",
     "gatsby-plugin-netlify": "^2.1.30",
     "gatsby-plugin-postcss": "^2.1.19",

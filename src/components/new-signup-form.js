@@ -51,18 +51,8 @@ export default function() {
     ref: closedSpringRef,
   })
 
-  let previousOpen = React.useRef(open)
-  React.useEffect(() => {
-    previousOpen.current = open
-  })
-  let openHasChanged = open !== previousOpen.current
-
   useChain(
-    openHasChanged
-      ? open
-        ? [closedSpringRef, openSpringRef]
-        : [openSpringRef, closedSpringRef]
-      : []
+    open ? [closedSpringRef, openSpringRef] : [openSpringRef, closedSpringRef]
   )
 
   const [openRef, openBounds] = useMeasure()

@@ -47,7 +47,7 @@
     "react-dom": "16.12.0",
     "react-helmet": "^5.2.1",
     "react-markdown": "^4.3.1",
-    "react-spring": "^8.0.27",
+    "react-spring": "^9.0.0-beta.34",
     "react-transition-group": "^4.3.0",
     "react-use-measure": "^2.0.0",
     "remark-slug": "^5.1.2",

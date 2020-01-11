@@ -100,20 +100,17 @@ export default function SignupForm() {
     <div className="relative">
       {didSignup && (
         <div
-          className={`text-lg text-gray-500 ${
-            isAnimatingFormOut ? "absolute" : ""
-          } ${isShowingThankYou ? "opacity-100" : "opacity-0"}`}
+          className={`text-gray-500 ${isAnimatingFormOut ? "absolute" : ""} ${
+            isShowingThankYou ? "opacity-100" : "opacity-0"
+          }`}
           style={{
             height: `${thankYouHeight}px`,
             transition: `opacity ${fadeOutInDelay}s`,
           }}
         >
           <p>
-            Thanks <span className="text-white">{email}</span>!
-          </p>
-          <p className="mt-2">
-            Check your email soon and confirm your address, so we can keep you
-            up to date.
+            Thanks <span className="text-white">{email}</span>! Check your email
+            soon to confirm your address.
           </p>
         </div>
       )}
@@ -139,6 +136,7 @@ export default function SignupForm() {
               className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700"
             />
             <Button isRunning={didSignup || isSaving}>Subscribe</Button>
+            {/* <Button isRunning={true}>Subscribe</Button> */}
           </div>
           {isError && (
             <div className="mt-5">
@@ -188,7 +186,7 @@ function Button({ isRunning = false, children }) {
   let [spinnerTop, setSpinnerTop] = useState(0)
   let [isNudged, setIsNudged] = useState(isRunning)
   let [isShowingSpinner, setIsShowingSpinner] = useState(isRunning)
-  let [isWideButton, setIsWideButton] = useState(false)
+  let isWideButton = false
 
   let nudgeAmount = isWideButton ? 0 : spinnerWidth * 0.75
   let spinnerOffset = isWideButton ? spinnerWidth * 0.75 : nudgeAmount + 1
@@ -203,7 +201,6 @@ function Button({ isRunning = false, children }) {
       spinnerEl.current.offsetHeight
     setSpinnerWidth(spinnerEl.current.offsetWidth)
     setSpinnerTop(verticalSpacing / 2)
-    setIsWideButton(windowWidth < 768)
   }, [windowWidth])
 
   useEffect(() => {
@@ -252,7 +249,7 @@ function Button({ isRunning = false, children }) {
     <button
       disabled={isRunning}
       onTransitionEnd={e => handleTransitionEnd(e)}
-      className={`px-4 py-2 md:px-8 text-white ${
+      className={`px-6 py-2 md:px-8 text-white ${
         isNudged ? "bg-green-900 opacity-50" : "bg-green-700"
       } ${isRunning && "cursor-not-allowed"}
       relative rounded bg-green-700 hover:bg-green-900 focus:outline-none focus:outline-shadow rounded-l-none`}
@@ -287,7 +284,7 @@ function Button({ isRunning = false, children }) {
           top: `${spinnerTop}px`,
         }}
       >
-        <Spinner className="w-5 h-5 loading" />
+        <Spinner className="w-4 h-4 loading" />
       </span>
     </button>
   )

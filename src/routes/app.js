@@ -13,6 +13,7 @@ import { useRouter } from "../hooks/use-router"
 import { useTheme } from "../hooks/use-theme"
 import SEO from "../components/seo"
 import SignupForm from "../components/signup-form"
+import NewSignupForm from "../components/new-signup-form"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -72,9 +73,9 @@ function AppInner(props) {
       <div className="flex flex-col min-h-screen antialiased leading-normal text-gray-700 font-body">
         <Header showHeaderNav={showHeaderNav} />
 
-        <main className="flex flex-col flex-1">
+        {/* <main className="flex flex-col flex-1">
           <Outlet />
-        </main>
+        </main> */}
 
         <Footer />
       </div>
@@ -392,17 +393,18 @@ function Footer() {
           <div className="md:border-t md:border-gray-800" />
         </div>
 
-        <div className="md:flex md:items-end">
+        <div className="md:flex">
           <div className="md:w-3/4 xl:w-1/2">
-            <p className="text-sm text-white md:text-base">
+            <NewSignupForm />
+            {/* <p className="text-sm text-white md:text-base">
               Sign up for occasional project updates:
             </p>
             <div className="mt-3">
               <SignupForm />
-            </div>
+            </div> */}
           </div>
 
-          <div className="flex justify-center mt-16 md:w-1/4 md:mt-0 md:justify-end xl:ml-auto">
+          <div className="flex justify-center mt-16 md:items-end md:w-1/4 md:mt-0 md:justify-end xl:ml-auto">
             <Link to="/" className="block p-1">
               <Logo className="w-8 md:w-10" />
             </Link>

@@ -111,8 +111,11 @@ export const Code = ({ className, ...rest }) => (
 )
 export function AspectRatio({ ratio, children }) {
   return (
-    <div class="relative" style={{ paddingBottom: `${(1 / ratio) * 100}%` }}>
-      <div class="absolute w-full h-full inset-0">{children}</div>
+    <div
+      className="relative"
+      style={{ paddingBottom: `${(1 / ratio) * 100}%` }}
+    >
+      <div className="absolute inset-0 w-full h-full">{children}</div>
     </div>
   )
 }

@@ -8,7 +8,7 @@ import {
   useChain,
   config,
 } from "react-spring"
-// import useMeasure from "react-use-measure"
+import useMeasure from "react-use-measure"
 
 // let isEmailValid = function(email) {
 //   // eslint-disable-next-line
@@ -22,63 +22,16 @@ export function usePrevious(value) {
   return ref.current
 }
 
-// export default function() {
-//   let [open, set] = React.useState(false)
-//   let state = open ? "open" : "closed"
-
-//   const fadeInSpringRef = React.useRef()
-//   const fadeInSpring = useSpring({
-//     // config: { friction: 120 },
-//     from: { opacity: 0 },
-//     to: { opacity: 1 },
-//     reset: true,
-//     ref: fadeInSpringRef,
-//   })
-
-//   const fadeOutSpringRef = React.useRef()
-//   const fadeOutSpring = useSpring({
-//     // config: { friction: 120 },
-//     from: { opacity: 1 },
-//     to: { opacity: 0 },
-//     reset: true,
-//     ref: fadeOutSpringRef,
-//   })
-
-//   useChain([fadeOutSpringRef, fadeInSpringRef])
-//   // useChain(
-//   //   open
-//   //     ? [fadeOutSpringRef, fadeInSpringRef]
-//   //     : [fadeInSpringRef, fadeOutSpringRef]
-//   // )
-
-//   return (
-//     <div className="flex">
-//       <div className="w-1/2">
-//         <animated.p style={open ? fadeInSpring : fadeOutSpring}>
-//           Open
-//         </animated.p>
-//         <animated.p style={!open ? fadeInSpring : fadeOutSpring}>
-//           Closed
-//         </animated.p>
-//       </div>
-//       <div className="w-1/2">
-//         <button onClick={() => set(!open)}>Toggle</button>
-//         <p>State is {state}</p>
-//       </div>
-//     </div>
-//   )
-// }
+const SPRING_CONFIG = { tension: 275, clamp: true }
 
 export default function() {
   let [open, set] = React.useState(false)
-  // const [ref, bounds] = useMeasure()
-  // const previous = usePrevious(bounds.height)
 
   let state = open ? "open" : "closed"
 
   const openSpringRef = React.useRef()
   const openSpringTransitions = useTransition(state, null, {
-    config: { tension: 275, clamp: true },
+    config: SPRING_CONFIG,
     initial: { opacity: 1 },
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -89,7 +42,7 @@ export default function() {
 
   const closedSpringRef = React.useRef()
   const closedSpringTransitions = useTransition(state, null, {
-    config: { tension: 275, clamp: true },
+    config: SPRING_CONFIG,
     initial: { opacity: 1 },
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -98,96 +51,57 @@ export default function() {
     ref: closedSpringRef,
   })
 
+  let previousOpen = React.useRef(open)
+  React.useEffect(() => {
+    previousOpen.current = open
+  })
+  let openHasChanged = open !== previousOpen.current
+
   useChain(
-    open ? [closedSpringRef, openSpringRef] : [openSpringRef, closedSpringRef]
+    openHasChanged
+      ? open
+        ? [closedSpringRef, openSpringRef]
+        : [openSpringRef, closedSpringRef]
+      : []
   )
+
+  const [openRef, openBounds] = useMeasure()
+  const [closedRef, closedBounds] = useMeasure()
+  let finalHeight = open ? openBounds.height : closedBounds.height
+  let containerSpring = useSpring({
+    to: { height: finalHeight },
+    config: SPRING_CONFIG,
+  })
 
   return (
     <div className="flex">
       <div className="relative w-1/2">
-        {openSpringTransitions.map(
-          ({ item, key, props }) =>
-            item === "open" && (
-              <animated.div className="absolute" key={key} style={props}>
-                Open
-              </animated.div>
-            )
-        )}
-
-        {closedSpringTransitions.map(
-          ({ item, key, props }) =>
-            item === "closed" && (
-              <animated.div className="absolute" key={key} style={props}>
-                Closed
-              </animated.div>
-            )
-        )}
-
-        {/* <animated.p style={{ opacity: openSpring.opacity }}>Open</animated.p>
-        <animated.p style={{ opacity: closedSpring.opacity }}>
-          Closed
-        </animated.p> */}
-
-        {/* {transitions.map(
-          ({ item, key, props }) =>
-            key === "open" ? (
-              <animated.div key={key} style={props}>
-                Open
-              </animated.div>
-            ) : (
-              <animated.div key={key} style={props}>
-                Closed
-              </animated.div>
-            )
-        )} */}
-
-        {/* {closedTransition && (
-          <animated.div style={closedTransition.props}>0</animated.div>
-        )}
-        {openTransition && (
-          <animated.div style={openTransition.props}>1</animated.div>
-        )} */}
-
-        {/* {transitions.map(({ item, key, props }) =>
-          item && 
-
-          item ? (
-            <animated.div key={key} style={props}>
-              hello
-            </animated.div>
-          ) : (
-            <animated.div key={key} style={props}>
-              goodbye
-            </animated.div>
-          )
-        )} */}
-
-        {/* <animated.div className="overflow-hidden" style={{ height }}>
-          <div>
-            {transitions.map(
-              ({ item, key, props }) =>
-                item && (
-                  <animated.div key={key} style={props}>
-                    hello
-                  </animated.div>
-                )
-            )}
-            {!open ? (
-              <animated.p style={{ opacity: closedOpacity }}>
-                Short...
-              </animated.p>
-            ) : (
-              <animated.p style={{ opacity: openOpacity }}>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Tempore in, nemo recusandae ullam deleniti blanditiis dolore
-              </animated.p>
-            )}
-          </div>
-        </animated.div> */}
+        <animated.div style={containerSpring} className="overflow-hidden">
+          {closedSpringTransitions.map(
+            ({ item, key, props }) =>
+              item === "closed" && (
+                <animated.div className="absolute" key={key} style={props}>
+                  <div ref={closedRef}>Click to expand...</div>
+                </animated.div>
+              )
+          )}
+          {openSpringTransitions.map(
+            ({ item, key, props }) =>
+              item === "open" && (
+                <animated.div className="absolute" key={key} style={props}>
+                  <div ref={openRef}>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Illum quaerat cumque odio natus beatae rem sunt explicabo.
+                    Esse aliquam alias sint eius aliquid quisquam dolorum
+                    consequuntur unde id blanditiis? Ducimus.
+                  </div>
+                </animated.div>
+              )
+          )}
+        </animated.div>
       </div>
       <div className="w-1/2">
-        <button onClick={() => set(!open)}>Toggle</button>
-        <p>State is {state}</p>
+        <button onClick={() => set(!open)}>{open ? "Close" : "Open"}</button>
       </div>
     </div>
   )

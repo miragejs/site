@@ -29,65 +29,44 @@ export default function() {
 
   let state = open ? "open" : "closed"
 
-  const openSpringRef = React.useRef()
-  const openSpringTransitions = useTransition(state, null, {
+  const toggleTransitions = useTransition(state, null, {
     config: SPRING_CONFIG,
-    initial: { opacity: 1 },
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
+    initial: null,
+    from: { x: 0, opacity: 0 },
+    enter: [{ x: 1 }, { opacity: 1 }],
+    leave: [{ opacity: 0 }, { x: 0 }],
     unique: true,
-    ref: openSpringRef,
   })
-
-  const closedSpringRef = React.useRef()
-  const closedSpringTransitions = useTransition(state, null, {
-    config: SPRING_CONFIG,
-    initial: { opacity: 1 },
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-    unique: true,
-    ref: closedSpringRef,
-  })
-
-  useChain(
-    open ? [closedSpringRef, openSpringRef] : [openSpringRef, closedSpringRef]
-  )
 
   const [openRef, openBounds] = useMeasure()
   const [closedRef, closedBounds] = useMeasure()
   let finalHeight = open ? openBounds.height : closedBounds.height
   let containerSpring = useSpring({
     to: { height: finalHeight },
-    config: SPRING_CONFIG,
+    config: { ...SPRING_CONFIG, tension: 200 },
   })
 
   return (
     <div className="flex">
       <div className="relative w-1/2">
         <animated.div style={containerSpring} className="overflow-hidden">
-          {closedSpringTransitions.map(
-            ({ item, key, props }) =>
-              item === "closed" && (
-                <animated.div className="absolute" key={key} style={props}>
-                  <div ref={closedRef}>Click to expand...</div>
-                </animated.div>
-              )
-          )}
-          {openSpringTransitions.map(
-            ({ item, key, props }) =>
-              item === "open" && (
-                <animated.div className="absolute" key={key} style={props}>
-                  <div ref={openRef}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Illum quaerat cumque odio natus beatae rem sunt explicabo.
-                    Esse aliquam alias sint eius aliquid quisquam dolorum
-                    consequuntur unde id blanditiis? Ducimus.
-                  </div>
-                </animated.div>
-              )
-          )}
+          {toggleTransitions.map(({ item, key, props }) => (
+            <animated.div className="absolute" style={props} key={key}>
+              {item === "open" ? (
+                <p ref={openRef}>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Vitae, voluptatum consectetur. Similique quae sed nulla quod,
+                  illo sequi qui optio, fugit dicta nostrum praesentium nam
+                  ipsam deleniti at quisquam nobis.
+                </p>
+              ) : (
+                <p ref={closedRef}>
+                  Lorem ipsum dolor sit amet consectetur Lorem ipsum dolor sit
+                  amet consectetur
+                </p>
+              )}
+            </animated.div>
+          ))}
         </animated.div>
       </div>
       <div className="w-1/2">

@@ -10,58 +10,7 @@ let isEmailValid = function(email) {
 }
 
 const SPRING_CONFIG = { tension: 275, clamp: true }
-
-function Example() {
-  let [open, set] = React.useState(false)
-
-  let state = open ? "open" : "closed"
-
-  const toggleTransitions = useTransition(state, null, {
-    config: SPRING_CONFIG,
-    initial: null,
-    from: { x: 0, opacity: 0 },
-    enter: [{ x: 1 }, { opacity: 1 }],
-    leave: [{ opacity: 0 }, { x: 0 }],
-    unique: true,
-  })
-
-  const [openRef, openBounds] = useMeasure()
-  const [closedRef, closedBounds] = useMeasure()
-  let finalHeight = open ? openBounds.height : closedBounds.height
-  let containerSpring = useSpring({
-    to: { height: finalHeight },
-    config: { ...SPRING_CONFIG, tension: 200 },
-  })
-
-  return (
-    <div className="flex">
-      <div className="relative w-1/2">
-        <animated.div style={containerSpring} className="overflow-hidden">
-          {toggleTransitions.map(({ item, key, props }) => (
-            <animated.div className="absolute" style={props} key={key}>
-              {item === "open" ? (
-                <p ref={openRef}>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Vitae, voluptatum consectetur. Similique quae sed nulla quod,
-                  illo sequi qui optio, fugit dicta nostrum praesentium nam
-                  ipsam deleniti at quisquam nobis.
-                </p>
-              ) : (
-                <p ref={closedRef}>
-                  Lorem ipsum dolor sit amet consectetur Lorem ipsum dolor sit
-                  amet consectetur
-                </p>
-              )}
-            </animated.div>
-          ))}
-        </animated.div>
-      </div>
-      <div className="w-1/2">
-        <button onClick={() => set(!open)}>{open ? "Close" : "Open"}</button>
-      </div>
-    </div>
-  )
-}
+// const SPRING_CONFIG = { duration: 500 }
 
 export default function() {
   // configure
@@ -87,6 +36,12 @@ export default function() {
   let isError = formState === "error"
   let didSignup = formState === "finished"
 
+  React.useEffect(() => {
+    window.toggle = () => {
+      setFormState(formState === "finished" ? "" : "finished")
+    }
+  })
+
   // animation
   const toggleTransitions = useTransition(didSignup, null, {
     config: SPRING_CONFIG,
@@ -99,11 +54,28 @@ export default function() {
 
   const [formRef, formBounds] = useMeasure()
   const [thankyouRef, thankyouBounds] = useMeasure()
-  let finalHeight = didSignup ? thankyouBounds.height : formBounds.height
+
+  // let finalHeight = didSignup ? thankyouBounds.height : formBounds.height
+
+  let finalHeight
+
+  if (formBounds.height === 0 && thankyouBounds.height === 0) {
+    finalHeight = "auto"
+  } else if (formBounds.height === 0 && thankyouBounds.height !== 0) {
+    finalHeight = thankyouBounds.height
+  } else if (thankyouBounds.height === 0 && formBounds.height !== 0) {
+    finalHeight = formBounds.height
+  } else {
+    finalHeight = didSignup ? thankyouBounds.height : formBounds.height
+  }
+
   let containerSpring = useSpring({
-    to: { height: finalHeight },
-    config: { ...SPRING_CONFIG, tension: 200 },
+    to: didSignup
+      ? [{ x: 1 }, { height: finalHeight }]
+      : [{ height: finalHeight }, { x: 0 }],
+    config: SPRING_CONFIG,
   })
+
   console.log(finalHeight)
 
   function handleChange(event) {

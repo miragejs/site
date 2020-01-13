@@ -87,6 +87,25 @@ export default function() {
   let isError = formState === "error"
   let didSignup = formState === "finished"
 
+  // animation
+  const toggleTransitions = useTransition(didSignup, null, {
+    config: SPRING_CONFIG,
+    initial: null,
+    from: { x: 0, opacity: 0 },
+    enter: [{ x: 1 }, { opacity: 1 }],
+    leave: [{ opacity: 0 }, { x: 0 }],
+    unique: true,
+  })
+
+  const [formRef, formBounds] = useMeasure()
+  const [thankyouRef, thankyouBounds] = useMeasure()
+  let finalHeight = didSignup ? thankyouBounds.height : formBounds.height
+  let containerSpring = useSpring({
+    to: { height: finalHeight },
+    config: { ...SPRING_CONFIG, tension: 200 },
+  })
+  console.log(finalHeight)
+
   function handleChange(event) {
     event.preventDefault()
 
@@ -139,45 +158,55 @@ export default function() {
     }
   }
 
-  return !didSignup ? (
-    <div>
-      <p className="text-sm text-white md:text-base">
-        Sign up for occasional project updates:
-      </p>
-      <div className="mt-3">
-        <form onSubmit={handleSubmit}>
-          <div className="flex shadow-black">
-            <input
-              type="email"
-              required
-              name="email_address"
-              value={email}
-              disabled={isSaving}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700"
-            />
-            <Button isRunning={isSaving}>Subscribe</Button>
-          </div>
-          {isError && (
-            <div className="mt-5">
-              {error === "serverError" &&
-                "Woops — something's wrong with our signup form 😔. Please try again."}
-              {error === "invalidEmail" &&
-                "Oops — that's an invalid email address!"}
-              {error === "noEmail" && "Please fill out your email address!"}
+  return (
+    <animated.div style={containerSpring} className="relative overflow-hidden">
+      {/* <animated.div className="relative"> */}
+      {toggleTransitions.map(({ item, key, props }) => (
+        <animated.div className="absolute w-full" style={props} key={key}>
+          {!item ? (
+            <div ref={formRef}>
+              <p className="text-sm text-white md:text-base">
+                Sign up for occasional project updates:
+              </p>
+              <div className="mt-3">
+                <form onSubmit={handleSubmit}>
+                  <div className="flex shadow-black">
+                    <input
+                      type="email"
+                      required
+                      name="email_address"
+                      value={email}
+                      disabled={isSaving}
+                      onChange={handleChange}
+                      placeholder="Enter your email"
+                      className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700"
+                    />
+                    <Button isRunning={isSaving}>Subscribe</Button>
+                  </div>
+                  {isError && (
+                    <div className="mt-5">
+                      {error === "serverError" &&
+                        "Woops — something's wrong with our signup form 😔. Please try again."}
+                      {error === "invalidEmail" &&
+                        "Oops — that's an invalid email address!"}
+                      {error === "noEmail" &&
+                        "Please fill out your email address!"}
+                    </div>
+                  )}
+                </form>
+              </div>
+            </div>
+          ) : (
+            <div className="text-gray-500" ref={thankyouRef}>
+              <p>
+                Thanks <span className="text-white">{email}</span>! Check your
+                email soon to confirm your address.
+              </p>
             </div>
           )}
-        </form>
-      </div>
-    </div>
-  ) : (
-    <div className="text-gray-500">
-      <p>
-        Thanks <span className="text-white">{email}</span>! Check your email
-        soon to confirm your address.
-      </p>
-    </div>
+        </animated.div>
+      ))}
+    </animated.div>
   )
 }
 

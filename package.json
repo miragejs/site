@@ -50,7 +50,7 @@
     "source-map-support": "^0.5.16",
     "tailwindcss": "^1.1.4",
     "tmp": "^0.1.0",
-    "ts-node": "^8.6.1"
+    "ts-node": "^8.6.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",

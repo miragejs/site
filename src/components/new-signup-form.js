@@ -10,7 +10,6 @@ let isEmailValid = function(email) {
 }
 
 const SPRING_CONFIG = { tension: 275, clamp: true }
-// const SPRING_CONFIG = { duration: 500 }
 
 export default function() {
   // configure
@@ -41,36 +40,6 @@ export default function() {
       setFormState(formState === "finished" ? "" : "finished")
     }
   })
-
-  // const [trueBlockRef, trueBlockBounds] = useMeasure()
-  // const [falseBlockRef, falseBlockBounds] = useMeasure()
-
-  // let falseBlockShowing = {
-  //   height: falseBlockBounds.height || "auto",
-  //   falseBlockOpacity: 1,
-  //   trueBlockOpacity: 0,
-  // }
-
-  // let trueBlockShowing = {
-  //   height: trueBlockBounds.height || "auto",
-  //   falseBlockOpacity: 0,
-  //   trueBlockOpacity: 1,
-  // }
-
-  // let from = didSignup ? trueBlockShowing : falseBlockShowing
-
-  // let falseToTrue = [{ falseBlockOpacity: 0 }, trueBlockShowing]
-  // let trueToFalse = [
-  //   { trueBlockOpacity: 0, height: falseBlockBounds.height || "auto" },
-  //   falseBlockShowing,
-  // ]
-  // let to = didSignup ? falseToTrue : trueToFalse
-
-  // let { height, falseBlockOpacity, trueBlockOpacity } = useSpring({
-  //   from,
-  //   to,
-  //   config: SPRING_CONFIG,
-  // })
 
   function handleChange(event) {
     event.preventDefault()
@@ -127,86 +96,45 @@ export default function() {
   return (
     <FadeBetween state={didSignup}>
       <State for={true}>
-        <p>Hi! It's true.</p>
-      </State>
-      <State for={false}>
-        <p>
-          Nope it's false. Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit. Dicta voluptatibus perspiciatis, vitae eos vel ab debitis
-          mollitia, saepe, et ad sunt laborum! Soluta ratione quam voluptas
-          atque necessitatibus. Perspiciatis, voluptatum!
+        <p className="text-gray-500">
+          Thanks <span className="text-white">{email}</span>! Check your email
+          soon to confirm your address.
         </p>
+      </State>
+
+      <State for={false}>
+        <p className="text-sm text-white md:text-base">
+          Sign up for occasional project updates:
+        </p>
+        <div className="mt-3">
+          <form onSubmit={handleSubmit}>
+            <div className="flex shadow-black">
+              <input
+                type="email"
+                required
+                name="email_address"
+                value={email}
+                disabled={isSaving}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700"
+              />
+              <Button isRunning={isSaving}>Subscribe</Button>
+            </div>
+            {isError && (
+              <div className="mt-5">
+                {error === "serverError" &&
+                  "Woops — something's wrong with our signup form 😔. Please try again."}
+                {error === "invalidEmail" &&
+                  "Oops — that's an invalid email address!"}
+                {error === "noEmail" && "Please fill out your email address!"}
+              </div>
+            )}
+          </form>
+        </div>
       </State>
     </FadeBetween>
   )
-
-  // return (
-  //   <FadeBetween value={didSignup}>
-  //     {value =>
-  //       value ? (
-  //         <p>hi its true</p>
-  //       ) : (
-  //         <p>
-  //           nope its false. Lorem ipsum dolor sit amet, consectetur adipisicing
-  //           elit. Dicta voluptatibus perspiciatis, vitae eos vel ab debitis
-  //           mollitia, saepe, et ad sunt laborum! Soluta ratione quam voluptas
-  //           atque necessitatibus. Perspiciatis, voluptatum!
-  //         </p>
-  //       )
-  //     }
-  //   </FadeBetween>
-  // )
-
-  // return (
-  //   <animated.div style={{ height }} className="relative overflow-hidden">
-  //     <animated.div
-  //       style={{ opacity: falseBlockOpacity }}
-  //       ref={falseBlockRef}
-  //       className="absolute w-full"
-  //     >
-  //       <p className="text-sm text-white md:text-base">
-  //         Sign up for occasional project updates:
-  //       </p>
-  //       <div className="mt-3">
-  //         <form onSubmit={handleSubmit}>
-  //           <div className="flex shadow-black">
-  //             <input
-  //               type="email"
-  //               required
-  //               name="email_address"
-  //               value={email}
-  //               disabled={isSaving}
-  //               onChange={handleChange}
-  //               placeholder="Enter your email"
-  //               className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700"
-  //             />
-  //             <Button isRunning={isSaving}>Subscribe</Button>
-  //           </div>
-  //           {isError && (
-  //             <div className="mt-5">
-  //               {error === "serverError" &&
-  //                 "Woops — something's wrong with our signup form 😔. Please try again."}
-  //               {error === "invalidEmail" &&
-  //                 "Oops — that's an invalid email address!"}
-  //               {error === "noEmail" && "Please fill out your email address!"}
-  //             </div>
-  //           )}
-  //         </form>
-  //       </div>
-  //     </animated.div>
-
-  //     <animated.div
-  //       ref={trueBlockRef}
-  //       className="absolute w-full"
-  //       style={{ opacity: trueBlockOpacity }}
-  //     >
-  //       <p className="text-gray-500">
-  //         Thanks <span className="text-white">{email}</span>! Check your email
-  //         soon to confirm your address.
-  //       </p>
-  //     </animated.div>
-  //   </animated.div>
-  // )
 }
 
 function useWindowWidth() {
@@ -345,52 +273,6 @@ function Button({ isRunning = false, children }) {
     </button>
   )
 }
-
-// function FadeBetween({ value, children }) {
-//   const [trueBlockRef, trueBlockBounds] = useMeasure()
-//   const [falseBlockRef, falseBlockBounds] = useMeasure()
-//   let falseBlockShowing = {
-//     height: falseBlockBounds.height || "auto",
-//     falseBlockOpacity: 1,
-//     trueBlockOpacity: 0,
-//   }
-//   let trueBlockShowing = {
-//     height: trueBlockBounds.height || "auto",
-//     falseBlockOpacity: 0,
-//     trueBlockOpacity: 1,
-//   }
-//   let from = value ? trueBlockShowing : falseBlockShowing
-//   let falseToTrue = [{ falseBlockOpacity: 0 }, trueBlockShowing]
-//   let trueToFalse = [
-//     { trueBlockOpacity: 0, height: falseBlockBounds.height || "auto" },
-//     falseBlockShowing,
-//   ]
-//   let to = value ? falseToTrue : trueToFalse
-//   let { height, falseBlockOpacity, trueBlockOpacity } = useSpring({
-//     from,
-//     to,
-//     config: SPRING_CONFIG,
-//   })
-
-//   return (
-//     <animated.div style={{ height }} className="relative overflow-hidden">
-//       <animated.div
-//         ref={falseBlockRef}
-//         style={{ opacity: falseBlockOpacity }}
-//         className="absolute w-full"
-//       >
-//         {children(true)}
-//       </animated.div>
-//       <animated.div
-//         ref={trueBlockRef}
-//         style={{ opacity: trueBlockOpacity }}
-//         className="absolute w-full"
-//       >
-//         {children(false)}
-//       </animated.div>
-//     </animated.div>
-//   )
-// }
 
 function FadeBetween({ state, children }) {
   const [falseBlockBoundsHeight, setFalseBlockBoundsHeight] = useState("auto")

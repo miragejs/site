@@ -95,13 +95,6 @@ export default function() {
 
   return (
     <FadeBetween state={didSignup}>
-      <State for={true}>
-        <p className="text-gray-500">
-          Thanks <span className="text-white">{email}</span>! Check your email
-          soon to confirm your address.
-        </p>
-      </State>
-
       <State for={false}>
         <p className="text-sm text-white md:text-base">
           Sign up for occasional project updates:
@@ -132,6 +125,13 @@ export default function() {
             )}
           </form>
         </div>
+      </State>
+
+      <State for={true}>
+        <p className="text-gray-500">
+          Thanks <span className="text-white">{email}</span>! Check your email
+          soon to confirm your address.
+        </p>
       </State>
     </FadeBetween>
   )
@@ -278,6 +278,11 @@ function FadeBetween({ state, children }) {
   const [falseBlockBoundsHeight, setFalseBlockBoundsHeight] = useState("auto")
   const [trueBlockBoundsHeight, setTrueBlockBoundsHeight] = useState("auto")
 
+  let heights = {
+    false: falseBlockBoundsHeight,
+    true: trueBlockBoundsHeight,
+  }
+
   let falseBlockShowing = {
     height: falseBlockBoundsHeight,
     falseBlockOpacity: 1,
@@ -286,18 +291,21 @@ function FadeBetween({ state, children }) {
 
   let trueBlockShowing = {
     height: trueBlockBoundsHeight,
-    falseBlockOpacity: 0,
     trueBlockOpacity: 1,
+    falseBlockOpacity: 0,
   }
 
   let from = state ? trueBlockShowing : falseBlockShowing
 
   let falseToTrue = [{ falseBlockOpacity: 0 }, trueBlockShowing]
-  let trueToFalse = [
-    { trueBlockOpacity: 0, height: trueBlockBoundsHeight || "auto" },
-    falseBlockShowing,
-  ]
+  let trueToFalse = [{ trueBlockOpacity: 0 }, falseBlockShowing]
+
   let to = state ? falseToTrue : trueToFalse
+
+  // Adjust the height in the first frame if the final contents are larger than initial contents
+  let finalHeight = heights[state]
+  let initialHeight = heights[!state]
+  to[0].height = finalHeight > initialHeight ? finalHeight : initialHeight
 
   let { height, falseBlockOpacity, trueBlockOpacity } = useSpring({
     from,
@@ -305,13 +313,14 @@ function FadeBetween({ state, children }) {
     config: SPRING_CONFIG,
   })
 
-  const childrenWithProps = React.Children.map(children, (child, i) =>
+  const childrenWithProps = React.Children.map(children, child =>
     React.cloneElement(child, {
       cb: height =>
-        i === 0
+        child.props.for === true
           ? setTrueBlockBoundsHeight(height)
           : setFalseBlockBoundsHeight(height),
-      animatedOpacity: i === 0 ? trueBlockOpacity : falseBlockOpacity,
+      animatedOpacity:
+        child.props.for === true ? trueBlockOpacity : falseBlockOpacity,
     })
   )
 

@@ -274,7 +274,14 @@ function Button({ isRunning = false, children }) {
   )
 }
 
+export function usePrevious(value) {
+  const ref = useRef()
+  useEffect(() => void (ref.current = value), [value])
+  return ref.current
+}
+
 function FadeBetween({ state, children }) {
+  const prev = usePrevious(state)
   const [falseBlockBoundsHeight, setFalseBlockBoundsHeight] = useState("auto")
   const [trueBlockBoundsHeight, setTrueBlockBoundsHeight] = useState("auto")
 
@@ -286,16 +293,12 @@ function FadeBetween({ state, children }) {
   let falseBlockShowing = {
     height: falseBlockBoundsHeight,
     falseBlockOpacity: 1,
-    trueBlockOpacity: 0,
   }
 
   let trueBlockShowing = {
     height: trueBlockBoundsHeight,
     trueBlockOpacity: 1,
-    falseBlockOpacity: 0,
   }
-
-  let from = state ? trueBlockShowing : falseBlockShowing
 
   let falseToTrue = [{ falseBlockOpacity: 0 }, trueBlockShowing]
   let trueToFalse = [{ trueBlockOpacity: 0 }, falseBlockShowing]
@@ -303,15 +306,19 @@ function FadeBetween({ state, children }) {
   let to = state ? falseToTrue : trueToFalse
 
   // Adjust the height in the first frame if the final contents are larger than initial contents
-  let finalHeight = heights[state]
-  let initialHeight = heights[!state]
-  to[0].height = finalHeight > initialHeight ? finalHeight : initialHeight
+  if (prev !== state) {
+    let finalHeight = heights[state]
+    let initialHeight = heights[!state]
+    to[0].height = finalHeight > initialHeight ? finalHeight : initialHeight
+  }
 
   let { height, falseBlockOpacity, trueBlockOpacity } = useSpring({
-    from,
     to,
+    immediate: prev === state,
     config: SPRING_CONFIG,
   })
+
+  console.log(JSON.stringify({ to }, null, 2))
 
   const childrenWithProps = React.Children.map(children, child =>
     React.cloneElement(child, {

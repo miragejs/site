@@ -1,6 +1,6 @@
 import { ReactComponent as Spinner } from "../assets/images/loading-spinner.svg"
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react"
-import { animated, useSpring, useTransition } from "react-spring"
+import { animated, useSpring } from "react-spring"
 import useMeasure from "react-use-measure"
 
 let isEmailValid = function(email) {
@@ -317,8 +317,6 @@ function FadeBetween({ state, children }) {
     immediate: prev === state,
     config: SPRING_CONFIG,
   })
-
-  console.log(JSON.stringify({ to }, null, 2))
 
   const childrenWithProps = React.Children.map(children, child =>
     React.cloneElement(child, {

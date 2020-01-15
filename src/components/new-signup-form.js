@@ -42,41 +42,35 @@ export default function() {
     }
   })
 
-  // animation
-  const toggleTransitions = useTransition(didSignup, null, {
-    config: SPRING_CONFIG,
-    initial: null,
-    from: { x: 0, opacity: 0 },
-    enter: [{ x: 1 }, { opacity: 1 }],
-    leave: [{ opacity: 0 }, { x: 0 }],
-    unique: true,
-  })
+  // const [trueBlockRef, trueBlockBounds] = useMeasure()
+  // const [falseBlockRef, falseBlockBounds] = useMeasure()
 
-  const [formRef, formBounds] = useMeasure()
-  const [thankyouRef, thankyouBounds] = useMeasure()
+  // let falseBlockShowing = {
+  //   height: falseBlockBounds.height || "auto",
+  //   falseBlockOpacity: 1,
+  //   trueBlockOpacity: 0,
+  // }
 
-  // let finalHeight = didSignup ? thankyouBounds.height : formBounds.height
+  // let trueBlockShowing = {
+  //   height: trueBlockBounds.height || "auto",
+  //   falseBlockOpacity: 0,
+  //   trueBlockOpacity: 1,
+  // }
 
-  let finalHeight
+  // let from = didSignup ? trueBlockShowing : falseBlockShowing
 
-  if (formBounds.height === 0 && thankyouBounds.height === 0) {
-    finalHeight = "auto"
-  } else if (formBounds.height === 0 && thankyouBounds.height !== 0) {
-    finalHeight = thankyouBounds.height
-  } else if (thankyouBounds.height === 0 && formBounds.height !== 0) {
-    finalHeight = formBounds.height
-  } else {
-    finalHeight = didSignup ? thankyouBounds.height : formBounds.height
-  }
+  // let falseToTrue = [{ falseBlockOpacity: 0 }, trueBlockShowing]
+  // let trueToFalse = [
+  //   { trueBlockOpacity: 0, height: falseBlockBounds.height || "auto" },
+  //   falseBlockShowing,
+  // ]
+  // let to = didSignup ? falseToTrue : trueToFalse
 
-  let containerSpring = useSpring({
-    to: didSignup
-      ? [{ x: 1 }, { height: finalHeight }]
-      : [{ height: finalHeight }, { x: 0 }],
-    config: SPRING_CONFIG,
-  })
-
-  console.log(finalHeight)
+  // let { height, falseBlockOpacity, trueBlockOpacity } = useSpring({
+  //   from,
+  //   to,
+  //   config: SPRING_CONFIG,
+  // })
 
   function handleChange(event) {
     event.preventDefault()
@@ -131,53 +125,70 @@ export default function() {
   }
 
   return (
-    <animated.div style={containerSpring} className="relative overflow-hidden">
-      {/* <animated.div className="relative"> */}
-      {toggleTransitions.map(({ item, key, props }) => (
-        <animated.div className="absolute w-full" style={props} key={key}>
-          {!item ? (
-            <div ref={formRef}>
-              <p className="text-sm text-white md:text-base">
-                Sign up for occasional project updates:
-              </p>
-              <div className="mt-3">
-                <form onSubmit={handleSubmit}>
-                  <div className="flex shadow-black">
-                    <input
-                      type="email"
-                      required
-                      name="email_address"
-                      value={email}
-                      disabled={isSaving}
-                      onChange={handleChange}
-                      placeholder="Enter your email"
-                      className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700"
-                    />
-                    <Button isRunning={isSaving}>Subscribe</Button>
-                  </div>
-                  {isError && (
-                    <div className="mt-5">
-                      {error === "serverError" &&
-                        "Woops — something's wrong with our signup form 😔. Please try again."}
-                      {error === "invalidEmail" &&
-                        "Oops — that's an invalid email address!"}
-                      {error === "noEmail" &&
-                        "Please fill out your email address!"}
-                    </div>
-                  )}
-                </form>
+    <FadeBetweenValues value={didSignup}>
+      {value =>
+        value ? (
+          <p>hi its true</p>
+        ) : (
+          <p>
+            nope its false. Lorem ipsum dolor sit amet, consectetur adipisicing
+            elit. Dicta voluptatibus perspiciatis, vitae eos vel ab debitis
+            mollitia, saepe, et ad sunt laborum! Soluta ratione quam voluptas
+            atque necessitatibus. Perspiciatis, voluptatum!
+          </p>
+        )
+      }
+    </FadeBetweenValues>
+  )
+
+  return (
+    <animated.div style={{ height }} className="relative overflow-hidden">
+      <animated.div
+        style={{ opacity: falseBlockOpacity }}
+        ref={falseBlockRef}
+        className="absolute w-full"
+      >
+        <p className="text-sm text-white md:text-base">
+          Sign up for occasional project updates:
+        </p>
+        <div className="mt-3">
+          <form onSubmit={handleSubmit}>
+            <div className="flex shadow-black">
+              <input
+                type="email"
+                required
+                name="email_address"
+                value={email}
+                disabled={isSaving}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700"
+              />
+              <Button isRunning={isSaving}>Subscribe</Button>
+            </div>
+            {isError && (
+              <div className="mt-5">
+                {error === "serverError" &&
+                  "Woops — something's wrong with our signup form 😔. Please try again."}
+                {error === "invalidEmail" &&
+                  "Oops — that's an invalid email address!"}
+                {error === "noEmail" && "Please fill out your email address!"}
               </div>
-            </div>
-          ) : (
-            <div className="text-gray-500" ref={thankyouRef}>
-              <p>
-                Thanks <span className="text-white">{email}</span>! Check your
-                email soon to confirm your address.
-              </p>
-            </div>
-          )}
-        </animated.div>
-      ))}
+            )}
+          </form>
+        </div>
+      </animated.div>
+
+      <animated.div
+        ref={trueBlockRef}
+        className="absolute w-full"
+        style={{ opacity: trueBlockOpacity }}
+      >
+        <p className="text-gray-500">
+          Thanks <span className="text-white">{email}</span>! Check your email
+          soon to confirm your address.
+        </p>
+      </animated.div>
     </animated.div>
   )
 }
@@ -316,5 +327,51 @@ function Button({ isRunning = false, children }) {
         <Spinner className="w-4 h-4 loading" />
       </span>
     </button>
+  )
+}
+
+function FadeBetweenValues({ value, children }) {
+  const [trueBlockRef, trueBlockBounds] = useMeasure()
+  const [falseBlockRef, falseBlockBounds] = useMeasure()
+  let falseBlockShowing = {
+    height: falseBlockBounds.height || "auto",
+    falseBlockOpacity: 1,
+    trueBlockOpacity: 0,
+  }
+  let trueBlockShowing = {
+    height: trueBlockBounds.height || "auto",
+    falseBlockOpacity: 0,
+    trueBlockOpacity: 1,
+  }
+  let from = value ? trueBlockShowing : falseBlockShowing
+  let falseToTrue = [{ falseBlockOpacity: 0 }, trueBlockShowing]
+  let trueToFalse = [
+    { trueBlockOpacity: 0, height: falseBlockBounds.height || "auto" },
+    falseBlockShowing,
+  ]
+  let to = value ? falseToTrue : trueToFalse
+  let { height, falseBlockOpacity, trueBlockOpacity } = useSpring({
+    from,
+    to,
+    config: SPRING_CONFIG,
+  })
+
+  return (
+    <animated.div style={{ height }} className="relative overflow-hidden">
+      <animated.div
+        ref={falseBlockRef}
+        style={{ opacity: falseBlockOpacity }}
+        className="absolute w-full"
+      >
+        {children(true)}
+      </animated.div>
+      <animated.div
+        ref={trueBlockRef}
+        style={{ opacity: trueBlockOpacity }}
+        className="absolute w-full"
+      >
+        {children(false)}
+      </animated.div>
+    </animated.div>
   )
 }

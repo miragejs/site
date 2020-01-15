@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from "react"
 import { ReactComponent as Spinner } from "../assets/images/loading-spinner.svg"
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react"
+import { animated, useSpring } from "react-spring"
+import useMeasure from "react-use-measure"
 
 let isEmailValid = function(email) {
   // eslint-disable-next-line
@@ -7,9 +9,10 @@ let isEmailValid = function(email) {
   return re.test(email)
 }
 
-export default function SignupForm() {
+const SPRING_CONFIG = { tension: 275, clamp: true }
+
+export default function() {
   // configure
-  let fadeOutInDelay = 0.4
   let feedbackDelay = 900
 
   // state
@@ -17,8 +20,6 @@ export default function SignupForm() {
   let [email, setEmail] = useState("")
   let [error, _setError] = useState("")
   let [formState, setFormState] = useState("")
-  let [isShowingThankYou, setIsShowingThankYou] = useState(false)
-  let [thankYouHeight, setThankYouHeight] = useState(0)
 
   let setError = function(type) {
     _setError(type)
@@ -33,6 +34,12 @@ export default function SignupForm() {
   let isSaving = formState === "saving"
   let isError = formState === "error"
   let didSignup = formState === "finished"
+
+  React.useEffect(() => {
+    window.toggle = () => {
+      setFormState(formState === "finished" ? "" : "finished")
+    }
+  })
 
   function handleChange(event) {
     event.preventDefault()
@@ -86,70 +93,47 @@ export default function SignupForm() {
     }
   }
 
-  let handleTransitionEnd = function(e) {
-    // not really sure how to best do this
-    if (!isShowingThankYou && e.target.tagName === "FORM") {
-      setIsShowingThankYou(true)
-      setThankYouHeight(e.target.offsetHeight)
-    }
-  }
-
-  let isAnimatingFormOut = didSignup && !isShowingThankYou
-
   return (
-    <div className="relative">
-      {didSignup && (
-        <div
-          className={`text-gray-500 ${isAnimatingFormOut ? "absolute" : ""} ${
-            isShowingThankYou ? "opacity-100" : "opacity-0"
-          }`}
-          style={{
-            height: `${thankYouHeight}px`,
-            transition: `opacity ${fadeOutInDelay}s`,
-          }}
-        >
-          <p>
-            Thanks <span className="text-white">{email}</span>! Check your email
-            soon to confirm your address.
-          </p>
-        </div>
-      )}
-
-      {(!didSignup || isAnimatingFormOut) && (
-        <form
-          onSubmit={handleSubmit}
-          className={didSignup ? "opacity-0" : "opacity-100"}
-          style={{
-            transition: `opacity ${fadeOutInDelay}s`,
-          }}
-          onTransitionEnd={e => handleTransitionEnd(e)}
-        >
-          <div className="flex shadow-black">
-            <input
-              type="email"
-              required
-              name="email_address"
-              value={email}
-              disabled={isSaving}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700"
-            />
-            <Button isRunning={didSignup || isSaving}>Subscribe</Button>
-            {/* <Button isRunning={true}>Subscribe</Button> */}
-          </div>
-          {isError && (
-            <div className="mt-5">
-              {error === "serverError" &&
-                "Woops — something's wrong with our signup form 😔. Please try again."}
-              {error === "invalidEmail" &&
-                "Oops — that's an invalid email address!"}
-              {error === "noEmail" && "Please fill out your email address!"}
+    <FadeBetween state={didSignup}>
+      <State for={false}>
+        <p className="text-sm text-white md:text-base">
+          Sign up for occasional project updates:
+        </p>
+        <div className="mt-3">
+          <form onSubmit={handleSubmit}>
+            <div className="flex shadow-black">
+              <input
+                type="email"
+                required
+                name="email_address"
+                value={email}
+                disabled={isSaving}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700"
+              />
+              <Button isRunning={isSaving}>Subscribe</Button>
             </div>
-          )}
-        </form>
-      )}
-    </div>
+            {isError && (
+              <div className="mt-5">
+                {error === "serverError" &&
+                  "Woops — something's wrong with our signup form 😔. Please try again."}
+                {error === "invalidEmail" &&
+                  "Oops — that's an invalid email address!"}
+                {error === "noEmail" && "Please fill out your email address!"}
+              </div>
+            )}
+          </form>
+        </div>
+      </State>
+
+      <State for={true}>
+        <p className="text-gray-500">
+          Thanks <span className="text-white">{email}</span>! Check your email
+          soon to confirm your address.
+        </p>
+      </State>
+    </FadeBetween>
   )
 }
 
@@ -287,5 +271,84 @@ function Button({ isRunning = false, children }) {
         <Spinner className="w-4 h-4 loading" />
       </span>
     </button>
+  )
+}
+
+export function usePrevious(value) {
+  const ref = useRef()
+  useEffect(() => void (ref.current = value), [value])
+  return ref.current
+}
+
+function FadeBetween({ state, children }) {
+  const prev = usePrevious(state)
+  const [falseBlockBoundsHeight, setFalseBlockBoundsHeight] = useState("auto")
+  const [trueBlockBoundsHeight, setTrueBlockBoundsHeight] = useState("auto")
+
+  let heights = {
+    false: falseBlockBoundsHeight,
+    true: trueBlockBoundsHeight,
+  }
+
+  let falseBlockShowing = {
+    height: falseBlockBoundsHeight,
+    falseBlockOpacity: 1,
+  }
+
+  let trueBlockShowing = {
+    height: trueBlockBoundsHeight,
+    trueBlockOpacity: 1,
+  }
+
+  let falseToTrue = [{ falseBlockOpacity: 0 }, trueBlockShowing]
+  let trueToFalse = [{ trueBlockOpacity: 0 }, falseBlockShowing]
+
+  let to = state ? falseToTrue : trueToFalse
+
+  // Adjust the height in the first frame if the final contents are larger than initial contents
+  if (prev !== state) {
+    let finalHeight = heights[state]
+    let initialHeight = heights[!state]
+    to[0].height = finalHeight > initialHeight ? finalHeight : initialHeight
+  }
+
+  let { height, falseBlockOpacity, trueBlockOpacity } = useSpring({
+    to,
+    immediate: prev === state,
+    config: SPRING_CONFIG,
+  })
+
+  const childrenWithProps = React.Children.map(children, child =>
+    React.cloneElement(child, {
+      cb: height =>
+        child.props.for === true
+          ? setTrueBlockBoundsHeight(height)
+          : setFalseBlockBoundsHeight(height),
+      animatedOpacity:
+        child.props.for === true ? trueBlockOpacity : falseBlockOpacity,
+    })
+  )
+
+  return (
+    <animated.div style={{ height }} className="relative overflow-hidden">
+      {childrenWithProps}
+    </animated.div>
+  )
+}
+
+function State({ cb, animatedOpacity, children }) {
+  const [ref, bounds] = useMeasure()
+  if (bounds.height > 0) {
+    cb(bounds.height)
+  }
+
+  return (
+    <animated.div
+      ref={ref}
+      style={{ opacity: animatedOpacity }}
+      className="absolute w-full"
+    >
+      {children}
+    </animated.div>
   )
 }

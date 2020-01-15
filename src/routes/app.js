@@ -13,7 +13,6 @@ import { useRouter } from "../hooks/use-router"
 import { useTheme } from "../hooks/use-theme"
 import SEO from "../components/seo"
 import SignupForm from "../components/signup-form"
-import NewSignupForm from "../components/new-signup-form"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -397,13 +396,7 @@ function Footer() {
 
         <div className="md:flex">
           <div className="md:w-3/4 xl:w-1/2">
-            <NewSignupForm />
-            {/* <p className="text-sm text-white md:text-base">
-              Sign up for occasional project updates:
-            </p>
-            <div className="mt-3">
-              <SignupForm />
-            </div> */}
+            <SignupForm />
           </div>
 
           <div className="flex justify-center mt-16 md:items-end md:w-1/4 md:mt-0 md:justify-end xl:ml-auto">

@@ -41,7 +41,7 @@ export default function IndexPage() {
         <SEO />
 
         <SectionWithLines>
-          <div className="pt-8 pb-20 md:pt-16 lg:pt-16 2xl:pt-24 md:pb-32 xl:pb-40 2xl:pb-48">
+          <div className="pt-8 pb-20 md:pt-16 lg:pt-16 md:pb-32 xl:pb-40 2xl:pb-48">
             <Gutters>
               <Container>
                 <div className="md:text-center">
@@ -53,7 +53,7 @@ export default function IndexPage() {
                     </span>
                   </h1>
 
-                  <div className="flex justify-center mt-8 md:mt-10 2xl:mt-12">
+                  <div className="flex justify-center mt-8 md:mt-10">
                     <Text color="light-gray">
                       Mirage JS is an API mocking library that lets you build,
                       test and share a complete working JavaScript application
@@ -73,10 +73,10 @@ export default function IndexPage() {
               </Container>
             </Gutters>
 
-            <div className="mt-16"></div>
+            <div className="mt-16 2xl:mt-24"></div>
 
             <div className="md:px-8">
-              <div className="max-w-lg mx-auto md:max-w-3xl">
+              <div className="max-w-lg mx-auto md:max-w-4xl 2xl:max-w-5xl">
                 <AspectRatio ratio={16 / 9}>
                   <video autoPlay muted loop playsInline src={movieUrl}></video>
                 </AspectRatio>
@@ -86,7 +86,7 @@ export default function IndexPage() {
             <div className="mt-12"></div>
 
             <Gutters>
-              <div className="max-w-lg mx-auto md:max-w-3xl">
+              <div className="max-w-lg mx-auto md:max-w-4xl 2xl:max-w-5xl">
                 <div className="flex -mx-4">
                   <div className="w-1/4 px-4">
                     <ProgressBar progress={66} />
@@ -206,7 +206,7 @@ export default function IndexPage() {
 
               <div className="flex items-center justify-center mt-6">
                 <Img
-                  className="w-24 mr-4 rounded-full"
+                  className="w-24 mr-4 rounded-full xl:w-32 xl:mr-6"
                   fluid={data.testimonial1.childImageSharp.fluid}
                 />
                 <div className="flex-shrink-0 leading-none">
@@ -229,7 +229,7 @@ export default function IndexPage() {
           <Gutters>
             <div className="max-w-lg mx-auto md:max-w-xl xl:max-w-6xl">
               <div className="xl:flex xl:-mx-8">
-                <div className="xl:w-1/2 xl:px-8">
+                <div className="xl:w-2/5 xl:px-8">
                   <div className="xl:pt-12">
                     <Title>
                       Write{" "}
@@ -259,7 +259,7 @@ export default function IndexPage() {
                   </div>
                 </div>
 
-                <div className="max-w-xl mx-auto mt-16 xl:w-1/2 xl:px-8 xl:mt-0">
+                <div className="mx-auto mt-16 xl:w-3/5 xl:px-8 xl:mt-0">
                   <Browsers className="max-w-full" />
                 </div>
               </div>
@@ -309,7 +309,7 @@ export default function IndexPage() {
 
               <div className="flex items-center justify-center mt-6">
                 <Img
-                  className="w-24 mr-4 rounded-full"
+                  className="w-24 mr-4 rounded-full xl:w-32 xl:mr-6"
                   fluid={data.testimonial1.childImageSharp.fluid}
                 />
                 <div className="flex-shrink-0 leading-none">

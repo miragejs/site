@@ -2,7 +2,7 @@ import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Code from "./code"
 
-export default function Snippet({ name }) {
+export default function Snippet({ name, backgroundColor }) {
   const data = useStaticQuery(graphql`
     query SnippetsQuery {
       allFile(filter: { absolutePath: { regex: "/snippets/" } }) {
@@ -23,6 +23,9 @@ export default function Snippet({ name }) {
   let lines = snippet.body.split("\n")
   let codeblockArgs = lines.shift()
   let props = {}
+  if (backgroundColor) {
+    props.backgroundColor = backgroundColor
+  }
   let matchLanguage = codeblockArgs.match(/```([^{]+)/)
   if (matchLanguage) {
     props.language = matchLanguage[1]

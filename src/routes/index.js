@@ -3,7 +3,9 @@ import movieUrl from "../assets/clip.mp4"
 import ringsUrl, { ReactComponent as Rings } from "../assets/images/rings.svg"
 import { ReactComponent as QuoteOpen } from "../assets/images/quote-open.svg"
 import { ReactComponent as QuoteClose } from "../assets/images/quote-close.svg"
-import { ReactComponent as Browsers } from "../assets/images/homepage-image-2.svg"
+import homepageImage2Url from "../assets/images/homepage-image-2.png"
+// import { ReactComponent as Browsers } from "../assets/images/homepage-image-2.svg"
+import homepageImage3Url from "../assets/images/homepage-image-3.png"
 import { ReactComponent as HomepageImage3 } from "../assets/images/homepage-image-3.svg"
 import SEO from "../components/seo"
 import Img from "gatsby-image"
@@ -221,9 +223,9 @@ export default function IndexPage() {
         </section>
 
         <section
-          className="relative pt-16 bg-gray-100 md:pt-24 md:text-center xl:text-left"
+          className="relative pt-16 bg-gray-100 md:pt-24 xl:pt-32 md:text-center xl:text-left"
           style={{
-            background: `linear-gradient(172deg, rgb(243, 245, 247) 85%, #fff 85%)`,
+            background: `linear-gradient(173deg, rgb(243, 245, 247) calc(100% - (.25 * 55vw)), #fff calc(100% - (.25 * 55vw)))`,
           }}
         >
           <Gutters>
@@ -239,7 +241,7 @@ export default function IndexPage() {
                       that stress your networking code.
                     </Title>
 
-                    <div className="mt-4">
+                    <div className="mt-4 xl:mt-8">
                       <Text color="dark-gray">
                         Mirage lets you put your API into any state needed to
                         stress some piece of dynamic functionality in your app.
@@ -259,36 +261,73 @@ export default function IndexPage() {
                   </div>
                 </div>
 
-                <div className="mx-auto mt-16 xl:w-3/5 xl:px-8 xl:mt-0">
-                  <Browsers className="max-w-full" />
+                <div className="relative mx-auto mt-16 xl:w-3/5 xl:px-8 xl:mt-0">
+                  <img src={homepageImage2Url} alt="" />
+
+                  <div
+                    className="absolute top-0 z-10 overflow-hidden"
+                    style={{
+                      marginTop: "37px",
+                      marginLeft: "-18px",
+                      width: "703px",
+                      height: "348px",
+                      transform: "scale(0.8)",
+                    }}
+                  >
+                    <div
+                      className="absolute w-full h-full"
+                      style={{
+                        background:
+                          "linear-gradient(0deg, #1A1C1D, transparent 20%)",
+                      }}
+                    ></div>
+                    <Snippet name="homepage-2" backgroundColor="transparent" />
+                  </div>
+                  {/* <Browsers className="max-w-full" /> */}
                 </div>
               </div>
             </div>
           </Gutters>
         </section>
 
-        <section className="pt-24 pb-16 bg-white md:pt-32 md:text-center">
+        <section className="pt-24 pb-16 bg-white md:pt-32 xl:pb-48 xl:pt-48 md:text-center">
           <Gutters>
-            <div className="max-w-lg mx-auto md:max-w-xl">
-              <Title>
-                Share a <span className="text-green-500">fully-working UI</span>{" "}
-                without running a backend.
-              </Title>
+            <div className="max-w-lg mx-auto md:max-w-xl xl:max-w-6xl">
+              <div className="xl:inline-flex">
+                <div className="xl:order-last xl:text-left xl:max-w-lg xl:px-8">
+                  <div className="xl:mt-32">
+                    <Title>
+                      Share a{" "}
+                      <span className="text-green-500">fully-working UI</span>{" "}
+                      without running a backend.
+                    </Title>
+                  </div>
 
-              <div className="mt-4">
-                <Text color="dark-gray">
-                  Because Mirage realistically mocks out your entire API server,
-                  you can share a clickable, working prototype of your
-                  JavaScript application without needing to run any backend
-                  services.
-                </Text>
+                  <div className="mt-4 xl:mt-8">
+                    <Text color="dark-gray">
+                      Because Mirage realistically mocks out your entire API
+                      server, you can share a clickable, working prototype of
+                      your JavaScript application without needing to run any
+                      backend services.
+                    </Text>
+                  </div>
+                  <div className="mt-4">
+                    <Text color="dark-gray">
+                      Stress some piece of dynamic functionality in your app.
+                      Test how your app handles 0 blog posts, 10, or 1000 – or
+                      even how it behaves when your server is slow or returns an
+                      error.
+                    </Text>
+                  </div>
+                </div>
+
+                <div className="max-w-sm mx-auto mt-12 xl:pr-16 xl:w-full xl:max-w-xl">
+                  <img src={homepageImage3Url} alt="" />
+                  {/* <HomepageImage3 className="max-w-full" /> */}
+                </div>
               </div>
             </div>
           </Gutters>
-
-          <div className="mt-12">
-            <HomepageImage3 className="mx-auto w-72" />
-          </div>
         </section>
 
         <section className="py-16 bg-gray-600 md:py-20 xl:py-24">

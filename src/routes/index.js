@@ -6,7 +6,7 @@ import { ReactComponent as QuoteClose } from "../assets/images/quote-close.svg"
 import homepageImage2Url from "../assets/images/homepage-image-2.png"
 // import { ReactComponent as Browsers } from "../assets/images/homepage-image-2.svg"
 import homepageImage3Url from "../assets/images/homepage-image-3.png"
-import { ReactComponent as HomepageImage3 } from "../assets/images/homepage-image-3.svg"
+// import { ReactComponent as HomepageImage3 } from "../assets/images/homepage-image-3.svg"
 import SEO from "../components/seo"
 import Img from "gatsby-image"
 import { useStaticQuery, graphql } from "gatsby"
@@ -15,6 +15,20 @@ import { Link } from "@reach/router"
 import { useRouter } from "../hooks/use-router"
 import { SectionWithLines, AspectRatio } from "../components/ui"
 import { Caret } from "../components/icons"
+import styled, { keyframes } from "styled-components"
+
+const scroll = keyframes`
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-988px);
+  }
+`
+// Here we create a component that will rotate everything we pass in over two seconds
+const Scroll = styled.div`
+  animation: ${scroll} 90s linear infinite;
+`
 
 export default function IndexPage() {
   const router = useRouter()
@@ -246,8 +260,8 @@ export default function IndexPage() {
                         Mirage lets you put your API into any state needed to
                         stress some piece of dynamic functionality in your app.
                         Test how your app handles 0 blog posts, 10, or 1000 – or
-                        even how it behaves when your server is slow or returns
-                        an error.
+                        even how it behaves when your server is slow or responds
+                        with an error.
                       </Text>
 
                       <div className="mt-4">
@@ -257,6 +271,16 @@ export default function IndexPage() {
                           entire functionality of your full application.
                         </Text>
                       </div>
+
+                      <div className="mt-6">
+                        <Link
+                          to="/docs/testing/application-tests"
+                          class="md:text-lg text-green-500 font-medium flex items-center"
+                        >
+                          Learn about UI testing with Mirage{" "}
+                          <Caret className="inline w-4 ml-1" />
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -265,7 +289,7 @@ export default function IndexPage() {
                   <img src={homepageImage2Url} alt="" />
 
                   <div
-                    className="absolute top-0 z-10 overflow-hidden"
+                    className="absolute top-0 overflow-hidden"
                     style={{
                       marginTop: "37px",
                       marginLeft: "-18px",
@@ -275,13 +299,20 @@ export default function IndexPage() {
                     }}
                   >
                     <div
-                      className="absolute w-full h-full"
+                      className="absolute z-10 w-full"
                       style={{
+                        top: "-2px",
+                        bottom: "-2px",
                         background:
-                          "linear-gradient(0deg, #1A1C1D, transparent 20%)",
+                          "linear-gradient(0deg, #1A1C1D, transparent 20%, transparent 90%, #1A1C1D)",
                       }}
                     ></div>
-                    <Snippet name="homepage-2" backgroundColor="transparent" />
+                    <Scroll>
+                      <Snippet
+                        name="homepage-2"
+                        backgroundColor="transparent"
+                      />
+                    </Scroll>
                   </div>
                   {/* <Browsers className="max-w-full" /> */}
                 </div>
@@ -313,11 +344,18 @@ export default function IndexPage() {
                   </div>
                   <div className="mt-4">
                     <Text color="dark-gray">
-                      Stress some piece of dynamic functionality in your app.
-                      Test how your app handles 0 blog posts, 10, or 1000 – or
-                      even how it behaves when your server is slow or returns an
-                      error.
+                      Get feedback from your users before investing in expensive
+                      backend infrastructure.
                     </Text>
+                  </div>
+                  <div className="mt-6">
+                    <a
+                      target="blank"
+                      href="https://mirage-react-demo.netlify.com/"
+                      class="md:text-lg text-green-500 font-medium flex items-center"
+                    >
+                      View demo <Caret className="inline w-4 ml-1" />
+                    </a>
                   </div>
                 </div>
 

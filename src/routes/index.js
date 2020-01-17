@@ -16,7 +16,16 @@ import { Link } from "@reach/router"
 import { useRouter } from "../hooks/use-router"
 import { SectionWithLines, AspectRatio } from "../components/ui"
 import { Caret } from "../components/icons"
-import styled, { keyframes } from "styled-components"
+import { keyframes } from "styled-components"
+
+const scroll = keyframes`
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-988px);
+  }
+`
 
 export default function IndexPage() {
   const router = useRouter()
@@ -263,7 +272,7 @@ export default function IndexPage() {
                       <div className="mt-6">
                         <Link
                           to="/docs/testing/application-tests"
-                          className="flex items-center font-medium text-green-500 md:text-lg"
+                          className="inline-flex items-center font-medium text-green-500 md:text-lg"
                         >
                           Learn about UI testing with Mirage{" "}
                           <Caret className="inline w-4 ml-1" />
@@ -276,7 +285,27 @@ export default function IndexPage() {
                 <div className="relative mx-auto mt-16 xl:w-3/5 xl:px-8 xl:mt-0">
                   <img src={testingImageUrl} alt="Browsers" />
 
-                  <TestingScrollContainer>
+                  <div
+                    css={`
+                      position: absolute;
+                      overflow: hidden;
+                      width: 141%;
+                      left: 50%;
+                      height: 53%;
+                      top: 24%;
+                      transform: translateX(-50%) translateY(-50%) scale(0.6);
+
+                      @media (min-width: 768px) {
+                        transform: translateX(-50%) translateY(-50%) scale(0.7);
+                        width: 121%;
+                        height: 48%;
+                      }
+
+                      @media (min-width: 1280px) {
+                        width: 110.5%;
+                      }
+                    `}
+                  >
                     <div
                       className="absolute z-10 w-full"
                       style={{
@@ -286,13 +315,18 @@ export default function IndexPage() {
                           "linear-gradient(0deg, #1A1C1D, transparent 20%, transparent 97%, #1A1C1D 97.5%)",
                       }}
                     ></div>
-                    <Scroll>
+
+                    <div
+                      css={`
+                        animation: ${scroll} 90s linear infinite;
+                      `}
+                    >
                       <Snippet
                         name="homepage-2"
                         backgroundColor="transparent"
                       />
-                    </Scroll>
-                  </TestingScrollContainer>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -330,7 +364,7 @@ export default function IndexPage() {
                     <a
                       target="blank"
                       href="https://mirage-react-demo.netlify.com/"
-                      className="flex items-center font-medium text-green-500 md:text-lg"
+                      className="inline-flex items-center font-medium text-green-500 md:text-lg"
                     >
                       View demo <Caret className="inline w-4 ml-1" />
                     </a>
@@ -339,7 +373,6 @@ export default function IndexPage() {
 
                 <div className="max-w-sm mx-auto mt-12 xl:pr-16 xl:w-full xl:max-w-xl">
                   <img src={homepageImage3Url} alt="" />
-                  {/* <HomepageImage3 className="max-w-full" /> */}
                 </div>
               </div>
             </div>
@@ -449,35 +482,3 @@ function Text({ children, color }) {
     <p className={`${styles[color]} md:text-lg max-w-measure`}>{children}</p>
   )
 }
-
-const scroll = keyframes`
-  from {
-    transform: translateY(0px);
-  }
-  to {
-    transform: translateY(-988px);
-  }
-`
-const Scroll = styled.div`
-  animation: ${scroll} 90s linear infinite;
-`
-
-const TestingScrollContainer = styled.div`
-  position: absolute;
-  overflow: hidden;
-  width: 141%;
-  left: 50%;
-  height: 53%;
-  top: 24%;
-  transform: translateX(-50%) translateY(-50%) scale(0.6);
-
-  @media (min-width: 768px) {
-    transform: translateX(-50%) translateY(-50%) scale(0.7);
-    width: 121%;
-    height: 48%;
-  }
-
-  @media (min-width: 1280px) {
-    width: 110.5%;
-  }
-`

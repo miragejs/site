@@ -63,12 +63,13 @@ Cypress.on("window:before:load", win => {
     return fetch(request.url, {
       method: request.method,
       body: request.requestBody,
-    }).then(res => {
-      if (res.headers.map["content-type"] === "application/json") {
-        return res.json()
-      } else {
-        return ""
-      }
+    }).then(async res => {
+      const body =
+        res.headers.map["content-type"] === "application/json"
+          ? await res.json()
+          : ""
+
+      return [res.status, res.headers, body]
     })
   }
 })
@@ -85,16 +86,17 @@ In your app's bootstrapping file, use Mirage to proxy your app's API requests to
 > Vue CLI users, this code goes in `src/main.js`.
 
 ```js
-import { Server } from "miragejs"
+import { Server, Response } from "miragejs"
 
 if (window.Cypress) {
-  new Server({
+  // mirage cypress server
+  let cyServer = new Server({
     environment: "test",
     routes() {
       let methods = ["get", "put", "patch", "post", "delete"]
       methods.forEach(method => {
-        this[method]("/*", (schema, request) => {
-          return window.handleFromCypress(request)
+        this[method]("/*", async (schema, request) => {
+          return new Response(...(await window.handleFromCypress(request)))
         })
       })
     },

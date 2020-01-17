@@ -1,13 +1,10 @@
 import React from "react"
-import movieUrl from "../assets/clip.mp4"
-import ringsUrl, { ReactComponent as Rings } from "../assets/images/rings.svg"
 import { ReactComponent as QuoteOpen } from "../assets/images/quote-open.svg"
 import { ReactComponent as QuoteClose } from "../assets/images/quote-close.svg"
-// import testingImageUrl from "../assets/images/homepage/testing.svg"
+import movieUrl from "../assets/clip.mp4"
+import ringsUrl from "../assets/images/rings.svg"
 import testingImageUrl from "../assets/images/homepage/testing.png"
-// import { ReactComponent as Browsers } from "../assets/images/homepage-image-2.svg"
-import homepageImage3Url from "../assets/images/homepage-image-3.png"
-// import { ReactComponent as HomepageImage3 } from "../assets/images/homepage-image-3.svg"
+import prototypeImageUrl from "../assets/images/homepage/prototype.png"
 import SEO from "../components/seo"
 import Img from "gatsby-image"
 import { useStaticQuery, graphql } from "gatsby"
@@ -31,14 +28,9 @@ export default function IndexPage() {
   const router = useRouter()
   const data = useStaticQuery(graphql`
     query {
-      homepageVideo: file(relativePath: { eq: "homepage-placeholder1.png" }) {
-        childImageSharp {
-          fluid(maxWidth: 3000) {
-            ...GatsbyImageSharpFluid_noBase64
-          }
-        }
-      }
-      testimonial1: file(relativePath: { eq: "testimonial-roman.jpeg" }) {
+      testimonial1: file(
+        relativePath: { eq: "homepage/testimonial-roman.jpeg" }
+      ) {
         childImageSharp {
           fluid(maxWidth: 120) {
             ...GatsbyImageSharpFluid_noBase64
@@ -372,7 +364,7 @@ export default function IndexPage() {
                 </div>
 
                 <div className="max-w-sm mx-auto mt-12 xl:pr-16 xl:w-full xl:max-w-xl">
-                  <img src={homepageImage3Url} alt="" />
+                  <img src={prototypeImageUrl} alt="" />
                 </div>
               </div>
             </div>

@@ -5,6 +5,7 @@ import movieUrl from "../assets/clip.mp4"
 import ringsUrl from "../assets/images/rings.svg"
 import testingImageUrl from "../assets/images/homepage/testing.png"
 import prototypeImageUrl from "../assets/images/homepage/prototype.png"
+import overlayMeteorsImageUrl from "../assets/images/homepage/overlay-meteors.png"
 import SEO from "../components/seo"
 import Img from "gatsby-image"
 import { useStaticQuery, graphql } from "gatsby"
@@ -12,7 +13,6 @@ import Snippet from "../components/snippet"
 import { Link } from "@reach/router"
 import { useRouter } from "../hooks/use-router"
 import { SectionWithLines, AspectRatio } from "../components/ui"
-import { Caret } from "../components/icons"
 import { keyframes } from "styled-components"
 
 const scroll = keyframes`
@@ -71,7 +71,7 @@ export default function IndexPage() {
                       to={router.routerFor("/docs").pages[0].fullPath}
                       className="flex items-center justify-center block w-full px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded md:py-2 md:w-auto"
                     >
-                      Get started <Caret className="inline w-4 ml-1" />
+                      Get started <Caret className="inline w-2 ml-2" />
                     </Link>
                   </div>
                 </div>
@@ -265,9 +265,20 @@ export default function IndexPage() {
                         <Link
                           to="/docs/testing/application-tests"
                           className="inline-flex items-center font-medium text-green-500 md:text-lg"
+                          css={`
+                            &:hover svg {
+                              transform: translateX(5px);
+                            }
+                          `}
                         >
-                          Learn about UI testing with Mirage{" "}
-                          <Caret className="inline w-4 ml-1" />
+                          Read about UI testing{" "}
+                          <Caret
+                            className="w-2"
+                            style={{
+                              marginLeft: "10px",
+                              transition: "all 0.15s",
+                            }}
+                          />
                         </Link>
                       </div>
                     </div>
@@ -325,11 +336,11 @@ export default function IndexPage() {
           </Gutters>
         </section>
 
-        <section className="pt-24 pb-16 bg-white md:pt-32 xl:pb-48 xl:pt-48 md:text-center">
+        <section className="pt-24 pb-16 bg-white md:pt-32 xl:pb-48 md:text-center">
           <Gutters>
             <div className="max-w-lg mx-auto md:max-w-xl xl:max-w-6xl">
               <div className="xl:inline-flex">
-                <div className="xl:order-last xl:text-left xl:max-w-lg xl:px-8">
+                <div className="lg:mr-6 xl:order-last xl:text-left xl:max-w-lg xl:px-8">
                   <div className="xl:mt-32">
                     <Title>
                       Share a{" "}
@@ -348,8 +359,9 @@ export default function IndexPage() {
                   </div>
                   <div className="mt-4">
                     <Text color="dark-gray">
-                      Get feedback from your users before investing in expensive
-                      backend infrastructure.
+                      Get high-quality feedback from your users and iterate
+                      faster than ever, before investing in expensive
+                      server-side infrastructure.
                     </Text>
                   </div>
                   <div className="mt-6">
@@ -357,14 +369,37 @@ export default function IndexPage() {
                       target="blank"
                       href="https://mirage-react-demo.netlify.com/"
                       className="inline-flex items-center font-medium text-green-500 md:text-lg"
+                      css={`
+                        &:hover svg {
+                          transform: translateX(5px);
+                        }
+                      `}
                     >
-                      View demo <Caret className="inline w-4 ml-1" />
+                      View demo{" "}
+                      <Caret
+                        className="inline w-2"
+                        style={{ marginLeft: "10px", transition: "all 0.15s" }}
+                      />
                     </a>
                   </div>
                 </div>
 
-                <div className="max-w-sm mx-auto mt-12 xl:pr-16 xl:w-full xl:max-w-xl">
-                  <img src={prototypeImageUrl} alt="" />
+                <div className="relative max-w-sm mx-auto mt-12 xl:mr-4 xl:pr-16 xl:w-full xl:max-w-xl">
+                  <img
+                    className="relative z-10"
+                    src={prototypeImageUrl}
+                    alt=""
+                  />
+                  <div
+                    className="absolute bg-no-repeat bg-contain pointer-events-none"
+                    style={{
+                      width: "2000px",
+                      height: "470px",
+                      left: "-640px",
+                      top: "46%",
+                      backgroundImage: `url(${overlayMeteorsImageUrl})`,
+                    }}
+                  ></div>
                 </div>
               </div>
             </div>
@@ -472,5 +507,24 @@ function Text({ children, color }) {
 
   return (
     <p className={`${styles[color]} md:text-lg max-w-measure`}>{children}</p>
+  )
+}
+
+function Caret(props) {
+  return (
+    <svg {...props} viewBox="0 0 7 12">
+      <g
+        stroke="none"
+        strokeWidth="1"
+        fill="none"
+        fillRule="evenodd"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <g className="stroke-current" strokeWidth="1.5">
+          <polyline id="Path-5" points="1 1 6 6 1 11"></polyline>
+        </g>
+      </g>
+    </svg>
   )
 }

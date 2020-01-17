@@ -2,6 +2,7 @@ import { ReactComponent as Spinner } from "../assets/images/loading-spinner.svg"
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react"
 import { animated, useSpring } from "react-spring"
 import useMeasure from "react-use-measure"
+import { ResizeObserver } from "@juggle/resize-observer"
 
 let isEmailValid = function(email) {
   // eslint-disable-next-line
@@ -337,7 +338,7 @@ function FadeBetween({ state, children }) {
 }
 
 function State({ cb, animatedOpacity, children }) {
-  const [ref, bounds] = useMeasure()
+  const [ref, bounds] = useMeasure({ polyfill: ResizeObserver })
   if (bounds.height > 0) {
     cb(bounds.height)
   }

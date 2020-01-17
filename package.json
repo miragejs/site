@@ -20,6 +20,7 @@
   "dependencies": {
     "@mdx-js/mdx": "^1.5.5",
     "@mdx-js/react": "^1.5.5",
+    "@juggle/resize-observer": "^3.0.2",
     "@reach/router": "^1.2.1",
     "@sindresorhus/slugify": "^0.9.1",
     "@svgr/webpack": "^5.0.1",

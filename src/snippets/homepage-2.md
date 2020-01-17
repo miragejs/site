@@ -1,4 +1,4 @@
-```js
+```js{9,18-19,29,44-45,56}
 it("shows a message if there are no todos", async () => {
   const { getByTestId } = render(<App />)
   await waitForElementToBeRemoved(() => getByTestId("loading"))

@@ -186,7 +186,7 @@ function Header({ showHeaderNav }) {
                   <Twitter className="h-5 fill-current" />
                 </a>
                 <a
-                  href="https://github.com/miragejs/server"
+                  href="https://github.com/miragejs/miragejs"
                   className={`px-1 ${themeClasses[theme]["inactive"]}`}
                 >
                   <Github className="h-5 fill-current" />
@@ -229,7 +229,7 @@ function Header({ showHeaderNav }) {
                   }`}
                 >
                   <MobileNavLink
-                    to="https://github.com/miragejs/server"
+                    to="https://github.com/miragejs/miragejs"
                     onClick={() => setIsShowingMobileNav(false)}
                   >
                     GitHub
@@ -376,7 +376,7 @@ function Footer() {
               <div className="pl-3 mt-1 border-l border-gray-800 md:pl-0 md:border-none">
                 <ul>
                   <li className="py-1 text-white">
-                    <a href="https://github.com/miragejs/server">GitHub</a>
+                    <a href="https://github.com/miragejs/miragejs">GitHub</a>
                   </li>
                   <li className="py-1 text-white">
                     <a href="https://discord.gg/pPsdsrn">Discord</a>

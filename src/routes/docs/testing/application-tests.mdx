@@ -1,6 +1,6 @@
 # Application tests
 
-Mirage was originally built to help JavaScript app developers write high-level UI tests, and that's still one of the primary benefits of using Mirage today.
+One of the best uses cases for Mirage is that it enables JavaScript app developers to write high-level UI tests without them needing to configure or manipulate their production API servers.
 
 These high-level tests are concerned with verifying the _user flows_ of your application. The user in this case is the actual person who will be using your web app on a computer or mobile device, and working with a keyboard, mouse, or other input device. Therefore, these tests should closely resemble how these people will be interacting with your application in the real world.
 
@@ -66,35 +66,34 @@ When you start Mirage, it will intercept your app's network requests, just like 
 
 Now we can mock out this route.
 
-```diff
-  import { Server, Model } from "miragejs"
+```js{6-16}
+import { Server, Model } from "miragejs"
 
-  let server
+let server
 
-  beforeEach(() => {
--   server = new Server()
-+   server = new Server({
-+     models: {
-+       movie: Model
-+     },
-+
-+     routes() {
-+       this.namespace = 'api'
-+
-+       this.resource('movie')
-+     }
-    })
+beforeEach(() => {
+  server = new Server({
+    models: {
+      movie: Model,
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.resource("movie")
+    },
   })
+})
 
-  afterEach(() => {
-    server.shutdown()
-  })
+afterEach(() => {
+  server.shutdown()
+})
 
-  it("shows the movies", function() {
-    cy.visit("/")
+it("shows the movies", function() {
+  cy.visit("/")
 
-    cy.get("li.movie").should("have.length", 10)
-  })
+  cy.get("li.movie").should("have.length", 10)
+})
 ```
 
 Our app now runs, but the test fails. We can look at the logs in our console and see Mirage handled the request to `/api/movies`, but it responded with no data.
@@ -105,7 +104,7 @@ As you learned in the guides on the Data layer, you can use the `seeds` method t
 
 We can do that using the `server.create` and `server.createList` methods, directly in the body of our test:
 
-```js
+```js{24}
 import { Server, Model } from "miragejs"
 
 let server
@@ -213,7 +212,7 @@ import ReactDOM from "react-dom"
 import App from "./App"
 import { startMirage } from "./mirage"
 
-if (environment === "development") {
+if (process.env.NODE_ENV === "development") {
   startMirage()
 }
 

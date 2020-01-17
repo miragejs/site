@@ -3,7 +3,8 @@ import movieUrl from "../assets/clip.mp4"
 import ringsUrl, { ReactComponent as Rings } from "../assets/images/rings.svg"
 import { ReactComponent as QuoteOpen } from "../assets/images/quote-open.svg"
 import { ReactComponent as QuoteClose } from "../assets/images/quote-close.svg"
-import homepageImage2Url from "../assets/images/homepage-image-2.png"
+// import testingImageUrl from "../assets/images/homepage/testing.svg"
+import testingImageUrl from "../assets/images/homepage/testing.png"
 // import { ReactComponent as Browsers } from "../assets/images/homepage-image-2.svg"
 import homepageImage3Url from "../assets/images/homepage-image-3.png"
 // import { ReactComponent as HomepageImage3 } from "../assets/images/homepage-image-3.svg"
@@ -25,7 +26,6 @@ const scroll = keyframes`
     transform: translateY(-988px);
   }
 `
-// Here we create a component that will rotate everything we pass in over two seconds
 const Scroll = styled.div`
   animation: ${scroll} 90s linear infinite;
 `
@@ -185,8 +185,8 @@ export default function IndexPage() {
                       <Text color="dark-gray">
                         New collaborators can clone your frontend codebase, run
                         npm install, and have a complete local offline dev
-                        environment up and running in seconds, without ever
-                        configuring any environment variables or auth tokens.
+                        environment up and running in seconds – no environment
+                        variables or auth tokens needed.
                       </Text>
                     </div>
                   </div>
@@ -257,17 +257,17 @@ export default function IndexPage() {
 
                     <div className="mt-4 xl:mt-8">
                       <Text color="dark-gray">
-                        Mirage lets you put your API into any state needed to
-                        stress some piece of dynamic functionality in your app.
-                        Test how your app handles 0 blog posts, 10, or 1000 – or
-                        even how it behaves when your server is slow or responds
-                        with an error.
+                        With Mirage, you can write automated tests against your
+                        API no matter what state it's in. Test how your app
+                        handles 0 blog posts, 10, or 1000 – or even how it
+                        behaves when your server is slow or responds with an
+                        error.
                       </Text>
 
                       <div className="mt-4">
                         <Text color="dark-gray">
-                          No messy network mocking code or handcrafting API
-                          respones. Just real-world scenarios validating the
+                          No messy mocking code or handcrafting API respones in
+                          your tests. Just real-world scenarios validating the
                           entire functionality of your full application.
                         </Text>
                       </div>
@@ -275,7 +275,7 @@ export default function IndexPage() {
                       <div className="mt-6">
                         <Link
                           to="/docs/testing/application-tests"
-                          class="md:text-lg text-green-500 font-medium flex items-center"
+                          className="flex items-center font-medium text-green-500 md:text-lg"
                         >
                           Learn about UI testing with Mirage{" "}
                           <Caret className="inline w-4 ml-1" />
@@ -286,15 +286,15 @@ export default function IndexPage() {
                 </div>
 
                 <div className="relative mx-auto mt-16 xl:w-3/5 xl:px-8 xl:mt-0">
-                  <img src={homepageImage2Url} alt="" />
+                  <img src={testingImageUrl} alt="" />
 
                   <div
                     className="absolute top-0 overflow-hidden"
                     style={{
-                      marginTop: "37px",
-                      marginLeft: "-18px",
-                      width: "703px",
-                      height: "348px",
+                      left: "13px",
+                      top: "34px",
+                      width: "704px",
+                      height: "345px",
                       transform: "scale(0.8)",
                     }}
                   >
@@ -304,7 +304,7 @@ export default function IndexPage() {
                         top: "-2px",
                         bottom: "-2px",
                         background:
-                          "linear-gradient(0deg, #1A1C1D, transparent 20%, transparent 90%, #1A1C1D)",
+                          "linear-gradient(0deg, #1A1C1D, transparent 20%, transparent 97%, #1A1C1D 97.5%)",
                       }}
                     ></div>
                     <Scroll>
@@ -352,7 +352,7 @@ export default function IndexPage() {
                     <a
                       target="blank"
                       href="https://mirage-react-demo.netlify.com/"
-                      class="md:text-lg text-green-500 font-medium flex items-center"
+                      className="flex items-center font-medium text-green-500 md:text-lg"
                     >
                       View demo <Caret className="inline w-4 ml-1" />
                     </a>

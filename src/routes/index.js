@@ -18,18 +18,6 @@ import { SectionWithLines, AspectRatio } from "../components/ui"
 import { Caret } from "../components/icons"
 import styled, { keyframes } from "styled-components"
 
-const scroll = keyframes`
-  from {
-    transform: translateY(0px);
-  }
-  to {
-    transform: translateY(-988px);
-  }
-`
-const Scroll = styled.div`
-  animation: ${scroll} 90s linear infinite;
-`
-
 export default function IndexPage() {
   const router = useRouter()
   const data = useStaticQuery(graphql`
@@ -286,18 +274,9 @@ export default function IndexPage() {
                 </div>
 
                 <div className="relative mx-auto mt-16 xl:w-3/5 xl:px-8 xl:mt-0">
-                  <img src={testingImageUrl} alt="" />
+                  <img src={testingImageUrl} alt="Browsers" />
 
-                  <div
-                    className="absolute top-0 overflow-hidden"
-                    style={{
-                      left: "13px",
-                      top: "34px",
-                      width: "704px",
-                      height: "345px",
-                      transform: "scale(0.8)",
-                    }}
-                  >
+                  <TestingScrollContainer>
                     <div
                       className="absolute z-10 w-full"
                       style={{
@@ -313,8 +292,7 @@ export default function IndexPage() {
                         backgroundColor="transparent"
                       />
                     </Scroll>
-                  </div>
-                  {/* <Browsers className="max-w-full" /> */}
+                  </TestingScrollContainer>
                 </div>
               </div>
             </div>
@@ -471,3 +449,35 @@ function Text({ children, color }) {
     <p className={`${styles[color]} md:text-lg max-w-measure`}>{children}</p>
   )
 }
+
+const scroll = keyframes`
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-988px);
+  }
+`
+const Scroll = styled.div`
+  animation: ${scroll} 90s linear infinite;
+`
+
+const TestingScrollContainer = styled.div`
+  position: absolute;
+  overflow: hidden;
+  width: 141%;
+  left: 50%;
+  height: 53%;
+  top: 24%;
+  transform: translateX(-50%) translateY(-50%) scale(0.6);
+
+  @media (min-width: 768px) {
+    transform: translateX(-50%) translateY(-50%) scale(0.7);
+    width: 121%;
+    height: 48%;
+  }
+
+  @media (min-width: 1280px) {
+    width: 110.5%;
+  }
+`

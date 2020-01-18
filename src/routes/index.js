@@ -32,7 +32,7 @@ export default function IndexPage() {
         relativePath: { eq: "homepage/testimonial-roman.jpeg" }
       ) {
         childImageSharp {
-          fluid(maxWidth: 120) {
+          fluid(maxWidth: 128, quality: 100) {
             ...GatsbyImageSharpFluid_noBase64
           }
         }

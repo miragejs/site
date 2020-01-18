@@ -271,7 +271,7 @@ export default function IndexPage() {
                             }
                           `}
                         >
-                          Read about UI testing{" "}
+                          Read more about UI testing{" "}
                           <Caret
                             className="w-2"
                             style={{
@@ -336,7 +336,23 @@ export default function IndexPage() {
           </Gutters>
         </section>
 
-        <section className="pt-24 pb-16 bg-white md:pt-32 xl:pb-48 md:text-center">
+        <section
+          className="pt-24 pb-16 bg-white bg-no-repeat bg-contain md:pt-32 xl:pb-48 md:text-center"
+          css={`
+            background-image: url(${overlayMeteorsImageUrl});
+            background-size: 350%;
+            background-position: calc(50% + 50px) bottom;
+
+            @media (min-width: 480px) {
+              background-size: 1600px;
+            }
+
+            @media (min-width: 1280px) {
+              background-size: 2000px;
+              background-position: calc(50% - 230px) calc(100% - 40px);
+            }
+          `}
+        >
           <Gutters>
             <div className="max-w-lg mx-auto md:max-w-xl xl:max-w-6xl">
               <div className="xl:inline-flex">
@@ -360,7 +376,7 @@ export default function IndexPage() {
                   <div className="mt-4">
                     <Text color="dark-gray">
                       Get high-quality feedback from your users and iterate
-                      faster than ever, before investing in expensive
+                      faster than ever, before you start investing in expensive
                       server-side infrastructure.
                     </Text>
                   </div>
@@ -384,22 +400,8 @@ export default function IndexPage() {
                   </div>
                 </div>
 
-                <div className="relative max-w-sm mx-auto mt-12 xl:mr-4 xl:pr-16 xl:w-full xl:max-w-xl">
-                  <img
-                    className="relative z-10"
-                    src={prototypeImageUrl}
-                    alt=""
-                  />
-                  <div
-                    className="absolute bg-no-repeat bg-contain pointer-events-none"
-                    style={{
-                      width: "2000px",
-                      height: "470px",
-                      left: "-640px",
-                      top: "46%",
-                      backgroundImage: `url(${overlayMeteorsImageUrl})`,
-                    }}
-                  ></div>
+                <div className="max-w-sm mx-auto mt-12 xl:mr-4 xl:pr-16 xl:w-full xl:max-w-xl">
+                  <img src={prototypeImageUrl} alt="" />
                 </div>
               </div>
             </div>
@@ -438,25 +440,28 @@ export default function IndexPage() {
           </Gutters>
         </section>
 
-        <section className="pt-24 pb-32 bg-white">
+        <section className="pt-24 pb-32 bg-white xl:py-40">
           <div className="text-center">
             <Gutters>
               <Container>
-                <Title>Ready to use Mirage?</Title>
+                <h2 className="tracking-tight leading-tighter text-4-5xl font-title md:text-4-75xl md:leading-tighter lg:text-5xl">
+                  Ready to use Mirage?
+                </h2>
 
-                <div className="max-w-xs mx-auto mt-4">
-                  <Text color="dark-gray">
+                <div className="max-w-xs mx-auto mt-6 lg:max-w-sm">
+                  <p className="text-lg text-gray-700 lg:text-1-5xl max-w-measure">
                     Mirage works with all major JavaScript frameworks, libraries
                     and test runners.
-                  </Text>
+                  </p>
                 </div>
 
-                <div className="mt-8">
+                <div className="mt-12">
                   <Link
                     to={router.routerFor("/docs").pages[0].fullPath}
-                    className="w-full px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded"
+                    className="inline-flex items-center px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded"
                   >
                     Get started
+                    <Caret className="inline w-2 ml-2" />
                   </Link>
                 </div>
               </Container>

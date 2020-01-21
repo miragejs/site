@@ -1,0 +1,91 @@
+# Setup a Angular app with Mirage for Development
+
+Mock your Angular app's networking code so you can develop your Vue app without any backend services.
+
+> This is a quickstart guide for people familiar with Mirage. If you're brand new to Mirage, take a look at the [Overview](/docs/getting-started/overview).
+
+## Step 1: Install Mirage on your Angular project
+
+First, make sure you have Mirage installed:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Step 2: Define your server
+
+Create a new `mirage` folder in your `app` folder and a `mirage.js` file inside, then define your mock server.
+
+Here's a basic example:
+
+```js
+// src/app/mirage/mirage.js
+import { Server, Model } from "miragejs"
+
+export function makeServer({ environment = "development" } = {}) {
+  let server = new Server({
+    environment,
+
+    models: {
+      user: Model,
+    },
+
+    seeds(server) {
+      server.create("user", { name: "Bob" })
+      server.create("user", { name: "Alice" })
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.get("/users", schema => {
+        return schema.users.all()
+      })
+    },
+  })
+
+  return server
+}
+```
+
+## Step 3: Use your server only in development
+
+Open your Angular `src/environments/environment.ts` import your `mirage.js`:
+
+```ts{4-6}
+// src/environments/environment.ts
+import { makeServer } from 'src/mirage/mirage.js'
+export const environment = {
+  production: false
+};
+
+makeServer();
+```
+
+Now, whenever your application makes a network request in development, Mirage will intercept that request and respond with the data from your server definition.
+
+For example, given the server definition above, the following component would fetch the users `Bob` and `Alice` that we defined in `seeds`:
+
+```ts
+// src/app/users.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+import { Observable } from 'rxjs/Observable';
+
+@Injectable({  providedIn: 'root' })
+export class UserService {
+
+  constructor(public http: HttpClient) { }
+
+  public getUsers(): Observable<string[]> {
+    return this.http.get('/api/users');
+  }
+}
+```
+
+You can now continue to develop your Angular app, mocking out your backend API endpoints with Mirage as you go.

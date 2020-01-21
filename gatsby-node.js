@@ -102,6 +102,14 @@ exports.createPages = ({ actions }) => {
     fromPath: "/quickstarts/cypress",
     toPath: "/quickstarts/cypress/setup",
   })
+  createRedirect({
+    fromPath: "/quickstarts/nuxt",
+    toPath: "/quickstarts/nuxt/setup",
+  })
+  createRedirect({
+    fromPath: "/quickstarts/angular",
+    toPath: "/quickstarts/angular/setup",
+  })
 }
 
 // DOC STUFF TODO Extract

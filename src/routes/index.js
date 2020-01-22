@@ -1,7 +1,6 @@
-import React from "react"
+import React, { Fragment, useState } from "react"
 import { ReactComponent as QuoteOpen } from "../assets/images/quote-open.svg"
 import { ReactComponent as QuoteClose } from "../assets/images/quote-close.svg"
-import movieUrl from "../assets/clip.mp4"
 import ringsUrl from "../assets/images/rings.svg"
 import testingImageUrl from "../assets/images/homepage/testing.png"
 import prototypeImageUrl from "../assets/images/homepage/prototype.png"
@@ -14,6 +13,9 @@ import { Link } from "@reach/router"
 import { useRouter } from "../hooks/use-router"
 import { SectionWithLines, AspectRatio } from "../components/ui"
 import { keyframes } from "styled-components"
+import Vimeo from "@u-wave/react-vimeo"
+import { useSpring, animated } from "react-spring"
+import { usePrevious } from "../hooks/use-previous"
 
 const scroll = keyframes`
   from {
@@ -39,6 +41,25 @@ export default function IndexPage() {
       }
     }
   `)
+
+  let [currentTime, setCurrentTime] = useState(0)
+
+  function handleTimeUpdate(event) {
+    setCurrentTime(event.seconds)
+  }
+
+  let segments = {
+    createServer: { start: 0, end: 15 },
+    useDatabase: { start: 15, end: 40 },
+    seedFactories: { start: 40, end: 55 },
+    writeTest: { start: 55, end: 63 },
+  }
+
+  let currentSegment =
+    Object.keys(segments).find(name => {
+      let segment = segments[name]
+      return segment.start < currentTime && segment.end >= currentTime
+    }) || Object.keys(segments)[0]
 
   return (
     <div className="relative">
@@ -83,7 +104,15 @@ export default function IndexPage() {
             <div className="md:px-8">
               <div className="max-w-lg mx-auto md:max-w-4xl 2xl:max-w-5xl">
                 <AspectRatio ratio={16 / 9}>
-                  <video autoPlay muted loop playsInline src={movieUrl}></video>
+                  <Vimeo
+                    video="386535369"
+                    controls={false}
+                    autoplay={true}
+                    muted={true}
+                    loop={true}
+                    responsive={true}
+                    onTimeUpdate={handleTimeUpdate}
+                  />
                 </AspectRatio>
               </div>
             </div>
@@ -94,49 +123,127 @@ export default function IndexPage() {
               <div className="max-w-lg mx-auto md:max-w-4xl 2xl:max-w-5xl">
                 <div className="flex -mx-4">
                   <div className="w-1/4 px-4">
-                    <ProgressBar progress={66} />
+                    <VideoSegmentProgress
+                      start={segments.createServer.start}
+                      end={segments.createServer.end}
+                      current={currentTime}
+                    />
                   </div>
                   <div className="w-1/4 px-4">
-                    <ProgressBar progress={0} />
+                    <VideoSegmentProgress
+                      start={segments.useDatabase.start}
+                      end={segments.useDatabase.end}
+                      current={currentTime}
+                    />
                   </div>
                   <div className="w-1/4 px-4">
-                    <ProgressBar progress={0} />
+                    <VideoSegmentProgress
+                      start={segments.seedFactories.start}
+                      end={segments.seedFactories.end}
+                      current={currentTime}
+                    />
                   </div>
                   <div className="w-1/4 px-4">
-                    <ProgressBar progress={0} />
+                    <VideoSegmentProgress
+                      start={segments.writeTest.start}
+                      end={segments.writeTest.end}
+                      current={currentTime}
+                    />
                   </div>
                 </div>
 
                 <div className="mt-8 md:hidden">
-                  <p className="font-medium text-white">Create a Server</p>
+                  <p className="font-medium text-white">
+                    {currentSegment === "createServer"
+                      ? "Create a Server"
+                      : currentSegment === "useDatabase"
+                      ? "Use the database"
+                      : currentSegment === "seedFactories"
+                      ? "Seed with factories"
+                      : "Write a test"}
+                  </p>
                 </div>
 
                 <div className="hidden mt-3 md:block">
                   <div className="flex -mx-4">
                     <div className="w-1/4 px-4">
-                      <p className="text-center text-white ">Create a server</p>
+                      <p
+                        className={`text-center transition ${
+                          currentSegment === "createServer"
+                            ? "text-white"
+                            : "text-gray-700"
+                        }`}
+                      >
+                        Create a server
+                      </p>
                     </div>
                     <div className="w-1/4 px-4">
-                      <p className="text-center text-gray-700 ">
+                      <p
+                        className={`text-center transition ${
+                          currentSegment === "useDatabase"
+                            ? "text-white"
+                            : "text-gray-700"
+                        }`}
+                      >
                         Use the database
                       </p>
                     </div>
                     <div className="w-1/4 px-4">
-                      <p className="text-center text-gray-700 ">
+                      <p
+                        className={`text-center transition ${
+                          currentSegment === "seedFactories"
+                            ? "text-white"
+                            : "text-gray-700"
+                        }`}
+                      >
                         Seed with factories
                       </p>
                     </div>
                     <div className="w-1/4 px-4">
-                      <p className="text-center text-gray-700 ">Write a test</p>
+                      <p
+                        className={`text-center transition ${
+                          currentSegment === "writeTest"
+                            ? "text-white"
+                            : "text-gray-700"
+                        }`}
+                      >
+                        Write a test
+                      </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-3 md:mt-10 md:text-center md:flex md:justify-center">
+                <div className="mt-3 md:mt-10 md:text-center md:flex md:justify-center md:h-28">
                   <Text color="light-gray">
-                    Import and use Mirage right alongside the rest of your
-                    frontend JavaScript code – no separate server process for
-                    you to manage in yet-another terminal tab.
+                    {currentSegment === "createServer" ? (
+                      <Fragment>
+                        Import and use Mirage right alongside the rest of your
+                        frontend JavaScript code – no separate server process
+                        for you to manage in yet-another terminal tab.
+                      </Fragment>
+                    ) : currentSegment === "useDatabase" ? (
+                      <Fragment>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      </Fragment>
+                    ) : currentSegment === "seedFactories" ? (
+                      <Fragment>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Aenean luctus arcu a turpis malesuada eleifend. Mauris
+                        ac sapien quis diam consequat imperdiet ut ac eros. Cras
+                        sollicitudin rhoncus risus, ac vehicula lorem sagittis
+                        vitae.
+                      </Fragment>
+                    ) : (
+                      <Fragment>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Pellentesque feugiat malesuada lectus id dignissim. Nunc
+                        sed finibus mi.
+                      </Fragment>
+                    )}
                   </Text>
                 </div>
               </div>
@@ -473,13 +580,38 @@ export default function IndexPage() {
   )
 }
 
+// start at 30, end at 60
+// at 45 - 50%
+
+// end - start = duration = 30
+// complete = current - start = 15
+
+function VideoSegmentProgress({ start, end, current }) {
+  let duration = end - start
+  let completedTime = current - start
+  let progress =
+    current < start ? 0 : current >= end ? 1 : completedTime / duration
+  return <ProgressBar progress={progress * 100} />
+}
+
 function ProgressBar({ progress }) {
+  const prev = usePrevious(progress)
+
+  const props = useSpring({
+    to: {
+      width: `${progress}%`,
+      opacity: progress === 100 ? 0.6 : progress > 0 ? 1 : 0,
+    },
+    immediate: prev > progress,
+    config: { duration: 250, easing: t => t },
+  })
+
   return (
     <div className="relative w-full h-1 overflow-hidden bg-gray-900 rounded">
-      <div
+      <animated.div
         className="absolute top-0 bottom-0 left-0 bg-green-500"
-        style={{ width: `${progress}%` }}
-      ></div>
+        style={props}
+      ></animated.div>
     </div>
   )
 }

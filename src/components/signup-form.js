@@ -1,5 +1,6 @@
 import { ReactComponent as Spinner } from "../assets/images/loading-spinner.svg"
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react"
+import { usePrevious } from "../hooks/use-previous"
 import { animated, useSpring } from "react-spring"
 import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
@@ -273,12 +274,6 @@ function Button({ isRunning = false, children }) {
       </span>
     </button>
   )
-}
-
-export function usePrevious(value) {
-  const ref = useRef()
-  useEffect(() => void (ref.current = value), [value])
-  return ref.current
 }
 
 function FadeBetween({ state, children }) {

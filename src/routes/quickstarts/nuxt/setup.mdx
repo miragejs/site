@@ -1,6 +1,6 @@
 # Setup a Nuxt app with Mirage for Development
 
-Mock your Nuxt app's networking code so you can develop your Vue app without any backend services.
+Mock your Nuxt app's networking code so you can develop your Nuxt app without any backend services.
 
 > This is a quickstart guide for people familiar with Mirage. If you're brand new to Mirage, take a look at the [Overview](/docs/getting-started/overview).
 
@@ -54,7 +54,7 @@ export function makeServer({ environment = "development" } = {}) {
 
 ## Step 3: Use your server only in development
 
-Open your Nuxt app's config file (`src/nuxt.config.js`), include your `mirage.js` in plugins array in inf development mode:
+Open your Nuxt app's config file (`src/nuxt.config.js`), include your `mirage.js` in plugins array if in development mode:
 
 ```js{4-6}
 // src/nuxt.config.js

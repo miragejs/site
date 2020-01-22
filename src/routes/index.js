@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment, useState, useRef } from "react"
 import { ReactComponent as QuoteOpen } from "../assets/images/quote-open.svg"
 import { ReactComponent as QuoteClose } from "../assets/images/quote-close.svg"
 import ringsUrl from "../assets/images/rings.svg"
@@ -42,12 +42,6 @@ export default function IndexPage() {
     }
   `)
 
-  let [currentTime, setCurrentTime] = useState(0)
-
-  function handleTimeUpdate(event) {
-    setCurrentTime(event.seconds)
-  }
-
   let segments = {
     createServer: { start: 0, end: 15 },
     useDatabase: { start: 15, end: 40 },
@@ -55,11 +49,22 @@ export default function IndexPage() {
     writeTest: { start: 55, end: 63 },
   }
 
+  let videoPlayer = useRef()
+  let [currentTime, setCurrentTime] = useState(0)
+
   let currentSegment =
     Object.keys(segments).find(name => {
       let segment = segments[name]
-      return segment.start < currentTime && segment.end >= currentTime
+      return segment.start <= currentTime && segment.end > currentTime
     }) || Object.keys(segments)[0]
+
+  function handleTimeUpdate(event) {
+    setCurrentTime(event.seconds)
+  }
+
+  function seekVideo(time) {
+    videoPlayer.current.player.setCurrentTime(time)
+  }
 
   return (
     <div className="relative">
@@ -112,6 +117,7 @@ export default function IndexPage() {
                     loop={true}
                     responsive={true}
                     onTimeUpdate={handleTimeUpdate}
+                    ref={videoPlayer}
                   />
                 </AspectRatio>
               </div>
@@ -167,53 +173,57 @@ export default function IndexPage() {
                 <div className="hidden mt-3 md:block">
                   <div className="flex -mx-4">
                     <div className="w-1/4 px-4">
-                      <p
-                        className={`text-center transition ${
+                      <button
+                        onClick={e => seekVideo(segments.createServer.start)}
+                        className={`text-center w-full focus:outline-none transition ${
                           currentSegment === "createServer"
                             ? "text-white"
                             : "text-gray-700"
                         }`}
                       >
                         Create a server
-                      </p>
+                      </button>
                     </div>
                     <div className="w-1/4 px-4">
-                      <p
-                        className={`text-center transition ${
+                      <button
+                        onClick={e => seekVideo(segments.useDatabase.start)}
+                        className={`text-center w-full focus:outline-none transition ${
                           currentSegment === "useDatabase"
                             ? "text-white"
                             : "text-gray-700"
                         }`}
                       >
                         Use the database
-                      </p>
+                      </button>
                     </div>
                     <div className="w-1/4 px-4">
-                      <p
-                        className={`text-center transition ${
+                      <button
+                        onClick={e => seekVideo(segments.seedFactories.start)}
+                        className={`text-center w-full focus:outline-none transition ${
                           currentSegment === "seedFactories"
                             ? "text-white"
                             : "text-gray-700"
                         }`}
                       >
                         Seed with factories
-                      </p>
+                      </button>
                     </div>
                     <div className="w-1/4 px-4">
-                      <p
-                        className={`text-center transition ${
+                      <button
+                        onClick={e => seekVideo(segments.writeTest.start)}
+                        className={`text-center w-full focus:outline-none transition ${
                           currentSegment === "writeTest"
                             ? "text-white"
                             : "text-gray-700"
                         }`}
                       >
                         Write a test
-                      </p>
+                      </button>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-3 md:mt-10 md:text-center md:flex md:justify-center md:h-28">
+                <div className="h-40 mt-3 overflow-hidden md:h-32 md:mt-10 md:text-center md:flex md:justify-center">
                   <Text color="light-gray">
                     {currentSegment === "createServer" ? (
                       <Fragment>
@@ -602,7 +612,7 @@ function ProgressBar({ progress }) {
       width: `${progress}%`,
       opacity: progress === 100 ? 0.6 : progress > 0 ? 1 : 0,
     },
-    immediate: prev > progress,
+    immediate: prev > progress || Math.abs(progress - prev) > 5,
     config: { duration: 250, easing: t => t },
   })
 

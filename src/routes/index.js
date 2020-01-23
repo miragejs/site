@@ -52,10 +52,10 @@ export default function IndexPage() {
   `)
 
   let segments = {
-    createServer: { start: 0, end: 62.5 },
-    useDatabase: { start: 62.5, end: 175 },
-    seedFactories: { start: 175, end: 259.75 },
-    writeTest: { start: 259.75, end: 417 },
+    createServer: { start: 0, end: 62.05 },
+    useDatabase: { start: 62.05, end: 177.75 },
+    seedFactories: { start: 177.75, end: 266 },
+    writeTest: { start: 266, end: 426 },
   }
 
   let videoPlayer = useRef()

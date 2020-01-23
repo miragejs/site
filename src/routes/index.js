@@ -546,9 +546,11 @@ export default function IndexPage() {
                 <QuoteClose className="absolute bottom-0 right-0 w-20 text-gray-500 opacity-50 fill-current md:-mr-5" />
                 <div className="relative pt-8 pb-6">
                   <p className="text-lg text-white xl:text-xl max-w-measure">
-                    I was just thinking the other day... are there even any apps
-                    out there that don't use Mirage? I can't imagine writing an
-                    app without it.
+                    I work on a large team, and who owns which part of the
+                    codebase evolves over time. Writing high-level tests against
+                    a network layer gives me assurance that my code works, even
+                    as those boundaries change. I can't imagine writing an app
+                    without it.
                   </p>
                 </div>
               </div>

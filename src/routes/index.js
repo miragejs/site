@@ -39,6 +39,15 @@ export default function IndexPage() {
           }
         }
       }
+      testimonial2: file(
+        relativePath: { eq: "homepage/testimonial-mehul.jpg" }
+      ) {
+        childImageSharp {
+          fluid(maxWidth: 128, quality: 100) {
+            ...GatsbyImageSharpFluid_noBase64
+          }
+        }
+      }
     }
   `)
 
@@ -111,7 +120,7 @@ export default function IndexPage() {
                 <AspectRatio ratio={16 / 9}>
                   <Vimeo
                     video="386535369"
-                    controls={false}
+                    controls={true}
                     autoplay={true}
                     muted={true}
                     loop={true}
@@ -166,7 +175,7 @@ export default function IndexPage() {
                       ? "Use the database"
                       : currentSegment === "seedFactories"
                       ? "Seed with factories"
-                      : "Write a test"}
+                      : "Write UI tests"}
                   </p>
                 </div>
 
@@ -217,7 +226,7 @@ export default function IndexPage() {
                             : "text-gray-700"
                         }`}
                       >
-                        Write a test
+                        Write UI tests
                       </button>
                     </div>
                   </div>
@@ -227,31 +236,34 @@ export default function IndexPage() {
                   <Text color="light-gray">
                     {currentSegment === "createServer" ? (
                       <Fragment>
-                        Import and use Mirage right alongside the rest of your
-                        frontend JavaScript code – no separate server process
-                        for you to manage in yet-another terminal tab.
+                        Mirage runs alongside the rest of your frontend
+                        JavaScript code — no new server processes or terminal
+                        windows required. Use the devtools you know and love to
+                        write UI code that's ready for the network.
                       </Fragment>
                     ) : currentSegment === "useDatabase" ? (
                       <Fragment>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat.
+                        Mirage uses an in-memory database to maintain the
+                        referential integrity of your application data. This
+                        lets you build out fully dynamic features, even ones
+                        that depend on data-fetching and persistence logic,
+                        without ever leaving your frontend codebase.
                       </Fragment>
                     ) : currentSegment === "seedFactories" ? (
                       <Fragment>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Aenean luctus arcu a turpis malesuada eleifend. Mauris
-                        ac sapien quis diam consequat imperdiet ut ac eros. Cras
-                        sollicitudin rhoncus risus, ac vehicula lorem sagittis
-                        vitae.
+                        Use factories to quickly put your server into any state
+                        you need. No more waiting on your backend team or
+                        staging environment just to toggle between dynamic
+                        application states — even ones that rely on complex
+                        graphs of relational data.
                       </Fragment>
                     ) : (
                       <Fragment>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Pellentesque feugiat malesuada lectus id dignissim. Nunc
-                        sed finibus mi.
+                        Love high-level testing but hate slow, flaky end-to-end
+                        infrastructure? With Mirage you can write UI tests that
+                        verify complete user flows, run in node or the browser,
+                        and stress hard-to-test application states like failed
+                        network requests.
                       </Fragment>
                     )}
                   </Text>
@@ -318,8 +330,8 @@ export default function IndexPage() {
                 <QuoteClose className="absolute bottom-0 right-0 w-20 text-green-600 fill-current md:-mr-5" />
                 <div className="relative pt-8 pb-6">
                   <p className="text-lg text-white xl:text-xl max-w-measure">
-                    Honestly, I can't recommend this tool enough. Finally an
-                    idiomatic way for a frontend developer to prototype and test
+                    Honestly, I can't recommend this tool enough. Finally, an
+                    idiomatic way for frontend developers to prototype and test
                     an entire feature without touching a real API! Productivity
                     just goes through the roof.
                   </p>
@@ -335,7 +347,7 @@ export default function IndexPage() {
                   <p className="text-lg font-medium text-white">
                     Roman Sandler
                   </p>
-                  <p className="mt-2 text-green-200">Founder of Brixton Apps</p>
+                  <p className="mt-2 text-green-200">500tech</p>
                 </div>
               </div>
             </div>
@@ -533,10 +545,9 @@ export default function IndexPage() {
                 <QuoteClose className="absolute bottom-0 right-0 w-20 text-gray-500 opacity-50 fill-current md:-mr-5" />
                 <div className="relative pt-8 pb-6">
                   <p className="text-lg text-white xl:text-xl max-w-measure">
-                    Reminder: If there is one single piece of software born in
-                    2015 that has change the way I build software, it's Mirage.
-                    It just enables a different way of doing frontend/backend
-                    collaboration. Use it now. Gold.
+                    I was just thinking the other day... are there even any apps
+                    out there that don't use Mirage? I can't imagine writing an
+                    app without it.
                   </p>
                 </div>
               </div>
@@ -544,13 +555,13 @@ export default function IndexPage() {
               <div className="flex items-center justify-center mt-6">
                 <Img
                   className="w-24 mr-4 rounded-full xl:w-32 xl:mr-6"
-                  fluid={data.testimonial1.childImageSharp.fluid}
+                  fluid={data.testimonial2.childImageSharp.fluid}
                 />
                 <div className="flex-shrink-0 leading-none">
-                  <p className="text-lg font-medium text-white">
-                    Roman Sandler
+                  <p className="text-lg font-medium text-white">Mehul Kar</p>
+                  <p className="mt-2 text-gray-300">
+                    Frontend Engineer at Apple
                   </p>
-                  <p className="mt-2 text-gray-300">Founder of Brixton Apps</p>
                 </div>
               </div>
             </div>
@@ -562,7 +573,7 @@ export default function IndexPage() {
             <Gutters>
               <Container>
                 <h2 className="tracking-tight leading-tighter text-4-5xl font-title md:text-4-75xl md:leading-tighter lg:text-5xl">
-                  Ready to use Mirage?
+                  Get started using Mirage
                 </h2>
 
                 <div className="max-w-xs mx-auto mt-6 lg:max-w-sm">

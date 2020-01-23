@@ -46,7 +46,7 @@ export default function IndexPage() {
     createServer: { start: 0, end: 15 },
     useDatabase: { start: 15, end: 40 },
     seedFactories: { start: 40, end: 55 },
-    writeTest: { start: 55, end: 63 },
+    writeTest: { start: 55, end: 62.5 },
   }
 
   let videoPlayer = useRef()
@@ -590,36 +590,47 @@ export default function IndexPage() {
   )
 }
 
-// start at 30, end at 60
-// at 45 - 50%
-
-// end - start = duration = 30
-// complete = current - start = 15
-
 function VideoSegmentProgress({ start, end, current }) {
   let duration = end - start
-  let completedTime = current - start
-  let progress =
-    current < start ? 0 : current >= end ? 1 : completedTime / duration
-  return <ProgressBar progress={progress * 100} />
-}
+  let segmentCompletedTime = current - start
+  let segmentRemaining = duration - segmentCompletedTime
 
-function ProgressBar({ progress }) {
-  const prev = usePrevious(progress)
+  let progress =
+    current <= start
+      ? 0
+      : current > end
+      ? 100
+      : (segmentCompletedTime / duration) * 100
+
+  let previousProgress = usePrevious(progress)
+  let changeInProgress = progress - previousProgress
+  let didJump = changeInProgress < 0 || changeInProgress > 10
 
   const props = useSpring({
     to: {
-      width: `${progress}%`,
-      opacity: progress === 100 ? 0.6 : progress > 0 ? 1 : 0,
+      width: progress > 0 ? `100%` : `0%`,
+      backgroundColor: progress === 100 ? "#52595D" : "#05C77E",
     },
-    immediate: prev > progress || Math.abs(progress - prev) > 5,
-    config: { duration: 250, easing: t => t },
+    immediate: didJump,
+    config(key) {
+      let map = {
+        width: {
+          duration: segmentRemaining * 1000,
+          easing: t => t,
+        },
+        backgroundColor: {
+          duration: 250,
+        },
+      }
+
+      return map[key]
+    },
   })
 
   return (
-    <div className="relative w-full h-1 overflow-hidden bg-gray-900 rounded">
+    <div className="relative w-full h-1 overflow-hidden bg-gray-900 rounded transition">
       <animated.div
-        className="absolute top-0 bottom-0 left-0 bg-green-500"
+        className="absolute top-0 bottom-0 left-0"
         style={props}
       ></animated.div>
     </div>

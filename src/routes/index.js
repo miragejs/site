@@ -14,6 +14,9 @@ import { useRouter } from "../hooks/use-router"
 import { SectionWithLines, AspectRatio } from "../components/ui"
 import { keyframes } from "styled-components"
 import Vimeo from "@u-wave/react-vimeo"
+import { ReactComponent as PlayIcon } from "../assets/images/play.svg"
+import { ReactComponent as PauseIcon } from "../assets/images/pause.svg"
+import { ReactComponent as ReplayIcon } from "../assets/images/replay.svg"
 import { useSpring, animated } from "react-spring"
 import { usePrevious } from "../hooks/use-previous"
 
@@ -52,14 +55,22 @@ export default function IndexPage() {
   `)
 
   let segments = {
+<<<<<<< HEAD
     createServer: { start: 0, end: 62.05 },
     useDatabase: { start: 62.05, end: 177.75 },
     seedFactories: { start: 177.75, end: 266 },
     writeTest: { start: 266, end: 426 },
+=======
+    createServer: { start: 0, end: 62.5 },
+    useDatabase: { start: 62.5, end: 175 },
+    seedFactories: { start: 175, end: 259.75 },
+    writeTests: { start: 259.75, end: 417 },
+>>>>>>> Add video controls for each segment
   }
 
   let videoPlayer = useRef()
   let [currentTime, setCurrentTime] = useState(0)
+  let [playerState, setPlayerState] = useState("loading")
 
   let currentSegment =
     Object.keys(segments).find(name => {
@@ -74,6 +85,18 @@ export default function IndexPage() {
   function seekVideo(time) {
     videoPlayer.current.player.setCurrentTime(time)
   }
+
+  async function pauseVideo() {
+    await videoPlayer.current.player.pause()
+    setPlayerState("paused")
+  }
+
+  async function playVideo() {
+    await videoPlayer.current.player.play()
+    setPlayerState("playing")
+  }
+
+  window.player = videoPlayer.current && videoPlayer.current.player
 
   return (
     <div className="relative">
@@ -142,6 +165,7 @@ export default function IndexPage() {
                       start={segments.createServer.start}
                       end={segments.createServer.end}
                       current={currentTime}
+                      paused={playerState === "paused"}
                     />
                   </div>
                   <div className="w-1/4 px-4">
@@ -149,6 +173,7 @@ export default function IndexPage() {
                       start={segments.useDatabase.start}
                       end={segments.useDatabase.end}
                       current={currentTime}
+                      paused={playerState === "paused"}
                     />
                   </div>
                   <div className="w-1/4 px-4">
@@ -156,13 +181,15 @@ export default function IndexPage() {
                       start={segments.seedFactories.start}
                       end={segments.seedFactories.end}
                       current={currentTime}
+                      paused={playerState === "paused"}
                     />
                   </div>
                   <div className="w-1/4 px-4">
                     <VideoSegmentProgress
-                      start={segments.writeTest.start}
-                      end={segments.writeTest.end}
+                      start={segments.writeTests.start}
+                      end={segments.writeTests.end}
                       current={currentTime}
+                      paused={playerState === "paused"}
                     />
                   </div>
                 </div>
@@ -184,7 +211,7 @@ export default function IndexPage() {
                     <div className="w-1/4 px-4">
                       <button
                         onClick={e => seekVideo(segments.createServer.start)}
-                        className={`text-center w-full focus:outline-none transition ${
+                        className={`text-center block w-full focus:outline-none transition ${
                           currentSegment === "createServer"
                             ? "text-white"
                             : "text-gray-700"
@@ -192,11 +219,21 @@ export default function IndexPage() {
                       >
                         Create a server
                       </button>
+
+                      {currentSegment === "createServer" && (
+                        <VideoSegmentControls
+                          state={playerState}
+                          play={playVideo}
+                          pause={pauseVideo}
+                          reset={e => seekVideo(segments.createServer.start)}
+                        />
+                      )}
                     </div>
+
                     <div className="w-1/4 px-4">
                       <button
                         onClick={e => seekVideo(segments.useDatabase.start)}
-                        className={`text-center w-full focus:outline-none transition ${
+                        className={`text-center block w-full focus:outline-none transition ${
                           currentSegment === "useDatabase"
                             ? "text-white"
                             : "text-gray-700"
@@ -204,11 +241,20 @@ export default function IndexPage() {
                       >
                         Use the database
                       </button>
+                      {currentSegment === "useDatabase" && (
+                        <VideoSegmentControls
+                          state={playerState}
+                          play={playVideo}
+                          pause={pauseVideo}
+                          reset={e => seekVideo(segments.useDatabase.start)}
+                        />
+                      )}
                     </div>
+
                     <div className="w-1/4 px-4">
                       <button
                         onClick={e => seekVideo(segments.seedFactories.start)}
-                        className={`text-center w-full focus:outline-none transition ${
+                        className={`block text-center w-full focus:outline-none transition ${
                           currentSegment === "seedFactories"
                             ? "text-white"
                             : "text-gray-700"
@@ -216,18 +262,34 @@ export default function IndexPage() {
                       >
                         Seed with factories
                       </button>
+                      {currentSegment === "seedFactories" && (
+                        <VideoSegmentControls
+                          state={playerState}
+                          play={playVideo}
+                          pause={pauseVideo}
+                          reset={e => seekVideo(segments.seedFactories.start)}
+                        />
+                      )}
                     </div>
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={e => seekVideo(segments.writeTest.start)}
-                        className={`text-center w-full focus:outline-none transition ${
-                          currentSegment === "writeTest"
+                        onClick={e => seekVideo(segments.writeTests.start)}
+                        className={`text-center block w-full focus:outline-none transition ${
+                          currentSegment === "writeTests"
                             ? "text-white"
                             : "text-gray-700"
                         }`}
                       >
                         Write UI tests
                       </button>
+                      {currentSegment === "writeTests" && (
+                        <VideoSegmentControls
+                          state={playerState}
+                          play={playVideo}
+                          pause={pauseVideo}
+                          reset={e => seekVideo(segments.writeTests.start)}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -604,7 +666,7 @@ export default function IndexPage() {
   )
 }
 
-function VideoSegmentProgress({ start, end, current }) {
+function VideoSegmentProgress({ start, end, current, paused }) {
   let duration = end - start
   let segmentCompletedTime = current - start
   let segmentRemaining = duration - segmentCompletedTime
@@ -622,8 +684,8 @@ function VideoSegmentProgress({ start, end, current }) {
 
   const props = useSpring({
     to: {
-      width: progress > 0 ? `100%` : `0%`,
-      backgroundColor: progress === 100 ? "#52595D" : "#05C77E",
+      width: paused ? `${progress}%` : progress > 0 ? "100%" : "0%",
+      backgroundColor: progress === 100 ? "#2B2F31" : "#05C77E",
     },
     immediate: didJump,
     config(key) {
@@ -647,6 +709,25 @@ function VideoSegmentProgress({ start, end, current }) {
         className="absolute top-0 bottom-0 left-0"
         style={props}
       ></animated.div>
+    </div>
+  )
+}
+
+function VideoSegmentControls({ state, play, pause, reset }) {
+  return (
+    <div className="mt-2 text-center text-gray-300 flex-inline">
+      {state === "paused" ? (
+        <button className="mr-1 focus:outline-none" onClick={play}>
+          <PlayIcon className="w-4 h-4" />
+        </button>
+      ) : (
+        <button className="mr-1 focus:outline-none" onClick={pause}>
+          <PauseIcon className="w-4 h-4" />
+        </button>
+      )}
+      <button className="ml-1 focus:outline-none" onClick={reset}>
+        <ReplayIcon className="w-4 h-4" />
+      </button>
     </div>
   )
 }

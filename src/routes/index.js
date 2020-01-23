@@ -52,10 +52,10 @@ export default function IndexPage() {
   `)
 
   let segments = {
-    createServer: { start: 0, end: 15 },
-    useDatabase: { start: 15, end: 40 },
-    seedFactories: { start: 40, end: 55 },
-    writeTest: { start: 55, end: 62.5 },
+    createServer: { start: 0, end: 62.5 },
+    useDatabase: { start: 62.5, end: 175 },
+    seedFactories: { start: 175, end: 259.75 },
+    writeTest: { start: 259.75, end: 417 },
   }
 
   let videoPlayer = useRef()
@@ -120,7 +120,7 @@ export default function IndexPage() {
                 <AspectRatio ratio={16 / 9}>
                   <Vimeo
                     video="386535369"
-                    controls={true}
+                    controls={false}
                     autoplay={true}
                     muted={true}
                     loop={true}
@@ -260,10 +260,11 @@ export default function IndexPage() {
                     ) : (
                       <Fragment>
                         Love high-level testing but hate slow, flaky end-to-end
-                        infrastructure? With Mirage you can write UI tests that
+                        infrastructure? Mirage lets you write UI tests that
                         verify complete user flows, run in node or the browser,
                         and stress hard-to-test application states like failed
-                        network requests.
+                        network requests, without running anything other than
+                        your frontend app.
                       </Fragment>
                     )}
                   </Text>

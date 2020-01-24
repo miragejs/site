@@ -207,9 +207,9 @@ export default function IndexPage() {
                   <div className="flex -mx-4">
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={e => {
-                          seekVideo(segments.createServer.start)
-                          playVideo()
+                        onClick={async e => {
+                          await seekVideo(segments.createServer.start)
+                          await playVideo()
                         }}
                         className={`text-center hover:text-white block w-full focus:outline-none ${
                           currentSegment === "createServer"
@@ -232,9 +232,9 @@ export default function IndexPage() {
 
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={e => {
-                          seekVideo(segments.useDatabase.start)
-                          playVideo()
+                        onClick={async e => {
+                          await seekVideo(segments.useDatabase.start)
+                          await playVideo()
                         }}
                         className={`text-center hover:text-white block w-full focus:outline-none ${
                           currentSegment === "useDatabase"
@@ -256,9 +256,9 @@ export default function IndexPage() {
 
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={e => {
-                          seekVideo(segments.seedFactories.start)
-                          playVideo()
+                        onClick={async e => {
+                          await seekVideo(segments.seedFactories.start)
+                          await playVideo()
                         }}
                         className={`block text-center hover:text-white w-full focus:outline-none ${
                           currentSegment === "seedFactories"
@@ -279,9 +279,9 @@ export default function IndexPage() {
                     </div>
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={e => {
-                          seekVideo(segments.writeTests.start)
-                          playVideo()
+                        onClick={async e => {
+                          await seekVideo(segments.writeTests.start)
+                          await playVideo()
                         }}
                         className={`text-center hover:text-white block w-full focus:outline-none ${
                           currentSegment === "writeTests"

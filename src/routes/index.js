@@ -55,17 +55,10 @@ export default function IndexPage() {
   `)
 
   let segments = {
-<<<<<<< HEAD
     createServer: { start: 0, end: 62.05 },
     useDatabase: { start: 62.05, end: 177.75 },
     seedFactories: { start: 177.75, end: 266 },
     writeTest: { start: 266, end: 426 },
-=======
-    createServer: { start: 0, end: 62.5 },
-    useDatabase: { start: 62.5, end: 175 },
-    seedFactories: { start: 175, end: 259.75 },
-    writeTests: { start: 259.75, end: 417 },
->>>>>>> Add video controls for each segment
   }
 
   let videoPlayer = useRef()
@@ -95,8 +88,6 @@ export default function IndexPage() {
     await videoPlayer.current.player.play()
     setPlayerState("playing")
   }
-
-  window.player = videoPlayer.current && videoPlayer.current.player
 
   return (
     <div className="relative">

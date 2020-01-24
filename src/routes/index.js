@@ -459,7 +459,7 @@ export default function IndexPage() {
 
                       <div className="mt-4">
                         <Text color="dark-gray">
-                          No messy mocking code or handcrafted API respones in
+                          No messy mocking code or handcrafted API responses in
                           your tests. Just real-world scenarios validating the
                           entire functionality of your full application.
                         </Text>

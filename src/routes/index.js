@@ -77,7 +77,6 @@ export default function IndexPage() {
 
   async function seekVideo(time) {
     await videoPlayer.current.player.setCurrentTime(time)
-    setCurrentTime(time)
   }
 
   async function pauseVideo() {

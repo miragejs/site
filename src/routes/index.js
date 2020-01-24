@@ -620,7 +620,7 @@ export default function IndexPage() {
                     I work on a large team, and the owners of different parts of
                     the codebase change over time. Writing high-level tests
                     against a network layer gives me assurance that my code
-                    works, even as my organization evolves. I can't imagine
+                    works even as my organization evolves. I can't imagine
                     writing an app without it.
                   </p>
                 </div>

@@ -2,8 +2,8 @@ const path = require("path")
 
 module.exports = {
   siteMetadata: {
-    title: `Mirage JS • Build, test and demo your JavaScript application without an API`,
-    description: `Sign up to hear when Mirage is ready`,
+    title: `Mirage JS • An API mocking library for frontend developers`,
+    description: `Build, test and demo your JavaScript application without an API`,
     author: `@miragejs`,
   },
   plugins: [

@@ -16,7 +16,7 @@ import { keyframes } from "styled-components"
 import Vimeo from "@u-wave/react-vimeo"
 import { ReactComponent as PlayIcon } from "../assets/images/play.svg"
 import { ReactComponent as PauseIcon } from "../assets/images/pause.svg"
-import { ReactComponent as ReplayIcon } from "../assets/images/replay.svg"
+import { ReactComponent as ReplayIcon } from "../assets/images/replay2.svg"
 import { useSpring, animated } from "react-spring"
 import { usePrevious } from "../hooks/use-previous"
 
@@ -202,7 +202,7 @@ export default function IndexPage() {
                     <div className="w-1/4 px-4">
                       <button
                         onClick={e => seekVideo(segments.createServer.start)}
-                        className={`text-center block w-full focus:outline-none transition ${
+                        className={`text-center hover:text-white block w-full focus:outline-none ${
                           currentSegment === "createServer"
                             ? "text-white"
                             : "text-gray-700"
@@ -224,7 +224,7 @@ export default function IndexPage() {
                     <div className="w-1/4 px-4">
                       <button
                         onClick={e => seekVideo(segments.useDatabase.start)}
-                        className={`text-center block w-full focus:outline-none transition ${
+                        className={`text-center hover:text-white block w-full focus:outline-none ${
                           currentSegment === "useDatabase"
                             ? "text-white"
                             : "text-gray-700"
@@ -245,7 +245,7 @@ export default function IndexPage() {
                     <div className="w-1/4 px-4">
                       <button
                         onClick={e => seekVideo(segments.seedFactories.start)}
-                        className={`block text-center w-full focus:outline-none transition ${
+                        className={`block text-center hover:text-white w-full focus:outline-none ${
                           currentSegment === "seedFactories"
                             ? "text-white"
                             : "text-gray-700"
@@ -265,7 +265,7 @@ export default function IndexPage() {
                     <div className="w-1/4 px-4">
                       <button
                         onClick={e => seekVideo(segments.writeTests.start)}
-                        className={`text-center block w-full focus:outline-none transition ${
+                        className={`text-center hover:text-white block w-full focus:outline-none ${
                           currentSegment === "writeTests"
                             ? "text-white"
                             : "text-gray-700"
@@ -706,19 +706,28 @@ function VideoSegmentProgress({ start, end, current, paused }) {
 
 function VideoSegmentControls({ state, play, pause, reset }) {
   return (
-    <div className="mt-2 text-center text-gray-300 flex-inline">
-      {state === "paused" ? (
-        <button className="mr-1 focus:outline-none" onClick={play}>
-          <PlayIcon className="w-4 h-4" />
-        </button>
-      ) : (
-        <button className="mr-1 focus:outline-none" onClick={pause}>
-          <PauseIcon className="w-4 h-4" />
-        </button>
-      )}
-      <button className="ml-1 focus:outline-none" onClick={reset}>
+    <div className="flex items-center justify-center mt-2 ">
+      <button
+        className="px-px mx-1 text-gray-600 focus:outline-none hover:text-gray-300"
+        onClick={reset}
+      >
         <ReplayIcon className="w-4 h-4" />
       </button>
+      {state === "paused" ? (
+        <button
+          className="px-px mx-1 text-gray-600 focus:outline-none hover:text-gray-300"
+          onClick={play}
+        >
+          <PlayIcon className="w-3 h-3" />
+        </button>
+      ) : (
+        <button
+          className="px-px mx-1 text-gray-600 focus:outline-none hover:text-gray-300"
+          onClick={pause}
+        >
+          <PauseIcon className="w-3 h-3" />
+        </button>
+      )}
     </div>
   )
 }

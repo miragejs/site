@@ -132,6 +132,12 @@ export default function IndexPage() {
             <div className="md:px-8">
               <div className="max-w-lg mx-auto md:max-w-4xl 2xl:max-w-5xl">
                 <AspectRatio ratio={16 / 9}>
+                  <button
+                    className="absolute inset-0 z-10 w-full focus:outline-none"
+                    onClick={() =>
+                      playerState === "paused" ? playVideo() : pauseVideo()
+                    }
+                  />
                   <Vimeo
                     video="386535369"
                     controls={false}
@@ -303,7 +309,7 @@ export default function IndexPage() {
                       <Fragment>
                         Mirage runs alongside the rest of your frontend
                         JavaScript code — no new server processes or terminal
-                        windows required. Use the devtools you know and love to
+                        windows needed. Use the devtools you know and love to
                         write UI code that's ready for the network.
                       </Fragment>
                     ) : currentSegment === "useDatabase" ? (
@@ -611,11 +617,11 @@ export default function IndexPage() {
                 <QuoteClose className="absolute bottom-0 right-0 w-20 text-gray-500 opacity-50 fill-current md:-mr-5" />
                 <div className="relative pt-8 pb-6">
                   <p className="text-lg text-white xl:text-xl max-w-measure">
-                    I work on a large team, and who owns which part of the
-                    codebase evolves over time. Writing high-level tests against
-                    a network layer gives me assurance that my code works, even
-                    as those boundaries change. I can't imagine writing an app
-                    without it.
+                    I work on a large team, and the owners of different parts of
+                    the codebase change over time. Writing high-level tests
+                    against a network layer gives me assurance that my code
+                    works, even as my organization evolves. I can't imagine
+                    writing an app without it.
                   </p>
                 </div>
               </div>

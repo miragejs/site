@@ -201,7 +201,10 @@ export default function IndexPage() {
                   <div className="flex -mx-4">
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={e => seekVideo(segments.createServer.start)}
+                        onClick={e => {
+                          seekVideo(segments.createServer.start)
+                          playVideo()
+                        }}
                         className={`text-center hover:text-white block w-full focus:outline-none ${
                           currentSegment === "createServer"
                             ? "text-white"
@@ -223,7 +226,10 @@ export default function IndexPage() {
 
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={e => seekVideo(segments.useDatabase.start)}
+                        onClick={e => {
+                          seekVideo(segments.useDatabase.start)
+                          playVideo()
+                        }}
                         className={`text-center hover:text-white block w-full focus:outline-none ${
                           currentSegment === "useDatabase"
                             ? "text-white"
@@ -244,7 +250,10 @@ export default function IndexPage() {
 
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={e => seekVideo(segments.seedFactories.start)}
+                        onClick={e => {
+                          seekVideo(segments.seedFactories.start)
+                          playVideo()
+                        }}
                         className={`block text-center hover:text-white w-full focus:outline-none ${
                           currentSegment === "seedFactories"
                             ? "text-white"
@@ -264,7 +273,10 @@ export default function IndexPage() {
                     </div>
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={e => seekVideo(segments.writeTests.start)}
+                        onClick={e => {
+                          seekVideo(segments.writeTests.start)
+                          playVideo()
+                        }}
                         className={`text-center hover:text-white block w-full focus:outline-none ${
                           currentSegment === "writeTests"
                             ? "text-white"

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef } from "react"
+import React, { useState, useRef } from "react"
 import { ReactComponent as QuoteOpen } from "../assets/images/quote-open.svg"
 import { ReactComponent as QuoteClose } from "../assets/images/quote-close.svg"
 import ringsUrl from "../assets/images/rings.svg"
@@ -17,7 +17,7 @@ import Vimeo from "@u-wave/react-vimeo"
 import { ReactComponent as PlayIcon } from "../assets/images/play.svg"
 import { ReactComponent as PauseIcon } from "../assets/images/pause.svg"
 import { ReactComponent as ReplayIcon } from "../assets/images/replay2.svg"
-import { useSpring, animated } from "react-spring"
+import { useSpring, animated, useTransition } from "react-spring"
 import { usePrevious } from "../hooks/use-previous"
 
 const scroll = keyframes`
@@ -304,41 +304,44 @@ export default function IndexPage() {
                 </div>
 
                 <div className="h-40 mt-3 overflow-hidden md:h-32 md:mt-10 md:text-center md:flex md:justify-center">
-                  <Text color="light-gray">
-                    {currentSegment === "createServer" ? (
-                      <Fragment>
+                  <FadeBetween currentSegment={currentSegment}>
+                    <State for="createServer">
+                      <Text color="light-gray">
                         Mirage runs alongside the rest of your frontend
                         JavaScript code — no new server processes or terminal
                         windows needed. Use the devtools you know and love to
                         write UI code that's ready for the network.
-                      </Fragment>
-                    ) : currentSegment === "useDatabase" ? (
-                      <Fragment>
+                      </Text>
+                    </State>
+                    <State for="useDatabase">
+                      <Text color="light-gray">
                         Mirage uses an in-memory database to maintain the
                         referential integrity of your application data. This
                         lets you build out fully dynamic features, even ones
                         that depend on data-fetching and persistence logic,
                         without ever leaving your frontend codebase.
-                      </Fragment>
-                    ) : currentSegment === "seedFactories" ? (
-                      <Fragment>
+                      </Text>
+                    </State>
+                    <State for="seedFactories">
+                      <Text color="light-gray">
                         Use factories to quickly put your server into any state
                         you need. No more waiting on your backend team or
                         staging environment just to toggle between dynamic
                         application states — even ones that rely on complex
                         graphs of relational data.
-                      </Fragment>
-                    ) : (
-                      <Fragment>
+                      </Text>
+                    </State>
+                    <State for="writeTests">
+                      <Text color="light-gray">
                         Love high-level testing but hate slow, flaky end-to-end
                         infrastructure? Mirage lets you write UI tests that
                         verify complete user flows, run in node or the browser,
                         and stress hard-to-test application states like failed
                         network requests, without running anything other than
                         your frontend app.
-                      </Fragment>
-                    )}
-                  </Text>
+                      </Text>
+                    </State>
+                  </FadeBetween>
                 </div>
               </div>
             </Gutters>
@@ -799,3 +802,31 @@ function Caret(props) {
     </svg>
   )
 }
+
+function FadeBetween({ children, currentSegment }) {
+  let segments = React.Children.toArray(children).reduce((memo, child) => {
+    memo[child.props.for] = child.props.children
+
+    return memo
+  }, {})
+
+  const transitions = useTransition(currentSegment, i => i, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+  })
+
+  return (
+    <div className="relative w-full">
+      {transitions.map(({ item, props, key }) => {
+        return (
+          <animated.div className="absolute w-full" style={props} key={key}>
+            <div className="flex justify-center">{segments[item]}</div>
+          </animated.div>
+        )
+      })}
+    </div>
+  )
+}
+
+function State() {}

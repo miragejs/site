@@ -340,8 +340,8 @@ function Footer() {
   let router = useRouter()
 
   return (
-    <footer className="px-5 pt-16 pb-12 md:pb-20 bg-gray-1000">
-      <div className="max-w-lg mx-auto md:max-w-xl lg:max-w-3xl xl:max-w-7xl">
+    <footer className="px-5 pt-16 pb-12 md:pb-20 bg-gray-1000 xl:px-16">
+      <div className="max-w-lg mx-auto md:max-w-xl lg:max-w-3xl xl:max-w-5xl">
         <div className="">
           <div className="flex -mx-3 md:text-lg">
             <div className="w-1/2 px-3 xl:w-1/4">

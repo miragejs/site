@@ -72,21 +72,12 @@ export default function IndexPage() {
     }) || Object.keys(segments)[0]
 
   function handleTimeUpdate(event) {
-    console.log("time update (event)", event.seconds)
-    // we should ignore events if they happen right after a manual seek
-    // this is because the next event is either the same time as the seek, or
-    // it is a stale event with an outdated seek time.
-    if (Math.abs(event.seconds - currentTime) > 10) {
-      console.log("stale handle update!!!!")
-    } else {
-      setCurrentTime(event.seconds)
-    }
+    setCurrentTime(event.seconds)
   }
 
-  function seekVideo(time) {
-    videoPlayer.current.player.setCurrentTime(time)
+  async function seekVideo(time) {
+    await videoPlayer.current.player.setCurrentTime(time)
     setCurrentTime(time)
-    console.log("time update (manual)", time)
   }
 
   async function pauseVideo() {

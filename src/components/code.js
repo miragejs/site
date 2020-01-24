@@ -1,5 +1,4 @@
 import React from "react"
-
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 // import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism"
 import rangeParser from "parse-numeric-range"
@@ -18,6 +17,10 @@ export default function(props) {
     .filter((line, index) => index >= firstNonEmptyIndex)
     .reverse()
 
+  let backgroundColor = props.backgroundColor || "#282c34"
+  theme['pre[class*="language-"]'].background = backgroundColor
+  theme[':not(pre) > code[class*="language-"]'].background = backgroundColor
+
   return (
     <SyntaxHighlighter
       style={theme}
@@ -29,7 +32,7 @@ export default function(props) {
         if (highlightedLines.includes(lineNumber)) {
           props.className = "block px-5 -mx-5 bg-green-500"
           props.style = {
-            background: "#343b46", // dark:303641 bright:3D4452 medium: ##343b46
+            background: "#343b46",
           }
         }
         return props
@@ -83,10 +86,8 @@ const theme = {
     MozHyphens: "none",
     msHyphens: "none",
     hyphens: "none",
-    background: "#282c34",
   },
   ':not(pre) > code[class*="language-"]': {
-    background: "#282c34",
     padding: ".1em",
     borderRadius: ".3em",
   },

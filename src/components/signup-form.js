@@ -1,5 +1,9 @@
-import React, { useState } from "react"
-import Button from "./button"
+import { ReactComponent as Spinner } from "../assets/images/loading-spinner.svg"
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react"
+import { usePrevious } from "../hooks/use-previous"
+import { animated, useSpring } from "react-spring"
+import useMeasure from "react-use-measure"
+import { ResizeObserver } from "@juggle/resize-observer"
 
 let isEmailValid = function(email) {
   // eslint-disable-next-line
@@ -7,9 +11,10 @@ let isEmailValid = function(email) {
   return re.test(email)
 }
 
-function SignupForm() {
+const SPRING_CONFIG = { tension: 275, clamp: true }
+
+export default function() {
   // configure
-  let fadeOutInDelay = 0.4
   let feedbackDelay = 900
 
   // state
@@ -17,8 +22,6 @@ function SignupForm() {
   let [email, setEmail] = useState("")
   let [error, _setError] = useState("")
   let [formState, setFormState] = useState("")
-  let [isShowingThankYou, setIsShowingThankYou] = useState(false)
-  let [thankYouHeight, setThankYouHeight] = useState(0)
 
   let setError = function(type) {
     _setError(type)
@@ -33,6 +36,12 @@ function SignupForm() {
   let isSaving = formState === "saving"
   let isError = formState === "error"
   let didSignup = formState === "finished"
+
+  React.useEffect(() => {
+    window.toggle = () => {
+      setFormState(formState === "finished" ? "" : "finished")
+    }
+  })
 
   function handleChange(event) {
     event.preventDefault()
@@ -86,73 +95,256 @@ function SignupForm() {
     }
   }
 
-  let handleTransitionEnd = function(e) {
-    // not really sure how to best do this
-    if (!isShowingThankYou && e.target.tagName === "FORM") {
-      setIsShowingThankYou(true)
-      setThankYouHeight(e.target.offsetHeight)
-    }
-  }
-
-  let isAnimatingFormOut = didSignup && !isShowingThankYou
-
   return (
-    <div className="relative">
-      {didSignup && (
-        <div
-          className={`text-lg text-gray-500 leading-norma font-medium ${
-            isAnimatingFormOut ? "absolute" : ""
-          } ${isShowingThankYou ? "opacity-100" : "opacity-0"}`}
-          style={{
-            height: `${thankYouHeight}px`,
-            transition: `opacity ${fadeOutInDelay}s`,
-          }}
-        >
-          <p>
-            Thanks <span className="text-white">{email}</span>!
-          </p>
-          <p className="mt-2">
-            Check your email soon and confirm your address, so we can keep you
-            up to date.
-          </p>
-        </div>
-      )}
-
-      {(!didSignup || isAnimatingFormOut) && (
-        <form
-          onSubmit={handleSubmit}
-          className={didSignup ? "opacity-0" : "opacity-100"}
-          style={{
-            transition: `opacity ${fadeOutInDelay}s`,
-          }}
-          onTransitionEnd={e => handleTransitionEnd(e)}
-        >
-          <div className="md:inline-flex md:shadow-black">
-            <input
-              type="email"
-              required
-              name="email_address"
-              value={email}
-              disabled={isSaving}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              className="form-input bg-white placeholder-gray-500 text-gray-900 w-full rounded px-5 py-3 border-2 border-transparent focus:shadow-none focus:border-green-700 md:border-r-0 md:rounded-r-none md:w-96"
-            />
-            <Button isRunning={didSignup || isSaving}>Get notified</Button>
-          </div>
-          {isError && (
-            <div className="mt-5">
-              {error === "serverError" &&
-                "Woops — something's wrong with our signup form 😔. Please try again."}
-              {error === "invalidEmail" &&
-                "Oops — that's an invalid email address!"}
-              {error === "noEmail" && "Please fill out your email address!"}
+    <FadeBetween state={didSignup}>
+      <State for={false}>
+        <p className="text-sm text-white md:text-base">
+          Sign up for occasional project updates:
+        </p>
+        <div className="mt-3">
+          <form onSubmit={handleSubmit}>
+            <div className="flex shadow-black">
+              <input
+                type="email"
+                required
+                name="email_address"
+                value={email}
+                disabled={isSaving}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 bg-white border-2 border-r-0 border-transparent rounded rounded-r-none form-input focus:shadow-none focus:border-green-700"
+              />
+              <Button isRunning={isSaving}>Subscribe</Button>
             </div>
-          )}
-        </form>
-      )}
-    </div>
+            {isError && (
+              <div className="mt-5">
+                {error === "serverError" &&
+                  "Woops — something's wrong with our signup form 😔. Please try again."}
+                {error === "invalidEmail" &&
+                  "Oops — that's an invalid email address!"}
+                {error === "noEmail" && "Please fill out your email address!"}
+              </div>
+            )}
+          </form>
+        </div>
+      </State>
+
+      <State for={true}>
+        <p className="text-gray-500">
+          Thanks <span className="text-white">{email}</span>! Check your email
+          soon to confirm your address.
+        </p>
+      </State>
+    </FadeBetween>
   )
 }
 
-export default SignupForm
+function useWindowWidth() {
+  let isBrowser = typeof window !== "undefined"
+  const [width, setWidth] = useState(isBrowser ? window.innerWidth : 0)
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth)
+
+    if (isBrowser) {
+      window.addEventListener("resize", handleResize)
+    }
+
+    return () => {
+      isBrowser && window.removeEventListener("resize", handleResize)
+    }
+  }, [isBrowser])
+
+  return width
+}
+
+function Button({ isRunning = false, children }) {
+  // configure
+  let buttonExpandDuration = 0.25
+  let spinnerOpacityDuration = 0.25
+
+  // state
+  let spinnerEl = useRef(null)
+  let windowWidth = useWindowWidth()
+
+  let [shouldUseTransitions, setShouldUseTransitions] = useState(false)
+  let [spinnerWidth, setSpinnerWidth] = useState(0)
+  let [spinnerTop, setSpinnerTop] = useState(0)
+  let [isNudged, setIsNudged] = useState(isRunning)
+  let [isShowingSpinner, setIsShowingSpinner] = useState(isRunning)
+  let isWideButton = false
+
+  let nudgeAmount = isWideButton ? 0 : spinnerWidth * 0.75
+  let spinnerOffset = isWideButton ? spinnerWidth * 0.75 : nudgeAmount + 1
+
+  // this grabs the size of the spinner
+  // we need to render at least once before we know what spinnerWidth
+  // actually is. so we'll useLayoutEffect to  make the re-render sync
+  // before the browser paints the button
+  useLayoutEffect(() => {
+    let verticalSpacing =
+      spinnerEl.current.parentElement.offsetHeight -
+      spinnerEl.current.offsetHeight
+    setSpinnerWidth(spinnerEl.current.offsetWidth)
+    setSpinnerTop(verticalSpacing / 2)
+  }, [windowWidth])
+
+  useEffect(() => {
+    // we'll start animating things here as state changes.
+    // if we dont know the spinnerWidth we're going to exit,
+    // because without that we can really animate.
+    if (!spinnerWidth) {
+      return
+    }
+
+    // if we have the spinnerWidth we know we've done at least
+    // one render. that means that we can start animating, so we'll
+    // enable transitions
+    setShouldUseTransitions(true)
+  }, [spinnerWidth])
+
+  // For smaller buttons we'll stagger the animation so the next
+  // nudges and then the spinner comes in
+  useEffect(() => {
+    if (!isWideButton) {
+      if (isRunning) {
+        isNudged ? setIsShowingSpinner(true) : setIsNudged(true)
+      } else {
+        isShowingSpinner ? setIsShowingSpinner(false) : setIsNudged(false)
+      }
+    }
+  }, [isRunning, isWideButton, isNudged, isShowingSpinner])
+
+  // for large buttons we don't need to nudge, so we wont stagger
+  // the animation
+  useEffect(() => {
+    if (isWideButton) {
+      setIsShowingSpinner(isRunning)
+      setIsNudged(isRunning)
+    }
+  }, [isRunning, isWideButton])
+
+  let handleTransitionEnd = function(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsNudged(isRunning)
+    setIsShowingSpinner(isRunning)
+  }
+
+  return (
+    <button
+      disabled={isRunning}
+      onTransitionEnd={e => handleTransitionEnd(e)}
+      className={`px-6 py-2 md:px-8 text-white ${
+        isNudged ? "bg-green-900 opacity-50" : "bg-green-700"
+      } ${isRunning && "cursor-not-allowed"}
+      relative rounded bg-green-700 hover:bg-green-900 focus:outline-none focus:outline-shadow rounded-l-none`}
+      style={{
+        transition: shouldUseTransitions
+          ? `background-color ${buttonExpandDuration}s, color ${buttonExpandDuration}s`
+          : "",
+      }}
+    >
+      <div
+        onTransitionEnd={e => handleTransitionEnd(e)}
+        style={{
+          transform: isNudged
+            ? `translateX(${-nudgeAmount}px)`
+            : `translateX(0)`,
+          transition: shouldUseTransitions
+            ? `transform ${buttonExpandDuration}s`
+            : "",
+        }}
+      >
+        {children}
+      </div>
+      <span
+        ref={spinnerEl}
+        onTransitionEnd={e => handleTransitionEnd(e)}
+        className={`absolute ${isShowingSpinner ? "opacity-100" : "opacity-0"}`}
+        style={{
+          transition: shouldUseTransitions
+            ? `opacity ${spinnerOpacityDuration}s`
+            : "",
+          right: `${spinnerOffset}px`,
+          top: `${spinnerTop}px`,
+        }}
+      >
+        <Spinner className="w-4 h-4 loading" />
+      </span>
+    </button>
+  )
+}
+
+function FadeBetween({ state, children }) {
+  const prev = usePrevious(state)
+  const [falseBlockBoundsHeight, setFalseBlockBoundsHeight] = useState("auto")
+  const [trueBlockBoundsHeight, setTrueBlockBoundsHeight] = useState("auto")
+
+  let heights = {
+    false: falseBlockBoundsHeight,
+    true: trueBlockBoundsHeight,
+  }
+
+  let falseBlockShowing = {
+    height: falseBlockBoundsHeight,
+    falseBlockOpacity: 1,
+  }
+
+  let trueBlockShowing = {
+    height: trueBlockBoundsHeight,
+    trueBlockOpacity: 1,
+  }
+
+  let falseToTrue = [{ falseBlockOpacity: 0 }, trueBlockShowing]
+  let trueToFalse = [{ trueBlockOpacity: 0 }, falseBlockShowing]
+
+  let to = state ? falseToTrue : trueToFalse
+
+  // Adjust the height in the first frame if the final contents are larger than initial contents
+  if (prev !== state) {
+    let finalHeight = heights[state]
+    let initialHeight = heights[!state]
+    to[0].height = finalHeight > initialHeight ? finalHeight : initialHeight
+  }
+
+  let { height, falseBlockOpacity, trueBlockOpacity } = useSpring({
+    to,
+    immediate: prev === state,
+    config: SPRING_CONFIG,
+  })
+
+  const childrenWithProps = React.Children.map(children, child =>
+    React.cloneElement(child, {
+      cb: height =>
+        child.props.for === true
+          ? setTrueBlockBoundsHeight(height)
+          : setFalseBlockBoundsHeight(height),
+      animatedOpacity:
+        child.props.for === true ? trueBlockOpacity : falseBlockOpacity,
+    })
+  )
+
+  return (
+    <animated.div style={{ height }} className="relative overflow-hidden">
+      {childrenWithProps}
+    </animated.div>
+  )
+}
+
+function State({ cb, animatedOpacity, children }) {
+  const [ref, bounds] = useMeasure({ polyfill: ResizeObserver })
+  if (bounds.height > 0) {
+    cb(bounds.height)
+  }
+
+  return (
+    <animated.div
+      ref={ref}
+      style={{ opacity: animatedOpacity }}
+      className="absolute w-full"
+    >
+      {children}
+    </animated.div>
+  )
+}

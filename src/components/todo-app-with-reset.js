@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import Replay from "../assets/images/replay.svg"
+import { ReactComponent as Replay } from "../assets/images/replay.svg"
 import TodoApp from "./todo-app"
 import { makeServer } from "../server"
 import { addPersist, resetDb } from "../lib/persist"
@@ -23,10 +23,10 @@ export default function TodoAppWithReset() {
       <div className="mt-4">
         <button
           onClick={resetApp}
-          className="text-sm md:text-base text-blue-500 focus:outline-none px-3 py-2 mx-auto flex items-center hover:underline"
+          className="flex items-center px-3 py-2 mx-auto text-sm text-blue-500 md:text-base focus:outline-none hover:underline"
         >
           Reset app
-          <Replay className="ml-1 w-4 h-4" />
+          <Replay className="w-4 h-4 ml-1" />
         </button>
       </div>
     </div>

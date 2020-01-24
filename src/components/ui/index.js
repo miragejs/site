@@ -1,4 +1,5 @@
 import React from "react"
+import bg from "../../assets/images/background-lines2.png"
 import CodeComponent from "../code"
 
 // More prominent than P but not a Heading
@@ -107,4 +108,27 @@ export const Code = ({ className, ...rest }) => (
     className={`sm:rounded-lg overflow-hidden -mx-5 md:mx-0 my-8 ${className}`}
     {...rest}
   />
+)
+export function AspectRatio({ ratio, children }) {
+  return (
+    <div
+      className="relative"
+      style={{ paddingBottom: `${(1 / ratio) * 100}%` }}
+    >
+      <div className="absolute inset-0 w-full h-full">{children}</div>
+    </div>
+  )
+}
+
+export const SectionWithLines = ({ children }) => (
+  <section
+    className="bg-no-repeat bg-gray-1000"
+    style={{
+      backgroundSize: "100% 620px, 2300px",
+      backgroundPosition: "center top, calc(50% + 225px) -9px",
+      backgroundImage: `linear-gradient(45deg, rgb(26, 28, 29) 39%, rgba(26, 28, 29, 0) 65%, rgba(26, 28, 29, 0) 68%, rgba(26, 28, 29) 100%), url(${bg})`,
+    }}
+  >
+    {children}
+  </section>
 )

@@ -419,7 +419,7 @@ export default function IndexPage() {
                   <p className="text-lg font-medium text-white">
                     Roman Sandler
                   </p>
-                  <p className="mt-2 text-green-200">500tech</p>
+                  <p className="mt-2 text-green-200">Developer at 500tech</p>
                 </div>
               </div>
             </div>

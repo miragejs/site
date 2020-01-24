@@ -528,8 +528,8 @@ When combined with the `afterCreate()` hook, traits simplify the process of sett
 Here we define a `withComments` trait that creates 3 comments for a newly created post:
 
 ```js
-user: Factory.extend({
-  name: "Lorem ipsum",
+post: Factory.extend({
+  title: "Lorem ipsum",
 
   withComments: trait({
     afterCreate(post, server) {

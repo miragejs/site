@@ -420,7 +420,7 @@ export default function IndexPage() {
                 />
                 <div className="flex-shrink-0 leading-none">
                   <p className="text-lg font-medium text-white">
-                    Roman Sandler
+                    <a href="https://twitter.com/RomanSndlr">Roman Sandler</a>
                   </p>
                   <p className="mt-2 text-green-200">Developer at 500tech</p>
                 </div>
@@ -635,10 +635,10 @@ export default function IndexPage() {
                   fluid={data.testimonial2.childImageSharp.fluid}
                 />
                 <div className="flex-shrink-0 leading-none">
-                  <p className="text-lg font-medium text-white">Mehul Kar</p>
-                  <p className="mt-2 text-gray-300">
-                    Frontend Engineer
+                  <p className="text-lg font-medium text-white">
+                    <a href="https://twitter.com/mehulkar">Mehul Kar</a>
                   </p>
+                  <p className="mt-2 text-gray-300">Frontend Engineer</p>
                 </div>
               </div>
             </div>

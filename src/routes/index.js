@@ -371,7 +371,7 @@ export default function IndexPage() {
                     <Text color="dark-gray">
                       Say goodbye to configuring painful backend environments
                       just to hack on your UI. Mirage runs alongside the rest of
-                      your frontend code, so there’s no new infrastruture for
+                      your frontend code, so there’s no new infrastructure for
                       you to learn.
                     </Text>
                     <div className="mt-4">

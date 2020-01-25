@@ -1,0 +1,17 @@
+# About
+
+Mirage began in 2015 when I was working at TED. We had several Ember.js apps there, and testing has always been a big part of working with Ember.
+
+Around this time Ember core team member [Trek Glowacki](https://twitter.com/trek) released [Pretender.js](https://github.com/pretenderjs/pretender), a library that mocked `fetch`/`XMLHTTPRequest` and provided an express-like DSL for defining route handlers. We used Pretender heavily in our tests and I wanted a way to enforce some consistency in our usage. I wrote `ember-cli-pretenderify`, an Ember addon that did just that.
+
+Over time the addon became about more than just wiring up Pretender. The big change was when I added the database, which is really nothing more than some global state that's shared across route handlers. The server definition was also being used in development, making it as much a development-time tool as it was a testing tool. I eventually renamed the addon to `ember-cli-mirage`, which is still in use to this day.
+
+I resisted adding complexity to Mirage early on, but it felt inevitable. So many people were repeating the same sorts of boilerplate code in their mocking setups. After the database came the ORM, and then the Serializer layer. Most of Mirage's APIs are inspired by Rails and its surrounding ecosystem. Even though Mirage became more complex, it was still so much faster for us to work with than juggling a separate API server, despite us being quite comfortable building servers in Rails.
+
+People often asked if they could use Mirage outside of Ember. From the beginning I had intentionally avoided using Ember-specific APIs in Mirage's core in case I ever wanted to generalize it. This turned out to be a good decision. In 2018 some friends of mine including [Charles Lowell](https://twitter.com/cowboyd) actually [performed the first extraction](https://github.com/bigtestjs/mirage), but at the time I was still primarily working in Ember and didn't have an interest in maintaining a more general library.
+
+In 2019, [Ryan Toronto](https://twitter.com/ryantotweets) and I finally decided to pull the trigger. Mirage felt like the highest-impact work I had done in my career and it didn't seem like that big of a leap to get it working with any JavaScript tool. On July 19, 2019 we cut a release of `ember-cli-mirage` that had all of Mirage's core logic extracted into an external dependency. Since then we've been iterating on `miragejs` as a completely standalone library, which is now being used in JavaScript apps built with everything from React to Vue to Angular.
+
+Going forward, Mirage's mission is to become an indispensible tool for frontend developers. Local control of the network enables faster feedback on your frontend code than any other approach I've seen. In a world where service providers are absorbing more server-side concerns every year, UIs are becoming front-and-center. Mirage fits squarely into this architecture by empowering frontend teams to fully mock the boundaries of their apps, regardless of what's on the other side.
+
+— Sam Selikoff

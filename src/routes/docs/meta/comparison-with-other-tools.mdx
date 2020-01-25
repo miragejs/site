@@ -1,0 +1,29 @@
+# Comparison with other tools
+
+Here's how Mirage compares to other API mocking tools and approaches.
+
+## JSON Server
+
+[JSON Server](https://github.com/typicode/json-server) is a popular
+
+- flexible, not prescriptive
+- runs in browser, don't need separate process running. simpler environment for development, testing on CI, etc.
+- doesn't work with graphql.
+- cons: not a real server, don't get to use network tab to inspect resonses, don't get to use HTTP tools. Mirage does have node support on its roadmap but today it only runs in the browser.
+
+## FakeRest
+
+[https://github.com/marmelab/FakeRest](https://github.com/marmelab/FakeRest)
+
+## Mocked GraphQL queries (e.g. Apollo Mocked Provider)
+
+- Referential integrity. Mirage operates at the resource level rather than query level.
+
+## Cypress route mocks
+
+- Can't use in development
+- As of this writing, doesn't work with fetch
+
+## Other static mocking tools
+
+- Database for dynamic mocks

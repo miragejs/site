@@ -637,7 +637,7 @@ export default function IndexPage() {
                 <div className="flex-shrink-0 leading-none">
                   <p className="text-lg font-medium text-white">Mehul Kar</p>
                   <p className="mt-2 text-gray-300">
-                    Frontend Engineer at Apple
+                    Frontend Engineer
                   </p>
                 </div>
               </div>

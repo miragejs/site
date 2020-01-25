@@ -81,6 +81,20 @@ const allRoutes: RouteDefinition[] = [
           },
         ],
       },
+      {
+        name: "meta",
+        label: "Meta",
+        routes: [
+          // {
+          //   name: "comparison-with-other-tools",
+          //   label: "Comparison with other tools",
+          // },
+          {
+            name: "about",
+            label: "About",
+          },
+        ],
+      },
     ],
   },
   {
@@ -232,7 +246,9 @@ export class Route {
 
   set activePath(path: string) {
     if (this.parent) {
-      throw "activePath can only be set on the router, not a child route"
+      throw new Error(
+        "activePath can only be set on the router, not a child route"
+      )
     } else {
       this._activePath = path
     }

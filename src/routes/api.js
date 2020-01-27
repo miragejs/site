@@ -2,6 +2,7 @@ import React from "react"
 import { ThreeColumnLayout } from "../components/three-column-layout"
 import useApiDocs from "../hooks/use-api-docs"
 import { useRouter } from "../hooks/use-router"
+import SEO from "../components/seo"
 
 export default function Api(props) {
   let router = useRouter()
@@ -61,13 +62,16 @@ export default function Api(props) {
     }, [])
 
   return (
-    <ThreeColumnLayout
-      routes={routes}
-      previousPage={previousPage}
-      nextPage={nextPage}
-      currentPageTableOfContentsItems={tableOfContents}
-    >
-      {props.children}
-    </ThreeColumnLayout>
+    <>
+      <SEO title={activePublicClass.name} />
+      <ThreeColumnLayout
+        routes={routes}
+        previousPage={previousPage}
+        nextPage={nextPage}
+        currentPageTableOfContentsItems={tableOfContents}
+      >
+        {props.children}
+      </ThreeColumnLayout>
+    </>
   )
 }

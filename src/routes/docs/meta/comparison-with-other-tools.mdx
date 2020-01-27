@@ -1,29 +1,70 @@
 # Comparison with other tools
 
-Here's how Mirage compares to other API mocking tools and approaches.
+Here's how Mirage compares to some other API mocking tools and approaches.
 
 ## JSON Server
 
-[JSON Server](https://github.com/typicode/json-server) is a popular
+[JSON Server](https://github.com/typicode/json-server) is a popular tool for creating instant REST APIs in node.
 
-- flexible, not prescriptive
-- runs in browser, don't need separate process running. simpler environment for development, testing on CI, etc.
-- doesn't work with graphql.
-- cons: not a real server, don't get to use network tab to inspect resonses, don't get to use HTTP tools. Mirage does have node support on its roadmap but today it only runs in the browser.
+The primary difference between Mirage and JSON Server is that Mirage is designed to mock out the exact shape of your production API, whereas JSON Server creates a specific API format based on its conventions and what you put in its database file. While there are some configuration options available, it can be difficult or impossible to use JSON Server to fully replicate your production API routes and payloads, meaning your application code would not be written and tested against a production-like environment.
 
-## FakeRest
+Mirage's philosophy is to stay on the HTTP boundary and not affect your application code. Your production API is what drives your Mirage configuration, not the other way around.
 
-[https://github.com/marmelab/FakeRest](https://github.com/marmelab/FakeRest)
+Some other advantages Mirage has:
 
-## Mocked GraphQL queries (e.g. Apollo Mocked Provider)
+- Mirage runs in the browser alongside your frontend code, so getting it running in your dev environment and using it to run tests on your CI servers is simpler – no extra processes to manage or reset.
 
-- Referential integrity. Mirage operates at the resource level rather than query level.
+- Mirage supports full referential integrity via its ORM, and manages all your resources' foreign keys even as your app modifies data.
+
+- Mirage resets its state on every browser reload, which can be a double-edged sword but is often what you want for development and testing. (You can use `localStorage` if you'd like to add temporary persistence to Mirage.)
+
+- Mirage works with GraphQL, or any other API format.
+
+JSON Server does have some advantages over Mirage:
+
+- It's a real server, so you get to use the network tab in the devtools and other HTTP tools like Paw or curl to send requests and inspect responses.
+
+- It's written in node and exppress, so you get the full power of the node ecosystem.
+
+- It has filtering and sorting implementations out of the box (though again, it's unlikely that they will match your production API).
+
+## Low-level mocking libraries
+
+There are low-level mocking tools like [Pretender](https://github.com/pretenderjs/pretender) and [FakeRest](https://github.com/marmelab/FakeRest) that are often used in isolation (usually tests) to define static mocks for specific endpoints. (Mirage actually uses Pretender under the hood as its inceptor!)
+
+The biggest difference with tools like these and Mirage is that Mirage is designed to let you faithfully recreate your entire production API server, so that your app can interact with it in exactly the same way it would talk to the network in production. Mirage's data and serializer layers are what enable this. Mocking every endpoint by hand can be tedious and hard to keep updated, and is <Link to='/docs/meta/about'>what actually what led to Mirage's existence in the first place</Link>.
+
+## GraphQL query mocking
+
+When working in GraphQL it is common to mock at the query level, using packages like [Apollo MockedProvier](https://www.apollographql.com/docs/react/development-testing/testing/#mockedprovider). This has a similar problm as low-level REST mocking libraries, and it can be quite difficult to maintain the referential integrity of your data when mocking multiple queries (i.e. your app creates a `movie` and then follows it up with a query to `allMovies`, but the new movie isn't there.)
+
+These same sorts of pain points are also when led to the creation of Mirage, which fundamentally operates at the resource level rather than the query level.
 
 ## Cypress route mocks
 
-- Can't use in development
-- As of this writing, doesn't work with fetch
+Cypress includes the [`cy.route() API`](https://docs.cypress.io/guides/guides/network-requests.html#Testing-Strategies) which lets you stub out your backend during testing.
 
-## Other static mocking tools
+Cypress' network mocks are based on static fixtures (typically JSON files) and thus suffer from the same kinds of problems as other tools that don't use something like a database to ensure consistency of resources across CRUD operations.
 
-- Database for dynamic mocks
+Cypress also has an alias API that encourages you to explicitly wait on its stubs in a test:
+
+```js
+cy.get("#autocomplete").type("Book")
+
+// Wait for the request + response
+cy.wait("@getSearch")
+
+cy.get("#results").should("contain", "Book 1")
+```
+
+From Mirage's perspective, this test contains two distinct levels of abstraction that typically should not be mixed: first are the visible UI elements and user interactions, which are written from the actual end-user's perspective (things like `type('Book')` and `(#results).should('contain', 'Book 1')`), and second is the HTTP alias (`wait('@getSearch')`) which is an implementation detail of this page and not actually visible to the end user.
+
+Mirage recommends writing UI tests at a single level of abstraction, usually focused on the real-world behavior of your end user. In the case of waiting for HTTP responses, it is best to have your test wait on some piece of UI that indicates whether the request is pending or fulfilled, rather than an implementation detail like the specific HTTP requests that happen to be powering the page. For this reason, we believe Cypress' alias API can lead to brittle tests that make your code harder to refactor.
+
+These differences are just about Cypress' HTTP mocking layer though – overall, we're big fans of Cypress! And Mirage works great when used as the API mocking layer right alongside your Cypress testing code. In fact, <Link>we even have a Quickstart guide on getting Mirage set up in a Cypress app</Link>!
+
+Other differences include the fact that Cypress' API mocks are typically not shared in development, which is a big part of Mirage's core value offering. Additionally, as of this writing, Cypress doesn't intercept `fetch` requests, whereas Mirage does.
+
+---
+
+If you are curious how Mirage compares to another tool not listed here, please feel free to ask by [opening an issue](https://github.com/miragejs/miragejs/issues/new)!

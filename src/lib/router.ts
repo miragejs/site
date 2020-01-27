@@ -85,10 +85,10 @@ const allRoutes: RouteDefinition[] = [
         name: "meta",
         label: "Meta",
         routes: [
-          // {
-          //   name: "comparison-with-other-tools",
-          //   label: "Comparison with other tools",
-          // },
+          {
+            name: "comparison-with-other-tools",
+            label: "Comparison with other tools",
+          },
           {
             name: "about",
             label: "About",

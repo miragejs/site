@@ -3,6 +3,7 @@ import { DesktopLeftNav, DesktopRightNav } from "./desktop-nav"
 import { MobileNav } from "./mobile-nav"
 import { MDXProvider } from "@mdx-js/react"
 import { Link } from "@reach/router"
+import { Link as GatsbyLink } from "gatsby"
 import {
   H1,
   H2,
@@ -78,6 +79,9 @@ export function ThreeColumnLayout(props) {
 }
 
 const components = {
+  Link: props => (
+    <GatsbyLink {...props} className="underline hover:text-blue-500" />
+  ),
   h1: H1,
   h2: H2,
   h3: H3,

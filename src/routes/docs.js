@@ -2,6 +2,7 @@ import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { ThreeColumnLayout } from "../components/three-column-layout"
 import { useRouter } from "../hooks/use-router"
+import SEO from "../components/seo"
 
 export default function DocsPage(props) {
   let router = useRouter()
@@ -12,6 +13,10 @@ export default function DocsPage(props) {
         nodes {
           tableOfContents
           fileAbsolutePath
+          headings {
+            depth
+            value
+          }
         }
       }
     }
@@ -31,14 +36,20 @@ export default function DocsPage(props) {
 
   let docsRouter = router.routerFor("/docs")
 
+  let heading = mdxPage.headings.find(heading => heading.depth === 1)
+  let title = heading && heading.value
+
   return (
-    <ThreeColumnLayout
-      routes={docsRouter.routes}
-      previousPage={docsRouter.previousPage}
-      nextPage={docsRouter.nextPage}
-      currentPageTableOfContentsItems={tableOfContentsItems}
-    >
-      {props.children}
-    </ThreeColumnLayout>
+    <>
+      {title && <SEO title={title} />}
+      <ThreeColumnLayout
+        routes={docsRouter.routes}
+        previousPage={docsRouter.previousPage}
+        nextPage={docsRouter.nextPage}
+        currentPageTableOfContentsItems={tableOfContentsItems}
+      >
+        {props.children}
+      </ThreeColumnLayout>
+    </>
   )
 }

@@ -61,7 +61,7 @@ From Mirage's perspective, this test contains two distinct levels of abstraction
 
 Mirage recommends writing UI tests at a single level of abstraction, usually focused on the real-world behavior of your end user. In the case of waiting for HTTP responses, it is best to have your test wait on some piece of UI that indicates whether the request is pending or fulfilled, rather than an implementation detail like the specific HTTP requests that happen to be powering the page. For this reason, we believe Cypress' alias API can lead to brittle tests that make your code harder to refactor.
 
-These differences are just about Cypress' HTTP mocking layer though – overall, we're big fans of Cypress! And Mirage works great when used as the API mocking layer right alongside your Cypress testing code. In fact, <Link>we even have a Quickstart guide on getting Mirage set up in a Cypress app</Link>!
+These differences are just about Cypress' HTTP mocking layer though – overall, we're big fans of Cypress! And Mirage works great when used as the API mocking layer right alongside your Cypress testing code. In fact, <Link to='/quickstarts/cypress/setup'>we even have a Quickstart guide on getting Mirage set up in a Cypress app</Link>!
 
 Other differences include the fact that Cypress' API mocks are typically not shared in development, which is a big part of Mirage's core value offering. Additionally, as of this writing, Cypress doesn't intercept `fetch` requests, whereas Mirage does.
 

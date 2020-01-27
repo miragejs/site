@@ -135,6 +135,30 @@ const allRoutes: RouteDefinition[] = [
       },
     ],
   },
+  {
+    label: "Cookbook",
+    name: "cookbook",
+    routes: [
+      {
+        label: "API Formats",
+        name: "api-formats",
+        routes: [
+          { label: "GraphQL", name: "graphql" },
+          { label: "JSON:API", name: "jsonapi" },
+        ],
+      },
+      {
+        label: "Server",
+        name: "server",
+        routes: [{ label: "Authentication", name: "authentication" }],
+      },
+      {
+        label: "Modeling",
+        name: "modeling",
+        routes: [{ label: "UUIDs", name: "uuid" }],
+      },
+    ],
+  },
 ]
 
 interface RouteDefinition {

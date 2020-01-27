@@ -10,8 +10,18 @@ export default function QuickstartsPage(props) {
   return (
     <ThreeColumnLayout
       routes={docsRouter.routes}
-      previousPage={docsRouter.previousPage}
-      nextPage={docsRouter.nextPage}
+      previousPage={
+        docsRouter.previousPage &&
+        router.activePage.parent === docsRouter.previousPage.parent
+          ? docsRouter.previousPage
+          : null
+      }
+      nextPage={
+        docsRouter.nextPage &&
+        router.activePage.parent === docsRouter.nextPage.parent
+          ? docsRouter.nextPage
+          : null
+      }
     >
       {props.children}
     </ThreeColumnLayout>

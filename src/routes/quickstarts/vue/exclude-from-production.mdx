@@ -1,0 +1,38 @@
+# Exclude Mirage from Vue CLI production builds
+
+Vue CLI can be configured to not bundle Mirage in production builds of your application.
+
+First, install [null-loader](https://github.com/webpack-contrib/null-loader).
+
+```bash
+yarn add -D null-loader
+```
+
+Next, add the following to `vue.config.js`.
+
+```js
+// vue.config.js
+module.exports = {
+  chainWebpack: config => {
+    if (process.env.NODE_ENV === "production") {
+      config.module
+        .rule("exclude-mirage")
+        .test(/node_modules\/miragejs\//)
+        .use("null-loader")
+        .loader("null-loader")
+    }
+  },
+}
+```
+
+Make sure there are no calls to `new Server()` when running in production by wrapping any Mirage code in a `process.env.NODE_ENV` check:
+
+```js
+import { Server } from 'miragejs';
+
+if (process.env.NODE_ENV !== "production") {
+  new Server({ ... })
+}
+```
+
+With this configuration Mirage will neither be included in your production build nor will the server start in your production environment.

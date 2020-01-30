@@ -36,7 +36,7 @@ The biggest difference with tools like these and Mirage is that Mirage is design
 
 ## GraphQL query mocking
 
-When working in GraphQL it is common to mock at the query level, using packages like [Apollo MockedProvier](https://www.apollographql.com/docs/react/development-testing/testing/#mockedprovider). This has a similar problm as low-level REST mocking libraries, and it can be quite difficult to maintain the referential integrity of your data when mocking multiple queries (i.e. your app creates a `movie` and then follows it up with a query to `allMovies`, but the new movie isn't there.)
+When working in GraphQL it is common to mock at the query level, using packages like [Apollo MockedProvider](https://www.apollographql.com/docs/react/development-testing/testing/#mockedprovider). This has a similar problm as low-level REST mocking libraries, and it can be quite difficult to maintain the referential integrity of your data when mocking multiple queries (i.e. your app creates a `movie` and then follows it up with a query to `allMovies`, but the new movie isn't there.)
 
 These same sorts of pain points are also when led to the creation of Mirage, which fundamentally operates at the resource level rather than the query level.
 

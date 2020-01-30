@@ -1,14 +1,24 @@
 # Exclude Mirage from Vue CLI production builds
 
-Vue CLI can be configured to not include Mirage in production builds of your application. This ensures that Mirage is only ever used in development and testing environments.
+Since Mirage is a development tool, you should configure Vue CLI to exclude it when building your app for production. This keeps the `miragejs` library out of your app and ensures users don't download any unnecessary code.
 
-First, install [null-loader](https://github.com/webpack-contrib/null-loader).
+You can use your `vue.config.js` file to achieve this.
+
+## Step 1: Install null-loader
+
+Add the [null-loader](https://github.com/webpack-contrib/null-loader) library to your project:
 
 ```bash
+# Using npm
+npm install --save-dev null-loader
+
+# Using yarn
 yarn add -D null-loader
 ```
 
-Next, add the following to `vue.config.js`.
+## Step 2: Replace Mirage with an empty package
+
+Next, add the following to your `vue.config.js`:
 
 ```js
 // vue.config.js
@@ -25,14 +35,29 @@ module.exports = {
 }
 ```
 
-Make sure there are no calls to `new Server()` when running in production by wrapping any Mirage code in a `process.env.NODE_ENV` check:
+This replaces the `miragejs` module in your app with an empty module when you're building for production.
 
-```js
-import { Server } from 'miragejs';
+## Step 3: Ensure there are no production runtime calls to Server
 
-if (process.env.NODE_ENV !== "production") {
-  new Server({ ... })
+Since we've replaced `miragejs` with an empty module, we need to ensure that we're not invoking `makeServer` (or using any of Mirage's APIs) in our production runtime code, because those APIs no longer exist.
+
+We can do that by ensuring any code that starts Mirage is wrapped in a `process.env.NODE_ENV` check:
+
+```js{8-10}
+// src/main.js
+import Vue from "vue"
+import App from "./App.vue"
+import { makeServer } from "./server"
+
+Vue.config.productionTip = false
+
+if (process.env.NODE_ENV === "development") {
+  makeServer()
 }
+
+new Vue({
+  render: h => h(App),
+}).$mount("#app")
 ```
 
-With this configuration Mirage will neither be included nor started in your production environment.
+With this configuration Mirage will neither be included nor accessed in your production environment.

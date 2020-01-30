@@ -126,6 +126,7 @@ const allRoutes: RouteDefinition[] = [
         routes: [
           { label: "Development", name: "development" },
           { label: "Vue Test Utils", name: "vue-test-utils" },
+          { label: "Production builds", name: "exclude-from-production" },
         ],
       },
       {

@@ -100,7 +100,7 @@ Our app now runs, but the test fails. We can look at the logs in our console and
 
 That's because Mirage's database is empty.
 
-As you learned in the guides on the Data layer, you can use the `seeds` method to seed Mirage's database with factories and fixtures. But in testing, we already have a natural place to set up our Mirage state – the test itself! So the general practice is to not use seeds, and instead to set up Mirage's database state within each test.
+As you learned in previous section of the guides, you can use the `seeds` method to seed Mirage's database with factories and fixtures. But in testing, we already have a natural place to set up our Mirage state – the test itself! So the general practice is to not use seeds, and instead to set up Mirage's database state within each test.
 
 We can do that using the `server.create` and `server.createList` methods, directly in the body of our test:
 

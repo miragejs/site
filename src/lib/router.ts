@@ -28,19 +28,13 @@ const allRoutes: RouteDefinition[] = [
         ],
       },
       {
-        name: "route-handlers",
-        label: "Route handlers",
+        name: "main-concepts",
+        label: "Main concepts",
         routes: [
-          { label: "Functions", name: "functions" },
+          { label: "Route handlers", name: "route-handlers" },
           { label: "Shorthands", name: "shorthands" },
-        ],
-      },
-      {
-        name: "data-layer",
-        label: "Data layer",
-        routes: [
           { label: "The Database", name: "database" },
-          { label: "Why an ORM?", name: "orm" },
+          { label: "The ORM", name: "orm" },
           { label: "Models", name: "models" },
           { label: "Relationships", name: "relationships" },
           { label: "Factories", name: "factories" },

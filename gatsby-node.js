@@ -102,6 +102,42 @@ exports.createPages = ({ actions }) => {
     fromPath: "/quickstarts/cypress",
     toPath: "/quickstarts/cypress/setup",
   })
+  createRedirect({
+    fromPath: "/docs/route-handlers/functions",
+    toPath: "/docs/main-concepts/route-handlers",
+  })
+  createRedirect({
+    fromPath: "/docs/route-handlers/shorthands",
+    toPath: "/docs/main-concepts/shorthands",
+  })
+  createRedirect({
+    fromPath: "/docs/data-layer/database",
+    toPath: "/docs/main-concepts/database",
+  })
+  createRedirect({
+    fromPath: "/docs/data-layer/orm",
+    toPath: "/docs/main-concepts/orm",
+  })
+  createRedirect({
+    fromPath: "/docs/data-layer/models",
+    toPath: "/docs/main-concepts/models",
+  })
+  createRedirect({
+    fromPath: "/docs/data-layer/relationships",
+    toPath: "/docs/main-concepts/relationships",
+  })
+  createRedirect({
+    fromPath: "/docs/data-layer/factories",
+    toPath: "/docs/main-concepts/factories",
+  })
+  createRedirect({
+    fromPath: "/docs/data-layer/fixtures",
+    toPath: "/docs/main-concepts/fixtures",
+  })
+  createRedirect({
+    fromPath: "/docs/data-layer/serializers",
+    toPath: "/docs/main-concepts/serializers",
+  })
 }
 
 // DOC STUFF TODO Extract

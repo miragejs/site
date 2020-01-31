@@ -1,8 +1,10 @@
-# Functions
+# Route handlers
 
-Function handlers are the most flexible way to write route handlers in Mirage.
+Route handlers let you define which URLs your Mirage server can handle.
 
-To define new function handlers, use the `get`, `post`, `patch` (or `put`) and `del` methods. Here's an example:
+The simplest route handlers are plain functions, and they're the most flexible way to write route handlers in Mirage.
+
+To define new function route handlers, use the `get`, `post`, `patch` (or `put`) and `del` methods. Here's an example:
 
 ```js
 this.get("/movies", () => {
@@ -224,7 +226,7 @@ this.get("/movies", function(schema) {
 })
 ```
 
-You'll learn more about Serializers in the Data layer section of these guides.
+You'll learn more about Serializers later in these guides.
 
 ### normalizedRequestAttrs
 

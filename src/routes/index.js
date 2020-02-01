@@ -118,7 +118,7 @@ export default function IndexPage() {
                   <div className="flex mt-8 md:justify-center">
                     <Link
                       to={router.routerFor("/docs").pages[0].fullPath}
-                      className="flex items-center justify-center block w-full px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded md:py-2 md:w-auto"
+                      className="flex items-center justify-center block w-full px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded hover:bg-green-700 md:py-2 md:w-auto"
                     >
                       Get started <Caret className="inline w-2 ml-2" />
                     </Link>
@@ -401,8 +401,8 @@ export default function IndexPage() {
           <Gutters>
             <div className="max-w-lg mx-auto xl:max-w-2xl">
               <div className="relative">
-                <QuoteOpen className="absolute w-20 text-green-600 fill-current md:-ml-10" />
-                <QuoteClose className="absolute bottom-0 right-0 w-20 text-green-600 fill-current md:-mr-5" />
+                <QuoteOpen className="absolute w-20 text-green-400 fill-current md:-ml-10" />
+                <QuoteClose className="absolute bottom-0 right-0 w-20 text-green-400 fill-current md:-mr-5" />
                 <div className="relative pt-8 pb-6">
                   <p className="text-lg text-white xl:text-xl max-w-measure">
                     Honestly, I can't recommend this tool enough. Finally, an
@@ -663,7 +663,7 @@ export default function IndexPage() {
                 <div className="mt-12">
                   <Link
                     to={router.routerFor("/docs").pages[0].fullPath}
-                    className="inline-flex items-center px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded"
+                    className="inline-flex items-center px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded hover:bg-green-600"
                   >
                     Get started
                     <Caret className="inline w-2 ml-2" />

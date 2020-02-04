@@ -13,6 +13,8 @@ export default function TodoApp({ refresh }) {
     fetch("/api/todos")
       .then(res => res.json())
       .then(json => {
+        console.log("TODOS FROM THER SERVER:")
+        console.log(json)
         if (isLatestAndMounted) {
           setTodos(json)
           setIsLoading(false)
@@ -20,7 +22,8 @@ export default function TodoApp({ refresh }) {
       })
       .catch(e => {
         console.log("there was an error!")
-        console.log(e, e.message)
+        console.log(e)
+        console.log(e.message)
       })
 
     // If this effect is rerun or the component is unmounted, dont run the callback

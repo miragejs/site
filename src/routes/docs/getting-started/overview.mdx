@@ -186,7 +186,7 @@ this.get("/movies/:id", (schema, request) => {
   return schema.movies.find(id)
 })
 
-this.post("/movies/:id", (schema, request) => {
+this.post("/movies", (schema, request) => {
   let attrs = JSON.parse(request.requestBody)
 
   return schema.movies.create(attrs)

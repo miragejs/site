@@ -7,6 +7,7 @@ let server
 
 beforeEach(() => {
   server = makeServer()
+  console.log(server)
 })
 
 afterEach(() => {

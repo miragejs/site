@@ -89,7 +89,7 @@ export default function Api(props) {
         routes={routes}
         previousPage={previousPage}
         nextPage={nextPage}
-        currentPageTableOfContentsItems={tableOfContents}
+        // currentPageTableOfContentsItems={tableOfContents}
       >
         {props.children}
       </ThreeColumnLayout>

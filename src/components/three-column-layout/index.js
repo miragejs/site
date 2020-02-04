@@ -21,47 +21,47 @@ import {
   Code,
 } from "../../components/ui"
 
-export function ThreeColumnLayout(props) {
-  let currentPageTableOfContentsItems =
-    props.currentPageTableOfContentsItems || []
-
+export function ThreeColumnLayout({
+  routes,
+  routesContent,
+  previousPage,
+  nextPage,
+  children,
+}) {
   return (
-    <div className="bg-white">
-      <MobileNav routes={props.routes} />
+    <div className="pt-16 bg-white">
+      <MobileNav routes={routes} />
 
       <div className="flex flex-1">
-        <DesktopLeftNav
-          routes={props.routes}
-          currentPageTableOfContentsItems={currentPageTableOfContentsItems}
-        />
+        <DesktopLeftNav routes={routes} routesContent={routesContent} />
 
-        <div className="flex-1 w-full min-w-0 px-5 text-base font-normal text-gray-800 pt-7 leading-relaxed-sm sm:pt-8 md:leading-relaxed md:pt-8 md:px-20 lg:pt-12 ">
-          <div className="max-w-md mx-auto md:max-w-2xl md:text-lg lg:ml-0 xl:mx-auto ">
-            <MDXProvider components={components}>{props.children}</MDXProvider>
+        <div className="flex-1 w-full min-w-0 px-5 text-base font-normal text-gray-800 pt-7 leading-relaxed-sm sm:pt-8 md:leading-relaxed md:pt-8 md:px-20 lg:pr-8 lg:pt-10">
+          <div className="max-w-md mx-auto md:max-w-full md:text-lg">
+            <MDXProvider components={components}>{children}</MDXProvider>
 
             <div className="flex justify-between pt-4 pb-24 md:pt-8">
               <div>
-                {props.previousPage ? (
+                {previousPage ? (
                   <Link
-                    to={props.previousPage.fullPath}
+                    to={previousPage.fullPath}
                     className="block hover:opacity-75"
                   >
                     <div className="text-sm">Previous</div>
                     <div className="text-xl text-blue-500">
-                      {props.previousPage.label}
+                      {previousPage.label}
                     </div>
                   </Link>
                 ) : null}
               </div>
               <div>
-                {props.nextPage ? (
+                {nextPage ? (
                   <Link
-                    to={props.nextPage.fullPath}
+                    to={nextPage.fullPath}
                     className="block hover:opacity-75"
                   >
                     <div className="text-sm text-right">Next</div>
                     <div className="text-xl text-blue-500">
-                      {props.nextPage.label}
+                      {nextPage.label}
                     </div>
                   </Link>
                 ) : null}
@@ -70,9 +70,7 @@ export function ThreeColumnLayout(props) {
           </div>
         </div>
 
-        <DesktopRightNav
-          currentPageTableOfContentsItems={currentPageTableOfContentsItems}
-        />
+        <DesktopRightNav currentPageTableOfContentsItems={[]} />
       </div>
     </div>
   )

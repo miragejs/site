@@ -83,9 +83,15 @@ exports.createPages = ({ actions }) => {
     toPath: "/api/classes/association",
   })
 
-  /*
-    Old URLs that we've changed. We still want these links to work!
-  */
+  // Old links
+  createRedirect({
+    fromPath: "/quickstarts/vue/cypress",
+    toPath: "/quickstarts/cypress",
+  })
+  createRedirect({
+    fromPath: "/quickstarts/cypress/setup",
+    toPath: "/quickstarts/cypress",
+  })
   createRedirect({
     fromPath: "/docs/route-handlers/functions",
     toPath: "/docs/main-concepts/route-handlers",
@@ -123,8 +129,12 @@ exports.createPages = ({ actions }) => {
     toPath: "/docs/main-concepts/serializers",
   })
   createRedirect({
-    fromPath: "/quickstarts/vue/cypress",
-    toPath: "/quickstarts/cypress/setup",
+    fromPath: "/docs/meta/comparison-with-other-tools",
+    toPath: "/docs/comparison-with-other-tools",
+  })
+  createRedirect({
+    fromPath: "/docs/meta/about",
+    toPath: "/docs/about",
   })
 
   // Netlify 404s

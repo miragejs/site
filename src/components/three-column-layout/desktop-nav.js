@@ -1,59 +1,236 @@
 import React from "react"
 import { Link } from "@reach/router"
+import { AnimatedCaret } from "../icons"
+import { animated, useSpring } from "react-spring"
+import useMeasure from "react-use-measure"
+import { ResizeObserver } from "@juggle/resize-observer"
+import OutsideClickHandler from "react-outside-click-handler"
 
-const MAX_WIDTH = 1280
-const MAIN_WIDTH = 850
+const MAX_WIDTH = 1152
+const MAIN_WIDTH = 580
 const SIDEBAR_WIDTH = (MAX_WIDTH - MAIN_WIDTH) / 2
 
-export function DesktopLeftNav(props) {
-  return (
-    <div
-      className="flex-shrink-0 hidden bg-gray-100 border-r border-gray-200 lg:block min-w-56"
-      style={{
-        width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
-        paddingLeft: `calc((100% - 64px - ${MAX_WIDTH}px)/ 2)`,
-      }}
-    >
-      <nav className="sticky top-0 h-screen px-8 pt-8 overflow-y-scroll leading-none xl:pt-12">
-        <ul className="mt-2">
-          {props.routes.map(route => (
-            <li className="mb-8" key={route.fullPath}>
-              <span className="text-gray-800 text-base+ font-medium">
-                {route.label}
-              </span>
-              <ul className="mt-3 ml-2 font-normal leading-snug">
-                {route.routes.map(route => (
-                  <DesktopLeftNavLink
-                    fullPath={route.fullPath}
-                    key={route.fullPath}
-                  >
-                    {route.label}
-                  </DesktopLeftNavLink>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </div>
-  )
-}
+/*
+  Just a little local context to make it easy for the DesktopNavLink components
+  to grab their corresponding routeContent, since routesContent is a flat
+  array but routes is a nested tree structure.
+*/
+let RoutesContentContext = React.createContext()
 
-function DesktopLeftNavLink({ fullPath, ...props }) {
-  const isPartiallyActive = ({ href, location }) => {
-    let isCurrent =
-      location.pathname === href || location.pathname === `${href}/`
+export function DesktopLeftNav({ routes, routesContent = {} }) {
+  let activePath = routes[0].activePath
+  let previousActivePath = usePrevious(activePath)
+  let defaultOpenSections = routes
+    .filter(route => route.activePage)
+    .map(route => route.fullPath)
 
-    return {
-      className: isCurrent
-        ? "text-gray-900"
-        : "text-gray-600 hover:text-gray-900",
+  let [openSections, setOpenSections] = React.useState(defaultOpenSections)
+
+  React.useLayoutEffect(() => {
+    if (previousActivePath !== activePath) {
+      setOpenSections(defaultOpenSections)
     }
+  }, [activePath, previousActivePath, defaultOpenSections])
+
+  function toggleSection(section) {
+    setOpenSections(prev =>
+      prev.includes(section)
+        ? prev.filter(item => item !== section)
+        : [...prev, section]
+    )
   }
 
   return (
-    <li className="pt-1 pb-2" key={props.route}>
-      <Link getProps={isPartiallyActive} to={fullPath} {...props} />
+    <RoutesContentContext.Provider value={{ routesContent }}>
+      <div
+        className="flex-shrink-0 hidden border-r border-gray-200 bg-gray-50 lg:block min-w-56"
+        style={{
+          width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
+          paddingLeft: `calc((100% - 64px - ${MAX_WIDTH}px)/ 2)`,
+        }}
+      >
+        <nav className="sticky h-screen px-8 pt-8 overflow-y-scroll leading-snug top-16 xl:pt-10">
+          <ul className="-mt-4">
+            {routes.map((route, index) =>
+              route.routes.length > 0 ? (
+                <li className="mt-6" key={route.fullPath}>
+                  <CollapsibleMenu
+                    route={route}
+                    isOpen={openSections.includes(route.fullPath)}
+                    toggleSection={toggleSection}
+                  />
+                </li>
+              ) : (
+                <div className="mt-6" key={route.fullPath}>
+                  <DesktopNavLink route={route} />
+                </div>
+              )
+            )}
+          </ul>
+        </nav>
+      </div>
+    </RoutesContentContext.Provider>
+  )
+}
+
+function CollapsibleMenu({ route, isOpen, toggleSection }) {
+  let [shouldAnimate, setShouldAnimate] = React.useState(false)
+  let [ref, bounds] = useMeasure({ polyfill: ResizeObserver })
+  let [props, set] = useSpring(() => ({
+    transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
+    height: isOpen ? bounds.height || "auto" : 0,
+  }))
+
+  React.useLayoutEffect(() => {
+    set({
+      transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
+      height: isOpen ? bounds.height || "auto" : 0,
+      immediate: !shouldAnimate,
+    })
+    setShouldAnimate(false)
+  }, [set, isOpen, bounds.height, shouldAnimate])
+
+  function handleClick() {
+    setShouldAnimate(true)
+    toggleSection(route.fullPath)
+  }
+
+  return (
+    <>
+      <button
+        className={`px-1 flex items-center text-gray-900 focus:outline-none ${
+          route.activePage ? "font-medium" : ""
+        }
+          `}
+        onClick={handleClick}
+      >
+        <AnimatedCaret
+          style={{
+            transform: props.transform,
+          }}
+          className="inline-block w-4 h-4 text-gray-400"
+        />
+        <span className="ml-3">{route.label}</span>
+      </button>
+      <animated.div
+        className="overflow-hidden"
+        style={{ height: props.height }}
+      >
+        <div className="pt-1" ref={ref}>
+          <ul
+            style={{ marginLeft: "10px" }}
+            className="pl-4 font-normal border-l border-gray-200"
+          >
+            {route.routes.map((route, index) => (
+              <DesktopNavLink route={route} key={route.fullPath} />
+            ))}
+          </ul>
+        </div>
+      </animated.div>
+    </>
+  )
+}
+
+function DesktopNavLink({ route }) {
+  let { routesContent } = React.useContext(RoutesContentContext)
+  let routeContent = routesContent[route.fullName]
+  let isActiveRoute = route.fullPath === route.activePath
+  let [, setScrollHeight] = useSpring(() => ({
+    scrollHeight: 0,
+  }))
+  let shouldScroll = true
+
+  function stopScrolling() {
+    // The stop() function is broken in v8, it works in v9 but that version breaks other things...
+    // stop()
+    shouldScroll = false
+  }
+
+  React.useEffect(() => {
+    document.addEventListener("wheel", stopScrolling)
+
+    return () => {
+      document.removeEventListener("wheel", stopScrolling)
+    }
+  })
+
+  function scrollOrNavigate(e) {
+    // TODO: This is a proxy for route.isActive, is this going to be added to the router?
+    if (route.fullPath === route.activePath) {
+      e.preventDefault()
+      scrollTo(0)
+    }
+  }
+
+  function scrollToSection(elementId) {
+    let element = document.querySelector(elementId)
+
+    scrollTo(element.getBoundingClientRect().top + window.scrollY)
+  }
+
+  function scrollTo(scrollHeight) {
+    // The stop() function is broken in v8, it works in v9 but that version breaks other things...
+    // If we get stop() back we can remove this line and the guard below
+    // https://github.com/react-spring/react-spring/issues/544#issuecomment-540661109
+    // Hopefully we'll have switched off React Spring by then -_-
+    shouldScroll = true
+
+    setScrollHeight({
+      from: { scrollHeight: window.scrollY },
+      to: { scrollHeight },
+      reset: true,
+      onFrame(props) {
+        if (shouldScroll) {
+          window.scroll(0, props.scrollHeight)
+        }
+      },
+    })
+  }
+
+  return (
+    <li className="mt-3">
+      <div className="flex items-center">
+        <span className="pl-1 pr-3 text-gray-300">
+          <svg
+            viewBox="0 0 100 100"
+            className="inline-block w-4 h-4 fill-current"
+          >
+            <circle r="14" cx="50" cy="50" />
+          </svg>
+        </span>{" "}
+        <Link
+          onClick={scrollOrNavigate}
+          to={route.fullPath}
+          className={`${
+            isActiveRoute
+              ? "text-gray-900 font-medium"
+              : "text-gray-800 hover:text-gray-900"
+          }`}
+        >
+          {route.label}
+        </Link>
+      </div>
+      {isActiveRoute && (
+        <div className="ml-12">
+          <OutsideClickHandler onOutsideClick={stopScrolling}>
+            <ul>
+              {routeContent.tableOfContents.map(item => (
+                <li className="pt-3 text-base-" key={item.url}>
+                  <a
+                    href={item.url}
+                    onClick={e => {
+                      e.preventDefault()
+                      scrollToSection(item.url)
+                    }}
+                  >
+                    {item.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </OutsideClickHandler>
+        </div>
+      )}
     </li>
   )
 }
@@ -63,47 +240,17 @@ export function DesktopRightNav(props) {
     <div
       className="flex-shrink-0 hidden xl:block"
       style={{
-        width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
+        width: `0`,
         paddingRight: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
       }}
-    >
-      {props.currentPageTableOfContentsItems.length ? (
-        <div className="sticky top-0">
-          <nav className="pt-12 mt-20">
-            <p className="text-xs font-medium tracking-wider text-gray-800 uppercase">
-              On this page
-            </p>
-
-            <ul className="mt-2 text-sm font-normal leading-snug">
-              {props.currentPageTableOfContentsItems.map(item => (
-                <li key={item.url} className="my-3 font-medium">
-                  <a
-                    className="text-blue-500 hover:text-blue-300"
-                    href={item.url}
-                  >
-                    {item.title}
-                  </a>
-
-                  {item.items && (
-                    <ul className="pl-4">
-                      {item.items.map(item => (
-                        <li key={item.url} className="my-3 font-medium">
-                          <a
-                            className="text-blue-500 hover:text-blue-300"
-                            href={item.url}
-                          >
-                            {item.title}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      ) : null}
-    </div>
+    />
   )
+}
+
+function usePrevious(value) {
+  const ref = React.useRef()
+  React.useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
 }

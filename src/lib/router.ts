@@ -76,18 +76,12 @@ const allRoutes: RouteDefinition[] = [
         ],
       },
       {
-        name: "meta",
-        label: "Meta",
-        routes: [
-          {
-            name: "comparison-with-other-tools",
-            label: "Comparison with other tools",
-          },
-          {
-            name: "about",
-            label: "About",
-          },
-        ],
+        name: "comparison-with-other-tools",
+        label: "Comparison with other tools",
+      },
+      {
+        name: "about",
+        label: "About",
       },
     ],
   },
@@ -113,6 +107,10 @@ const allRoutes: RouteDefinition[] = [
     name: "quickstarts",
     routes: [
       {
+        label: "Overview",
+        name: "overview",
+      },
+      {
         label: "React",
         name: "react",
         routes: [
@@ -132,7 +130,6 @@ const allRoutes: RouteDefinition[] = [
       {
         label: "Cypress",
         name: "cypress",
-        routes: [{ label: "Setup", name: "setup" }],
       },
     ],
   },

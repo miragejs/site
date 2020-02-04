@@ -5,50 +5,48 @@ import { useStaticQuery, graphql } from "gatsby"
 import SEO from "../components/seo"
 
 export default function QuickstartsPage(props) {
-  let router = useRouter()
-  let docsRouter = router.routerFor("/quickstarts")
-
   const data = useStaticQuery(graphql`
     query {
       allMdx(filter: { fileAbsolutePath: { regex: "/routes/quickstarts/" } }) {
         nodes {
           tableOfContents
+          fileAbsolutePath
           headings(depth: h1) {
             value
           }
-          fileAbsolutePath
         }
       }
     }
   `)
-  let mdxPage = data.allMdx.nodes.find(node => {
-    let didMatch = false
-    let match = node.fileAbsolutePath.match(/(\/quickstarts\/.+)\.md[x]?/)
+  let router = useRouter()
 
-    if (match) {
-      let regexp = new RegExp(`${match[1]}/?`)
-      didMatch = match && regexp.test(props.location.pathname)
-    }
+  // we're rendering the docs component but there's no route, that means the
+  // use is requesting a detail/docs page that doesnt exist!
+  if (!router.activeRoute) {
+    throw router.errors.NOT_FOUND
+  }
 
-    return didMatch
-  })
-  let title = mdxPage?.headings[0]?.value
+  let routesContent = transform(data.allMdx.nodes)
+  let quickstartsRouter = router.routerFor("/quickstarts")
+  let { heading } = routesContent[router.activePage.fullName]
 
   return (
     <>
-      {title && <SEO title={title} />}
+      <SEO title={heading} />
+
       <ThreeColumnLayout
-        routes={docsRouter.routes}
+        routes={quickstartsRouter.routes}
+        routesContent={routesContent}
         previousPage={
-          docsRouter.previousPage &&
-          router.activePage.parent === docsRouter.previousPage.parent
-            ? docsRouter.previousPage
+          quickstartsRouter.previousPage &&
+          router.activePage.parent === quickstartsRouter.previousPage.parent
+            ? quickstartsRouter.previousPage
             : null
         }
         nextPage={
-          docsRouter.nextPage &&
-          router.activePage.parent === docsRouter.nextPage.parent
-            ? docsRouter.nextPage
+          quickstartsRouter.nextPage &&
+          router.activePage.parent === quickstartsRouter.nextPage.parent
+            ? quickstartsRouter.nextPage
             : null
         }
       >
@@ -56,4 +54,30 @@ export default function QuickstartsPage(props) {
       </ThreeColumnLayout>
     </>
   )
+}
+
+/**
+ * This function takes in the raw array of nodes from the above graphql query,
+ * and turns it into an object whose keys match the fullName identifiers from
+ * our router, and whose values are the extracted data from the query:
+ *
+ *   routesContent = {
+ *     'docs.getting-started.overview': {
+ *       heading: 'Overview',
+ *       tableOfContents: [ { url: '...', title: '...' }, ...]
+ *     },
+ *     ...
+ *   }
+ */
+function transform(nodes) {
+  return nodes.reduce((memo, node) => {
+    let [, path] = node.fileAbsolutePath.match(/(quickstarts\/.+)\.md[x]?/)
+    let routeFullName = path.replace(/\//g, ".")
+
+    memo[routeFullName] = {
+      heading: node.headings[0].value,
+      tableOfContents: node.tableOfContents.items[0].items || [],
+    }
+    return memo
+  }, {})
 }

@@ -93,21 +93,27 @@ function Header({ showHeaderNav }) {
 
   return (
     <div
-      className={`relative z-50 ${
-        theme === "dark" ? "bg-gray-1000" : "bg-white shadow"
+      className={`z-50 ${
+        theme === "dark"
+          ? "relative bg-gray-1000"
+          : "bg-white shadow fixed top-0 inset-x-0"
       }`}
     >
       <div className="md:px-8">
-        <div className="mx-auto max-w-7xl">
+        <div className="max-w-6xl mx-auto">
           <header
-            className={`lg:py-2
+            className={`
               ${isShowingMobileNav && theme === "dark" ? "bg-gray-900" : ""}
             `}
           >
-            <div className="flex items-center">
+            <div
+              className={`flex items-center ${
+                theme === "dark" ? "h-24" : "h-16"
+              }`}
+            >
               <Link
                 to="/"
-                className={`px-5 py-2 md:px-0 flex items-center flex-shrink-0  ${
+                className={`px-5 md:px-0 flex items-center flex-shrink-0  ${
                   // theme === "dark" ? "text-green-500" : "text-gray-900"
                   theme === "dark" ? "text-green-500" : "text-green-500"
                 }`}
@@ -118,7 +124,7 @@ function Header({ showHeaderNav }) {
                   ${
                     theme === "dark"
                       ? "w-24 md:w-28 lg:w-34 py-3 text-gray-100"
-                      : "w-24 md:w-28 py-2 lg:py-1 text-gray-900"
+                      : "w-24 md:w-28 text-gray-900"
                   }
                 `}
                 />

@@ -1,4 +1,5 @@
 import React from "react"
+import { animated } from "react-spring"
 
 export const Ellipsis = props => (
   <svg
@@ -17,29 +18,40 @@ export const Ellipsis = props => (
   </svg>
 )
 
-export const Caret = props => (
-  <svg
-    {...props}
-    viewBox="0 0 70 70"
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <g
-      id="Artboard"
-      stroke="none"
-      strokeWidth="1"
-      fill="none"
-      fillRule="evenodd"
-    >
-      <polyline
-        id="Path"
-        className="stroke-current"
-        strokeWidth="6"
-        points="25 56 46 35 25 14"
-      ></polyline>
-    </g>
-  </svg>
+const caretInner = (
+  <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+    <polyline
+      className="stroke-current"
+      strokeWidth="6"
+      points="25 56 46 35 25 14"
+    ></polyline>
+  </g>
 )
+
+export function Caret(props) {
+  return (
+    <svg
+      {...props}
+      viewBox="0 0 70 70"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {caretInner}
+    </svg>
+  )
+}
+export function AnimatedCaret(props) {
+  return (
+    <animated.svg
+      {...props}
+      viewBox="0 0 70 70"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {caretInner}
+    </animated.svg>
+  )
+}
 
 export const CaretDown = props => (
   <svg

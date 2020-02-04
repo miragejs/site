@@ -31,7 +31,7 @@ jobs:
 
       - run: yarn install
       - run: yarn test
-      # - run: yarn percy:exec yarn test:cy:run
+      - run: yarn percy:exec yarn test:cy:run
 
       - uses: actions/upload-artifact@v1
         if: always()

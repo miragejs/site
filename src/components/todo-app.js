@@ -13,6 +13,9 @@ export default function TodoApp({ refresh }) {
     fetch("/api/todos")
       .then(res => res.json())
       .then(json => {
+        console.log("TODOS FROM THER SERVER:")
+        console.log(json)
+        console.log("isMounted", isLatestAndMounted)
         if (isLatestAndMounted) {
           setTodos(json)
           setIsLoading(false)
@@ -48,10 +51,10 @@ export default function TodoApp({ refresh }) {
     <>
       <div className="max-w-sm mx-auto">
         <div
-          className="rounded-lg shadow-lg pt-3 pb-6 px-5 bg-gray-1000 border-t-8 border-green-500 text-lg text-white"
+          className="px-5 pt-3 pb-6 text-lg text-white border-t-8 border-green-500 rounded-lg shadow-lg bg-gray-1000"
           data-testid="todo-app"
         >
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <p className="text-2xl font-bold text-gray-100">Todos</p>
             <p className="text-base font-medium text-gray-500">
               {!isLoading &&
@@ -95,7 +98,7 @@ export default function TodoApp({ refresh }) {
             {!isLoading && (
               <button
                 onClick={() => setNewTodo({ text: "" })}
-                className="ml-auto focus:outline-none bg-green-500 rounded-full text-white w-10 h-10 shadow-lg text-4xl font-light flex items-center justify-center leading-none"
+                className="flex items-center justify-center w-10 h-10 ml-auto text-4xl font-light leading-none text-white bg-green-500 rounded-full shadow-lg focus:outline-none"
               >
                 +
               </button>
@@ -201,7 +204,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
         />
         <form onSubmit={handleSubmit} className="w-full">
           <input
-            className="form-input border-transparent w-full rounded bg-transparent focus:border-transparent focus:shadow-none focus:bg-gray-900 hover:bg-gray-900 font-light text-lg pl-1 py-1"
+            className="w-full py-1 pl-1 text-lg font-light bg-transparent border-transparent rounded form-input focus:border-transparent focus:shadow-none focus:bg-gray-900 hover:bg-gray-900"
             value={text}
             ref={inputRef}
             onChange={e => setText(e.target.value)}

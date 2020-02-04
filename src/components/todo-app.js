@@ -13,13 +13,11 @@ export default function TodoApp({ refresh }) {
     fetch("/api/todos")
       .then(res => res.json())
       .then(json => {
-        console.log(json)
         if (isLatestAndMounted) {
           setTodos(json)
           setIsLoading(false)
         }
       })
-      .catch(e => console.error(e))
 
     // If this effect is rerun or the component is unmounted, dont run the callback
     return () => {

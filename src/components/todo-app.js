@@ -15,15 +15,11 @@ export default function TodoApp({ refresh }) {
       .then(json => {
         console.log("TODOS FROM THER SERVER:")
         console.log(json)
+        console.log("isMounted", isLatestAndMounted)
         if (isLatestAndMounted) {
           setTodos(json)
           setIsLoading(false)
         }
-      })
-      .catch(e => {
-        console.log("there was an error!")
-        console.log(e)
-        console.log(e.message)
       })
 
     // If this effect is rerun or the component is unmounted, dont run the callback

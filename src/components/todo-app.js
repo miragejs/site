@@ -18,6 +18,7 @@ export default function TodoApp({ refresh }) {
           setIsLoading(false)
         }
       })
+      .catch(e => console.log(e))
 
     // If this effect is rerun or the component is unmounted, dont run the callback
     return () => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, Fragment } from "react"
 import { Router, Link, Match } from "@reach/router"
 import { Helmet } from "react-helmet"
 import { ReactComponent as LogoAndName } from "../assets/images/logo-and-name.svg"
@@ -13,6 +13,7 @@ import { useRouter } from "../hooks/use-router"
 import { useTheme } from "../hooks/use-theme"
 import SEO from "../components/seo"
 import SignupForm from "../components/signup-form"
+import NotFound from "./404"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -62,7 +63,7 @@ function AppInner(props) {
   }
 
   return (
-    <>
+    <Fragment>
       <Helmet>
         <html className={`${theme === "dark" ? "bg-gray-1000" : "bg-white"}`} />
       </Helmet>
@@ -78,7 +79,7 @@ function AppInner(props) {
 
         <Footer />
       </div>
-    </>
+    </Fragment>
   )
 }
 
@@ -152,7 +153,7 @@ function Header({ showHeaderNav }) {
                   ${theme === "dark" ? "pt-1" : ""}`}
               >
                 {showHeaderNav ? (
-                  <>
+                  <Fragment>
                     <NavLink
                       to={router.routerFor("/docs").pages[0].fullPath}
                       activeFor="/docs/*"
@@ -168,7 +169,8 @@ function Header({ showHeaderNav }) {
                     >
                       Quickstarts
                     </NavLink>
-                  </>
+                    <NavLink to="/asdf">Not found</NavLink>
+                  </Fragment>
                 ) : null}
               </div>
 
@@ -310,20 +312,23 @@ function NavLink({ activeFor, ...props }) {
 let memoizedOutlet
 
 function renderRoutes(routes) {
-  return routes.map(route => {
-    let explicitComponent =
-      routeComponentsMap[`./${route.fullName.replace(/\./g, "/")}`]
-    let EmptyComponent = props => props.children
-    let Component = explicitComponent
-      ? explicitComponent.default
-      : EmptyComponent
+  return (
+    routes.length > 0 &&
+    routes.map(route => {
+      let explicitComponent =
+        routeComponentsMap[`./${route.fullName.replace(/\./g, "/")}`]
+      let EmptyComponent = props => props.children
+      let Component = explicitComponent
+        ? explicitComponent.default
+        : EmptyComponent
 
-    return (
-      <Component path={route.path} key={route.fullName}>
-        {renderRoutes(route.routes)}
-      </Component>
-    )
-  })
+      return (
+        <Component path={route.path} key={route.fullName}>
+          {renderRoutes(route.routes)}
+        </Component>
+      )
+    })
+  )
 }
 
 function Outlet() {
@@ -333,7 +338,12 @@ function Outlet() {
     memoizedOutlet = renderRoutes(router.routes)
   }
 
-  return <Router primary={false}>{memoizedOutlet}</Router>
+  return (
+    <Router primary={false}>
+      <NotFound default />
+      {memoizedOutlet}
+    </Router>
+  )
 }
 
 function Footer() {

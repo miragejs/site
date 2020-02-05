@@ -3,11 +3,11 @@ import { Link } from "gatsby"
 
 import SEO from "../components/seo"
 
-const NotFoundPage = () => (
-  <div className="flex min-w-screen min-h-screen items-center justify-center text-gray-100">
+const NotFound = () => (
+  <div className="flex items-center justify-center min-h-screen text-gray-100 min-w-screen">
     <SEO title="404: Not found" />
     <div className="max-w-sm mx-4">
-      <h1 className="font-bold text-3xl">Page not found</h1>
+      <h1 className="text-3xl font-bold">Page not found</h1>
       <p className="mt-4">
         Looks like you've followed a broken link or entered a URL that doesn't
         exist on this site.
@@ -15,7 +15,7 @@ const NotFoundPage = () => (
       <p className="mt-8">
         <Link
           to="/"
-          className="uppercase flex items-center text-green-500 font-semibold hover:underline hover:text-green-700"
+          className="flex items-center font-semibold text-green-500 uppercase hover:underline hover:text-green-700"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -36,4 +36,4 @@ const NotFoundPage = () => (
   </div>
 )
 
-export default NotFoundPage
+export default NotFound

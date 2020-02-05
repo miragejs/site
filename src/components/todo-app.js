@@ -13,9 +13,6 @@ export default function TodoApp({ refresh }) {
     fetch("/api/todos")
       .then(res => res.json())
       .then(json => {
-        console.log("TODOS FROM THER SERVER:")
-        console.log(json)
-        console.log("isMounted", isLatestAndMounted)
         if (isLatestAndMounted) {
           setTodos(json)
           setIsLoading(false)

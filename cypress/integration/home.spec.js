@@ -4,6 +4,6 @@ describe("Home Page", () => {
     cy.get("[data-testid=title]").contains(
       "Build complete frontend features, even if your API doesn't exist."
     )
-    cy.percySnapshot()
+    cy.screenshot("home")
   })
 })

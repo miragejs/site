@@ -25,3 +25,13 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 import "@percy/cypress"
+
+Cypress.Commands.add("screenshot", name => {
+  // 375 - iphone
+  // 768 - ipad
+  // 1024 - ipad pro
+  // 1440 - laptop
+  // 2560 - big screen
+
+  cy.percySnapshot(name, { widths: [375, 768, 1024, 1440] })
+})

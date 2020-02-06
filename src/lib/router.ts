@@ -130,6 +130,14 @@ const allRoutes: RouteDefinition[] = [
       },
     ],
   },
+  {
+    name: "not-found",
+    label: "not-found",
+    path: "*",
+    meta: {
+      theme: "dark",
+    },
+  },
 ]
 
 interface RouteDefinition {
@@ -260,6 +268,16 @@ export class Route {
         return true
       }
 
+      // if we're in a wildcard we're done
+      if (dynamic[0] === "*") {
+        return true
+      }
+
+      // if we only have a trailing slash left we can safely ignore it
+      if (dynamic.length === 0 && fixed.length === 1 && fixed[0] === "/") {
+        return true
+      }
+
       // we're about to start a dynamic segment, but there is no fixed route left
       if (dynamic[1] === ":" && !fixed[1]) {
         return false
@@ -289,9 +307,9 @@ export class Route {
       return false
     }
 
-    if (path.match(":")) {
+    if (path.match(/:|\*/)) {
       throw new Error(
-        `Cannot match ${path}, it needs to be a valid URL with no dynamic segments`
+        `Cannot match ${path}, it needs to be a valid URL with no dynamic or wildcard segments`
       )
     }
 
@@ -300,9 +318,7 @@ export class Route {
 
   // Return the active route
   get activePage(): Route {
-    return this.pages.find(route =>
-      route.matches(this.activePath.replace(/\/+$/, ""))
-    )
+    return this.pages.find(route => route.matches(this.activePath))
   }
 
   // Return the previous route

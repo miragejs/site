@@ -13,7 +13,6 @@ import { useRouter } from "../hooks/use-router"
 import { useTheme } from "../hooks/use-theme"
 import SEO from "../components/seo"
 import SignupForm from "../components/signup-form"
-import NotFound from "./404"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -169,7 +168,6 @@ function Header({ showHeaderNav }) {
                     >
                       Quickstarts
                     </NavLink>
-                    <NavLink to="/asdf">Not found</NavLink>
                   </Fragment>
                 ) : null}
               </div>
@@ -317,7 +315,7 @@ function renderRoutes(routes) {
     routes.map(route => {
       let explicitComponent =
         routeComponentsMap[`./${route.fullName.replace(/\./g, "/")}`]
-      let EmptyComponent = props => props.children
+      let EmptyComponent = props => <Fragment>{props.children}</Fragment>
       let Component = explicitComponent
         ? explicitComponent.default
         : EmptyComponent
@@ -338,12 +336,7 @@ function Outlet() {
     memoizedOutlet = renderRoutes(router.routes)
   }
 
-  return (
-    <Router primary={false}>
-      <NotFound default />
-      {memoizedOutlet}
-    </Router>
-  )
+  return <Router primary={false}>{memoizedOutlet}</Router>
 }
 
 function Footer() {

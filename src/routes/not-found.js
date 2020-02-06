@@ -10,7 +10,7 @@ function NotFound() {
         <SEO />
 
         <SectionWithLines>
-          <div className="relative z-10 max-w-xl px-5 mx-auto md:px-8 2xl:max-w-2xl">
+          <div className="relative z-10 max-w-xl px-5 mx-auto h-128 md:px-8 2xl:max-w-2xl">
             <section className="pt-12 pb-20 lg:pt-16 2xl:pt-24 md:pb-32 xl:pb-40 2xl:pb-48">
               <h1 className="text-3xl leading-tight tracking-tight text-white font-title md:text-4-75xl md:leading-tighter lg:text-5xl 2xl:text-5-5xl ">
                 Page not found

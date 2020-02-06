@@ -387,6 +387,16 @@ describe("Route", () => {
       expect(route.matches("/a")).toBeTruthy()
     })
 
+    it("should ignore trailing slashes", () => {
+      let route = new Route({
+        name: "route",
+        label: "route",
+        path: "/a",
+      })
+
+      expect(route.matches("/a/")).toBeTruthy()
+    })
+
     it("should have static routes match the full path", () => {
       let route = new Route({
         name: "root",
@@ -553,6 +563,20 @@ describe("Route", () => {
       expect(() => {
         route.matches("/posts/:postId")
       }).toThrow()
+
+      expect(() => {
+        route.matches("/posts/*")
+      }).toThrow()
+    })
+
+    it("should match against any wildcard paths", () => {
+      let route = new Route({
+        name: "catchall",
+        label: "catchall",
+        path: "*",
+      })
+
+      expect(route.matches("/anything")).toBeTruthy()
     })
   })
 

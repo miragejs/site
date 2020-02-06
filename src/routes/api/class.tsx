@@ -40,6 +40,7 @@ export default function(props) {
   let classSlug = props.classSlug
   let { publicClasses } = useApiDocs()
   let publicClass = publicClasses.find(doc => doc.slug === classSlug)
+  let classConstructor = publicClass.public.find(({ name }) => name === 'constructor');
 
   return (
     <div>
@@ -47,6 +48,31 @@ export default function(props) {
       <div className="pt-2">
         <Markdown>{publicClass.description}</Markdown>
       </div>
+      {classConstructor ? (
+        <div>
+          <h2
+            id="Constructor"
+            className="font-semibold text-2xl leading-tight pt-12 pb-4"
+          >
+            Constructor
+          </h2>
+          <div key={classConstructor.longname} className="pb-4">
+          {classConstructor.params.map(field => (
+            <div key={field.longname} className="pb-4">
+              <h3 id={field.name} className="font-mono text-xl pt-6">
+                <a href={`#${field.name}`} className="block">
+                  <span className="font-semibold">{field.name}:</span>{" "}
+                  <Types types={field.types} />
+                </a>
+              </h3>
+              <div className="text-base">
+                <Markdown>{field.description}</Markdown>
+              </div>
+            </div>
+          ))}
+          </div>
+        </div>
+      ) : null}
       {publicClass.fields.length > 0 ? (
         <div>
           <h2

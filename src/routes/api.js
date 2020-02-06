@@ -32,6 +32,9 @@ export default function Api(props) {
     return activeRoute && publicClass.name === activeRoute.label
   })
 
+  let classConstructor = activePublicClass.public.find(({ name }) => name === 'constructor');
+  let hasConstructor = !!classConstructor;
+
   let activeIndex = publicClassRoutes.indexOf(activeRoute)
   let previousPage = activeIndex > 0 ? publicClassRoutes[activeIndex - 1] : null
   let nextPage =
@@ -40,6 +43,7 @@ export default function Api(props) {
       : null
 
   let tableOfContents = [
+    ["Constructor", hasConstructor ? classConstructor.params : []],
     ["Fields", activePublicClass.fields],
     ["Accessors", activePublicClass.accessors],
     ["Methods", activePublicClass.methods],
@@ -48,7 +52,7 @@ export default function Api(props) {
     .reduce((result, [label, members]) => {
       let items = members.map(member => ({
         title: member.name,
-        url: `#${member.slug}`,
+        url: `#${member.slug || member.name}`,
       }))
 
       return [

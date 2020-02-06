@@ -42,13 +42,23 @@ exports.createPages = ({ actions }) => {
     })
   }
 
+  createRedirect({
+    fromPath: "/*",
+    toPath: "404.html",
+    statusCode: 404,
+  })
+
+  createPage({
+    path: "404",
+    matchPath: "/*",
+    component: path.resolve(`./src/routes/app.js`),
+  })
+
   router.pages
     .filter(page => !page.isDynamic)
     .forEach(page => {
       createAppPage(page.fullPath)
     })
-
-  createAppPage("404")
 
   // TODO: Create all API docs pages dynamically
   createAppPage("/api/classes/association")

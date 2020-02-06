@@ -44,7 +44,7 @@ exports.createPages = ({ actions }) => {
 
   createRedirect({
     fromPath: "/*",
-    toPath: "404.html",
+    toPath: "/404.html",
     statusCode: 404,
   })
 

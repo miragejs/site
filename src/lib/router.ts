@@ -73,6 +73,10 @@ const allRoutes: RouteDefinition[] = [
             label: "Customizing inflections",
             name: "customizing-inflections",
           },
+          {
+            label: "Persisting across page reloads",
+            name: "persisting-across-page-reloads",
+          },
         ],
       },
       {

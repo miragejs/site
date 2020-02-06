@@ -183,6 +183,11 @@ describe("Route", () => {
       let route = new Route({ label: "label", name: "name", path: "/:post_id" })
       expect(route.isDynamic).toBe(true)
     })
+
+    it("is true if the path has a wildcard segment", () => {
+      let route = new Route({ label: "label", name: "name", path: "/*" })
+      expect(route.isDynamic).toBe(true)
+    })
   })
 
   describe("pages", () => {

@@ -198,7 +198,7 @@ export class Route {
   }
 
   get isDynamic(): boolean {
-    return this.path.includes(":")
+    return this.path.includes(":") || this.path.includes("*")
   }
 
   get parent(): Route {

@@ -48,6 +48,8 @@ exports.createPages = ({ actions }) => {
       createAppPage(page.fullPath)
     })
 
+  createAppPage("404")
+
   // TODO: Create all API docs pages dynamically
   createAppPage("/api/classes/association")
   createAppPage("/api/classes/collection")

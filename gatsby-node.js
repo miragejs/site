@@ -42,17 +42,7 @@ exports.createPages = ({ actions }) => {
     })
   }
 
-  createRedirect({
-    fromPath: "/*",
-    toPath: "/404.html",
-    statusCode: 404,
-  })
-
-  createPage({
-    path: "404",
-    matchPath: "/*",
-    component: path.resolve(`./src/routes/app.js`),
-  })
+  createAppPage("404")
 
   router.pages
     .filter(page => !page.isDynamic)
@@ -149,6 +139,12 @@ exports.createPages = ({ actions }) => {
   createRedirect({
     fromPath: "/docs/data-layer/serializers",
     toPath: "/docs/main-concepts/serializers",
+  })
+
+  createRedirect({
+    fromPath: "/*",
+    toPath: "/404.html",
+    statusCode: 404,
   })
 }
 

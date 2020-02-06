@@ -64,7 +64,7 @@
     "remark-slug": "^5.1.2",
     "source-map-support": "^0.5.16",
     "styled-components": "^5.0.1",
-    "tailwindcss": "^1.1.4",
+    "tailwindcss": "^1.2.0",
     "tmp": "^0.1.0",
     "ts-node": "^8.6.2"
   },

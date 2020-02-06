@@ -13,6 +13,9 @@ export function ThemeProvider({ children }) {
     theme = router.activePage.meta.theme
   }
 
+  console.log("path", router.activePath)
+  console.log("page", router.activePage)
+
   return (
     <ThemeContext.Provider value={{ theme }}>{children}</ThemeContext.Provider>
   )

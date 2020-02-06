@@ -249,11 +249,60 @@ export class Route {
     }
   }
 
+  matches(path: string) {
+    let tail = str => str.substr(1)
+    let after = (str: string, char: string) =>
+      str.includes(char) ? str.substr(str.indexOf(char) + 1) : ""
+
+    function match(dynamic: string, fixed: string) {
+      // we're at the end of both strings without errors, we're done!
+      if (dynamic.length === 0 && fixed.length === 0) {
+        return true
+      }
+
+      // we're about to start a dynamic segment, but there is no fixed route left
+      if (dynamic[1] === ":" && !fixed[1]) {
+        return false
+      }
+
+      // we're in a dynamic segment and we finished reading the fixed route
+      if (dynamic[0] === ":" && fixed.length === 0) {
+        return match(after(dynamic, "/"), fixed)
+      }
+
+      // we're in a dynamic segment that hasn't ended
+      if (dynamic[0] === ":" && fixed[0] !== "/") {
+        return match(dynamic, tail(fixed))
+      }
+
+      // we're in a dynamic segment that just ended
+      if (dynamic[0] === ":" && fixed[0] === "/") {
+        return match(after(dynamic, "/"), tail(fixed))
+      }
+
+      // the routes are matching so far
+      if (dynamic[0] === fixed[0]) {
+        return match(tail(dynamic), tail(fixed))
+      }
+
+      // the routes don't match
+      return false
+    }
+
+    if (path.match(":")) {
+      throw new Error(
+        `Cannot match ${path}, it needs to be a valid URL with no dynamic segments`
+      )
+    }
+
+    return match(this.fullPath, path)
+  }
+
   // Return the active route
   get activePage(): Route {
-    return this.pages.find(route => {
-      return route.fullPath.match(this.activePath.replace(/\/+$/, ""))
-    })
+    return this.pages.find(route =>
+      route.matches(this.activePath.replace(/\/+$/, ""))
+    )
   }
 
   // Return the previous route

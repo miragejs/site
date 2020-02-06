@@ -345,6 +345,215 @@ describe("Route", () => {
 
       expect(subrouter.activePage).toBeUndefined()
     })
+
+    it("will match pages that have dynamic segments", () => {
+      let router = new Route({
+        name: "root",
+        label: "root",
+        path: "/root",
+        routes: [
+          new Route({
+            name: "child",
+            label: "child",
+            path: "/:name",
+          }),
+        ],
+      })
+
+      router.activePath = "/root/a-dynamic-segment"
+
+      expect(router.activePage).toBe(router.routerFor("/root/:name"))
+    })
+  })
+
+  describe("matches", () => {
+    it("should have an empty path match", () => {
+      let route = new Route({
+        name: "route",
+        label: "route",
+        path: "",
+      })
+
+      expect(route.matches("")).toBeTruthy()
+    })
+
+    it("should have static routes match", () => {
+      let route = new Route({
+        name: "route",
+        label: "route",
+        path: "/a",
+      })
+
+      expect(route.matches("/a")).toBeTruthy()
+    })
+
+    it("should have static routes match the full path", () => {
+      let route = new Route({
+        name: "root",
+        label: "root",
+        path: "/root",
+        routes: [
+          new Route({
+            name: "child",
+            label: "child",
+            path: "/child",
+          }),
+        ],
+      })
+
+      expect(route.routerFor("/root/child").matches("/root/child")).toBeTruthy()
+    })
+
+    it("should match when given a dynamic segment", () => {
+      let route = new Route({
+        name: "root",
+        label: "root",
+        path: "/root",
+        routes: [
+          new Route({
+            name: "child",
+            label: "child",
+            path: "/:child",
+          }),
+        ],
+      })
+
+      expect(route.routerFor("/root/:child").matches("/root/bob")).toBeTruthy()
+    })
+
+    it("should match when given a dynamic segment in the middle", () => {
+      let route = new Route({
+        name: "posts",
+        label: "posts",
+        path: "/posts",
+        routes: [
+          new Route({
+            name: "post",
+            label: "post",
+            path: "/:postId",
+            routes: [
+              new Route({
+                name: "comments",
+                label: "comments",
+                path: "/comments",
+                routes: [
+                  new Route({
+                    name: "comment",
+                    label: "comment",
+                    path: "/:commentId",
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ],
+      })
+
+      expect(
+        route
+          .routerFor("/posts/:postId/comments/:commentId")
+          .matches("/posts/1/comments/2")
+      ).toBeTruthy()
+    })
+
+    it("should not match when only one dynamic segment matches", () => {
+      let route = new Route({
+        name: "posts",
+        label: "posts",
+        path: "/posts",
+        routes: [
+          new Route({
+            name: "post",
+            label: "post",
+            path: "/:postId",
+            routes: [
+              new Route({
+                name: "comments",
+                label: "comments",
+                path: "/comments",
+                routes: [
+                  new Route({
+                    name: "comment",
+                    label: "comment",
+                    path: "/:commentId",
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ],
+      })
+
+      expect(
+        route
+          .routerFor("/posts/:postId/comments/:commentId")
+          .matches("/posts/1/author")
+      ).toBeFalsy()
+    })
+
+    it("should not match when only one dynamic is provided", () => {
+      let route = new Route({
+        name: "posts",
+        label: "posts",
+        path: "/posts",
+        routes: [
+          new Route({
+            name: "post",
+            label: "post",
+            path: "/:postId",
+            routes: [
+              new Route({
+                name: "comments",
+                label: "comments",
+                path: "/comments",
+                routes: [
+                  new Route({
+                    name: "comment",
+                    label: "comment",
+                    path: "/:commentId",
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ],
+      })
+
+      expect(
+        route
+          .routerFor("/posts/:postId/comments/:commentId")
+          .matches("/posts/1")
+      ).toBeFalsy()
+    })
+
+    it("should not match if a dynamic segment is missing", () => {
+      let route = new Route({
+        name: "posts",
+        label: "posts",
+        path: "/posts",
+        routes: [
+          new Route({
+            name: "post",
+            label: "post",
+            path: "/:postId",
+          }),
+        ],
+      })
+
+      expect(route.routerFor("/posts/:postId").matches("/posts/")).toBeFalsy()
+    })
+
+    it("should throw an error if we pass in a dynamic url", () => {
+      let route = new Route({
+        name: "posts",
+        label: "posts",
+        path: "/posts",
+      })
+
+      expect(() => {
+        route.matches("/posts/:postId")
+      }).toThrow()
+    })
   })
 
   describe("previousPage", () => {

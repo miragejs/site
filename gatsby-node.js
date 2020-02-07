@@ -11,7 +11,6 @@ require("ts-node").register({
   },
 })
 
-// require = require("esm")(module)
 const fs = require("fs")
 const path = require("path")
 const Router = require("./src/lib/router").Router
@@ -44,10 +43,23 @@ exports.createPages = ({ actions }) => {
 
   createAppPage("404")
 
-  router.pages
-    .filter(page => !page.isDynamic)
-    .forEach(page => {
-      createAppPage(page.fullPath)
+  // Loop over all routes in the router
+  // 1. If the route is a page, create a page using gatsby API
+  // 2. If the route is a parent, redirect the parent URL to the first child page
+  router.allRoutes
+    .filter(route => !route.isDynamic)
+    .forEach(route => {
+      if (route.isPage) {
+        createAppPage(route.fullPath)
+      } else {
+        let firstPage = route.pages[0]
+        if (!firstPage.isDynamic) {
+          createRedirect({
+            fromPath: route.fullPath,
+            toPath: firstPage.fullPath,
+          })
+        }
+      }
     })
 
   // TODO: Create all API docs pages dynamically
@@ -62,20 +74,6 @@ exports.createPages = ({ actions }) => {
   createAppPage("/api/classes/schema")
   createAppPage("/api/classes/serializer")
   createAppPage("/api/classes/server")
-
-  /*
-    TODO: Create all redirects programatically. All non-page routes should
-    redirect to nearest page? (More difficult with dynamic routes). Note that
-    createRedirect has a redirectInBrowser option, but we don't want to use that.
-  */
-  createRedirect({
-    fromPath: "/docs",
-    toPath: "/docs/getting-started/introduction",
-  })
-  createRedirect({
-    fromPath: "/docs/getting-started",
-    toPath: "/docs/getting-started/introduction",
-  })
   createRedirect({
     fromPath: "/api",
     toPath: "/api/classes/association",
@@ -84,26 +82,10 @@ exports.createPages = ({ actions }) => {
     fromPath: "/api/classes",
     toPath: "/api/classes/association",
   })
-  createRedirect({
-    fromPath: "/quickstarts",
-    toPath: "/quickstarts/react/development",
-  })
-  createRedirect({
-    fromPath: "/quickstarts/react",
-    toPath: "/quickstarts/react/development",
-  })
-  createRedirect({
-    fromPath: "/quickstarts/vue",
-    toPath: "/quickstarts/vue/development",
-  })
-  createRedirect({
-    fromPath: "/quickstarts/vue/cypress",
-    toPath: "/quickstarts/cypress/setup",
-  })
-  createRedirect({
-    fromPath: "/quickstarts/cypress",
-    toPath: "/quickstarts/cypress/setup",
-  })
+
+  /*
+    Old URLs that we've changed. We still want these links to work!
+  */
   createRedirect({
     fromPath: "/docs/route-handlers/functions",
     toPath: "/docs/main-concepts/route-handlers",
@@ -140,7 +122,12 @@ exports.createPages = ({ actions }) => {
     fromPath: "/docs/data-layer/serializers",
     toPath: "/docs/main-concepts/serializers",
   })
+  createRedirect({
+    fromPath: "/quickstarts/vue/cypress",
+    toPath: "/quickstarts/cypress/setup",
+  })
 
+  // Netlify 404s
   createRedirect({
     fromPath: "/*",
     toPath: "/404.html",

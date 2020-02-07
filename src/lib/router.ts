@@ -201,6 +201,10 @@ export class Route {
     return this.path.includes(":") || this.path.includes("*")
   }
 
+  get isPage(): boolean {
+    return this.routes.length === 0
+  }
+
   get parent(): Route {
     return this._parent
   }
@@ -229,7 +233,7 @@ export class Route {
     })
   }
 
-  private get allRoutes(): Route[] {
+  get allRoutes(): Route[] {
     let flatten = function(routes: Route[]) {
       return routes.reduce((result, route) => {
         return [...result, ...[route], ...flatten(route.routes)]

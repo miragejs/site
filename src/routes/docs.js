@@ -36,7 +36,6 @@ export default function DocsPage(props) {
       {/* <SEO title={heading} /> */}
 
       <ThreeColumnLayout
-        routes={docsRouter.routes}
         menuItems={menuItems}
         previousPage={docsRouter.previousPage}
         nextPage={docsRouter.nextPage}

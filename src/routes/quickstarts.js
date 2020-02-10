@@ -26,17 +26,16 @@ export default function QuickstartsPage(props) {
     throw router.errors.NOT_FOUND
   }
 
-  let routesContent = transform(data.allMdx.nodes)
   let quickstartsRouter = router.routerFor("/quickstarts")
-  let { heading } = routesContent[router.activePage.fullName]
+  let menuItems = transform(data.allMdx.nodes, quickstartsRouter)
+  // let { heading } = routesContent[router.activePage.fullName]
 
   return (
     <>
-      <SEO title={heading} />
+      {/* <SEO title={heading} /> */}
 
       <ThreeColumnLayout
-        routes={quickstartsRouter.routes}
-        routesContent={routesContent}
+        menuItems={menuItems}
         previousPage={
           quickstartsRouter.previousPage &&
           router.activePage.parent === quickstartsRouter.previousPage.parent
@@ -56,28 +55,49 @@ export default function QuickstartsPage(props) {
   )
 }
 
-/**
- * This function takes in the raw array of nodes from the above graphql query,
- * and turns it into an object whose keys match the fullName identifiers from
- * our router, and whose values are the extracted data from the query:
- *
- *   routesContent = {
- *     'docs.getting-started.overview': {
- *       heading: 'Overview',
- *       tableOfContents: [ { url: '...', title: '...' }, ...]
- *     },
- *     ...
- *   }
- */
-function transform(nodes) {
-  return nodes.reduce((memo, node) => {
-    let [, path] = node.fileAbsolutePath.match(/(quickstarts\/.+)\.md[x]?/)
-    let routeFullName = path.replace(/\//g, ".")
+function transform(nodes, router) {
+  return addHeadings(nodes, transformRoutes(router))
+}
 
-    memo[routeFullName] = {
-      heading: node.headings[0].value,
-      tableOfContents: node.tableOfContents.items[0].items || [],
+function transformRoutes(router) {
+  let menuItemsNoHeadings = router.routes.map(route => {
+    let obj = { label: route.label }
+
+    if (route.isPage) {
+      obj.url = route.fullPath
+    } else {
+      obj.links = transformRoutes(route)
     }
-    return memo
-  }, {})
+
+    return obj
+  })
+
+  return menuItemsNoHeadings
+}
+
+function addHeadings(nodes, menuItemsNoHeadings) {
+  return menuItemsNoHeadings.reduce((array, originalItem) => {
+    let item = { ...originalItem }
+    if (item.url) {
+      let matchedNode = nodes.find(node => {
+        let [, path] = node.fileAbsolutePath.match(
+          /(\/quickstarts\/.+)\.md[x]?/
+        )
+
+        return item.url === path
+      })
+
+      let headings = matchedNode.tableOfContents.items[0].items
+      if (headings && headings.length > 0) {
+        item.headings = headings.map(heading => ({
+          anchor: heading.url,
+          label: heading.title,
+        }))
+      }
+    } else if (item.links) {
+      item.links = addHeadings(nodes, item.links)
+    }
+
+    return [...array, item]
+  }, [])
 }

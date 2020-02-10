@@ -26,23 +26,25 @@ export function MobileNav({ menuItems }) {
           </button>
           {mobileSecondaryNavIsOpen && (
             <div className="px-5 border-b border-gray-200 sm:border-none">
-              <nav className="pt-5 pb-4 text-base text-gray-700 border-t border-gray-200">
+              <nav className="pt-2 pb-8 text-base text-gray-700 border-t border-gray-200">
                 <ul className="pt-2w">
                   {menuItems.map((menuItem, index) =>
                     menuItem.url ? (
-                      <MobileNavLink
-                        url={menuItem.url}
-                        key={index}
-                        onClick={() => setMobileSecondaryNavIsOpen(false)}
-                      >
-                        {menuItem.label}
-                      </MobileNavLink>
+                      <li className="">
+                        <MobileNavLink
+                          url={menuItem.url}
+                          key={index}
+                          onClick={() => setMobileSecondaryNavIsOpen(false)}
+                        >
+                          {menuItem.label}
+                        </MobileNavLink>
+                      </li>
                     ) : (
-                      <li className="mb-5" key={index}>
-                        <div className="text-sm font-medium text-gray-400 uppercase">
+                      <li className="mt-5" key={index}>
+                        <div className="font-medium text-gray-500 uppercase text-base-">
                           {menuItem.label}
                         </div>
-                        <ul className="mt-1 ml-5">
+                        <ul className="ml-4">
                           {menuItem.links.map((link, index) => (
                             <MobileNavLink
                               url={link.url}
@@ -69,15 +71,11 @@ export function MobileNav({ menuItems }) {
 function MobileNavLink({ url, ...otherProps }) {
   const isPartiallyActive = ({ isPartiallyCurrent }) => {
     return {
-      className: `block py-1 ${
+      className: `block py-1 mt-2 ${
         isPartiallyCurrent ? "font-medium text-gray-900" : ""
       }`,
     }
   }
 
-  return (
-    <li>
-      <Link getProps={isPartiallyActive} to={url} {...otherProps} />
-    </li>
-  )
+  return <Link getProps={isPartiallyActive} to={url} {...otherProps} />
 }

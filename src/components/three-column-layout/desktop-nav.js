@@ -15,8 +15,9 @@ export function DesktopLeftNav({ menuItems }) {
   let router = useRouter()
   let activePath = router.activePath
   let previousActivePath = usePrevious(activePath)
-  let defaultOpenSection = menuItems.findIndex(menuItem =>
-    menuItem.links.find(link => link.url === activePath)
+  let defaultOpenSection = menuItems.findIndex(
+    menuItem =>
+      menuItem.links && menuItem.links.find(link => link.url === activePath)
   )
 
   let [openSections, setOpenSections] = React.useState([defaultOpenSection])

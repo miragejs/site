@@ -239,6 +239,19 @@ function Header({ showHeaderNav }) {
                   }`}
                 >
                   <MobileNavLink
+                    to={router.routerFor("/quickstarts").pages[0].fullPath}
+                    onClick={() => setIsShowingMobileNav(false)}
+                  >
+                    Quickstarts
+                  </MobileNavLink>
+                </div>
+
+                <div
+                  className={`border-t ${
+                    theme === "dark" ? "border-gray-800" : "border-gray-200"
+                  }`}
+                >
+                  <MobileNavLink
                     to="https://github.com/miragejs/miragejs"
                     onClick={() => setIsShowingMobileNav(false)}
                   >

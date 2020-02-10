@@ -13,16 +13,8 @@ export default function Api(props) {
     label: publicClass.name,
     fullPath: `/api/classes/${publicClass.slug}`,
     activePath: router.activePath,
+    routes: [],
   }))
-
-  const routes = [
-    {
-      label: "Classes",
-      name: "Classes",
-      fullPath: "/api/classes",
-      routes: publicClassRoutes,
-    },
-  ]
 
   if (!router.activePage) {
     // we're rendering the API docs, but we don't have an active page which
@@ -87,7 +79,7 @@ export default function Api(props) {
     <>
       <SEO title={activePublicClass?.name} />
       <ThreeColumnLayout
-        routes={routes}
+        routes={publicClassRoutes}
         previousPage={previousPage}
         nextPage={nextPage}
         // currentPageTableOfContentsItems={tableOfContents}

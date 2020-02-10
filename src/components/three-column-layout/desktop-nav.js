@@ -188,7 +188,7 @@ function DesktopNavLink({ route }) {
   }
 
   return (
-    <li className="mt-3">
+    <li className="mt-4">
       <div className="flex items-center">
         <span className="pl-1 pr-3 text-gray-300">
           <svg

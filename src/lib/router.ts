@@ -96,9 +96,15 @@ const allRoutes: RouteDefinition[] = [
     name: "api",
     routes: [
       {
-        label: "Class",
-        name: "class",
-        path: "/classes/:classSlug",
+        label: "Classes",
+        name: "classes",
+        routes: [
+          {
+            label: "Class",
+            name: "class",
+            path: "/:classSlug",
+          },
+        ],
       },
     ],
   },
@@ -158,6 +164,10 @@ export class Route {
   path: string
   meta: object
 
+  errors: object = {
+    NOT_FOUND: new Error("Route not found"),
+  }
+
   private _activePath: string
   private _parent: Route
   private _routes: Route[]
@@ -190,7 +200,11 @@ export class Route {
   }
 
   get isDynamic(): boolean {
-    return this.path.includes(":")
+    return this.path.includes(":") || this.path.includes("*")
+  }
+
+  get isPage(): boolean {
+    return this.routes.length === 0
   }
 
   get parent(): Route {
@@ -221,7 +235,7 @@ export class Route {
     })
   }
 
-  private get allRoutes(): Route[] {
+  get allRoutes(): Route[] {
     let flatten = function(routes: Route[]) {
       return routes.reduce((result, route) => {
         return [...result, ...[route], ...flatten(route.routes)]
@@ -249,11 +263,117 @@ export class Route {
     }
   }
 
-  // Return the active route
+  matches(path: string) {
+    let tail = str => str.substr(1)
+    let after = (str: string, char: string) =>
+      str.includes(char) ? str.substr(str.indexOf(char) + 1) : ""
+
+    function match(dynamic: string, fixed: string) {
+      // we're at the end of both strings without errors, we're done!
+      if (dynamic.length === 0 && fixed.length === 0) {
+        return true
+      }
+
+      // if we're in a wildcard we're done
+      if (dynamic[0] === "*") {
+        return true
+      }
+
+      // if we only have a trailing slash left we can safely ignore it
+      if (dynamic.length === 0 && fixed.length === 1 && fixed[0] === "/") {
+        return true
+      }
+
+      // we're about to start a dynamic segment, but there is no fixed route left
+      if (dynamic[1] === ":" && !fixed[1]) {
+        return false
+      }
+
+      // we're in a dynamic segment and we finished reading the fixed route
+      if (dynamic[0] === ":" && fixed.length === 0) {
+        return match(after(dynamic, "/"), fixed)
+      }
+
+      // we're in a dynamic segment that hasn't ended
+      if (dynamic[0] === ":" && fixed[0] !== "/") {
+        return match(dynamic, tail(fixed))
+      }
+
+      // we're in a dynamic segment that just ended
+      if (dynamic[0] === ":" && fixed[0] === "/") {
+        return match(after(dynamic, "/"), tail(fixed))
+      }
+
+      // the routes are matching so far
+      if (dynamic[0] === fixed[0]) {
+        return match(tail(dynamic), tail(fixed))
+      }
+
+      // the routes don't match
+      return false
+    }
+
+    if (path.match(/:|\*/)) {
+      throw new Error(
+        `Cannot match ${path}, it needs to be a valid URL with no dynamic or wildcard segments`
+      )
+    }
+
+    return match(this.fullPath, path)
+  }
+
+  // pojo mapping dynamic segments to values
+  get params(): object {
+    let extract = function(dynamic, fixed, params = {}) {
+      if (dynamic.length === 0 && fixed.length === 0) {
+        return params
+      }
+
+      if (dynamic[0] === ":") {
+        let dynamicTerminateChar = dynamic.includes("/") ? "/" : null
+        let fixedTerminateChar = fixed.includes("/") ? "/" : null
+        let dynamicEnd = dynamicTerminateChar
+          ? dynamic.indexOf(dynamicTerminateChar)
+          : dynamic.length
+        let fixedEnd = fixedTerminateChar
+          ? fixed.indexOf(fixedTerminateChar)
+          : fixed.length
+
+        let key = dynamic.substr(1, dynamicEnd - 1)
+        let value = fixed.substr(0, fixedEnd)
+
+        return extract(dynamic.substr(dynamicEnd), fixed.substr(fixedEnd), {
+          ...params,
+          [key]: value,
+        })
+      }
+
+      if (dynamic[0] === fixed[0]) {
+        return extract(dynamic.substr(1), fixed.substr(1), params)
+      }
+
+      // there was an error
+      return params
+    }
+
+    return extract(this.fullPath, this.activePath)
+  }
+
+  // generate a url replacing the dynamic segments with the passed in params
+  buildUrl(params: object = {}): string {
+    return Object.keys(params).reduce((url, key) => {
+      return url.replace(`:${key}`, params[key])
+    }, this.fullPath)
+  }
+
+  // Return the active page
   get activePage(): Route {
-    return this.pages.find(route => {
-      return route.fullPath.match(this.activePath.replace(/\/+$/, ""))
-    })
+    return this.pages.find(route => route.matches(this.activePath))
+  }
+
+  // Return the active route
+  get activeRoute(): Route {
+    return this.allRoutes.find(route => route.matches(this.activePath))
   }
 
   // Return the previous route

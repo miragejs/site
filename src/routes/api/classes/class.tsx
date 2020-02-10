@@ -1,8 +1,8 @@
 import React from "react"
-import useApiDocs from "../../hooks/use-api-docs"
-import { H1 } from "../../components/ui"
+import useApiDocs from "../../../hooks/use-api-docs"
+import { H1 } from "../../../components/ui"
 
-import { Markdown } from "../../components/markdown"
+import { Markdown } from "../../../components/markdown"
 
 let humanizeType = type => (type === "*" ? "any" : type)
 let toJSXCommaList = (prev, curr) => [prev, ", ", curr]
@@ -51,13 +51,13 @@ export default function(props) {
         <div>
           <h2
             id="Fields"
-            className="font-semibold text-2xl leading-tight pt-12 pb-4"
+            className="pt-12 pb-4 text-2xl font-semibold leading-tight"
           >
             Fields
           </h2>
           {publicClass.fields.map(field => (
             <div key={field.longname} className="pb-4">
-              <h3 id={field.slug} className="font-mono text-xl pt-6">
+              <h3 id={field.slug} className="pt-6 font-mono text-xl">
                 <a href={`#${field.slug}`} className="block">
                   <span className="font-semibold">{field.name}:</span>{" "}
                   <Type esdoc={field} />
@@ -74,13 +74,13 @@ export default function(props) {
         <div>
           <h2
             id="Accessors"
-            className="font-semibold text-2xl leading-tight pt-12 pb-4"
+            className="pt-12 pb-4 text-2xl font-semibold leading-tight"
           >
             Accessors
           </h2>
           {publicClass.accessors.map(accessor => (
             <div key={accessor.longname} className="pb-4">
-              <h3 id={accessor.slug} className="font-mono text-xl pt-6">
+              <h3 id={accessor.slug} className="pt-6 font-mono text-xl">
                 <a href={`#${accessor.slug}`} className="block">
                   {accessor.kind}{" "}
                   <span className="font-semibold">{accessor.name}:</span>{" "}
@@ -98,13 +98,13 @@ export default function(props) {
         <div>
           <h2
             id="Methods"
-            className="font-semibold text-2xl leading-tight pt-12 pb-4"
+            className="pt-12 pb-4 text-2xl font-semibold leading-tight"
           >
             Methods
           </h2>
           {publicClass.methods.map(method => (
             <div key={method.longname} className="pb-4">
-              <h3 id={method.slug} className="font-mono text-xl pt-6">
+              <h3 id={method.slug} className="pt-6 font-mono text-xl">
                 <a href={`#${method.slug}`} className="block">
                   <span className="font-semibold">{method.name}</span>
                   (

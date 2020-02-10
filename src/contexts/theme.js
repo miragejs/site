@@ -1,19 +1,24 @@
-import React from "react"
+import React, { useState } from "react"
 import { useRouter } from "../hooks/use-router"
 
 export const ThemeContext = React.createContext()
 
 export function ThemeProvider({ children }) {
-  let theme = "light" // default theme
-  let router = useRouter()
+  let [themeLock, lockTheme] = useState(false)
 
-  // activePage is not set for /api routes, once we fix this we should be able
-  // to remove this conditional logic.
-  if (router.activePage && router.activePage.meta.theme !== undefined) {
-    theme = router.activePage.meta.theme
+  let unlockTheme = () => {
+    lockTheme(null)
   }
 
+  let router = useRouter()
+
+  // if the theme is locked, use that. otherwise use the active page's theme
+  // default to light.
+  let theme = themeLock ? themeLock : router.activePage?.meta?.theme || "light"
+
   return (
-    <ThemeContext.Provider value={{ theme }}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={{ theme, lockTheme, unlockTheme }}>
+      {children}
+    </ThemeContext.Provider>
   )
 }

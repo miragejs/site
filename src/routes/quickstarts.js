@@ -32,7 +32,7 @@ export default function QuickstartsPage(props) {
 
     return didMatch
   })
-  let title = mdxPage.headings.length && mdxPage.headings[0].value
+  let title = mdxPage?.headings[0]?.value
 
   return (
     <>

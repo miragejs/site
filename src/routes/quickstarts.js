@@ -28,11 +28,11 @@ export default function QuickstartsPage(props) {
 
   let quickstartsRouter = router.routerFor("/quickstarts")
   let menuItems = transform(data.allMdx.nodes, quickstartsRouter)
-  // let { heading } = routesContent[router.activePage.fullName]
+  let heading = getActiveHeading(data.allMdx.nodes, router.activePath)
 
   return (
     <>
-      {/* <SEO title={heading} /> */}
+      <SEO title={heading} />
 
       <ThreeColumnLayout
         menuItems={menuItems}
@@ -100,4 +100,14 @@ function addHeadings(nodes, menuItemsNoHeadings) {
 
     return [...array, item]
   }, [])
+}
+
+function getActiveHeading(nodes, activePath) {
+  let nodeForActivePath = nodes.find(node => {
+    let [, path] = node.fileAbsolutePath.match(/(\/quickstarts\/.+)\.md[x]?/)
+
+    return activePath === path
+  })
+
+  return nodeForActivePath.tableOfContents.items[0].title
 }

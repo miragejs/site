@@ -324,13 +324,6 @@ function renderRoutes(routes) {
         ? explicitComponent.default
         : EmptyComponent
 
-      // console.log(route.path, route.fullName, route.parent.pages[0] === route)
-
-      let isDefault =
-        route.parent.pages[0] === route ||
-        (route.parent.routes.filter(r => r.isPage).length === 0 &&
-          route.parent.routes[0] === route)
-
       return (
         <Component path={route.path} key={route.fullName}>
           {renderRoutes(route.routes)}

@@ -133,7 +133,7 @@ function CollapsibleMenu({ route, isOpen, toggleSection }) {
 
 function DesktopNavLink({ route }) {
   let { routesContent } = React.useContext(RoutesContentContext)
-  let routeContent = routesContent[route.fullName]
+  let routeContent = routesContent[route.fullName] || { tableOfContents: [] }
   let isActiveRoute = route.fullPath === route.activePath
   let [, setScrollHeight] = useSpring(() => ({
     scrollHeight: 0,

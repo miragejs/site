@@ -12,6 +12,7 @@ export default function Api(props) {
   let publicClassRoutes = publicClasses.map(publicClass => ({
     label: publicClass.name,
     fullPath: `/api/classes/${publicClass.slug}`,
+    activePath: router.activePath,
   }))
 
   const routes = [

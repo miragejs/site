@@ -1,5 +1,5 @@
-import React, { useState, Fragment } from "react"
-import { Router, Link, Match } from "@reach/router"
+import React, { useState, useEffect, Fragment } from "react"
+import { Router, Link, Match, navigate } from "@reach/router"
 import { Helmet } from "react-helmet"
 import { ReactComponent as LogoAndName } from "../assets/images/logo-and-name.svg"
 import { ReactComponent as Logo } from "../assets/images/logo.svg"
@@ -13,6 +13,8 @@ import { useRouter } from "../hooks/use-router"
 import { useTheme } from "../hooks/use-theme"
 import SEO from "../components/seo"
 import SignupForm from "../components/signup-form"
+import ErrorBoundary from "../components/error-boundary"
+import NotFound from "./not-found"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -73,7 +75,9 @@ function AppInner(props) {
         <Header showHeaderNav={showHeaderNav} />
 
         <main className="flex flex-col flex-1">
-          <Outlet />
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
         </main>
 
         <Footer />
@@ -320,6 +324,13 @@ function renderRoutes(routes) {
         ? explicitComponent.default
         : EmptyComponent
 
+      // console.log(route.path, route.fullName, route.parent.pages[0] === route)
+
+      let isDefault =
+        route.parent.pages[0] === route ||
+        (route.parent.routes.filter(r => r.isPage).length === 0 &&
+          route.parent.routes[0] === route)
+
       return (
         <Component path={route.path} key={route.fullName}>
           {renderRoutes(route.routes)}
@@ -336,7 +347,24 @@ function Outlet() {
     memoizedOutlet = renderRoutes(router.routes)
   }
 
-  return <Router primary={false}>{memoizedOutlet}</Router>
+  useEffect(() => {
+    if (!router.activePage && router.activeRoute) {
+      // we're not on a page, but we're somewhere in the router
+      // lets jump to the first rendering page
+      // tldr: /docs -> /docs/getting-started/introduction
+      let bestPage = router.activeRoute.pages[0]
+      if (!bestPage.isDynamic) {
+        navigate(bestPage.fullPath, { replace: true })
+      }
+    }
+  }, [router.activePage, router.activeRoute])
+
+  return (
+    <Router primary={false}>
+      {memoizedOutlet}
+      <NotFound default />
+    </Router>
+  )
 }
 
 function Footer() {

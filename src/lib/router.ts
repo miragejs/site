@@ -96,9 +96,15 @@ const allRoutes: RouteDefinition[] = [
     name: "api",
     routes: [
       {
-        label: "Class",
-        name: "class",
-        path: "/classes/:classSlug",
+        label: "Classes",
+        name: "classes",
+        routes: [
+          {
+            label: "Class",
+            name: "class",
+            path: "/:classSlug",
+          },
+        ],
       },
     ],
   },
@@ -130,14 +136,6 @@ const allRoutes: RouteDefinition[] = [
       },
     ],
   },
-  {
-    name: "not-found",
-    label: "not-found",
-    path: "*",
-    meta: {
-      theme: "dark",
-    },
-  },
 ]
 
 interface RouteDefinition {
@@ -165,6 +163,10 @@ export class Route {
   name: string
   path: string
   meta: object
+
+  errors: object = {
+    NOT_FOUND: new Error("Route not found"),
+  }
 
   private _activePath: string
   private _parent: Route
@@ -320,9 +322,58 @@ export class Route {
     return match(this.fullPath, path)
   }
 
-  // Return the active route
+  // pojo mapping dynamic segments to values
+  get params(): object {
+    let extract = function(dynamic, fixed, params = {}) {
+      if (dynamic.length === 0 && fixed.length === 0) {
+        return params
+      }
+
+      if (dynamic[0] === ":") {
+        let dynamicTerminateChar = dynamic.includes("/") ? "/" : null
+        let fixedTerminateChar = fixed.includes("/") ? "/" : null
+        let dynamicEnd = dynamicTerminateChar
+          ? dynamic.indexOf(dynamicTerminateChar)
+          : dynamic.length
+        let fixedEnd = fixedTerminateChar
+          ? fixed.indexOf(fixedTerminateChar)
+          : fixed.length
+
+        let key = dynamic.substr(1, dynamicEnd - 1)
+        let value = fixed.substr(0, fixedEnd)
+
+        return extract(dynamic.substr(dynamicEnd), fixed.substr(fixedEnd), {
+          ...params,
+          [key]: value,
+        })
+      }
+
+      if (dynamic[0] === fixed[0]) {
+        return extract(dynamic.substr(1), fixed.substr(1), params)
+      }
+
+      // there was an error
+      return params
+    }
+
+    return extract(this.fullPath, this.activePath)
+  }
+
+  // generate a url replacing the dynamic segments with the passed in params
+  buildUrl(params: object = {}): string {
+    return Object.keys(params).reduce((url, key) => {
+      return url.replace(`:${key}`, params[key])
+    }, this.fullPath)
+  }
+
+  // Return the active page
   get activePage(): Route {
     return this.pages.find(route => route.matches(this.activePath))
+  }
+
+  // Return the active route
+  get activeRoute(): Route {
+    return this.allRoutes.find(route => route.matches(this.activePath))
   }
 
   // Return the previous route

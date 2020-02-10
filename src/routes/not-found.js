@@ -1,13 +1,24 @@
-import React from "react"
+import React, { useContext, useEffect } from "react"
 import { Link } from "gatsby"
 import SEO from "../components/seo"
 import { SectionWithLines } from "../components/ui"
+import { ThemeContext } from "../contexts/theme"
 
 function NotFound() {
+  let { lockTheme, unlockTheme } = useContext(ThemeContext)
+
+  useEffect(() => {
+    lockTheme("dark")
+
+    return () => {
+      unlockTheme()
+    }
+  }, [lockTheme, unlockTheme])
+
   return (
     <div className="relative">
       <div className="relative z-10">
-        <SEO />
+        <SEO title="Page not found" />
 
         <SectionWithLines>
           <div className="relative z-10 max-w-xl px-5 mx-auto h-128 md:px-8 2xl:max-w-2xl">

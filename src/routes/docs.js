@@ -36,8 +36,13 @@ export default function DocsPage(props) {
 
   let docsRouter = router.routerFor("/docs")
 
-  let heading = mdxPage.headings.find(heading => heading.depth === 1)
-  let title = heading && heading.value
+  let title = mdxPage?.headings?.find(heading => heading.depth === 1)?.value
+
+  // we're rendering the docs component but there's no route, that means the
+  // use is requesting a detail/docs page that doesnt exist!
+  if (!router.activeRoute) {
+    throw router.errors.NOT_FOUND
+  }
 
   return (
     <>

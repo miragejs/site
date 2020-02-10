@@ -585,6 +585,81 @@ describe("Route", () => {
     })
   })
 
+  describe("params", () => {
+    it("should get params from a dynamic route", () => {
+      let route = new Route({
+        name: "route",
+        label: "route",
+        path: "/:key",
+      })
+      route.activePath = "/value"
+
+      expect(route.params.key).toBe("value")
+    })
+
+    it("should get multiple params", () => {
+      let router = new Route({
+        name: "post",
+        label: "post",
+        path: "/posts/:postId",
+        routes: [
+          new Route({
+            name: "comment",
+            label: "comment",
+            path: "/comments/:commentId",
+          }),
+        ],
+      })
+
+      router.activePath = "/posts/1/comments/2"
+
+      expect(router.activePage.params.postId).toBe("1")
+      expect(router.activePage.params.commentId).toBe("2")
+    })
+
+    it("does not parse segments it does not own", () => {
+      let router = new Route({
+        name: "post",
+        label: "post",
+        path: "/posts/:postId",
+        routes: [
+          new Route({
+            name: "comment",
+            label: "comment",
+            path: "/comments/:commentId",
+          }),
+        ],
+      })
+
+      router.activePath = "/posts/1/comments/2"
+
+      expect(router.params.postId).toBe("1")
+      expect(router.params.commentId).toBeUndefined()
+    })
+  })
+
+  describe("urlFor", () => {
+    it("generates urls for static routes", () => {
+      let route = new Route({
+        name: "posts",
+        label: "posts",
+        path: "/posts",
+      })
+
+      expect(route.buildUrl()).toBe("/posts")
+    })
+
+    it("generates urls for routes that have dynamic segments", () => {
+      let route = new Route({
+        name: "post",
+        label: "post",
+        path: "/posts/:postId",
+      })
+
+      expect(route.buildUrl({ postId: 5 })).toBe("/posts/5")
+    })
+  })
+
   describe("previousPage", () => {
     it("should be undefined if it is the first route", () => {
       let router = new Route({

@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { CaretDownWide } from "../icons"
 import { Link } from "@reach/router"
 
-export function MobileNav(props) {
+export function MobileNav({ menuItems }) {
   let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(false)
 
   return (
@@ -28,32 +28,32 @@ export function MobileNav(props) {
             <div className="px-5 border-b border-gray-200 sm:border-none">
               <nav className="pt-5 pb-4 text-base text-gray-700 border-t border-gray-200">
                 <ul className="pt-2w">
-                  {props.routes.map(route =>
-                    route.routes.length > 0 ? (
-                      <li className="mb-5" key={route.fullPath}>
+                  {menuItems.map((menuItem, index) =>
+                    menuItem.url ? (
+                      <MobileNavLink
+                        url={menuItem.url}
+                        key={index}
+                        onClick={() => setMobileSecondaryNavIsOpen(false)}
+                      >
+                        {menuItem.label}
+                      </MobileNavLink>
+                    ) : (
+                      <li className="mb-5" key={index}>
                         <div className="text-sm font-medium text-gray-400 uppercase">
-                          {route.label}
+                          {menuItem.label}
                         </div>
                         <ul className="mt-1 ml-5">
-                          {route.routes.map(route => (
+                          {menuItem.links.map((link, index) => (
                             <MobileNavLink
-                              fullPath={route.fullPath}
-                              key={route.fullPath}
+                              url={link.url}
+                              key={index}
                               onClick={() => setMobileSecondaryNavIsOpen(false)}
                             >
-                              {route.label}
+                              {link.label}
                             </MobileNavLink>
                           ))}
                         </ul>
                       </li>
-                    ) : (
-                      <MobileNavLink
-                        fullPath={route.fullPath}
-                        key={route.fullPath}
-                        onClick={() => setMobileSecondaryNavIsOpen(false)}
-                      >
-                        {route.label}
-                      </MobileNavLink>
                     )
                   )}
                 </ul>
@@ -66,7 +66,7 @@ export function MobileNav(props) {
   )
 }
 
-function MobileNavLink({ fullPath, ...otherProps }) {
+function MobileNavLink({ url, ...otherProps }) {
   const isPartiallyActive = ({ isPartiallyCurrent }) => {
     return {
       className: `block py-1 ${
@@ -76,8 +76,8 @@ function MobileNavLink({ fullPath, ...otherProps }) {
   }
 
   return (
-    <li key={fullPath}>
-      <Link getProps={isPartiallyActive} to={fullPath} {...otherProps} />
+    <li>
+      <Link getProps={isPartiallyActive} to={url} {...otherProps} />
     </li>
   )
 }

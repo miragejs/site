@@ -22,18 +22,17 @@ import {
 } from "../../components/ui"
 
 export function ThreeColumnLayout({
-  routes,
-  routesContent,
+  menuItems,
   previousPage,
   nextPage,
   children,
 }) {
   return (
     <div className="pt-16 bg-white">
-      <MobileNav routes={routes} />
+      <MobileNav menuItems={menuItems} />
 
       <div className="flex flex-1">
-        <DesktopLeftNav routes={routes} routesContent={routesContent} />
+        <DesktopLeftNav menuItems={menuItems} />
 
         <div className="flex-1 w-full min-w-0 px-5 text-base font-normal text-gray-800 pt-7 leading-relaxed-sm sm:pt-8 md:leading-relaxed md:pt-8 md:px-20 lg:pr-8 lg:pt-10">
           <div className="max-w-md mx-auto md:max-w-full md:text-lg">

@@ -9,13 +9,6 @@ export default function Api(props) {
   let router = useRouter()
   let { publicClasses } = useApiDocs()
 
-  let publicClassRoutes = publicClasses.map(publicClass => ({
-    label: publicClass.name,
-    fullPath: `/api/classes/${publicClass.slug}`,
-    activePath: router.activePath,
-    routes: [],
-  }))
-
   if (!router.activePage) {
     // we're rendering the API docs, but we don't have an active page which
     // most likely means we're rendering the index of some master view. let's
@@ -29,6 +22,13 @@ export default function Api(props) {
       />
     )
   }
+
+  let publicClassRoutes = publicClasses.map(publicClass => ({
+    label: publicClass.name,
+    fullPath: `/api/classes/${publicClass.slug}`,
+    activePath: router.activePath,
+    routes: [],
+  }))
 
   let activePublicClass = publicClasses.find(
     publicClass => publicClass.slug === router.activePage?.params?.classSlug
@@ -79,6 +79,7 @@ export default function Api(props) {
     <>
       <SEO title={activePublicClass?.name} />
       <ThreeColumnLayout
+        menuItems={{}}
         routes={publicClassRoutes}
         previousPage={previousPage}
         nextPage={nextPage}

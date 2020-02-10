@@ -5,32 +5,27 @@ import { animated, useSpring } from "react-spring"
 import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
 import OutsideClickHandler from "react-outside-click-handler"
+import { useRouter } from "../../hooks/use-router"
 
 const MAX_WIDTH = 1152
 const MAIN_WIDTH = 580
 const SIDEBAR_WIDTH = (MAX_WIDTH - MAIN_WIDTH) / 2
 
-/*
-  Just a little local context to make it easy for the DesktopNavLink components
-  to grab their corresponding routeContent, since routesContent is a flat
-  array but routes is a nested tree structure.
-*/
-let RoutesContentContext = React.createContext()
-
-export function DesktopLeftNav({ routes, routesContent = {} }) {
-  let activePath = routes[0].activePath
+export function DesktopLeftNav({ menuItems }) {
+  let router = useRouter()
+  let activePath = router.activePath
   let previousActivePath = usePrevious(activePath)
-  let defaultOpenSections = routes
-    .filter(route => route.activePage)
-    .map(route => route.fullPath)
+  let defaultOpenSection = menuItems.findIndex(menuItem =>
+    menuItem.links.find(link => link.url === activePath)
+  )
 
-  let [openSections, setOpenSections] = React.useState(defaultOpenSections)
+  let [openSections, setOpenSections] = React.useState([defaultOpenSection])
 
   React.useLayoutEffect(() => {
     if (previousActivePath !== activePath) {
-      setOpenSections(defaultOpenSections)
+      setOpenSections([defaultOpenSection])
     }
-  }, [activePath, previousActivePath, defaultOpenSections])
+  }, [activePath, previousActivePath, defaultOpenSection])
 
   function toggleSection(section) {
     setOpenSections(prev =>
@@ -41,45 +36,46 @@ export function DesktopLeftNav({ routes, routesContent = {} }) {
   }
 
   return (
-    <RoutesContentContext.Provider value={{ routesContent }}>
-      <div
-        className="flex-shrink-0 hidden border-r border-gray-200 bg-gray-50 lg:block min-w-56"
-        style={{
-          width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
-          paddingLeft: `calc((100% - 64px - ${MAX_WIDTH}px)/ 2)`,
-        }}
-      >
-        <nav className="sticky h-screen px-8 pt-8 overflow-y-scroll leading-snug top-16 xl:pt-10">
-          <ul className="-mt-4">
-            {routes.map((route, index) =>
-              route.routes.length > 0 ? (
-                <li className="mt-6" key={route.fullPath}>
-                  <CollapsibleMenu
-                    route={route}
-                    isOpen={openSections.includes(route.fullPath)}
-                    toggleSection={toggleSection}
-                  />
-                </li>
-              ) : (
-                <div className="mt-6" key={route.fullPath}>
-                  <DesktopNavLink route={route} />
-                </div>
-              )
-            )}
-          </ul>
-        </nav>
-      </div>
-    </RoutesContentContext.Provider>
+    <div
+      className="flex-shrink-0 hidden border-r border-gray-200 bg-gray-50 lg:block min-w-56"
+      style={{
+        width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
+        paddingLeft: `calc((100% - 64px - ${MAX_WIDTH}px)/ 2)`,
+      }}
+    >
+      <nav className="sticky h-screen px-8 pt-8 overflow-y-scroll leading-snug top-16 xl:pt-10">
+        <ul className="-mt-4">
+          {menuItems.map((menuItem, index) =>
+            menuItem.url ? (
+              <div className="mt-6" key={index}>
+                <DesktopNavLink link={menuItem} />
+              </div>
+            ) : (
+              <li className="mt-6" key={index}>
+                <CollapsibleMenu
+                  section={menuItem}
+                  isOpen={openSections.includes(index)}
+                  toggleSection={() => toggleSection(index)}
+                />
+              </li>
+            )
+          )}
+        </ul>
+      </nav>
+    </div>
   )
 }
 
-function CollapsibleMenu({ route, isOpen, toggleSection }) {
+function CollapsibleMenu({ section, isOpen, toggleSection }) {
   let [shouldAnimate, setShouldAnimate] = React.useState(false)
   let [ref, bounds] = useMeasure({ polyfill: ResizeObserver })
   let [props, set] = useSpring(() => ({
     transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
     height: isOpen ? bounds.height || "auto" : 0,
   }))
+
+  let activePath = useRouter().activePath
+  let sectionIsActive = section.links.find(link => link.url === activePath)
 
   React.useLayoutEffect(() => {
     set({
@@ -92,14 +88,14 @@ function CollapsibleMenu({ route, isOpen, toggleSection }) {
 
   function handleClick() {
     setShouldAnimate(true)
-    toggleSection(route.fullPath)
+    toggleSection()
   }
 
   return (
     <>
       <button
         className={`px-1 flex items-center text-gray-900 focus:outline-none ${
-          route.activePage ? "font-medium" : ""
+          sectionIsActive ? "font-medium" : ""
         }
           `}
         onClick={handleClick}
@@ -110,7 +106,7 @@ function CollapsibleMenu({ route, isOpen, toggleSection }) {
           }}
           className="inline-block w-4 h-4 text-gray-400"
         />
-        <span className="ml-3">{route.label}</span>
+        <span className="ml-3">{section.label}</span>
       </button>
       <animated.div
         className="overflow-hidden"
@@ -121,8 +117,8 @@ function CollapsibleMenu({ route, isOpen, toggleSection }) {
             style={{ marginLeft: "10px" }}
             className="pl-4 font-normal border-l border-gray-200"
           >
-            {route.routes.map((route, index) => (
-              <DesktopNavLink route={route} key={route.fullPath} />
+            {section.links.map((link, index) => (
+              <DesktopNavLink link={link} key={index} />
             ))}
           </ul>
         </div>
@@ -131,10 +127,10 @@ function CollapsibleMenu({ route, isOpen, toggleSection }) {
   )
 }
 
-function DesktopNavLink({ route }) {
-  let { routesContent } = React.useContext(RoutesContentContext)
-  let routeContent = routesContent[route.fullName] || { tableOfContents: [] }
-  let isActiveRoute = route.fullPath === route.activePath
+function DesktopNavLink({ link }) {
+  let router = useRouter()
+  let isActiveRoute = link.url === router.activePath
+
   let [, setScrollHeight] = useSpring(() => ({
     scrollHeight: 0,
   }))
@@ -156,7 +152,7 @@ function DesktopNavLink({ route }) {
 
   function scrollOrNavigate(e) {
     // TODO: This is a proxy for route.isActive, is this going to be added to the router?
-    if (route.fullPath === route.activePath) {
+    if (isActiveRoute) {
       e.preventDefault()
       scrollTo(0)
     }
@@ -200,30 +196,30 @@ function DesktopNavLink({ route }) {
         </span>{" "}
         <Link
           onClick={scrollOrNavigate}
-          to={route.fullPath}
+          to={link.url}
           className={`${
             isActiveRoute
               ? "text-gray-900 font-medium"
               : "text-gray-800 hover:text-gray-900"
           }`}
         >
-          {route.label}
+          {link.label}
         </Link>
       </div>
-      {isActiveRoute && (
+      {isActiveRoute && link.headings && (
         <div className="ml-12">
           <OutsideClickHandler onOutsideClick={stopScrolling}>
             <ul>
-              {routeContent.tableOfContents.map(item => (
-                <li className="pt-3 text-base-" key={item.url}>
+              {link.headings.map((heading, index) => (
+                <li className="pt-3 text-base-" key={index}>
                   <a
-                    href={item.url}
+                    href={heading.anchor}
                     onClick={e => {
                       e.preventDefault()
-                      scrollToSection(item.url)
+                      scrollToSection(heading.anchor)
                     }}
                   >
-                    {item.title}
+                    {heading.label}
                   </a>
                 </li>
               ))}

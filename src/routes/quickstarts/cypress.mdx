@@ -62,6 +62,7 @@ Cypress.on("window:before:load", win => {
   win.handleFromCypress = function(request) {
     return fetch(request.url, {
       method: request.method,
+      headers: request.requestHeaders,
       body: request.requestBody,
     }).then(async res => {
       const body =

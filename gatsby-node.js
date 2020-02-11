@@ -55,7 +55,7 @@ exports.createPages = ({ actions }) => {
         let firstPage = route.pages[0]
         if (!firstPage.isDynamic) {
           createRedirect({
-            fromPath: route.url,
+            fromPath: route.fullPath,
             toPath: firstPage.url,
           })
         }

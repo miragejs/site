@@ -10,21 +10,21 @@ import { urlsMatch } from "../../utils"
 
 export function DesktopNav({ menuItems }) {
   let router = useRouter()
-  let activePath = router.activePath
-  let previousActivePath = usePrevious(activePath)
+  let activeUrl = router.activeUrl
+  let previousActiveUrl = usePrevious(activeUrl)
   let defaultOpenSection = menuItems.findIndex(
     menuItem =>
       menuItem.links &&
-      menuItem.links.find(link => urlsMatch(link.url, activePath))
+      menuItem.links.find(link => urlsMatch(link.url, activeUrl))
   )
 
   let [openSections, setOpenSections] = React.useState([defaultOpenSection])
 
   React.useLayoutEffect(() => {
-    if (previousActivePath !== activePath) {
+    if (previousActiveUrl !== activeUrl) {
       setOpenSections([defaultOpenSection])
     }
-  }, [activePath, previousActivePath, defaultOpenSection])
+  }, [activeUrl, previousActiveUrl, defaultOpenSection])
 
   function toggleSection(section) {
     setOpenSections(prev =>
@@ -71,9 +71,9 @@ function CollapsibleMenu({ section, isOpen, toggleSection }) {
     height: isOpen ? bounds.height || "auto" : 0,
   }))
 
-  let activePath = useRouter().activePath
+  let activeUrl = useRouter().activeUrl
   let sectionIsActive = section.links.find(link =>
-    urlsMatch(link.url, activePath)
+    urlsMatch(link.url, activeUrl)
   )
 
   React.useLayoutEffect(() => {
@@ -128,7 +128,7 @@ function CollapsibleMenu({ section, isOpen, toggleSection }) {
 
 function DesktopNavLink({ link }) {
   let router = useRouter()
-  let isActiveRoute = urlsMatch(link.url, router.activePath)
+  let isActiveRoute = urlsMatch(link.url, router.activeUrl)
 
   let [, setScrollHeight] = useSpring(() => ({
     scrollHeight: 0,

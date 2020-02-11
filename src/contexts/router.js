@@ -6,7 +6,7 @@ export const RouterContext = React.createContext()
 const router = new Router()
 
 export function RouterProvider(props) {
-  router.activePath = props.location.pathname
+  router.activeUrl = props.location.pathname
 
   return (
     <RouterContext.Provider value={router}>

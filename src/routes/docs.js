@@ -29,7 +29,7 @@ export default function DocsPage(props) {
 
   let docsRouter = router.routerFor("/docs")
   let menuItems = transform(data.allMdx.nodes, docsRouter)
-  let heading = getActiveHeading(data.allMdx.nodes, router.activePath)
+  let heading = getActiveHeading(data.allMdx.nodes, router.activeUrl)
 
   return (
     <>
@@ -91,12 +91,12 @@ function addHeadings(nodes, menuItemsNoHeadings) {
   }, [])
 }
 
-function getActiveHeading(nodes, activePath) {
-  let nodeForActivePath = nodes.find(node => {
+function getActiveHeading(nodes, activeUrl) {
+  let nodeForActiveUrl = nodes.find(node => {
     let [, path] = node.fileAbsolutePath.match(/(\/docs\/.+)\.md[x]?/)
 
-    return urlsMatch(activePath, path)
+    return urlsMatch(activeUrl, path)
   })
 
-  return nodeForActivePath.tableOfContents.items[0].title
+  return nodeForActiveUrl.tableOfContents.items[0].title
 }

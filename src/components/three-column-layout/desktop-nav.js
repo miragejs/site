@@ -184,6 +184,8 @@ function DesktopNavLink({ link }) {
     })
   }
 
+  console.log(link.headings)
+
   return (
     <li className="mt-4">
       <div className="flex items-center">
@@ -222,6 +224,23 @@ function DesktopNavLink({ link }) {
                   >
                     {heading.label}
                   </a>
+                  {heading.headings && (
+                    <ul className="ml-3">
+                      {heading.headings.map((heading, index) => (
+                        <li className="py-1" key={index}>
+                          <a
+                            href={heading.anchor}
+                            onClick={e => {
+                              e.preventDefault()
+                              scrollToSection(heading.anchor)
+                            }}
+                          >
+                            {heading.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>

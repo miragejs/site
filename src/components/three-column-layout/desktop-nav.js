@@ -217,9 +217,9 @@ function DesktopNavLink({ link }) {
                     {heading.label}
                   </a>
                   {heading.headings && (
-                    <ul className="ml-3">
+                    <ul className="pt-1 ml-3">
                       {heading.headings.map((heading, index) => (
-                        <li className="py-1" key={index}>
+                        <li className="py-1 truncate" key={index}>
                           <a
                             href={heading.anchor}
                             onClick={e => {
@@ -227,7 +227,7 @@ function DesktopNavLink({ link }) {
                               scrollToSection(heading.anchor)
                             }}
                           >
-                            {heading.label}
+                            <code className="text-xs">{heading.label}</code>
                           </a>
                         </li>
                       ))}

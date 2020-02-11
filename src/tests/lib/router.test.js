@@ -258,9 +258,9 @@ describe("Route", () => {
         parent: router,
       })
 
-      router.activePath = "/root/child"
+      router.activePath = "/root/child/"
 
-      expect(child.activePath).toBe("/root/child")
+      expect(child.activePath).toBe("/root/child/")
     })
 
     it("should only be able to set an active path on the parent", () => {
@@ -277,7 +277,7 @@ describe("Route", () => {
       })
 
       expect(() => {
-        child.activePath = "/root/child"
+        child.activePath = "/root/child/"
       }).toThrow()
     })
   })
@@ -296,7 +296,7 @@ describe("Route", () => {
         parent: router,
       })
 
-      router.activePath = "/root/child"
+      router.activePath = "/root/child/"
 
       expect(router.activePage).toBe(child)
     })
@@ -346,7 +346,7 @@ describe("Route", () => {
         ],
       })
 
-      router.activePath = "/root/child1"
+      router.activePath = "/root/child1/"
 
       expect(subrouter.activePage).toBeUndefined()
     })
@@ -646,7 +646,7 @@ describe("Route", () => {
         path: "/posts",
       })
 
-      expect(route.buildUrl()).toBe("/posts")
+      expect(route.buildUrl()).toBe("/posts/")
     })
 
     it("generates urls for routes that have dynamic segments", () => {
@@ -656,7 +656,7 @@ describe("Route", () => {
         path: "/posts/:postId",
       })
 
-      expect(route.buildUrl({ postId: 5 })).toBe("/posts/5")
+      expect(route.buildUrl({ postId: 5 })).toBe("/posts/5/")
     })
   })
 
@@ -680,7 +680,7 @@ describe("Route", () => {
         parent: router,
       })
 
-      router.activePath = "/root/child1"
+      router.activePath = "/root/child1/"
 
       expect(router.previousPage).toBeUndefined()
     })
@@ -704,7 +704,7 @@ describe("Route", () => {
         parent: router,
       })
 
-      router.activePath = "/root/child2"
+      router.activePath = "/root/child2/"
 
       expect(router.previousPage).toBe(previous)
     })
@@ -741,7 +741,7 @@ describe("Route", () => {
         ],
       })
 
-      router.activePath = "/root/child2"
+      router.activePath = "/root/child2/"
 
       expect(subrouter.previousPage).toBeUndefined()
     })
@@ -767,7 +767,7 @@ describe("Route", () => {
         parent: router,
       })
 
-      router.activePath = "/root/child2"
+      router.activePath = "/root/child2/"
 
       expect(router.nextPage).toBeUndefined()
     })
@@ -791,7 +791,7 @@ describe("Route", () => {
         parent: router,
       })
 
-      router.activePath = "/root/child1"
+      router.activePath = "/root/child1/"
 
       expect(router.nextPage).toBe(next)
     })
@@ -828,7 +828,7 @@ describe("Route", () => {
         ],
       })
 
-      router.activePath = "/root/child1"
+      router.activePath = "/root/child1/"
 
       expect(subrouter.nextPage).toBeUndefined()
     })

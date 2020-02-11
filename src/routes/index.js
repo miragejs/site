@@ -120,7 +120,7 @@ export default function IndexPage() {
 
                   <div className="flex mt-8 md:justify-center">
                     <Link
-                      to={router.routerFor("/docs").pages[0].fullPath}
+                      to={router.routerFor("/docs").pages[0].url}
                       className="flex items-center justify-center block w-full px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded hover:bg-green-700 md:py-2 md:w-auto"
                     >
                       Get started <Caret className="inline w-2 ml-2" />
@@ -665,7 +665,7 @@ export default function IndexPage() {
 
                 <div className="mt-12">
                   <Link
-                    to={router.routerFor("/docs").pages[0].fullPath}
+                    to={router.routerFor("/docs").pages[0].url}
                     className="inline-flex items-center px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded hover:bg-green-600"
                   >
                     Get started
@@ -719,7 +719,7 @@ function VideoSegmentProgress({ start, end, current, paused }) {
   })
 
   return (
-    <div className="relative w-full h-1 overflow-hidden bg-gray-900 rounded transition">
+    <div className="relative w-full h-1 overflow-hidden transition bg-gray-900 rounded">
       <animated.div
         className="absolute top-0 bottom-0 left-0"
         style={props}

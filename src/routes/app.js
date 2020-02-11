@@ -90,24 +90,31 @@ function Header({ showHeaderNav }) {
   const { theme } = useTheme()
   const [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
   const router = useRouter()
+  debugger
 
   return (
     <div
-      className={`relative z-50 ${
-        theme === "dark" ? "bg-gray-1000" : "bg-white shadow"
+      className={`z-50 ${
+        theme === "dark"
+          ? "relative bg-gray-1000"
+          : "bg-white shadow fixed top-0 inset-x-0"
       }`}
     >
       <div className="md:px-8">
-        <div className="mx-auto max-w-7xl">
+        <div className="max-w-6xl mx-auto">
           <header
-            className={`lg:py-2
+            className={`
               ${isShowingMobileNav && theme === "dark" ? "bg-gray-900" : ""}
             `}
           >
-            <div className="flex items-center">
+            <div
+              className={`flex items-center ${
+                theme === "dark" ? "h-24" : "h-16"
+              }`}
+            >
               <Link
                 to="/"
-                className={`px-5 py-2 md:px-0 flex items-center flex-shrink-0  ${
+                className={`px-5 md:px-0 flex items-center flex-shrink-0  ${
                   // theme === "dark" ? "text-green-500" : "text-gray-900"
                   theme === "dark" ? "text-green-500" : "text-green-500"
                 }`}
@@ -118,7 +125,7 @@ function Header({ showHeaderNav }) {
                   ${
                     theme === "dark"
                       ? "w-24 md:w-28 lg:w-34 py-3 text-gray-100"
-                      : "w-24 md:w-28 py-2 lg:py-1 text-gray-900"
+                      : "w-24 md:w-28 text-gray-900"
                   }
                 `}
                 />
@@ -158,16 +165,16 @@ function Header({ showHeaderNav }) {
                 {showHeaderNav ? (
                   <Fragment>
                     <NavLink
-                      to={router.routerFor("/docs").pages[0].fullPath}
+                      to={router.routerFor("/docs").pages[0].url}
                       activeFor="/docs/*"
                     >
                       Guides
                     </NavLink>
-                    <NavLink to="/api/classes/association" activeFor="/api/*">
+                    <NavLink to="/api/classes/association/" activeFor="/api/*">
                       API
                     </NavLink>
                     <NavLink
-                      to={router.routerFor("/quickstarts").pages[0].fullPath}
+                      to={router.routerFor("/quickstarts").pages[0].url}
                       activeFor="/quickstarts/*"
                     >
                       Quickstarts
@@ -207,7 +214,7 @@ function Header({ showHeaderNav }) {
                   }`}
                 >
                   <MobileNavLink
-                    to="/docs/getting-started/introduction"
+                    to="/docs/getting-started/introduction/"
                     onClick={() => setIsShowingMobileNav(false)}
                   >
                     Guides
@@ -220,10 +227,23 @@ function Header({ showHeaderNav }) {
                   }`}
                 >
                   <MobileNavLink
-                    to="/api/classes/association"
+                    to="/api/classes/association/"
                     onClick={() => setIsShowingMobileNav(false)}
                   >
                     API
+                  </MobileNavLink>
+                </div>
+
+                <div
+                  className={`border-t ${
+                    theme === "dark" ? "border-gray-800" : "border-gray-200"
+                  }`}
+                >
+                  <MobileNavLink
+                    to={router.routerFor("/quickstarts").pages[0].url}
+                    onClick={() => setIsShowingMobileNav(false)}
+                  >
+                    Quickstarts
                   </MobileNavLink>
                 </div>
 
@@ -347,7 +367,7 @@ function Outlet() {
       // tldr: /docs -> /docs/getting-started/introduction
       let bestPage = router.activeRoute.pages[0]
       if (!bestPage.isDynamic) {
-        navigate(bestPage.fullPath, { replace: true })
+        navigate(bestPage.url, { replace: true })
       }
     }
   }, [router.activePage, router.activeRoute])
@@ -364,28 +384,26 @@ function Footer() {
   let router = useRouter()
 
   return (
-    <footer className="px-5 pt-16 pb-12 md:pb-20 bg-gray-1000 xl:px-16">
-      <div className="max-w-lg mx-auto md:max-w-xl lg:max-w-3xl xl:max-w-5xl">
+    <footer className="px-5 pt-16 pb-12 md:px-8 md:pb-20 bg-gray-1000 xl:px-16">
+      <div className="max-w-6xl mx-auto">
         <div className="">
           <div className="flex -mx-3 md:text-lg">
-            <div className="w-1/2 px-3 xl:w-1/4">
-              <p className="py-1 pl-3 text-sm tracking-wide text-gray-600 uppercase md:text-base md:pl-0">
+            <div className="w-1/2 px-3 md:w-1/4">
+              <p className="py-1 text-sm tracking-wide text-gray-600 uppercase md:text-base">
                 Docs
               </p>
-              <div className="pl-3 mt-1 border-l border-gray-800 md:pl-0 md:border-none">
+              <div className="mt-1">
                 <ul>
                   <li className="py-1 text-white">
-                    <Link to={router.routerFor("/docs").pages[0].fullPath}>
+                    <Link to={router.routerFor("/docs").pages[0].url}>
                       Guides
                     </Link>
                   </li>
                   <li className="py-1 text-white">
-                    <Link to="/api/classes/association">API</Link>
+                    <Link to="/api/classes/association/">API</Link>
                   </li>
                   <li className="py-1 text-white">
-                    <Link
-                      to={router.routerFor("/quickstarts").pages[0].fullPath}
-                    >
+                    <Link to={router.routerFor("/quickstarts").pages[0].url}>
                       Quickstarts
                     </Link>
                   </li>
@@ -393,11 +411,11 @@ function Footer() {
               </div>
             </div>
 
-            <div className="w-1/2 px-3 xl:w-1/4">
-              <p className="py-1 pl-3 text-sm tracking-wide text-gray-600 uppercase md:text-base md:pl-0">
+            <div className="w-1/2 px-3 md:w-1/4">
+              <p className="py-1 text-sm tracking-wide text-gray-600 uppercase md:text-base">
                 Community
               </p>
-              <div className="pl-3 mt-1 border-l border-gray-800 md:pl-0 md:border-none">
+              <div className="mt-1">
                 <ul>
                   <li className="py-1 text-white">
                     <a href="https://github.com/miragejs/miragejs">GitHub</a>
@@ -414,18 +432,18 @@ function Footer() {
           </div>
         </div>
 
-        <div className="py-10 md:py-12">
-          <div className="md:border-t md:border-gray-800" />
+        <div className="py-10 sm:py-12">
+          <div className="sm:border-t sm:border-gray-800" />
         </div>
 
-        <div className="md:flex">
-          <div className="md:w-3/4 xl:w-1/2">
+        <div className="sm:flex">
+          <div className="w-full max-w-xl">
             <SignupForm />
           </div>
 
-          <div className="flex justify-center mt-16 md:items-end md:w-1/4 md:mt-0 md:justify-end xl:ml-auto">
+          <div className="flex justify-center mt-16 sm:items-end sm:pl-32 sm:mt-0 sm:justify-end sm:ml-auto">
             <Link to="/" className="block p-1">
-              <Logo className="w-8 md:w-10" />
+              <Logo className="w-8 sm:w-10" />
             </Link>
           </div>
         </div>

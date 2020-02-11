@@ -15,6 +15,7 @@ module.exports = {
       black: "black",
       editor: "#282c34",
       gray: {
+        50: "#fbfdfe",
         100: "#F7FAFC",
         200: "#E4ECF0",
         300: "#CAD4DB",
@@ -69,6 +70,7 @@ module.exports = {
         xs: px(12),
         "sm-": px(13),
         sm: px(14),
+        "base-": px(15),
         base: px(16),
         "base+": px(17),
         lg: px(18),

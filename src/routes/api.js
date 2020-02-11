@@ -9,20 +9,6 @@ export default function Api(props) {
   let router = useRouter()
   let { publicClasses } = useApiDocs()
 
-  let publicClassRoutes = publicClasses.map(publicClass => ({
-    label: publicClass.name,
-    fullPath: `/api/classes/${publicClass.slug}`,
-  }))
-
-  const routes = [
-    {
-      label: "Classes",
-      name: "Classes",
-      fullPath: "/api/classes",
-      routes: publicClassRoutes,
-    },
-  ]
-
   if (!router.activePage) {
     // we're rendering the API docs, but we don't have an active page which
     // most likely means we're rendering the index of some master view. let's
@@ -37,6 +23,32 @@ export default function Api(props) {
     )
   }
 
+  let menuItems = publicClasses.map(publicClass => ({
+    label: publicClass.name,
+    url: `/api/classes/${publicClass.slug}/`,
+    headings: [
+      ["Fields", publicClass.fields],
+      ["Accessors", publicClass.accessors],
+      ["Methods", publicClass.methods],
+    ]
+      .filter(([label, members]) => members.length > 0)
+      .reduce((result, [label, members]) => {
+        let items = members.map(member => ({
+          label: member.name,
+          anchor: `#${member.slug}`,
+        }))
+
+        return [
+          ...result,
+          {
+            label: label,
+            anchor: `#${label.toLowerCase()}`,
+            headings: items,
+          },
+        ]
+      }, []),
+  }))
+
   let activePublicClass = publicClasses.find(
     publicClass => publicClass.slug === router.activePage?.params?.classSlug
   )
@@ -47,49 +59,38 @@ export default function Api(props) {
     throw router.errors.NOT_FOUND
   }
 
-  let activePublicClassRoute = publicClassRoutes.find(
-    publicClassRoute => publicClassRoute.label === activePublicClass?.name
-  )
-
-  let activeIndex = publicClassRoutes.indexOf(activePublicClassRoute)
-  let previousPage = activeIndex > 0 ? publicClassRoutes[activeIndex - 1] : null
-  let nextPage =
-    activeIndex < publicClassRoutes.length - 1
-      ? publicClassRoutes[activeIndex + 1]
+  let activeIndex = publicClasses.indexOf(activePublicClass)
+  let previousClass = activeIndex > 0 ? publicClasses[activeIndex - 1] : null
+  let nextClass =
+    activeIndex < publicClasses.length - 1
+      ? publicClasses[activeIndex + 1]
       : null
 
-  let tableOfContents = activePublicClass
-    ? [
-        ["Fields", activePublicClass.fields],
-        ["Accessors", activePublicClass.accessors],
-        ["Methods", activePublicClass.methods],
-      ]
-        .filter(([label, members]) => members.length > 0)
-        .reduce((result, [label, members]) => {
-          let items = members.map(member => ({
-            title: member.name,
-            url: `#${member.slug}`,
-          }))
-
-          return [
-            ...result,
-            {
-              title: label,
-              url: `#${label}`,
-              items,
-            },
-          ]
-        }, [])
-    : []
+  let previousPage = previousClass
+    ? {
+        url: router
+          .routerFor("/api/classes/:classSlug")
+          .buildUrl({ classSlug: previousClass.slug }),
+        label: previousClass.name,
+      }
+    : null
+  let nextPage = nextClass
+    ? {
+        url: router
+          .routerFor("/api/classes/:classSlug")
+          .buildUrl({ classSlug: nextClass.slug }),
+        label: nextClass.name,
+      }
+    : null
 
   return (
     <>
       <SEO title={activePublicClass?.name} />
+
       <ThreeColumnLayout
-        routes={routes}
+        menuItems={menuItems}
         previousPage={previousPage}
         nextPage={nextPage}
-        currentPageTableOfContentsItems={tableOfContents}
       >
         {props.children}
       </ThreeColumnLayout>

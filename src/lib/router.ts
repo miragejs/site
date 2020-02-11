@@ -76,18 +76,12 @@ const allRoutes: RouteDefinition[] = [
         ],
       },
       {
-        name: "meta",
-        label: "Meta",
-        routes: [
-          {
-            name: "comparison-with-other-tools",
-            label: "Comparison with other tools",
-          },
-          {
-            name: "about",
-            label: "About",
-          },
-        ],
+        name: "comparison-with-other-tools",
+        label: "Comparison with other tools",
+      },
+      {
+        name: "about",
+        label: "About",
       },
     ],
   },
@@ -113,6 +107,10 @@ const allRoutes: RouteDefinition[] = [
     name: "quickstarts",
     routes: [
       {
+        label: "Overview",
+        name: "overview",
+      },
+      {
         label: "React",
         name: "react",
         routes: [
@@ -132,7 +130,6 @@ const allRoutes: RouteDefinition[] = [
       {
         label: "Cypress",
         name: "cypress",
-        routes: [{ label: "Setup", name: "setup" }],
       },
     ],
   },
@@ -168,7 +165,7 @@ export class Route {
     NOT_FOUND: new Error("Route not found"),
   }
 
-  private _activePath: string
+  private _activeUrl: string
   private _parent: Route
   private _routes: Route[]
 
@@ -197,6 +194,16 @@ export class Route {
     return [this.parent && this.parent.fullPath, this.path]
       .filter(part => part && part !== "")
       .join("")
+  }
+
+  get url(): string {
+    if (!this.isPage) {
+      throw new Error(
+        `This route (${this.fullName}) is not a page and therefore has no url`
+      )
+    }
+
+    return ensureTrailingSlash(this.fullPath)
   }
 
   get isDynamic(): boolean {
@@ -249,17 +256,17 @@ export class Route {
     return this.allRoutes.filter(route => route.routes.length === 0)
   }
 
-  get activePath(): string {
-    return this.parent ? this.parent.activePath : this._activePath
+  get activeUrl(): string {
+    return this.parent ? this.parent.activeUrl : this._activeUrl
   }
 
-  set activePath(path: string) {
+  set activeUrl(path: string) {
     if (this.parent) {
       throw new Error(
-        "activePath can only be set on the router, not a child route"
+        "activeUrl can only be set on the router, not a child route"
       )
     } else {
-      this._activePath = path
+      this._activeUrl = ensureTrailingSlash(path)
     }
   }
 
@@ -356,24 +363,26 @@ export class Route {
       return params
     }
 
-    return extract(this.fullPath, this.activePath)
+    return extract(this.fullPath, this.activeUrl)
   }
 
   // generate a url replacing the dynamic segments with the passed in params
   buildUrl(params: object = {}): string {
-    return Object.keys(params).reduce((url, key) => {
-      return url.replace(`:${key}`, params[key])
-    }, this.fullPath)
+    return ensureTrailingSlash(
+      Object.keys(params).reduce((url, key) => {
+        return url.replace(`:${key}`, params[key])
+      }, this.fullPath)
+    )
   }
 
   // Return the active page
   get activePage(): Route {
-    return this.pages.find(route => route.matches(this.activePath))
+    return this.pages.find(route => route.matches(this.activeUrl))
   }
 
   // Return the active route
   get activeRoute(): Route {
-    return this.allRoutes.find(route => route.matches(this.activePath))
+    return this.allRoutes.find(route => route.matches(this.activeUrl))
   }
 
   // Return the previous route
@@ -463,4 +472,8 @@ export class Router extends Route {
     super({ name: "", label: "", path: "" })
     definitions.forEach(definition => this.add(definition))
   }
+}
+
+function ensureTrailingSlash(path) {
+  return path.replace(/\/?$/, "/")
 }

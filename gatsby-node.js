@@ -149,7 +149,17 @@ exports.createPages = ({ actions }) => {
 
 let esdoc = require("esdoc").default
 let tmp = require("tmp")
-let slugify = require("@sindresorhus/slugify")
+
+let slugify = function(str) {
+  return str
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1-$2")
+    .replace(/([a-z])([A-Z])/g, "$1-$2")
+    .replace(/([0-9])([^0-9])/g, "$1-$2")
+    .replace(/([^0-9])([0-9])/g, "$1-$2")
+    .replace(/-+/g, "-")
+    .toLowerCase()
+}
 
 let generateESDoc = function(config) {
   var tmpdir = tmp.dirSync()

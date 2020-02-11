@@ -128,6 +128,16 @@ const allRoutes: RouteDefinition[] = [
         ],
       },
       {
+        label: "Nuxt",
+        name: "nuxt",
+        routes: [{ label: "Setup", name: "setup" }],
+      },
+      {
+        label: "Angular",
+        name: "angular",
+        routes: [{ label: "Setup", name: "setup" }],
+      },
+      {
         label: "Cypress",
         name: "cypress",
       },

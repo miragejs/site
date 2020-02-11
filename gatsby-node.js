@@ -143,6 +143,14 @@ exports.createPages = ({ actions }) => {
     toPath: "/404.html",
     statusCode: 404,
   })
+  createRedirect({
+    fromPath: "/quickstarts/nuxt",
+    toPath: "/quickstarts/nuxt/setup",
+  })
+  createRedirect({
+    fromPath: "/quickstarts/angular",
+    toPath: "/quickstarts/angular/setup",
+  })
 }
 
 // DOC STUFF TODO Extract

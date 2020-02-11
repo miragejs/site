@@ -106,10 +106,7 @@ const allRoutes: RouteDefinition[] = [
     label: "Quickstarts",
     name: "quickstarts",
     routes: [
-      {
-        label: "Overview",
-        name: "overview",
-      },
+      { label: "Overview", name: "overview" },
       {
         label: "React",
         name: "react",
@@ -127,10 +124,8 @@ const allRoutes: RouteDefinition[] = [
           { label: "Production builds", name: "exclude-from-production" },
         ],
       },
-      {
-        label: "Cypress",
-        name: "cypress",
-      },
+      { label: "Ember", name: "ember" },
+      { label: "Cypress", name: "cypress" },
     ],
   },
 ]

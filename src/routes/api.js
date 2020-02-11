@@ -25,7 +25,7 @@ export default function Api(props) {
 
   let menuItems = publicClasses.map(publicClass => ({
     label: publicClass.name,
-    url: `/api/classes/${publicClass.slug}`,
+    url: `/api/classes/${publicClass.slug}/`,
     headings: [
       ["Fields", publicClass.fields],
       ["Accessors", publicClass.accessors],
@@ -68,7 +68,7 @@ export default function Api(props) {
 
   let previousPage = previousClass
     ? {
-        fullPath: router
+        url: router
           .routerFor("/api/classes/:classSlug")
           .buildUrl({ classSlug: previousClass.slug }),
         label: previousClass.name,
@@ -76,7 +76,7 @@ export default function Api(props) {
     : null
   let nextPage = nextClass
     ? {
-        fullPath: router
+        url: router
           .routerFor("/api/classes/:classSlug")
           .buildUrl({ classSlug: nextClass.slug }),
         label: nextClass.name,

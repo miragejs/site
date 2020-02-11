@@ -3,6 +3,7 @@ import { useStaticQuery, graphql } from "gatsby"
 import { ThreeColumnLayout } from "../components/three-column-layout"
 import { useRouter } from "../hooks/use-router"
 import SEO from "../components/seo"
+import { urlsMatch } from "../utils"
 
 export default function DocsPage(props) {
   const data = useStaticQuery(graphql`
@@ -54,7 +55,7 @@ function transformRoutes(router) {
     let obj = { label: route.label }
 
     if (route.isPage) {
-      obj.url = route.fullPath
+      obj.url = route.url
     } else {
       obj.links = transformRoutes(route)
     }
@@ -72,7 +73,7 @@ function addHeadings(nodes, menuItemsNoHeadings) {
       let matchedNode = nodes.find(node => {
         let [, path] = node.fileAbsolutePath.match(/(\/docs\/.+)\.md[x]?/)
 
-        return item.url === path
+        return urlsMatch(item.url, path)
       })
 
       let headings = matchedNode.tableOfContents.items[0].items
@@ -94,7 +95,7 @@ function getActiveHeading(nodes, activePath) {
   let nodeForActivePath = nodes.find(node => {
     let [, path] = node.fileAbsolutePath.match(/(\/docs\/.+)\.md[x]?/)
 
-    return activePath === path
+    return urlsMatch(activePath, path)
   })
 
   return nodeForActivePath.tableOfContents.items[0].title

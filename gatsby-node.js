@@ -50,13 +50,13 @@ exports.createPages = ({ actions }) => {
     .filter(route => !route.isDynamic)
     .forEach(route => {
       if (route.isPage) {
-        createAppPage(route.fullPath)
+        createAppPage(route.url)
       } else {
         let firstPage = route.pages[0]
         if (!firstPage.isDynamic) {
           createRedirect({
-            fromPath: route.fullPath,
-            toPath: firstPage.fullPath,
+            fromPath: route.url,
+            toPath: firstPage.url,
           })
         }
       }

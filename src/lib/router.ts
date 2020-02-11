@@ -196,6 +196,16 @@ export class Route {
       .join("")
   }
 
+  get url(): string {
+    if (!this.isPage) {
+      throw new Error(
+        `This route (${this.fullName}) is not a page and therefore has no url`
+      )
+    }
+
+    return ensureTrailingSlash(this.fullPath)
+  }
+
   get isDynamic(): boolean {
     return this.path.includes(":") || this.path.includes("*")
   }
@@ -256,7 +266,7 @@ export class Route {
         "activePath can only be set on the router, not a child route"
       )
     } else {
-      this._activePath = path
+      this._activePath = ensureTrailingSlash(path)
     }
   }
 
@@ -358,9 +368,11 @@ export class Route {
 
   // generate a url replacing the dynamic segments with the passed in params
   buildUrl(params: object = {}): string {
-    return Object.keys(params).reduce((url, key) => {
-      return url.replace(`:${key}`, params[key])
-    }, this.fullPath)
+    return ensureTrailingSlash(
+      Object.keys(params).reduce((url, key) => {
+        return url.replace(`:${key}`, params[key])
+      }, this.fullPath)
+    )
   }
 
   // Return the active page
@@ -460,4 +472,8 @@ export class Router extends Route {
     super({ name: "", label: "", path: "" })
     definitions.forEach(definition => this.add(definition))
   }
+}
+
+function ensureTrailingSlash(path) {
+  return path.replace(/\/?$/, "/")
 }

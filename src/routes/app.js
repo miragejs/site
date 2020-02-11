@@ -90,6 +90,7 @@ function Header({ showHeaderNav }) {
   const { theme } = useTheme()
   const [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
   const router = useRouter()
+  debugger
 
   return (
     <div
@@ -164,16 +165,16 @@ function Header({ showHeaderNav }) {
                 {showHeaderNav ? (
                   <Fragment>
                     <NavLink
-                      to={router.routerFor("/docs").pages[0].fullPath}
+                      to={router.routerFor("/docs").pages[0].url}
                       activeFor="/docs/*"
                     >
                       Guides
                     </NavLink>
-                    <NavLink to="/api/classes/association" activeFor="/api/*">
+                    <NavLink to="/api/classes/association/" activeFor="/api/*">
                       API
                     </NavLink>
                     <NavLink
-                      to={router.routerFor("/quickstarts").pages[0].fullPath}
+                      to={router.routerFor("/quickstarts").pages[0].url}
                       activeFor="/quickstarts/*"
                     >
                       Quickstarts
@@ -213,7 +214,7 @@ function Header({ showHeaderNav }) {
                   }`}
                 >
                   <MobileNavLink
-                    to="/docs/getting-started/introduction"
+                    to="/docs/getting-started/introduction/"
                     onClick={() => setIsShowingMobileNav(false)}
                   >
                     Guides
@@ -226,7 +227,7 @@ function Header({ showHeaderNav }) {
                   }`}
                 >
                   <MobileNavLink
-                    to="/api/classes/association"
+                    to="/api/classes/association/"
                     onClick={() => setIsShowingMobileNav(false)}
                   >
                     API
@@ -239,7 +240,7 @@ function Header({ showHeaderNav }) {
                   }`}
                 >
                   <MobileNavLink
-                    to={router.routerFor("/quickstarts").pages[0].fullPath}
+                    to={router.routerFor("/quickstarts").pages[0].url}
                     onClick={() => setIsShowingMobileNav(false)}
                   >
                     Quickstarts
@@ -366,7 +367,7 @@ function Outlet() {
       // tldr: /docs -> /docs/getting-started/introduction
       let bestPage = router.activeRoute.pages[0]
       if (!bestPage.isDynamic) {
-        navigate(bestPage.fullPath, { replace: true })
+        navigate(bestPage.url, { replace: true })
       }
     }
   }, [router.activePage, router.activeRoute])
@@ -394,17 +395,15 @@ function Footer() {
               <div className="mt-1">
                 <ul>
                   <li className="py-1 text-white">
-                    <Link to={router.routerFor("/docs").pages[0].fullPath}>
+                    <Link to={router.routerFor("/docs").pages[0].url}>
                       Guides
                     </Link>
                   </li>
                   <li className="py-1 text-white">
-                    <Link to="/api/classes/association">API</Link>
+                    <Link to="/api/classes/association/">API</Link>
                   </li>
                   <li className="py-1 text-white">
-                    <Link
-                      to={router.routerFor("/quickstarts").pages[0].fullPath}
-                    >
+                    <Link to={router.routerFor("/quickstarts").pages[0].url}>
                       Quickstarts
                     </Link>
                   </li>

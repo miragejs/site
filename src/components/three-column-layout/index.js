@@ -43,7 +43,7 @@ export function ThreeColumnLayout({
                 <div>
                   {previousPage ? (
                     <Link
-                      to={previousPage.fullPath}
+                      to={previousPage.url}
                       className="block hover:opacity-75"
                     >
                       <div className="text-sm">Previous</div>
@@ -55,10 +55,7 @@ export function ThreeColumnLayout({
                 </div>
                 <div>
                   {nextPage ? (
-                    <Link
-                      to={nextPage.fullPath}
-                      className="block hover:opacity-75"
-                    >
+                    <Link to={nextPage.url} className="block hover:opacity-75">
                       <div className="text-sm text-right">Next</div>
                       <div className="text-xl text-blue-500">
                         {nextPage.label}

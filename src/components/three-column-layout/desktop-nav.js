@@ -6,6 +6,7 @@ import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
 import OutsideClickHandler from "react-outside-click-handler"
 import { useRouter } from "../../hooks/use-router"
+import { urlsMatch } from "../../utils"
 
 export function DesktopNav({ menuItems }) {
   let router = useRouter()
@@ -13,7 +14,8 @@ export function DesktopNav({ menuItems }) {
   let previousActivePath = usePrevious(activePath)
   let defaultOpenSection = menuItems.findIndex(
     menuItem =>
-      menuItem.links && menuItem.links.find(link => link.url === activePath)
+      menuItem.links &&
+      menuItem.links.find(link => urlsMatch(link.url, activePath))
   )
 
   let [openSections, setOpenSections] = React.useState([defaultOpenSection])
@@ -70,7 +72,9 @@ function CollapsibleMenu({ section, isOpen, toggleSection }) {
   }))
 
   let activePath = useRouter().activePath
-  let sectionIsActive = section.links.find(link => link.url === activePath)
+  let sectionIsActive = section.links.find(link =>
+    urlsMatch(link.url, activePath)
+  )
 
   React.useLayoutEffect(() => {
     set({
@@ -124,7 +128,7 @@ function CollapsibleMenu({ section, isOpen, toggleSection }) {
 
 function DesktopNavLink({ link }) {
   let router = useRouter()
-  let isActiveRoute = link.url === router.activePath
+  let isActiveRoute = urlsMatch(link.url, router.activePath)
 
   let [, setScrollHeight] = useSpring(() => ({
     scrollHeight: 0,

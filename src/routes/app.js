@@ -383,15 +383,15 @@ function Footer() {
   let router = useRouter()
 
   return (
-    <footer className="px-5 pt-16 pb-12 md:pb-20 bg-gray-1000 xl:px-16">
-      <div className="max-w-lg mx-auto md:max-w-xl lg:max-w-3xl xl:max-w-5xl">
+    <footer className="px-5 pt-16 pb-12 md:px-8 md:pb-20 bg-gray-1000 xl:px-16">
+      <div className="max-w-6xl mx-auto">
         <div className="">
           <div className="flex -mx-3 md:text-lg">
-            <div className="w-1/2 px-3 xl:w-1/4">
-              <p className="py-1 pl-3 text-sm tracking-wide text-gray-600 uppercase md:text-base md:pl-0">
+            <div className="w-1/2 px-3 md:w-1/4">
+              <p className="py-1 text-sm tracking-wide text-gray-600 uppercase md:text-base">
                 Docs
               </p>
-              <div className="pl-3 mt-1 border-l border-gray-800 md:pl-0 md:border-none">
+              <div className="mt-1">
                 <ul>
                   <li className="py-1 text-white">
                     <Link to={router.routerFor("/docs").pages[0].fullPath}>
@@ -412,11 +412,11 @@ function Footer() {
               </div>
             </div>
 
-            <div className="w-1/2 px-3 xl:w-1/4">
-              <p className="py-1 pl-3 text-sm tracking-wide text-gray-600 uppercase md:text-base md:pl-0">
+            <div className="w-1/2 px-3 md:w-1/4">
+              <p className="py-1 text-sm tracking-wide text-gray-600 uppercase md:text-base">
                 Community
               </p>
-              <div className="pl-3 mt-1 border-l border-gray-800 md:pl-0 md:border-none">
+              <div className="mt-1">
                 <ul>
                   <li className="py-1 text-white">
                     <a href="https://github.com/miragejs/miragejs">GitHub</a>
@@ -433,18 +433,18 @@ function Footer() {
           </div>
         </div>
 
-        <div className="py-10 md:py-12">
-          <div className="md:border-t md:border-gray-800" />
+        <div className="py-10 sm:py-12">
+          <div className="sm:border-t sm:border-gray-800" />
         </div>
 
-        <div className="md:flex">
-          <div className="md:w-3/4 xl:w-1/2">
+        <div className="sm:flex">
+          <div className="w-full max-w-xl">
             <SignupForm />
           </div>
 
-          <div className="flex justify-center mt-16 md:items-end md:w-1/4 md:mt-0 md:justify-end xl:ml-auto">
+          <div className="flex justify-center mt-16 sm:items-end sm:pl-32 sm:mt-0 sm:justify-end sm:ml-auto">
             <Link to="/" className="block p-1">
-              <Logo className="w-8 md:w-10" />
+              <Logo className="w-8 sm:w-10" />
             </Link>
           </div>
         </div>

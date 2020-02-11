@@ -1,5 +1,5 @@
 import React from "react"
-import { DesktopLeftNav, DesktopRightNav } from "./desktop-nav"
+import { DesktopNav } from "./desktop-nav"
 import { MobileNav } from "./mobile-nav"
 import { MDXProvider } from "@mdx-js/react"
 import { Link } from "@reach/router"
@@ -31,45 +31,45 @@ export function ThreeColumnLayout({
     <div className="pt-16 bg-white">
       <MobileNav menuItems={menuItems} />
 
-      <div className="flex flex-1">
-        <DesktopLeftNav menuItems={menuItems} />
+      <div className="px-5 md:px-8">
+        <div className="flex flex-1 max-w-6xl mx-auto">
+          <DesktopNav menuItems={menuItems} />
 
-        <div className="flex-1 w-full min-w-0 px-5 text-base font-normal text-gray-800 pt-7 leading-relaxed-sm sm:pt-8 md:leading-relaxed md:pt-8 md:px-20 lg:pr-8 lg:pt-10">
-          <div className="max-w-md mx-auto md:max-w-full md:text-lg">
-            <MDXProvider components={components}>{children}</MDXProvider>
+          <div className="flex-1 w-full min-w-0 text-base font-normal text-gray-800 pt-7 lg:pl-8 leading-relaxed-sm sm:pt-8 md:leading-relaxed md:pt-8 lg:pt-10 xl:pt-12">
+            <div className="max-w-md mx-auto md:text-lg md:max-w-2xl lg:max-w-2-5xl">
+              <MDXProvider components={components}>{children}</MDXProvider>
 
-            <div className="flex justify-between pt-4 pb-24 md:pt-8">
-              <div>
-                {previousPage ? (
-                  <Link
-                    to={previousPage.fullPath}
-                    className="block hover:opacity-75"
-                  >
-                    <div className="text-sm">Previous</div>
-                    <div className="text-xl text-blue-500">
-                      {previousPage.label}
-                    </div>
-                  </Link>
-                ) : null}
-              </div>
-              <div>
-                {nextPage ? (
-                  <Link
-                    to={nextPage.fullPath}
-                    className="block hover:opacity-75"
-                  >
-                    <div className="text-sm text-right">Next</div>
-                    <div className="text-xl text-blue-500">
-                      {nextPage.label}
-                    </div>
-                  </Link>
-                ) : null}
+              <div className="flex justify-between pt-4 pb-24 md:pt-8">
+                <div>
+                  {previousPage ? (
+                    <Link
+                      to={previousPage.fullPath}
+                      className="block hover:opacity-75"
+                    >
+                      <div className="text-sm">Previous</div>
+                      <div className="text-xl text-blue-500">
+                        {previousPage.label}
+                      </div>
+                    </Link>
+                  ) : null}
+                </div>
+                <div>
+                  {nextPage ? (
+                    <Link
+                      to={nextPage.fullPath}
+                      className="block hover:opacity-75"
+                    >
+                      <div className="text-sm text-right">Next</div>
+                      <div className="text-xl text-blue-500">
+                        {nextPage.label}
+                      </div>
+                    </Link>
+                  ) : null}
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        <DesktopRightNav currentPageTableOfContentsItems={[]} />
       </div>
     </div>
   )

@@ -6,7 +6,7 @@ export function MobileNav({ menuItems }) {
   let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(false)
 
   return (
-    <div className="md:px-20 lg:hidden">
+    <div className="lg:hidden">
       <div className=" sm:max-w-md sm:mx-auto sm:pt-8 md:max-w-2xl md:pt-12">
         <div className="text-sm font-normal text-gray-500 bg-gray-100 sm:border">
           <button
@@ -30,7 +30,7 @@ export function MobileNav({ menuItems }) {
                 <ul className="pt-2w">
                   {menuItems.map((menuItem, index) =>
                     menuItem.url ? (
-                      <li className="">
+                      <li key={index}>
                         <MobileNavLink
                           url={menuItem.url}
                           key={index}

@@ -7,11 +7,7 @@ import { ResizeObserver } from "@juggle/resize-observer"
 import OutsideClickHandler from "react-outside-click-handler"
 import { useRouter } from "../../hooks/use-router"
 
-const MAX_WIDTH = 1152
-const MAIN_WIDTH = 580
-const SIDEBAR_WIDTH = (MAX_WIDTH - MAIN_WIDTH) / 2
-
-export function DesktopLeftNav({ menuItems }) {
+export function DesktopNav({ menuItems }) {
   let router = useRouter()
   let activePath = router.activePath
   let previousActivePath = usePrevious(activePath)
@@ -38,13 +34,11 @@ export function DesktopLeftNav({ menuItems }) {
 
   return (
     <div
-      className="flex-shrink-0 hidden border-r border-gray-200 bg-gray-50 lg:block min-w-56"
-      style={{
-        width: `calc(((100% - ${MAX_WIDTH}px)/ 2) + ${SIDEBAR_WIDTH}px)`,
-        paddingLeft: `calc((100% - 64px - ${MAX_WIDTH}px)/ 2)`,
-      }}
+      className="relative flex-shrink-0 hidden lg:block"
+      style={{ width: 280 }}
     >
-      <nav className="sticky h-screen px-8 pt-8 overflow-y-scroll leading-snug top-16 xl:pt-10">
+      <div className="absolute inset-y-0 right-0 w-screen border-r border-gray-200 bg-gray-50"></div>
+      <nav className="sticky h-screen pt-8 pr-8 overflow-y-scroll leading-snug top-16 lg:pt-10 xl:pt-12">
         <ul className="-mt-4">
           {menuItems.map((menuItem, index) =>
             menuItem.url ? (
@@ -95,7 +89,7 @@ function CollapsibleMenu({ section, isOpen, toggleSection }) {
   return (
     <>
       <button
-        className={`px-1 flex items-center text-gray-900 focus:outline-none ${
+        className={`flex items-center text-gray-900 focus:outline-none ${
           sectionIsActive ? "font-medium" : ""
         }
           `}
@@ -184,12 +178,10 @@ function DesktopNavLink({ link }) {
     })
   }
 
-  console.log(link.headings)
-
   return (
     <li className="mt-4">
       <div className="flex items-center">
-        <span className="pl-1 pr-3 text-gray-300">
+        <span className="pr-3 text-gray-300">
           <svg
             viewBox="0 0 100 100"
             className="inline-block w-4 h-4 fill-current"
@@ -248,18 +240,6 @@ function DesktopNavLink({ link }) {
         </div>
       )}
     </li>
-  )
-}
-
-export function DesktopRightNav(props) {
-  return (
-    <div
-      className="flex-shrink-0 hidden xl:block"
-      style={{
-        width: `0`,
-        paddingRight: `calc((100% - ${MAX_WIDTH}px)/ 2)`,
-      }}
-    />
   )
 }
 

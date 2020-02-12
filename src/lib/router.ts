@@ -128,6 +128,14 @@ const allRoutes: RouteDefinition[] = [
       { label: "Cypress", name: "cypress" },
     ],
   },
+  {
+    label: "Examples",
+    name: "examples",
+    routes: [
+      { label: "Overview", name: "overview" },
+      { label: "GraphQL", name: "graphql" },
+    ],
+  },
 ]
 
 interface RouteDefinition {

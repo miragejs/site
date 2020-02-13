@@ -1,0 +1,57 @@
+# Using GraphQL with Mirage
+
+Mirage works with GraphQL using the [GraphQL.js](https://github.com/graphql/graphql-js) library.
+
+First, install `graphql`
+
+```text
+yarn add -D graphql
+```
+
+Next, define a single `/graphql` route handler that maps your resolvers to your schema.
+
+```js
+import { buildSchema, graphql } from "graphql"
+let graphqlSchema = buildSchema(`
+  type Query {
+    recipes: [Recipe]
+    recipes_by_pk(id: Int!): Recipe
+  }
+  type Recipe {
+    id: ID!
+    name: String!
+    imageUrl: String
+    recipeUrl: String
+    ingredients: String
+    instructions: String
+  }
+`)
+new Server({
+  seeds() {
+    server.create("recipe", { name: "Lasagna" })
+    server.create("recipe", { name: "Pizza" })
+  },
+  routes() {
+    this.post("/graphql", (schema, request) => {
+      let requestJson = JSON.parse(request.requestBody)
+      let query = requestJson.query
+      let variables = requestJson.variables
+      let resolver = {
+        recipes() {
+          return schema.db.recipes
+        },
+        recipes_by_pk(args) {
+          return schema.db.recipes.find(args.id)
+        },
+      }
+      return graphql(graphqlSchema, query, resolver, null, variables).then(
+        response => {
+          return response
+        }
+      )
+    })
+  },
+})
+```
+
+That's it! Mirage will delegate all of its GraphQL requests to the `graphql-js` library. You now have a fully functioning GraphQL Mirage server.

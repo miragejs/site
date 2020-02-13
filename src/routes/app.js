@@ -90,7 +90,6 @@ function Header({ showHeaderNav }) {
   const { theme } = useTheme()
   const [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
   const router = useRouter()
-  debugger
 
   return (
     <div
@@ -179,6 +178,12 @@ function Header({ showHeaderNav }) {
                     >
                       Quickstarts
                     </NavLink>
+                    <NavLink
+                      to={router.routerFor("/examples").pages[0].url}
+                      activeFor="/examples/*"
+                    >
+                      Examples
+                    </NavLink>
                   </Fragment>
                 ) : null}
               </div>
@@ -244,6 +249,19 @@ function Header({ showHeaderNav }) {
                     onClick={() => setIsShowingMobileNav(false)}
                   >
                     Quickstarts
+                  </MobileNavLink>
+                </div>
+
+                <div
+                  className={`border-t ${
+                    theme === "dark" ? "border-gray-800" : "border-gray-200"
+                  }`}
+                >
+                  <MobileNavLink
+                    to={router.routerFor("/examples").pages[0].url}
+                    onClick={() => setIsShowingMobileNav(false)}
+                  >
+                    Examples
                   </MobileNavLink>
                 </div>
 
@@ -405,6 +423,11 @@ function Footer() {
                   <li className="py-1 text-white">
                     <Link to={router.routerFor("/quickstarts").pages[0].url}>
                       Quickstarts
+                    </Link>
+                  </li>
+                  <li className="py-1 text-white">
+                    <Link to={router.routerFor("/examples").pages[0].url}>
+                      Examples
                     </Link>
                   </li>
                 </ul>

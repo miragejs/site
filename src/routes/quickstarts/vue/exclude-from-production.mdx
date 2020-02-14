@@ -24,7 +24,10 @@ Next, add the following to your `vue.config.js`:
 // vue.config.js
 module.exports = {
   chainWebpack: config => {
-    if (process.env.NODE_ENV === "production") {
+    if (
+      process.env.NODE_ENV === "production" &&
+      process.env.MIRAGE_ENABLED !== "true"
+    ) {
       config.module
         .rule("exclude-mirage")
         .test(/node_modules\/miragejs\//)

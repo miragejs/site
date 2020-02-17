@@ -64,13 +64,14 @@ Cypress.on("window:before:load", win => {
       method: request.method,
       headers: request.requestHeaders,
       body: request.requestBody,
-    }).then(async res => {
-      const body =
+    }).then(res => {
+      let content =
         res.headers.map["content-type"] === "application/json"
-          ? await res.json()
-          : ""
-
-      return [res.status, res.headers, body]
+          ? res.json()
+          : res.text()
+      return new Promise(resolve => {
+        content.then(body => resolve([res.status, res.headers, body]))
+      })
     })
   }
 })
@@ -90,14 +91,14 @@ In your app's bootstrapping file, use Mirage to proxy your app's API requests to
 import { Server, Response } from "miragejs"
 
 if (window.Cypress) {
-  // mirage cypress server
-  let cyServer = new Server({
+  new Server({
     environment: "test",
     routes() {
       let methods = ["get", "put", "patch", "post", "delete"]
       methods.forEach(method => {
         this[method]("/*", async (schema, request) => {
-          return new Response(...(await window.handleFromCypress(request)))
+          let [status, headers, body] = await window.handleFromCypress(request)
+          return new Response(status, headers, body)
         })
       })
     },

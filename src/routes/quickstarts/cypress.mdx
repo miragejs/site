@@ -91,14 +91,14 @@ In your app's bootstrapping file, use Mirage to proxy your app's API requests to
 import { Server, Response } from "miragejs"
 
 if (window.Cypress) {
-  // mirage cypress server
-  let cyServer = new Server({
+  new Server({
     environment: "test",
     routes() {
       let methods = ["get", "put", "patch", "post", "delete"]
       methods.forEach(method => {
         this[method]("/*", async (schema, request) => {
-          return new Response(...(await window.handleFromCypress(request)))
+          let [status, headers, body] = await window.handleFromCypress(request)
+          return new Response(status, headers, body)
         })
       })
     },

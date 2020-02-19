@@ -46,20 +46,20 @@ class ClassDoc {
     })
   }
 
-  get blocks(): EsdocNode[] {
+  get blocks() {
     return this.esdoc
       .filter(node => node.memberof === this.node.longname)
       .sort(byName)
   }
 
-  get isHidden(): boolean {
+  get isHidden() {
     return (
       this.node.unknown &&
       this.node.unknown.some(unknown => unknown.tagName === "@hide")
     )
   }
 
-  get public(): EsdocNode[] {
+  get public() {
     return this.blocks.filter(node => {
       let hasHideTag =
         node.unknown &&
@@ -70,15 +70,19 @@ class ClassDoc {
     })
   }
 
-  get accessors(): EsdocNode[] {
+  get accessors() {
     return this.public.filter(node => node.kind === "get")
   }
 
-  get fields(): EsdocNode[] {
+  get fields() {
     return this.public.filter(node => node.kind === "member")
   }
 
-  get methods(): EsdocNode[] {
+  get properties() {
+    return [...this.accessors, ...this.fields]
+  }
+
+  get methods() {
     return this.public.filter(node => node.kind === "method")
   }
 }

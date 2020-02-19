@@ -47,72 +47,46 @@ export default function(props) {
       <div className="pt-2">
         <Markdown>{publicClass.description}</Markdown>
       </div>
-      {publicClass.fields.length > 0 ? (
+      {publicClass.properties.length > 0 ? (
         <div>
           <h2
-            id="fields"
+            id="properties"
             className="mt-12 mb-4 text-2xl font-semibold leading-tight xl:before-h-12"
           >
-            <a href="#fields">Fields</a>
+            <a href="#properties">Properties</a>
           </h2>
-          {publicClass.fields.map(field => (
-            <div key={field.longname} className="pb-4">
+          {publicClass.properties.map(property => (
+            <div key={property.longname} className="pb-4">
               <h3
-                id={field.slug}
-                className="mt-6 font-mono text-xl xl:before-h-12"
+                id={property.slug}
+                className="mt-12 -mb-3 font-mono text-xl xl:before-h-12"
               >
-                <a href={`#${field.slug}`} className="block">
-                  <span className="font-semibold">{field.name}:</span>{" "}
-                  <Type esdoc={field} />
+                <a href={`#${property.slug}`} className="block">
+                  <span className="font-semibold">{property.name}:</span>{" "}
+                  <Type esdoc={property} />
                 </a>
               </h3>
               <div className="text-base">
-                <Markdown>{field.description}</Markdown>
+                <Markdown>{property.description}</Markdown>
               </div>
             </div>
           ))}
         </div>
       ) : null}
-      {publicClass.accessors.length > 0 ? (
-        <div>
-          <h2
-            id="accessors"
-            className="mt-12 mb-4 text-2xl font-semibold leading-tight xl:before-h-12"
-          >
-            Accessors
-          </h2>
-          {publicClass.accessors.map(accessor => (
-            <div key={accessor.longname} className="pb-4">
-              <h3
-                id={accessor.slug}
-                className="mt-6 font-mono text-xl xl:before-h-12"
-              >
-                <a href={`#${accessor.slug}`} className="block">
-                  {accessor.kind}{" "}
-                  <span className="font-semibold">{accessor.name}:</span>{" "}
-                  <Type esdoc={accessor} />
-                </a>
-              </h3>
-              <div className="text-base">
-                <Markdown>{accessor.description}</Markdown>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : null}
+
       {publicClass.methods.length > 0 ? (
         <div>
           <h2
             id="methods"
             className="mt-12 mb-4 text-2xl font-semibold leading-tight xl:before-h-12"
           >
-            Methods
+            <a href="#methods">Methods</a>
           </h2>
           {publicClass.methods.map(method => (
             <div key={method.longname} className="pb-4">
               <h3
                 id={method.slug}
-                className="mt-6 font-mono text-xl xl:before-h-12"
+                className="mt-12 -mb-3 font-mono text-xl xl:before-h-12"
               >
                 <a href={`#${method.slug}`} className="block">
                   <span className="font-semibold">{method.name}</span>

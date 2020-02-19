@@ -90,7 +90,6 @@ function Header({ showHeaderNav }) {
   const { theme } = useTheme()
   const [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
   const router = useRouter()
-  debugger
 
   return (
     <div

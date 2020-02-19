@@ -87,7 +87,7 @@
     "eslint-plugin-import": "2.x",
     "eslint-plugin-jsx-a11y": "6.x",
     "eslint-plugin-react": "7.x",
-    "eslint-plugin-react-hooks": "2.3.0",
+    "eslint-plugin-react-hooks": "2.4.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.1.0",
     "miragejs": "^0.1.35",

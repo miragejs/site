@@ -27,8 +27,7 @@ export default function Api(props) {
     label: publicClass.name,
     url: `/api/classes/${publicClass.slug}/`,
     headings: [
-      ["Fields", publicClass.fields],
-      ["Accessors", publicClass.accessors],
+      ["Properties", publicClass.properties],
       ["Methods", publicClass.methods],
     ]
       .filter(([label, members]) => members.length > 0)

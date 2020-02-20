@@ -35,7 +35,7 @@
     "@u-wave/react-vimeo": "^0.8.1",
     "autoprefixer": "^9.7.4",
     "babel-plugin-styled-components": "^1.10.7",
-    "gatsby": "2.19.16",
+    "gatsby": "2.19.18",
     "gatsby-image": "^2.2.41",
     "gatsby-plugin-manifest": "^2.2.41",
     "gatsby-plugin-mdx": "^1.0.73",

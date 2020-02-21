@@ -64,11 +64,11 @@ import * as sapper from '@sapper/app';
 import { makeServer } from "./mirage";
 
 if (process.env.NODE_ENV === "development") {
-	makeServer()
+  makeServer()
 }
 
 sapper.start({
-	target: document.querySelector('#sapper')
+  target: document.querySelector('#sapper')
 });
 ```
 
@@ -77,7 +77,7 @@ Now, whenever your application makes a network request in development, Mirage wi
 For example, given the server definition above, the following component would fetch the users `Bob` and `Alice` that we defined in `seeds`:
 
 ```html
-// src/routes/users.svelte
+<!-- src/routes/users.svelte -->
 <script>
   import { onMount } from "svelte";
 
@@ -91,9 +91,9 @@ For example, given the server definition above, the following component would fe
 
 <div>
   {#if users}
-	{#each users as user}
-	  <li>{user.name}</li>
-	{/each}
+    {#each users as user}
+      <li>{user.name}</li>
+    {/each}
   {:else}
     <p>loading.....</p>
   {/if}

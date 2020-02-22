@@ -33,7 +33,7 @@ export default function IndexPage() {
   const router = useRouter()
   const data = useStaticQuery(graphql`
     query {
-      testimonial1: file(
+      testimonialRoman: file(
         relativePath: { eq: "homepage/testimonial-roman.jpeg" }
       ) {
         childImageSharp {
@@ -42,8 +42,8 @@ export default function IndexPage() {
           }
         }
       }
-      testimonial2: file(
-        relativePath: { eq: "homepage/testimonial-mehul.jpg" }
+      testimonialJamie: file(
+        relativePath: { eq: "homepage/testimonial-jamie.jpeg" }
       ) {
         childImageSharp {
           fluid(maxWidth: 128, quality: 100) {
@@ -338,10 +338,10 @@ export default function IndexPage() {
                       <Text color="light-gray">
                         Love high-level testing but hate slow, flaky end-to-end
                         infrastructure? Mirage lets you write UI tests that
-                        verify complete user flows, run in node or the browser,
-                        and stress hard-to-test application states like failed
-                        network requests, without running anything other than
-                        your frontend app.
+                        verify complete user flows and stress hard-to-test
+                        application states like failed network requests, all
+                        without running anything other than your frontend app in
+                        either node or the browser.
                       </Text>
                     </State>
                   </FadeBetween>
@@ -406,12 +406,23 @@ export default function IndexPage() {
               <div className="relative">
                 <QuoteOpen className="absolute w-20 text-green-400 fill-current md:-ml-10" />
                 <QuoteClose className="absolute bottom-0 right-0 w-20 text-green-400 fill-current md:-mr-5" />
-                <div className="relative pt-8 pb-6">
-                  <p className="text-lg text-white xl:text-xl max-w-measure">
-                    Honestly, I can't recommend this tool enough. Finally, an
-                    idiomatic way for frontend developers to prototype and test
-                    an entire feature without touching a real API! Productivity
-                    just goes through the roof.
+                <div className="relative pt-8 pb-6 text-lg text-white xl:text-xl max-w-measure">
+                  <p>
+                    We’ve been using Mirage at Heroku since 2015 on critical
+                    customer-facing apps. It's enabled our team to grow without
+                    sacrificing speed in either our development or our testing
+                    workflows.
+                  </p>
+                  <p className="mt-4">
+                    For me, the real magic of Mirage is that it allows us to
+                    write tests from the user's perspective. We take user
+                    stories from our product team and translate them 1:1 into
+                    tests, without ever having to break flow by stepping outside
+                    the front-end toolchain.
+                  </p>
+                  <p className="mt-4">
+                    Mirage is, in short, an essential tool for every UI
+                    developer.
                   </p>
                 </div>
               </div>
@@ -419,13 +430,15 @@ export default function IndexPage() {
               <div className="flex items-center justify-center mt-6">
                 <Img
                   className="w-24 mr-4 rounded-full xl:w-32 xl:mr-6"
-                  fluid={data.testimonial1.childImageSharp.fluid}
+                  fluid={data.testimonialJamie.childImageSharp.fluid}
                 />
                 <div className="flex-shrink-0 leading-none">
                   <p className="text-lg font-medium text-white">
-                    <a href="https://twitter.com/RomanSndlr">Roman Sandler</a>
+                    <a href="https://github.com/jgwhite">Jamie White</a>
                   </p>
-                  <p className="mt-2 text-green-200">Developer at 500tech</p>
+                  <p className="mt-2 text-green-200">
+                    Software Engineer at Salesforce/Heroku
+                  </p>
                 </div>
               </div>
             </div>
@@ -623,11 +636,10 @@ export default function IndexPage() {
                 <QuoteClose className="absolute bottom-0 right-0 w-20 text-gray-500 opacity-50 fill-current md:-mr-5" />
                 <div className="relative pt-8 pb-6">
                   <p className="text-lg text-white xl:text-xl max-w-measure">
-                    I work on a large team, and the owners of different parts of
-                    the codebase change over time. Writing high-level tests
-                    against a network layer gives me assurance that my code
-                    works even as my organization evolves. I can't imagine
-                    writing an app without it.
+                    Honestly, I can't recommend this tool enough. Finally, an
+                    idiomatic way for frontend developers to prototype and test
+                    an entire feature without touching a real API! Productivity
+                    just goes through the roof.
                   </p>
                 </div>
               </div>
@@ -635,13 +647,13 @@ export default function IndexPage() {
               <div className="flex items-center justify-center mt-6">
                 <Img
                   className="w-24 mr-4 rounded-full xl:w-32 xl:mr-6"
-                  fluid={data.testimonial2.childImageSharp.fluid}
+                  fluid={data.testimonialRoman.childImageSharp.fluid}
                 />
                 <div className="flex-shrink-0 leading-none">
                   <p className="text-lg font-medium text-white">
-                    <a href="https://twitter.com/mehulkar">Mehul Kar</a>
+                    <a href="https://twitter.com/RomanSndlr">Roman Sandler</a>
                   </p>
-                  <p className="mt-2 text-gray-300">Frontend Engineer</p>
+                  <p className="mt-2 text-gray-300">Developer at 500tech</p>
                 </div>
               </div>
             </div>

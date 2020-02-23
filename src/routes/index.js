@@ -410,15 +410,15 @@ export default function IndexPage() {
                   <p>
                     We’ve been using Mirage at Heroku since 2015 on critical
                     customer-facing apps. It's enabled our team to grow without
-                    sacrificing speed in either our development or our testing
+                    sacrificing speed in either our development or testing
                     workflows.
                   </p>
                   <p className="mt-4">
-                    For me, the real magic of Mirage is that it allows us to
-                    write tests from the user's perspective. We take user
-                    stories from our product team and translate them 1:1 into
-                    tests, without ever having to break flow by stepping outside
-                    the front-end toolchain.
+                    For me, the real magic of Mirage is that it lets us write
+                    tests from the user's perspective. We take user stories from
+                    our product team and translate them 1:1 into tests, without
+                    ever having to break flow by stepping outside the front-end
+                    toolchain.
                   </p>
                   <p className="mt-4">
                     Mirage is, in short, an essential tool for every UI

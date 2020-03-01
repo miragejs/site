@@ -15,6 +15,10 @@ const allRoutes: RouteDefinition[] = [
     },
   },
   {
+    name: "tutorial",
+    label: "Tutorial",
+  },
+  {
     name: "docs",
     label: "Documentation",
     routes: [

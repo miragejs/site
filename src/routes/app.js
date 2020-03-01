@@ -372,7 +372,7 @@ function Outlet() {
   }, [router.activePage, router.activeRoute])
 
   return (
-    <Router primary={false}>
+    <Router primary={false} className="flex flex-col flex-1">
       {memoizedOutlet}
       <NotFound default />
     </Router>

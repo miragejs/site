@@ -31,7 +31,7 @@ export function ThreeColumnLayout({
     <div className="pt-16 bg-white">
       <MobileNav menuItems={menuItems} />
 
-      <div className="px-5 md:px-8">
+      <div className="px-5 md:px-6">
         <div className="flex flex-1 max-w-6xl mx-auto">
           <DesktopNav menuItems={menuItems} />
 

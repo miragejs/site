@@ -43,13 +43,49 @@ module.exports = {
       },
       green: {
         200: "#BEFFE7",
-        400: "#2BCF91", // rgb(43, 207, 145)
-        500: "#05C77E", // rgb(5, 199, 126)
+        400: "#2BCF91",
+        500: "#05C77E",
         600: "#03a667",
         700: "#08a066",
         900: "#048b57",
       },
     },
+
+    customForms: (theme) => ({
+      default: {
+        select: {
+          icon: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'><path d='M7 7l3-3 3 3m0 6l-3 3-3-3' stroke='#9fa6b2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>`,
+          "&:focus": {
+            boxShadow: `0 0 0 3px rgba(164,202,254,.45)`,
+            borderColor: theme("colors.blue.300"),
+          },
+        },
+        textarea: {
+          "&:focus": {
+            boxShadow: `0 0 0 3px rgba(164,202,254,.45)`,
+            borderColor: theme("colors.blue.300"),
+          },
+        },
+        input: {
+          "&:focus": {
+            boxShadow: `0 0 0 3px rgba(164,202,254,.45)`,
+            borderColor: theme("colors.blue.300"),
+          },
+        },
+        checkbox: {
+          "&:focus": {
+            boxShadow: `0 0 0 3px rgba(164,202,254,.45)`,
+            borderColor: theme("colors.blue.300"),
+          },
+        },
+        radio: {
+          "&:focus": {
+            boxShadow: `0 0 0 3px rgba(164,202,254,.45)`,
+            borderColor: theme("colors.blue.300"),
+          },
+        },
+      },
+    }),
 
     extend: {
       screens: {
@@ -60,6 +96,7 @@ module.exports = {
           "0 1px 3px 0 rgba(16, 42, 67, 0.1), 0 1px 2px 0 rgba(16, 42, 67, 0.06)",
         black:
           "0 10px 25px 5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.8)",
+        outline: "0 0 0 3px rgba(164,202,254,.45)",
       },
       lineHeight: {
         tighter: 1.125,
@@ -108,7 +145,9 @@ module.exports = {
         "36": "9rem",
       },
       height: {
+        "28": px(112),
         "128": "32rem",
+        "1/2": "50%",
       },
       borderWidth: {
         "3": "3px",
@@ -120,11 +159,12 @@ module.exports = {
         "16": "4rem",
       },
       spacing: {
-        "7": "1.75rem",
-        "14": "3.5rem",
-        "15": "3.75rem",
-        "72": "18rem",
-        "96": "24rem",
+        "7": px(28),
+        "14": px(56),
+        "15": px(60),
+        "26": px(104),
+        "72": px(288),
+        "96": px(384),
       },
     },
   },
@@ -132,7 +172,7 @@ module.exports = {
   variants: {
     borderColor: ["responsive", "hover", "focus", "focus-visible"],
     boxShadow: ["responsive", "hover", "focus", "focus-visible"],
-    zIndex: ["responsive", "focus", "focus-visible"],
+    zIndex: ["responsive", "focus", "focus-within", "focus-visible"],
   },
 
   plugins: [

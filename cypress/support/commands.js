@@ -35,3 +35,34 @@ Cypress.Commands.add("screenshot", (name) => {
 
   cy.percySnapshot(name, { widths: [375, 768, 1024, 1440] })
 })
+
+Cypress.Commands.add(
+  "typeInCodemirror",
+  { prevSubject: true },
+  (elements, text) => {
+    elements[0].CodeMirror.setValue(text)
+  }
+)
+
+// Were not able to configure delay :(
+// cy.get(".CodeMirror textarea").type(
+//   d`
+//   import { Server, Model, belongsTo } from "miragejs"
+
+//    export default new Server({
+//      models: {
+//        user: Model,
+//      },
+
+//      seeds(server) {
+//        server.create("user", { name: "Ryan" })
+//        server.create("user", { name: "Sam" })
+//      },
+
+//      routes() {
+//        this.resource("user")
+//      },
+//    })
+// `,
+//   { force: true, parseSpecialCharSequences: false }
+// )

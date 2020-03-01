@@ -109,6 +109,9 @@ function Header({ showHeaderNav }) {
     navigate(`${url.pathname}${url.hash}`)
   }
 
+  let fullWidthHeader = router.activePage?.meta?.fullWidthHeader
+  let shouldShowDivider = theme === "light" && !fullWidthHeader
+
   return (
     <div
       className={`z-50 ${
@@ -117,8 +120,8 @@ function Header({ showHeaderNav }) {
           : "bg-white shadow fixed top-0 inset-x-0"
       }`}
     >
-      <div className="md:px-8">
-        <div className="max-w-6xl mx-auto">
+      <div className="md:px-6">
+        <div className={fullWidthHeader ? null : "max-w-6xl mx-auto"}>
           <header
             className={`
               ${isShowingMobileNav && theme === "dark" ? "bg-gray-900" : ""}
@@ -131,11 +134,11 @@ function Header({ showHeaderNav }) {
             >
               <div
                 className={`flex items-center ${
-                  theme === "light" ? "lg:border-r lg:border-gray-200" : ""
+                  shouldShowDivider ? "lg:border-r lg:border-gray-200" : ""
                 }`}
                 css={`
                   @media (min-width: 1024px) {
-                    width: ${theme === "dark" ? "auto" : `${sidebarWidth}px`};
+                    width: ${shouldShowDivider ? `${sidebarWidth}px` : "auto"};
                   }
                 `}
               >
@@ -180,7 +183,7 @@ function Header({ showHeaderNav }) {
                       ${theme === "dark" ? "pt-1" : ""}
                     `}
                     css={
-                      theme === "light"
+                      shouldShowDivider
                         ? `
                       /*
                         here be dragons...
@@ -223,8 +226,7 @@ function Header({ showHeaderNav }) {
                       `
                     }
                   >
-                    {/* adjust for vertical border on light screens */}
-                    <div className={theme === "light" ? "-ml-1" : ""}>
+                    <div className={shouldShowDivider ? "-ml-1" : ""}>
                       <NavLink
                         to={router.routerFor("/docs").pages[0].url}
                         activeFor="/docs/*"
@@ -475,7 +477,7 @@ function Outlet() {
   }, [router.activePage, router.activeRoute])
 
   return (
-    <Router primary={false}>
+    <Router primary={false} className="flex flex-col flex-1">
       {memoizedOutlet}
       <NotFound default />
     </Router>
@@ -486,7 +488,7 @@ function Footer() {
   let router = useRouter()
 
   return (
-    <footer className="px-5 pt-16 pb-12 md:px-8 md:pb-20 bg-gray-1000 xl:px-16">
+    <footer className="px-5 pt-16 pb-12 md:px-6 md:pb-20 bg-gray-1000 xl:px-16">
       <div className="max-w-6xl mx-auto">
         <div className="">
           <div className="flex -mx-3 md:text-lg">

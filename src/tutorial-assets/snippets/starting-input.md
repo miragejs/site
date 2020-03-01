@@ -1,6 +1,7 @@
 ```js
 import React from "react"
 import { Server } from "miragejs"
+s
 console.log("hi")
 
 // console.log(Server)

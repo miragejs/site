@@ -1455,10 +1455,10 @@
   dependencies:
     core-js "^2.5.7"
 
-"@juggle/resize-observer@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.0.2.tgz#f4f326806826c0da5221411374e4c54902c327bb"
-  integrity sha512-9fEfZIxZ1qTahMSX50pigfSJ/1N6X2oABhmgd4Dt2SsPkZi0lTlvoHu5V2yrGZ6m+oALfS4tJrpx9nbVIxwOYQ==
+"@juggle/resize-observer@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.1.0.tgz#cb4c4d3d57bb7282b660dcf10e15d951810a2de7"
+  integrity sha512-hB+ptdOHs1/w8689M+MhtsxAGt7RyadyYKAYlhSedyA4XxPBl0QVA3zxaNSrQiVunAwlRaM7vUDuPwnnKp3BPg==
 
 "@mdx-js/mdx@^1.5.7":
   version "1.5.7"

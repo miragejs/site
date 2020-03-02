@@ -25,7 +25,7 @@
     "test:cy:open": "start-test build-and-serve 9000 cy:open"
   },
   "dependencies": {
-    "@juggle/resize-observer": "^3.0.2",
+    "@juggle/resize-observer": "^3.1.0",
     "@mdx-js/mdx": "^1.5.7",
     "@mdx-js/react": "^1.5.7",
     "@n8tb1t/use-scroll-position": "^1.0.43",

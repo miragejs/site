@@ -1,0 +1,100 @@
+# Mock Network Requests in React Native with Mirage
+
+Mock your React Native app's networking code so you can develop your app without any backend services.
+
+> This is a quickstart guide for people familiar with Mirage. If you're brand new to Mirage, take a look at the [Overview](/docs/getting-started/overview).
+
+## Step 1: Install Mirage
+
+First, make sure you have Mirage installed:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Step 2: Define your server
+
+At the top of your `App.js` component, import Mirage and define your mock server.
+
+```js
+// App.js
+import { Server, Model } from "miragejs"
+
+if (window.server) {
+  server.shutdown()
+}
+
+window.server = new Server({
+  models: {
+    user: Model,
+  },
+
+  seeds(server) {
+    server.create("user", { name: "Bob" })
+    server.create("user", { name: "Alice" })
+  },
+
+  routes() {
+    this.namespace = "api"
+
+    this.get("/users", schema => {
+      return schema.users.all()
+    })
+  },
+})
+```
+
+In the above code before we create a new Server instance we first check and shutdown any existing servers. This is needed for React Native's hot module reloading.
+
+## Step 3: Fetch data from Mirage
+
+Fetch data from Mirage in the same component that defined the server.
+
+```jsx
+// App.js
+
+// ... Mirage server code ...
+
+const App = () => {
+  let [users, setUsers] = useState([])
+  let [serverError, setServerError] = useState()
+
+  useEffect(() => {
+    let fetchUsers = async () => {
+      try {
+        let res = await fetch("/api/users")
+        let data = await res.json()
+        setUsers(data.users)
+      } catch (error) {
+        setServerError(error.message)
+      }
+    }
+
+    fetchUsers()
+  }, [])
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      {serverError ? (
+        <Text testID="server-error">{serverError}</Text>
+      ) : users.length === 0 ? (
+        <Text testID="no-users">No users!</Text>
+      ) : (
+        users.map(user => (
+          <View key={user.id} testID="users">
+            <Text testID={`user-${user.id}`}>{user.name}</Text>
+          </View>
+        ))
+      )}
+    </SafeAreaView>
+  )
+}
+
+export default App
+```
+
+You can now continue to develop your React Native app, mocking out your backend API endpoints with Mirage as you go.

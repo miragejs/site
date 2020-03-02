@@ -30,7 +30,6 @@ export default function() {
 
   let [input, setInput] = React.useState(startingInput)
   let [logs, setLogs] = React.useState([])
-  let [isLoaded, setIsLoaded] = React.useState(false)
   let [lastError, setLastError] = React.useState()
   let [lastRuntimeError, setLastRuntimeError] = React.useState()
 
@@ -94,7 +93,6 @@ export default function() {
             <iframe
               title="Output"
               sandbox="allow-popups-to-escape-sandbox allow-scripts allow-popups allow-forms allow-pointer-lock allow-top-navigation allow-modals allow-same-origin"
-              onLoad={() => setIsLoaded(true)}
               srcDoc={srcDoc}
             ></iframe>
 

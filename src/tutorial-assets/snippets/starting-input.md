@@ -1,16 +1,12 @@
 ```js
 import React from "react"
 import { Server } from "miragejs"
-s
-console.log("hi")
 
-// console.log(Server)
-
-// new Server({
-//   routes() {
-//     this.get("/some-endpoint", { text: "Hello from Mirage!" })
-//   },
-// })
+new Server({
+  routes() {
+    // 👇 mock out "some-endpoint" here
+  },
+})
 
 export default function() {
   let [result, setResult] = React.useState({ text: "static" })

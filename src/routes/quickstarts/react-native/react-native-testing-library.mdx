@@ -1,0 +1,242 @@
+# Mock Network Requests in React Native Testing Library with Mirage
+
+Use your Mirage server to test your React Native application under different server scenarios using [React Native Testing Library](https://github.com/testing-library/native-testing-library) and [Jest Native](https://github.com/testing-library/jest-native).
+
+> This is a quickstart guide should also work for people using [`react-test-renderer`](https://reactjs.org/docs/test-renderer.html) or [`react-native-testing-library`](https://github.com/callstack/react-native-testing-library).
+
+## Step 1: Install Mirage
+
+First, make sure you have Mirage installed:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Step 2: Setup your testing environment
+
+Update your Jest environment:
+
+1. Install a polyfill for XMLHttpRequest:
+
+```bash
+# Using npm
+npm install --save-dev xmlhttprequest
+
+# Using Yarn
+yarn add --dev xmlhttprequest
+```
+
+
+2. Create a new `jest.setup.js` file in the root of your project. We'll use this file to patch the variable `global` and add support for XMLHttpRequest, self and window.
+
+```js
+// jest.setup.js
+global.self = global;
+global.window = {};
+global.XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+```
+
+3. Tell Jest to load the environment that we've created by adding the [`setupFilesAfterEnv`](https://jestjs.io/docs/en/configuration.html#setupfilesafterenv-array) to your Jest configuration.
+
+> Your jest configuration can be found on your package.json or in the root of your project with the name `jest.config.js`.
+
+```js
+// jest.config.js
+const jestPreset = require('@testing-library/react-native/jest-preset');
+
+module.exports = {
+  preset: '@testing-library/react-native',
+  setupFiles: [...jestPreset.setupFiles],
+  setupFilesAfterEnv: ['./jest.setup.js'],
+};
+```
+Here we're telling Jest to execute our `jest.setup.js` after it sets up the test environment.
+
+## Step 3: Define your server
+
+Create a new `server.js` file and define your mock server.
+
+Here's a basic example:
+
+```js
+// src/server.js
+import { Server, Model } from "miragejs"
+
+export function makeServer({ environment = "development" } = {}) {
+  let server = new Server({
+    environment,
+
+    models: {
+      user: Model,
+    },
+
+    seeds(server) {
+      server.create("user", { name: "Bob" })
+      server.create("user", { name: "Alice" })
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.get("/users", schema => {
+        return schema.users.all()
+      })
+    },
+  })
+
+  return server
+}
+```
+
+> In a React Native App, put this file in `src/mirage/server.js` so that changes to it trigger rebuilds.
+
+## Step 4: Create a test file that uses Mirage
+
+Here's the component we'll be testing.
+
+```jsx
+// src/App.js
+import React, {useEffect, useState} from 'react';
+import {SafeAreaView, View, Text} from 'react-native';
+
+const App = () => {
+  let [users, setUsers] = useState([]);
+  let [serverError, setServerError] = useState();
+
+  useEffect(() => {
+    let fetchUsers = async () => {
+      try {
+        let res = await fetch('/api/users');
+        let data = await res.json();
+
+        if (!res.ok) {
+          throw data;
+        }
+
+        setUsers(data.users);
+      } catch (error) {
+        setServerError(error.error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  if (serverError) {
+    return (
+      <SafeAreaView style={{flex: 1}}>
+        <Text testID="server-error">{serverError}</Text>
+      </SafeAreaView>
+    );
+  }
+
+  return users.length === 0 ? (
+    <SafeAreaView style={{flex: 1}}>
+      <Text testID="no-users">No users!</Text>
+    </SafeAreaView>
+  ) : (
+    <SafeAreaView style={{flex: 1}} testID="users">
+      {users.map(user => {
+        return (
+          <View key={user.id} testID="users">
+            <Text testID={`user-${user.id}`}>
+              {user.name}
+            </Text>
+          </View>
+        );
+      })}
+    </SafeAreaView>
+  );
+};
+
+export default App;
+```
+
+Create a new `src/__tests__/App.test.js` file, import your `makeServer` function, and start and shutdown Mirage using `beforeEach` and `afterEach`, making sure to pass the `test` environment to Mirage:
+
+```js
+// src/__tests__/App.test.js
+import React from "react"
+import { render, waitForElement } from "@testing-library/react-native"
+import App from "../App"
+import { makeServer } from "../server"
+
+let server
+
+beforeEach(() => {
+  server = makeServer({ environment: "test" })
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+```
+
+## Step 5: Write tests using your Mirage server
+
+Use your tests to seed Mirage with different data scenarios, then assert against the state of your UI.
+
+> In the `test` environment, Mirage doesn't load its database `seeds`, so that the server starts out empty for each test run.
+
+```js
+it("shows the users from our server", async () => {
+  server.create("user", { name: "Luke" })
+  server.create("user", { name: "Leia" })
+
+  const { getByTestId } = render(<App />)
+  await waitForElement(() => getByTestId("user-1"))
+  await waitForElement(() => getByTestId("user-2"))
+
+  expect(getByTestId("user-1")).toHaveTextContent("Luke")
+  expect(getByTestId("user-2")).toHaveTextContent("Leia")
+})
+
+it("shows a message if there are no users", async () => {
+  // Don't create any users
+
+  const { getByTestId } = render(<App />)
+  await waitForElement(() => getByTestId("no-users"))
+
+  expect(getByTestId("no-users")).toHaveTextContent("No users!")
+})
+```
+
+## Step 6: Alter your Mirage server to test different server states
+
+In addition to different data scenarios, you can use your tests to reconfigure your Mirage server to test new situations.
+
+For example, you can test an error state like this:
+
+```js
+// src/__tests__/App.test.js
+import { Response } from "miragejs"
+
+it("handles error responses from the server", async () => {
+  // Override Mirage's route handler for /users, just for this test
+  server.get("/users", () => {
+    return new Response(
+      500,
+      {},
+      {
+        error: "The database is on vacation.",
+      }
+    )
+  })
+
+  const { getByTestId } = render(<App />)
+
+  await waitForElement(() => getByTestId("server-error"))
+
+  expect(getByTestId("server-error")).toHaveTextContent(
+    "The database is on vacation."
+  )
+});
+```
+
+Because of the way we setup Mirage using `beforeEach` and `afterEach`, each test will get a fresh Mirage server based on your main server definition. Any overrides you make within a test will be isolated to that test.
+
+To see a working example go [here](https://github.com/eluciano11/react-native-mirage).

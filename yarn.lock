@@ -2165,15 +2165,15 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@u-wave/react-vimeo@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@u-wave/react-vimeo/-/react-vimeo-0.8.1.tgz#064c862f211a2d2eb8573e538ee4633338051302"
-  integrity sha512-A6e0lBP/H04h7hhBjARj8u7Tl1HNE1eNb1tn0YMGQCRZK2AP1HiU/EGCUJSDYkXzWeMUqAdU6hPbEjro4KywWg==
+"@u-wave/react-vimeo@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@u-wave/react-vimeo/-/react-vimeo-0.8.2.tgz#365f82e74a3c09985513397f25219c1c773fce83"
+  integrity sha512-dDHB3UuXhtPPhmC5nzEWofoAmJS1tA6wewj4/donGsFdgSF7kNDizB8j/O6J8Tk4SnGrNDPHGK1bZutCvXSl9Q==
   dependencies:
-    "@vimeo/player" "^2.9.1"
-    prop-types "^15.6.1"
+    "@vimeo/player" "^2.10.0"
+    prop-types "^15.7.2"
 
-"@vimeo/player@^2.9.1":
+"@vimeo/player@^2.10.0":
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/@vimeo/player/-/player-2.10.0.tgz#1b3cb590a633b8b565b61b850c44a4fb9632b97a"
   integrity sha512-tG2M+9D92P4uJAmIwJmYHxZXtUKofT12Zu1iG7m03Q/GFt41kwJRMkfO2ZDU8BLrsG3AIt2hKkw776tDIR1Iuw==

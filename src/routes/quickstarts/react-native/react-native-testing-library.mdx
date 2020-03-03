@@ -194,7 +194,7 @@ import { Response } from "miragejs"
 
 it("handles error responses from the server", async () => {
   // Override Mirage's route handler for /users, just for this test
-  server.get("/users", () => {
+  server.get("/api/users", () => {
     return new Response(
       500,
       {},

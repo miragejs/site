@@ -47,7 +47,7 @@
     "gatsby-plugin-sharp": "^2.4.5",
     "gatsby-plugin-styled-components": "^3.1.19",
     "gatsby-plugin-svgr": "^2.0.2",
-    "gatsby-plugin-typescript": "^2.1.27",
+    "gatsby-plugin-typescript": "^2.2.0",
     "gatsby-source-filesystem": "^2.1.48",
     "gatsby-transformer-sharp": "^2.3.16",
     "install": "^0.13.0",

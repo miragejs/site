@@ -1,12 +1,10 @@
-# Setup a React App with Mirage for Development
+# Develop a React Component with Mirage
 
-Mock your React app's networking code so you can develop your React app without any backend services.
-
-> This is a quickstart guide for people familiar with Mirage. If you're brand new to Mirage, take a look at the [Overview](/docs/getting-started/overview).
+Mock out API endpoints directly inside your React component so you can continue local development without any backend services.
 
 ## Step 1: Install Mirage
 
-First, make sure you have Mirage installed:
+First, make sure you've added Mirage to your project:
 
 ```bash
 # Using npm
@@ -16,74 +14,22 @@ npm install --save-dev miragejs
 yarn add --dev miragejs
 ```
 
-## Step 2: Define your server
+## Step 2: Create a Server alongside your networking code
 
-Create a new `server.js` file and define your mock server.
+Within a component file, import `Server` from Mirage, create a server, and start mocking out API endpoints that your code needs:
 
-Here's a basic example:
-
-```js
-// src/server.js
-import { Server, Model } from "miragejs"
-
-export function makeServer({ environment = "development" } = {}) {
-  let server = new Server({
-    environment,
-
-    models: {
-      user: Model,
-    },
-
-    seeds(server) {
-      server.create("user", { name: "Bob" })
-      server.create("user", { name: "Alice" })
-    },
-
-    routes() {
-      this.namespace = "api"
-
-      this.get("/users", schema => {
-        return schema.users.all()
-      })
-    },
-  })
-
-  return server
-}
-```
-
-> In a Create React App, put this file in `src/server.js` so that changes to it trigger rebuilds.
-
-## Step 3: Start your server in development
-
-Open your React app's bootstrap file (`src/index.js` in a Create React App), import your `makeServer` function, and call it in the development environment:
-
-```js{5,7-9}
-// src/index.js
-import React from "react"
-import ReactDOM from "react-dom"
-import App from "./App"
-import { makeServer } from "./server"
-
-if (process.env.NODE_ENV === "development") {
-  makeServer()
-}
-
-ReactDOM.render(<App />, document.getElementById("root"))
-```
-
-Now, whenever your application makes a network request in development, Mirage will intercept that request and respond with the data from your server definition.
-
-For example, given the server definition above, the following component would fetch the users `Bob` and `Alice` that we defined in `seeds`:
-
-```jsx
+```js{3-6}
 // src/App.js
-import { useState, useEffect } from "react"
+import React from "react"
+import { Server } from "miragejs"
+
+let server = new Server()
+server.get("/api/users", { users: [{ id: 1, name: "Bob" }] })
 
 export default function App() {
-  let [users, setUsers] = useState([])
+  let [users, setUsers] = React.useState([])
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch("/api/users")
       .then(res => res.json())
       .then(json => {
@@ -92,15 +38,27 @@ export default function App() {
   }, [])
 
   return (
-    <ul data-testid="users">
+    <ul>
       {users.map(user => (
-        <li key={user.id} data-testid={`user-${user.id}`}>
-          {user.name}
-        </li>
+        <li key={user.id}>{user.name}</li>
       ))}
     </ul>
   )
 }
 ```
 
-You can now continue to develop your React app, mocking out your backend API endpoints with Mirage as you go.
+You can now continue to develop your React component, mocking out your backend API endpoints with Mirage as you go.
+
+Read the [route handlers guide](/docs/main-concepts/route-handlers/) to learn more about writing route handlers.
+
+---
+
+_This is a quickstart guide for people familiar with Mirage. If you're brand new to Mirage, take a look at the [Overview](/docs/getting-started/overview)._
+
+---
+
+_As your mocking code grows, you'll probably want to centralize your server definition. This will also easily let you use your mock server in tests._
+
+_You also cannot instantiate two Mirage servers at the same time since Mirage relies on global state to intercept your app's network requests._
+
+_When you're ready to centralize your mocking code, see the guide on [Sharing your server between development and testing](/docs/workflow-tips/#sharing-your-server-between-development-and-testing)._

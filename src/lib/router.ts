@@ -76,6 +76,10 @@ const allRoutes: RouteDefinition[] = [
         ],
       },
       {
+        name: "workflow-tips",
+        label: "Workflow tips",
+      },
+      {
         name: "comparison-with-other-tools",
         label: "Comparison with other tools",
       },
@@ -111,7 +115,11 @@ const allRoutes: RouteDefinition[] = [
         label: "React",
         name: "react",
         routes: [
-          { label: "Development", name: "development" },
+          { label: "Develop a component", name: "development" },
+          {
+            label: "Develop an app",
+            name: "develop-an-app",
+          },
           { label: "React Testing Library", name: "react-testing-library" },
         ],
       },

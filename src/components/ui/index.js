@@ -1,6 +1,7 @@
 import React from "react"
 import bg from "../../assets/images/background-lines2.png"
 import CodeComponent from "../code"
+import { Link } from "@reach/router"
 
 // More prominent than P but not a Heading
 export const Lead = ({ children }) => (
@@ -81,11 +82,21 @@ export const EM = props => (
   </em>
 )
 
-export const A = props => (
-  <a {...props} className="underline hover:text-blue-500">
-    {props.children}
-  </a>
-)
+export function A({ href, children, ...rest }) {
+  let Component = href.startsWith("/")
+    ? p => (
+        <Link to={href} {...p}>
+          {children}
+        </Link>
+      )
+    : p => (
+        <a href={href} {...p}>
+          {children}
+        </a>
+      )
+
+  return <Component {...rest} className="underline hover:text-blue-500" />
+}
 
 export const HR = props => (
   <hr {...props} className="mt-6 mb-8 border-t border-gray-300 md:my-8" />

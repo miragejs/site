@@ -1,8 +1,8 @@
 # Mock Network Requests in React Native Testing Library with Mirage
 
-Use your Mirage server to test your React Native application under different server scenarios using [@testing-library/react-native](https://github.com/testing-library/native-testing-library) and [Jest Native](https://github.com/testing-library/jest-native).
+Use your Mirage server to test your React Native application under different server scenarios using [@testing-library/react-native](https://github.com/testing-library/native-testing-library), [Jest Native](https://github.com/testing-library/jest-native), and [Jest Expo](https://docs.expo.io/versions/latest/guides/testing-with-jest/)
 
-> This is a quickstart guide for people familiar with React Native Testing Library and Jest Native. However, it should also work with both [react-test-renderer](https://reactjs.org/docs/test-renderer.html) and [react-native-testing-library](https://github.com/callstack/react-native-testing-library).
+> This is a quickstart guide for people familiar with React Native Testing Library, Jest Native, and Expo. However, it should also work with both [react-test-renderer](https://reactjs.org/docs/test-renderer.html) and [react-native-testing-library](https://github.com/callstack/react-native-testing-library).
 
 ## Step 1: Install Mirage
 
@@ -46,7 +46,7 @@ Finally, have Jest to load the environment that we just created using `jest.conf
 const jestPreset = require("@testing-library/react-native/jest-preset")
 
 module.exports = {
-  preset: "@testing-library/react-native",
+  preset: "jest-expo",
   setupFiles: [...jestPreset.setupFiles],
   setupFilesAfterEnv: ["./jest.setup.js"],
 }

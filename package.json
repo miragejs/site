@@ -76,7 +76,7 @@
     "babel-eslint": "10.0.3",
     "babel-jest": "^25.1.0",
     "babel-preset-gatsby": "^0.2.31",
-    "cypress": "^3.8.3",
+    "cypress": "^4.1.0",
     "esdoc": "miragejs/esdoc#015a3426b2e53b2b0270a9c00133780db3f1d144",
     "esdoc-accessor-plugin": "^1.0.0",
     "esdoc-ecmascript-proposal-plugin": "^1.0.0",

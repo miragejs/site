@@ -37,7 +37,7 @@
     "babel-plugin-styled-components": "^1.10.7",
     "gatsby": "2.19.16",
     "gatsby-image": "^2.2.42",
-    "gatsby-plugin-manifest": "^2.2.42",
+    "gatsby-plugin-manifest": "^2.2.45",
     "gatsby-plugin-mdx": "^1.0.77",
     "gatsby-plugin-netlify": "^2.1.34",
     "gatsby-plugin-postcss": "^2.1.20",

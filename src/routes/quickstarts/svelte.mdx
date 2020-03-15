@@ -48,10 +48,11 @@ Replace the content of `src/App.js` with:
 </script>
 
 <main>
-  {#if users} {#each users as user}
-    <li>{user.name}</li>
-  {/each} {:else}
-
+  {#if users}
+    {#each users as user}
+      <li>{user.name}</li>
+    {/each}
+  {:else}
     <p>loading.....</p>
   {/if}
 </main>

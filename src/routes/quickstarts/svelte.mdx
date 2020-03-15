@@ -40,6 +40,7 @@ Replace the content of `src/App.js` with:
 
   let users
 
+
   onMount(async () => {
     const response = await fetch("/api/users")
     const data = await response.json()
@@ -51,6 +52,7 @@ Replace the content of `src/App.js` with:
   {#if users} {#each users as user}
     <li>{user.name}</li>
   {/each} {:else}
+
     <p>loading.....</p>
   {/if}
 </main>

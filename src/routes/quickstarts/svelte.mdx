@@ -4,9 +4,14 @@ Mock your Svelte app's networking code so you can develop your Svelte app withou
 
 > This is a quickstart guide for people familiar with Mirage. If you're brand new to Mirage, take a look at the [Overview](/docs/getting-started/overview).
 
-## Step 1: Install Mirage
+## Step 1: Create your Svelte app
 
-First, make sure you have Mirage installed:
+```bash
+npx degit sveltejs/template svelte-mirage
+cd svelte-mirage
+```
+
+## Step 2: Install Mirage
 
 ```bash
 # Using npm
@@ -16,88 +21,45 @@ npm install --save-dev miragejs
 yarn add --dev miragejs
 ```
 
-## Step 2: Define your server
+## Step 3: Update your bootstrap file
 
-Create a new `mirage.js` file and define your mock server.
+Replace the content of `src/App.js` with:
 
-Here's a basic example:
+```html
+<script>
+  import { onMount } from "svelte"
+  import { Server } from "miragejs"
 
-```js
-// src/routes/mirage.js
-import { Server, Model } from "miragejs"
-
-export function makeServer({ environment = "development" } = {}) {
-  let server = new Server({
-    environment,
-
-    models: {
-      user: Model,
-    },
-
-    seeds(server) {
-      server.create("user", { name: "Bob" })
-      server.create("user", { name: "Alice" })
-    },
-
+  new Server({
     routes() {
-      this.passthrough("/**")
-
-      this.namespace = "/api"
-
-      this.get("/users", schema => {
-        return schema.users.all()
-      })
+      this.get("/api/users", () => ({
+        users: [{ name: "Sam" }, { name: "Ryan" }],
+      }))
     },
   })
 
-  return server
-}
-```
+  let users
 
-## Step 3: Start your server in development
-
-Open your Svelte app's bootstrap file (`src/routes/client.js` in a Sapper App), import your `makeServer` function, and call it in the development environment:
-
-```js{3,5-7}
-// src/routes/client.js
-import * as sapper from '@sapper/app';
-import { makeServer } from "./mirage";
-
-if (process.env.NODE_ENV === "development") {
-	makeServer()
-}
-
-sapper.start({
-	target: document.querySelector('#sapper')
-});
-```
-
-Now, whenever your application makes a network request in development, Mirage will intercept that request and respond with the data from your server definition.
-
-For example, given the server definition above, the following component would fetch the users `Bob` and `Alice` that we defined in `seeds`:
-
-```html
-// src/routes/users.svelte
-<script>
-  import { onMount } from "svelte";
-
-  let users;
   onMount(async () => {
-    const response = await fetch("/api/users");
-	const data = await response.json();
-    users = data.users;
-  });
+    const response = await fetch("/api/users")
+    const data = await response.json()
+    users = data.users
+  })
 </script>
 
-<div>
-  {#if users}
-	{#each users as user}
-	  <li>{user.name}</li>
-	{/each}
-  {:else}
+<main>
+  {#if users} {#each users as user}
+    <li>{user.name}</li>
+  {/each} {:else}
     <p>loading.....</p>
   {/if}
-</div>
+</main>
+```
+
+## Step 4: Start your development server
+
+```bash
+npm run dev
 ```
 
 You can now continue to develop your Svelte app, mocking out your backend API endpoints with Mirage as you go.

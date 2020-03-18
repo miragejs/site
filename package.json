@@ -49,7 +49,7 @@
     "gatsby-plugin-svgr": "^2.0.2",
     "gatsby-plugin-typescript": "^2.2.5",
     "gatsby-source-filesystem": "^2.1.55",
-    "gatsby-transformer-sharp": "^2.3.18",
+    "gatsby-transformer-sharp": "^2.3.19",
     "install": "^0.13.0",
     "prettier": "^1.19.1",
     "prop-types": "^15.7.2",

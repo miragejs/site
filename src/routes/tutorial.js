@@ -1,5 +1,8 @@
 import React from "react"
 import { graphql, useStaticQuery } from "gatsby"
+import "codemirror/lib/codemirror.css"
+import CodeMirror from "codemirror"
+import "codemirror/mode/javascript/javascript"
 
 export default function() {
   const data = useStaticQuery(graphql`
@@ -28,6 +31,7 @@ export default function() {
 
   let startingInput = snippets["starting-input"]
 
+  let [db, setDb] = React.useState({})
   let [input, setInput] = React.useState(startingInput)
   let [logs, setLogs] = React.useState([])
   let [lastError, setLastError] = React.useState()
@@ -35,7 +39,9 @@ export default function() {
 
   const handleMessage = ({ data }) => {
     if (data.fromRepl) {
-      if (data.type === "error") {
+      if (data.type === "mirage:db") {
+        setDb(data.message)
+      } else if (data.type === "error") {
         setLastError(data.message)
       } else if (data.type === "runtimeError") {
         setLastRuntimeError(data.message)
@@ -56,12 +62,28 @@ export default function() {
     return () => window.removeEventListener("message", handleMessage)
   })
 
-  function handleInputChange(e) {
+  let textareaRef = React.useRef()
+  React.useEffect(() => {
+    let cm = CodeMirror.fromTextArea(textareaRef.current, {
+      // value: input,
+      // lineNumbers: true,
+      mode: "javascript",
+    })
+    cm.on("change", cm => {
+      handleInputChange(cm.getValue())
+    })
+
+    return () => {
+      cm.toTextArea()
+    }
+  }, [])
+
+  function handleInputChange(value) {
     setLastRuntimeError()
     setLastError()
     setLogs([])
 
-    setInput(e.target.value)
+    setInput(value)
   }
 
   // Splice in the Input into the iframe shell
@@ -78,10 +100,29 @@ export default function() {
             Editor
           </h1>
           <textarea
-            className="w-full h-full p-3 mt-4 font-mono text-sm bg-gray-200 focus:outline-none"
+            readOnly
             value={input}
-            onChange={handleInputChange}
+            className="w-full h-full p-3 mt-4 font-mono text-sm bg-gray-200 focus:outline-none"
+            ref={textareaRef}
           ></textarea>
+          <div className="mt-4">
+            {Object.keys(db).map(table => (
+              <>
+                <p key={table}>table: {table}</p>
+                <div>
+                  {db[table].map(row => (
+                    <>
+                      {Object.keys(row).map(field => (
+                        <p>
+                          {field}: {row[field]}
+                        </p>
+                      ))}
+                    </>
+                  ))}
+                </div>
+              </>
+            ))}
+          </div>
         </div>
       </div>
       <div className="w-1/2 h-full">

@@ -9,32 +9,18 @@
       const files = {
         "package.json": JSON.stringify({
           dependencies: {
+            react: "16.x",
+            "react-dom": "16.x",
             miragejs: "*",
           },
         }),
 
         "index.js": `
-          import server from './App';
+          import React from 'react';
+          import ReactDOM from 'react-dom';
+          import App from './App';
 
-          window.top.postMessage(
-            {
-              fromRepl: true,
-              type: "mirage:db",
-              message: server.db.dump(),
-            },
-            "*"
-          )
-
-          let originalHandler = server.pretender.handledRequest.bind(
-            server.pretender
-          );
-
-          server.pretender.handledRequest = (verb, path, request) => {
-            originalHandler(verb, path, request);
-            
-          }
-
-          console.log(server.db.dump());
+          ReactDOM.render(<App />, document.getElementById('demo'));
         `,
 
         "App.js": `

@@ -1,22 +1,18 @@
 ```js
-import React from "react"
-import { Server } from "miragejs"
+import { Server, Model } from "miragejs"
 
-new Server({
+export default new Server({
+  models: {
+    user: Model,
+  },
+
+  seeds(server) {
+    server.create("user", { name: "Ryan" })
+    server.create("user", { name: "Sam" })
+  },
+
   routes() {
-    // 👇 mock out "some-endpoint" here
+    this.resource("user")
   },
 })
-
-export default function() {
-  let [result, setResult] = React.useState({ text: "static" })
-
-  React.useEffect(() => {
-    fetch("/some-endpoint")
-      .then(res => res.json())
-      .then(setResult)
-  }, [])
-
-  return <p>Result: {result.text}</p>
-}
 ```

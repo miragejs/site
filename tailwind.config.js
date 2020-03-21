@@ -105,6 +105,7 @@ module.exports = {
         "36": "9rem",
       },
       height: {
+        "28": px(112),
         "128": "32rem",
       },
       borderWidth: {

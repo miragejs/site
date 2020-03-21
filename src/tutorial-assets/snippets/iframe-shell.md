@@ -33,8 +33,6 @@
             originalHandler(verb, path, request);
             
           }
-
-          console.log(server.db.dump());
         `,
 
         "App.js": `

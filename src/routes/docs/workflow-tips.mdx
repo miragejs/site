@@ -8,35 +8,21 @@ Once you get comfortable writing Mirage code, follow these tips to optimize your
 
 While Mirage can be used to create one-off servers directly in component or test files, it's best used when your mock server definition is centralized and shared across your development and testing environments. After all, in production your app talks to a single server that implements a single API contract! Using a single server definition thus helps you maintain a consistent mock API contract everywhere Mirage is being used.
 
-So, if already have a Mirage server that you've started for development or testing, move it somewhere where it's clear that it's going to be used in both the development environment and by your tests.
+So, if you already have a Mirage server that you've started for development or testing, move it somewhere where it's clear that it's going to be used in both the development environment and by your tests.
 
-For simpler apps that might look like this:
+A common place to define your shared server is `src/server.js`:
 
 ```
 └── src
     ├── App.js
     ├── App.test.js
-    └── mirage.js
+    └── serve.js
 ```
 
-Whereas larger projects might end up with their own `mirage` directory:
-
-```
-└── src/
-     ├── components/
-     ├── pages/
-     ├── mirage/
-     |     ├── routes/
-     |     ├── factories/
-     |     ├── serializers/
-     |     └── server.js
-     └── __tests__/
-```
-
-Next, from your main file (`mirage.js` or `server.js` in the examples above) export a function you can use to start your Mirage server:
+Next, from your `server.js` file, export a function you can use to start your Mirage server:
 
 ```js
-// mirage.js
+// src/server.js
 import { Server, Model } from "miragejs"
 
 export function makeServer({ environment: 'test' }) {
@@ -62,7 +48,7 @@ Now, you can import this function to kick off Mirage in development.
 
 For example, in a React app `index.js` is often the "bootstrapping" file, so you could start Mirage there:
 
-```js
+```js{5-7}
 // index.js
 import React from "react"
 import ReactDOM from "react-dom"

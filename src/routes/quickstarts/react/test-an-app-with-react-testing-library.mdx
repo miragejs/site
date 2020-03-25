@@ -1,14 +1,10 @@
-# Mock Network Requests in React Testing Library with Mirage
+# Mock an app's network requests with React Testing Library and Mirage
 
-Use your Mirage server to test your React application under different server scenarios using [React Testing Library](https://github.com/testing-library/react-testing-library).
+Once you're ready to [centralize your Mirage server in order to share it between development and testing](/docs/workflow-tips/#sharing-your-server-between-development-and-testing), follow these steps to use your shared server in your tests written with [React Testing Library](https://github.com/testing-library/react-testing-library).
 
 This guide is for people already using React Testing Library in their React apps.
 
-## Use Mirage in a single test
-
-Mirage can be used to mock out individual endpoints directly inside your test files.
-
-### Step 1: Install Mirage
+## Step 1: Install Mirage
 
 First, make sure you've added Mirage to your project:
 
@@ -20,63 +16,7 @@ npm install --save-dev miragejs
 yarn add --dev miragejs
 ```
 
-### Step 2: Create a Server within a test
-
-Within a test file, import `Server` from Mirage, create a server, and mock out the API endpoints that your code needs:
-
-```js{5-15,18-21}
-// src/__tests__/App.test.js
-import React from "react"
-import { render, waitForElement } from "@testing-library/react"
-import App from "../App"
-import { Server } from "miragejs"
-
-let server
-
-beforeEach(() => {
-  server = new Server()
-})
-
-afterEach(() => {
-  server.shutdown()
-})
-
-it("shows the users from our server", async () => {
-  server.get("/users", () => [
-    { id: 1, name: "Luke" },
-    { id: 2, name: "Leia" },
-  ])
-
-  const { getByTestId } = render(<App />)
-  await waitForElement(() => getByTestId("user-1"))
-  await waitForElement(() => getByTestId("user-2"))
-
-  expect(getByTestId("user-1")).toHaveTextContent("Luke")
-  expect(getByTestId("user-2")).toHaveTextContent("Leia")
-})
-```
-
-When the `<App />` component is rendered and React makes a network request to `/users`, Mirage will intercept and respond with the data above.
-
-Note that we've called `server.shutdown()` after each test, so that Mirage has a chance to clean itself up and not leak into other tests.
-
-## Use a shared Mirage server across all tests
-
-If you're ready to [centralize your Mirage server in order to share it between development and testing](/docs/workflow-tips/#sharing-your-server-between-development-and-testing), follow these steps to use your shared server in your tests.
-
-### Step 1: Install Mirage
-
-First, make sure you've added Mirage to your project:
-
-```bash
-# Using npm
-npm install --save-dev miragejs
-
-# Using Yarn
-yarn add --dev miragejs
-```
-
-### Step 2: Define your server
+## Step 2: Define your server
 
 A common place to define your shared server is `src/server.js`:
 
@@ -150,6 +90,8 @@ Each test will get its own isolated Mirage server instance, and no state or serv
 
 Make sure your server gets instantiated with the `test` environment. (In the example `makeServer` function above, we default `environment` to `test`.)
 
+You can now continue to write tests that have their own isolated instance of your Mirage server, allowing you to alter it exactly as needed on a per-test basis.
+
 ---
 
-_To learn more about testing, [read the guide on Application tests](/docs/testing/application-tests/)._
+_To learn more about testing, [read the Application Testing guide](/docs/testing/application-tests/)._

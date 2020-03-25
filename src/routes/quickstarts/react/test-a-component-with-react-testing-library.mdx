@@ -1,0 +1,61 @@
+# Mock a component's network requests with React Testing Library and Mirage
+
+Use Mirage to mock out individual API endpoints directly inside your tests written with [React Testing Library](https://github.com/testing-library/react-testing-library).
+
+This guide is for people already using React Testing Library in their React apps.
+
+## Step 1: Install Mirage
+
+First, make sure you've added Mirage to your project:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Step 2: Create a Server within a test
+
+Within a test file, import `Server` from Mirage, create a server, and mock out the API endpoints that your code needs:
+
+```js{5-15,18-21}
+// src/__tests__/App.test.js
+import React from "react"
+import { render, waitForElement } from "@testing-library/react"
+import App from "../App"
+import { Server } from "miragejs"
+
+let server
+
+beforeEach(() => {
+  server = new Server()
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+
+it("shows the users from our server", async () => {
+  server.get("/users", () => [
+    { id: 1, name: "Luke" },
+    { id: 2, name: "Leia" },
+  ])
+
+  const { getByTestId } = render(<App />)
+  await waitForElement(() => getByTestId("user-1"))
+  await waitForElement(() => getByTestId("user-2"))
+
+  expect(getByTestId("user-1")).toHaveTextContent("Luke")
+  expect(getByTestId("user-2")).toHaveTextContent("Leia")
+})
+```
+
+When the `<App />` component is rendered and React makes a network request to `/users`, Mirage will intercept and respond with the data above.
+
+Note that we've called `server.shutdown()` after each test, so that Mirage has a chance to clean itself up and not leak into other tests.
+
+---
+
+_To learn more about testing, [read the Application Testing guide](/docs/testing/application-tests/)._

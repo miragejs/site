@@ -6,7 +6,7 @@ Once you get comfortable writing Mirage code, follow these tips to optimize your
 
 ## Sharing your server between development and testing
 
-While Mirage can be used to create one-off servers directly in component or test files, it's best used when your mock server definition is centralized and shared across your development and testing environments. After all, in production your app talks to a single server that implements a single API contract! Using a single server definition thus helps you maintain a consistent mock API contract everywhere Mirage is being used.
+While you can use Mirage to create one-off servers directly in your component or test files, it's usually best to centralize your mock server definition so you can share it across your development and testing environments. After all, in production your app will be talking to a single server that implements a single API contract! Using a single server definition thus helps you maintain a consistent mock API contract everywhere Mirage is being used.
 
 So, if you already have a Mirage server that you've started for development or testing, move it somewhere where it's clear that it's going to be used in both the development environment and by your tests.
 
@@ -16,7 +16,7 @@ A common place to define your shared server is `src/server.js`:
 └── src
     ├── App.js
     ├── App.test.js
-    └── serve.js
+    └── server.js
 ```
 
 Next, from your `server.js` file, export a function you can use to start your Mirage server:

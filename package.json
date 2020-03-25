@@ -61,7 +61,7 @@
     "react-spring": "^8.0.27",
     "react-transition-group": "^4.3.0",
     "react-use-measure": "^2.0.0",
-    "remark-slug": "^5.1.2",
+    "remark-slug": "^6.0.0",
     "source-map-support": "^0.5.16",
     "styled-components": "^5.0.1",
     "tailwindcss": "^1.2.0",

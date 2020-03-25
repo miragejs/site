@@ -2,25 +2,33 @@
 
 Route handlers let you define which URLs your Mirage server can handle.
 
-The simplest route handlers are plain functions, and they're the most flexible way to write route handlers in Mirage.
-
-To define new function route handlers, use the `get`, `post`, `patch` (or `put`) and `del` methods. Here's an example:
+The simplest route handler maps a URL to an object:
 
 ```js
-this.get("/movies", () => {
+this.get("/movies", { movies: ["Interstellar", "Inception", "Dunkirk"] })
+```
+
+Now when your app makes a GET request to `/movies`, it will receive this object as JSON data.
+
+You can also write function route handlers by passing in a function as the second argument:
+
+```js
+this.get("/movies", (schema, request) => {
   return ["Interstellar", "Inception", "Dunkirk"]
 })
 ```
 
-Now when your app makes a GET request to `/movies`, it will receive this data.
+Function route handlers are the most flexible way to write route handlers since they give you access to Mirage's data layer and the request object. Most of your route handlers will be functions.
 
-Each verb method has the same signature. The first argument is the path (URL) and the second is the actual function handler that returns the response.
+You can use any of the HTTP verbs to define your API routes. Each verb method has the same signature. The first argument is the path (URL) and the second is a function that returns the response.
 
 ```js
 this.get('/movies', () => { ... });
 this.post('/movies', () => { ... });
 this.patch('/movies/:id', () => { ... });
+this.put('/movies/:id', () => { ... });
 this.del('/movies/:id', () => { ... });
+this.options('/movies', () => { ... });
 ```
 
 ## Timing
@@ -100,9 +108,9 @@ You can also access the request body, for example to handle a POST or PATCH requ
 
 ```js
 this.post("/movies", (schema, request) => {
-  let title = JSON.parse(request.requestBody).title
+  let attrs = JSON.parse(request.requestBody)
 
-  return schema.movies.create({ title })
+  return schema.movies.create({ attrs })
 })
 ```
 

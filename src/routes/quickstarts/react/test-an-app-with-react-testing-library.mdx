@@ -1,0 +1,97 @@
+# Mock an app's network requests with React Testing Library and Mirage
+
+Once you're ready to [centralize your Mirage server in order to share it between development and testing](/docs/workflow-tips/#sharing-your-server-between-development-and-testing), follow these steps to use your shared server in your tests written with [React Testing Library](https://github.com/testing-library/react-testing-library).
+
+This guide is for people already using React Testing Library in their React apps.
+
+## Step 1: Install Mirage
+
+First, make sure you've added Mirage to your project:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Step 2: Define your server
+
+A common place to define your shared server is `src/server.js`:
+
+```js
+// src/server.js
+import { Server, Model } from "miragejs"
+
+export function makeServer({ environment = "test" } = {}) {
+  let server = new Server({
+    environment,
+
+    models: {
+      user: Model,
+    },
+
+    seeds(server) {
+      server.create("user", { name: "Bob" })
+      server.create("user", { name: "Alice" })
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.get("/users", schema => {
+        return schema.users.all()
+      })
+    },
+  })
+
+  return server
+}
+```
+
+> In an app build with Create React App, make sure this file is under the `src/` directory so that changes to it trigger rebuilds.
+
+### Step 3: Use your shared server in your tests
+
+Import your `makeServer` function and start and shutdown your server using the `beforeEach` and `afterEach` functions. Then, use your tests to seed Mirage with data, or make other changes to put Mirage into the state you need:
+
+```js{5-15,18-19}
+// src/__tests__/App.test.js
+import React from "react"
+import { render, waitForElement } from "@testing-library/react"
+import App from "../App"
+import { makeServer } from "../server"
+
+let server
+
+beforeEach(() => {
+  server = makeServer()
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+
+it("shows the users from our server", async () => {
+  server.create("user", { name: "Luke" })
+  server.create("user", { name: "Leia" })
+
+  const { getByTestId } = render(<App />)
+  await waitForElement(() => getByTestId("user-1"))
+  await waitForElement(() => getByTestId("user-2"))
+
+  expect(getByTestId("user-1")).toHaveTextContent("Luke")
+  expect(getByTestId("user-2")).toHaveTextContent("Leia")
+})
+```
+
+Each test will get its own isolated Mirage server instance, and no state or server modifications you make will leak across tests.
+
+Make sure your server gets instantiated with the `test` environment. (In the example `makeServer` function above, we default `environment` to `test`.)
+
+You can now continue to write tests that have their own isolated instance of your Mirage server, allowing you to alter it exactly as needed on a per-test basis.
+
+---
+
+_To learn more about testing, [read the Application Testing guide](/docs/testing/application-tests/)._

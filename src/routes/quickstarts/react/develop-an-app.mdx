@@ -1,0 +1,75 @@
+# Develop a React App against a Shared Mirage Server
+
+Once you're ready to [centralize your Mirage server and share it between development and testing](/docs/workflow-tips/#sharing-your-server-between-development-and-testing), follow these steps.
+
+## Step 1: Install Mirage
+
+First, make sure you've added Mirage to your project:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Step 2: Define your shared server
+
+A common place to define your shared server is `src/server.js`:
+
+```js
+// src/server.js
+import { Server, Model } from "miragejs"
+
+export function makeServer({ environment = "test" } = {}) {
+  let server = new Server({
+    environment,
+
+    models: {
+      user: Model,
+    },
+
+    seeds(server) {
+      server.create("user", { name: "Bob" })
+      server.create("user", { name: "Alice" })
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.get("/users", schema => {
+        return schema.users.all()
+      })
+    },
+  })
+
+  return server
+}
+```
+
+> In an app build with Create React App, make sure this file is under the `src/` directory so that changes to it trigger rebuilds.
+
+## Step 3: Start your server in development
+
+Open your React app's bootstrap file (`src/index.js` in a Create React App), import your `makeServer` function, and call it in the development environment:
+
+```js{5-9}
+// src/index.js
+import React from "react"
+import ReactDOM from "react-dom"
+import App from "./App"
+import { makeServer } from "./server"
+
+if (process.env.NODE_ENV === "development") {
+  makeServer()
+}
+
+ReactDOM.render(<App />, document.getElementById("root"))
+```
+
+We're using the `process.env.NODE_ENV` environment variable here, which is a common global variable available in many React app environments.
+
+Now, whenever any component in your application makes a network request in development, Mirage will intercept that request and respond with the data from your server definition.
+
+You now have a central place to define and update your Mirage server as you continue local development on your React app.

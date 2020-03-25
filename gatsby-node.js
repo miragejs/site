@@ -85,6 +85,14 @@ exports.createPages = ({ actions }) => {
 
   // Old links
   createRedirect({
+    fromPath: "/quickstarts/react/development",
+    toPath: "/quickstarts/react/develop-a-component",
+  })
+  createRedirect({
+    fromPath: "/quickstarts/react/react-testing-library",
+    toPath: "/quickstarts/react/test-a-component-with-react-testing-library",
+  })
+  createRedirect({
     fromPath: "/quickstarts/vue/cypress",
     toPath: "/quickstarts/cypress",
   })

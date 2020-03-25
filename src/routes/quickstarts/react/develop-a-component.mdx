@@ -1,0 +1,56 @@
+# Develop a React Component with Mirage
+
+Mock out API endpoints directly inside your React component so you can continue local development without any backend services.
+
+## Step 1: Install Mirage
+
+First, make sure you've added Mirage to your project:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Step 2: Create a Server alongside your networking code
+
+Within a component file, import `Server` from Mirage, create a server, and start mocking out API endpoints that your code needs:
+
+```js{3-6}
+// src/App.js
+import React from "react"
+import { Server } from "miragejs"
+
+let server = new Server()
+server.get("/api/users", { users: [{ id: 1, name: "Bob" }] })
+
+export default function App() {
+  let [users, setUsers] = React.useState([])
+
+  React.useEffect(() => {
+    fetch("/api/users")
+      .then(res => res.json())
+      .then(json => {
+        setUsers(json.users)
+      })
+  }, [])
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+You can now continue to develop your React component, mocking out your backend API endpoints with Mirage as you go.
+
+Read the [route handlers guide](/docs/main-concepts/route-handlers/) to learn more about writing route handlers.
+
+---
+
+_Ready to share your mocking code across multiple components? Check out the guide on [Sharing your server between development and testing](/docs/workflow-tips/#sharing-your-server-between-development-and-testing)._

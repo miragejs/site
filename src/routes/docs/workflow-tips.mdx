@@ -1,0 +1,145 @@
+# Workflow tips
+
+Mirage is designed to be frictionless to integrate into your app, and if you followed one of the [Quickstarts](/quickstarts/overview) you likely have a minimal setup in your project.
+
+Once you get comfortable writing Mirage code, follow these tips to optimize your developer experience and ensure you and your team get the most out of Mirage.
+
+## Sharing your server between development and testing
+
+While you can use Mirage to create one-off servers directly in your component or test files, it's usually best to centralize your mock server definition so you can share it across your development and testing environments. After all, in production your app will be talking to a single server that implements a single API contract! Using a single server definition thus helps you maintain a consistent mock API contract everywhere Mirage is being used.
+
+So, if you already have a Mirage server that you've started for development or testing, move it somewhere where it's clear that it's going to be used in both the development environment and by your tests.
+
+A common place to define your shared server is `src/server.js`:
+
+```
+└── src
+    ├── App.js
+    ├── App.test.js
+    └── server.js
+```
+
+Next, from your `server.js` file, export a function you can use to start your Mirage server:
+
+```js
+// src/server.js
+import { Server, Model } from "miragejs"
+
+export function makeServer({ environment: 'test' }) {
+  return new Server({
+    environment,
+
+    models: {
+      movie: Model,
+    },
+
+    routes() {
+      this.namespace = "api"
+
+      this.resource("movie")
+    },
+  })
+}
+```
+
+Here, we're defining our `makeServer` function to accept an options arg with an `environment` key. The `test` environment turns off Mirage's artificial latency, ignores any initial `seeds()`, and disables logging to the console. Since you'll likely be importing `makeServer` in several tests but only one place for development, defaulting the environment to `test` is a reasonable choice. You can of course customize this function to take whatever additional arguments make sense for your project.
+
+Now, you can import this function to kick off Mirage in development.
+
+For example, in a React app `index.js` is often the "bootstrapping" file, so you could start Mirage there:
+
+```js{5-7}
+// index.js
+import React from "react"
+import ReactDOM from "react-dom"
+import App from "./App"
+import { makeServer } from "./mirage"
+
+makeServer({ environment: "development" })
+
+ReactDOM.render(<App />, document.getElementById("root"))
+```
+
+Now Mirage will start running whenever you develop your React app like normal (`npm run start`).
+
+In your production environment, you probably don't want Mirage to run (since your app will need to make real network requests), so you might end up with something like this:
+
+```js{7-9}
+// index.js
+import React from "react"
+import ReactDOM from "react-dom"
+import App from "./App"
+import { makeServer } from "./mirage"
+
+if (process.env.NODE_ENV === "development") {
+  makeServer({ environment: "development" })
+}
+
+ReactDOM.render(<App />, document.getElementById("root"))
+```
+
+`process.env.NODE_ENV` is a common global in setups that exposes the build environment of your app, and can be used to conditionally start Mirage.
+
+Ideally, if you're not using Mirage in production, you should make sure Mirage's library code as well as your server definition code doesn't get included in your production bundle (unless you're building a prototype and want it enabled). How to accomplish this will depend on your build tooling setup, but in many cases adding a check like the one shown above will automatically treeshake Mirage out of your build.
+
+You can also use your new centralized server definition in tests. Import your `makeServer` function in a test and use it to start Mirage before each test:
+
+```js
+// tests/home-test.js
+import { startMirage } from "./mirage"
+
+describe("homepage", function() {
+  let server
+
+  beforeEach(() => {
+    server = startMirage()
+  })
+
+  afterEach(() => {
+    server.shutdown()
+  })
+
+  it("shows the movies", function() {
+    server.createList("movie", 10)
+
+    cy.visit("/")
+
+    cy.get("li.movie").should("have.length", 10)
+  })
+})
+```
+
+A Mirage server instance has a [shutdown](/api/classes/server) method you need to call after each test to clean up your environment.
+
+Note that even though your tests are using the shared server definition, you can still apply one-off modifications in order to test how your app behaves under atypical situations. For example, if you wanted to test how your app responds to a 500 server error, instead of changing your global Mirage server definition you can just modify a single API route within a test:
+
+```js
+// tests/home-test.js
+import { startMirage } from "./mirage"
+import { Response } from "miragejs"
+
+describe("homepage", function() {
+  let server
+
+  beforeEach(() => {
+    server = startMirage()
+  })
+
+  afterEach(() => {
+    server.shutdown()
+  })
+
+  it("shows an error if the server is down", function() {
+    // Override the existing /movies route handler, just for this test
+    server.get("/movies", () => new Response(500))
+
+    cy.visit("/")
+
+    cy.get("h1").should("contain", "Whoops! Our site is down.")
+  })
+})
+```
+
+Because you're shutting down your server and starting a new one for each test, these modifications will only apply to the test where you make them.
+
+You now have a single place to define and extend your Mirage server, and an easy way to use it in your tests.

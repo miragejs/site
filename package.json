@@ -73,7 +73,7 @@
     "@testing-library/jest-dom": "^5.1.1",
     "@testing-library/react": "^9.5.0",
     "@types/jest": "^25.1.4",
-    "babel-eslint": "10.0.3",
+    "babel-eslint": "10.1.0",
     "babel-jest": "^25.1.0",
     "babel-preset-gatsby": "^0.2.36",
     "cypress": "^4.2.0",

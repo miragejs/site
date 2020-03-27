@@ -1,7 +1,7 @@
 describe("Quickstarts", () => {
-  it("it renders the react quickstart", () => {
-    cy.visit("/quickstarts/react/development")
-    cy.get("h1").contains("Setup a React App with Mirage for Development")
+  it("it renders the react component quickstart", () => {
+    cy.visit("/quickstarts/react/develop-a-component")
+    cy.get("h1").contains("Develop a React Component with Mirage")
     cy.screenshot("react quickstart")
   })
 })

@@ -3,7 +3,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 // import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism"
 import rangeParser from "parse-numeric-range"
 
-export default function(props) {
+export default function (props) {
   let language = props.language || ""
 
   let highlightedLines = props.highlightedLines
@@ -12,7 +12,7 @@ export default function(props) {
 
   // Filter out any empty lines at end
   let reversedLines = props.children.split("\n").reverse()
-  let firstNonEmptyIndex = reversedLines.findIndex(line => line !== "")
+  let firstNonEmptyIndex = reversedLines.findIndex((line) => line !== "")
   let lines = reversedLines
     .filter((line, index) => index >= firstNonEmptyIndex)
     .reverse()
@@ -27,7 +27,7 @@ export default function(props) {
       language={language}
       className={`language-${language} subpixel-antialiased text-sm- md:text-sm py-4 px-5 overflow-auto scrolling-touch`}
       wrapLines={true}
-      lineProps={lineNumber => {
+      lineProps={(lineNumber) => {
         let props = {}
         if (highlightedLines.includes(lineNumber)) {
           props.className = "block px-5 -mx-5 bg-green-500"

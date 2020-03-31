@@ -87,7 +87,7 @@ function Button({ isRunning = false, children }) {
     }
   }, [isRunning, isWideButton])
 
-  let handleTransitionEnd = function(e) {
+  let handleTransitionEnd = function (e) {
     e.preventDefault()
     e.stopPropagation()
     setIsNudged(isRunning)
@@ -97,7 +97,7 @@ function Button({ isRunning = false, children }) {
   return (
     <button
       disabled={isRunning}
-      onTransitionEnd={e => handleTransitionEnd(e)}
+      onTransitionEnd={(e) => handleTransitionEnd(e)}
       className={`p-3 md:px-8 text-white ${
         isNudged ? "bg-green-900 opacity-50" : "bg-green-700"
       } ${isRunning && "cursor-not-allowed"}
@@ -109,7 +109,7 @@ function Button({ isRunning = false, children }) {
       }}
     >
       <div
-        onTransitionEnd={e => handleTransitionEnd(e)}
+        onTransitionEnd={(e) => handleTransitionEnd(e)}
         style={{
           transform: isNudged
             ? `translateX(${-nudgeAmount}px)`
@@ -123,7 +123,7 @@ function Button({ isRunning = false, children }) {
       </div>
       <span
         ref={spinnerEl}
-        onTransitionEnd={e => handleTransitionEnd(e)}
+        onTransitionEnd={(e) => handleTransitionEnd(e)}
         className={`absolute ${isShowingSpinner ? "opacity-100" : "opacity-0"}`}
         style={{
           transition: shouldUseTransitions

@@ -13,9 +13,9 @@ export function DesktopNav({ menuItems }) {
   let activeUrl = router.activeUrl
   let previousActiveUrl = usePrevious(activeUrl)
   let defaultOpenSection = menuItems.findIndex(
-    menuItem =>
+    (menuItem) =>
       menuItem.links &&
-      menuItem.links.find(link => urlsMatch(link.url, activeUrl))
+      menuItem.links.find((link) => urlsMatch(link.url, activeUrl))
   )
 
   let [openSections, setOpenSections] = React.useState([defaultOpenSection])
@@ -27,9 +27,9 @@ export function DesktopNav({ menuItems }) {
   }, [activeUrl, previousActiveUrl, defaultOpenSection])
 
   function toggleSection(section) {
-    setOpenSections(prev =>
+    setOpenSections((prev) =>
       prev.includes(section)
-        ? prev.filter(item => item !== section)
+        ? prev.filter((item) => item !== section)
         : [...prev, section]
     )
   }
@@ -72,7 +72,7 @@ function CollapsibleMenu({ section, isOpen, toggleSection }) {
   }))
 
   let activeUrl = useRouter().activeUrl
-  let sectionIsActive = section.links.find(link =>
+  let sectionIsActive = section.links.find((link) =>
     urlsMatch(link.url, activeUrl)
   )
 
@@ -213,7 +213,7 @@ function DesktopNavLink({ link }) {
                 <li className="pt-3 text-base-" key={index}>
                   <a
                     href={heading.anchor}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault()
                       scrollToSection(heading.anchor)
                     }}
@@ -226,7 +226,7 @@ function DesktopNavLink({ link }) {
                         <li className="py-1 truncate" key={index}>
                           <a
                             href={heading.anchor}
-                            onClick={e => {
+                            onClick={(e) => {
                               e.preventDefault()
                               scrollToSection(heading.anchor)
                             }}

@@ -23,7 +23,7 @@ const levelMappings = {
 }
 
 const renderers = {
-  heading: props => {
+  heading: (props) => {
     let Component = levelMappings[props.level]
     if (!Component) {
       throw new Error(`Cannot use h${props.level} in doc comment. Use H1-3.`)
@@ -31,17 +31,17 @@ const renderers = {
     return <Component children={props.children} />
   },
   paragraph: P,
-  list: props => {
+  list: (props) => {
     let Component = props.ordered ? OL : UL
     return <Component children={props.children} />
   },
-  listItem: props => <LI children={props.children} />,
+  listItem: (props) => <LI children={props.children} />,
   strong: Strong,
   emphasis: EM,
   link: A,
   thematicBreak: HR,
-  inlineCode: props => <InlineCode children={props.children} />,
-  code: props => <Code children={props.value} language={props.language} />,
+  inlineCode: (props) => <InlineCode children={props.children} />,
+  code: (props) => <Code children={props.value} language={props.language} />,
 }
 
 export function Markdown(props) {

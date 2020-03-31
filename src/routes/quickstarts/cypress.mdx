@@ -42,7 +42,7 @@ export function makeServer({ environment = "development" } = {}) {
     routes() {
       this.namespace = "api"
 
-      this.get("/users", schema => {
+      this.get("/users", (schema) => {
         return schema.users.all()
       })
     },
@@ -58,19 +58,19 @@ Add the following code to your `cypress/support/index.js` file:
 
 ```js
 // cypress/support/index.js
-Cypress.on("window:before:load", win => {
-  win.handleFromCypress = function(request) {
+Cypress.on("window:before:load", (win) => {
+  win.handleFromCypress = function (request) {
     return fetch(request.url, {
       method: request.method,
       headers: request.requestHeaders,
       body: request.requestBody,
-    }).then(res => {
+    }).then((res) => {
       let content =
         res.headers.map["content-type"] === "application/json"
           ? res.json()
           : res.text()
-      return new Promise(resolve => {
-        content.then(body => resolve([res.status, res.headers, body]))
+      return new Promise((resolve) => {
+        content.then((body) => resolve([res.status, res.headers, body]))
       })
     })
   }
@@ -95,7 +95,7 @@ if (window.Cypress) {
     environment: "test",
     routes() {
       let methods = ["get", "put", "patch", "post", "delete"]
-      methods.forEach(method => {
+      methods.forEach((method) => {
         this[method]("/*", async (schema, request) => {
           let [status, headers, body] = await window.handleFromCypress(request)
           return new Response(status, headers, body)

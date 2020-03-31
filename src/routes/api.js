@@ -23,7 +23,7 @@ export default function Api(props) {
     )
   }
 
-  let menuItems = publicClasses.map(publicClass => ({
+  let menuItems = publicClasses.map((publicClass) => ({
     label: publicClass.name,
     url: `/api/classes/${publicClass.slug}/`,
     headings: [
@@ -32,7 +32,7 @@ export default function Api(props) {
     ]
       .filter(([label, members]) => members.length > 0)
       .reduce((result, [label, members]) => {
-        let items = members.map(member => ({
+        let items = members.map((member) => ({
           label: member.name,
           anchor: `#${member.slug}`,
         }))
@@ -49,7 +49,7 @@ export default function Api(props) {
   }))
 
   let activePublicClass = publicClasses.find(
-    publicClass => publicClass.slug === router.activePage?.params?.classSlug
+    (publicClass) => publicClass.slug === router.activePage?.params?.classSlug
   )
 
   if (!activePublicClass) {

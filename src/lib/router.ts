@@ -196,13 +196,13 @@ export class Route {
 
   get fullName(): string {
     return [this.parent && this.parent.fullName, this.name]
-      .filter(part => part && part !== "")
+      .filter((part) => part && part !== "")
       .join(".")
   }
 
   get fullPath(): string {
     return [this.parent && this.parent.fullPath, this.path]
-      .filter(part => part && part !== "")
+      .filter((part) => part && part !== "")
       .join("")
   }
 
@@ -242,7 +242,7 @@ export class Route {
   set routes(routes: Route[]) {
     // if we're ever going to remove routes we should address that here
     this._routes = routes
-    routes.forEach(route => {
+    routes.forEach((route) => {
       if (route.parent && route.parent !== this) {
         throw new Error(
           `Cannot add ${route.fullName} to ${this.fullName}, because it already belongs to ${route.parent.fullName}`
@@ -253,7 +253,7 @@ export class Route {
   }
 
   get allRoutes(): Route[] {
-    let flatten = function(routes: Route[]) {
+    let flatten = function (routes: Route[]) {
       return routes.reduce((result, route) => {
         return [...result, ...[route], ...flatten(route.routes)]
       }, [])
@@ -263,7 +263,7 @@ export class Route {
   }
 
   get pages(): Route[] {
-    return this.allRoutes.filter(route => route.routes.length === 0)
+    return this.allRoutes.filter((route) => route.routes.length === 0)
   }
 
   get activeUrl(): string {
@@ -281,7 +281,7 @@ export class Route {
   }
 
   matches(path: string) {
-    let tail = str => str.substr(1)
+    let tail = (str) => str.substr(1)
     let after = (str: string, char: string) =>
       str.includes(char) ? str.substr(str.indexOf(char) + 1) : ""
 
@@ -341,7 +341,7 @@ export class Route {
 
   // pojo mapping dynamic segments to values
   get params(): object {
-    let extract = function(dynamic, fixed, params = {}) {
+    let extract = function (dynamic, fixed, params = {}) {
       if (dynamic.length === 0 && fixed.length === 0) {
         return params
       }
@@ -387,19 +387,19 @@ export class Route {
 
   // Return the active page
   get activePage(): Route {
-    return this.pages.find(route => route.matches(this.activeUrl))
+    return this.pages.find((route) => route.matches(this.activeUrl))
   }
 
   // Return the active route
   get activeRoute(): Route {
-    return this.allRoutes.find(route => route.matches(this.activeUrl))
+    return this.allRoutes.find((route) => route.matches(this.activeUrl))
   }
 
   // Return the previous route
   get previousPage(): Route | undefined {
     let match =
       this.activePage &&
-      this.pages.find(route => route.fullName === this.activePage.fullName)
+      this.pages.find((route) => route.fullName === this.activePage.fullName)
 
     let currentIndex = match && this.pages.indexOf(match)
     let hasPreviousPage = match && currentIndex > 0
@@ -410,7 +410,7 @@ export class Route {
   get nextPage(): Route | undefined {
     let match =
       this.activePage &&
-      this.pages.find(route => route.fullName === this.activePage.fullName)
+      this.pages.find((route) => route.fullName === this.activePage.fullName)
 
     let currentIndex = match && this.pages.indexOf(match)
     let hasNextPage = match && currentIndex < this.pages.length
@@ -419,7 +419,7 @@ export class Route {
 
   // Return a subtree of routes under a path
   routerFor(fullPath: string): Router {
-    return this.allRoutes.find(route => route.fullPath === fullPath)
+    return this.allRoutes.find((route) => route.fullPath === fullPath)
   }
 
   add(definition: RouteDefinition): Route {
@@ -433,7 +433,7 @@ export class Route {
 
     // i think this is recursively backwards, create parents first then children
     if (definition.routes && definition.routes.length > 0) {
-      definition.routes.map(childDefinition => route.add(childDefinition))
+      definition.routes.map((childDefinition) => route.add(childDefinition))
     }
 
     route.parent = this
@@ -460,8 +460,8 @@ export class Route {
     fullPath: string
   }): Route | undefined {
     let keys = Object.keys(search)
-    return this.allRoutes.find(route =>
-      keys.every(key => search[key] === route[key])
+    return this.allRoutes.find((route) =>
+      keys.every((key) => search[key] === route[key])
     )
   }
 
@@ -480,7 +480,7 @@ export class Route {
 export class Router extends Route {
   constructor(definitions: RouteDefinition[] = allRoutes) {
     super({ name: "", label: "", path: "" })
-    definitions.forEach(definition => this.add(definition))
+    definitions.forEach((definition) => this.add(definition))
   }
 }
 

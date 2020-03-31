@@ -1,7 +1,7 @@
 import React from "react"
 import { animated } from "react-spring"
 
-export const Ellipsis = props => (
+export const Ellipsis = (props) => (
   <svg
     {...props}
     viewBox="0 0 70 70"
@@ -53,7 +53,7 @@ export function AnimatedCaret(props) {
   )
 }
 
-export const CaretDown = props => (
+export const CaretDown = (props) => (
   <svg
     {...props}
     viewBox="0 0 70 70"
@@ -72,7 +72,7 @@ export const CaretDown = props => (
   </svg>
 )
 
-export const CaretDownWide = props => (
+export const CaretDownWide = (props) => (
   <svg
     {...props}
     viewBox="0 0 70 70"
@@ -91,7 +91,7 @@ export const CaretDownWide = props => (
   </svg>
 )
 
-export const Close = props => (
+export const Close = (props) => (
   <svg
     className={`fill-current ${props.className}`}
     xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +101,7 @@ export const Close = props => (
   </svg>
 )
 
-export const Menu = props => (
+export const Menu = (props) => (
   <svg
     className={`fill-current ${props.className}`}
     xmlns="http://www.w3.org/2000/svg"

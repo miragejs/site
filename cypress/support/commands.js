@@ -26,7 +26,7 @@
 
 import "@percy/cypress"
 
-Cypress.Commands.add("screenshot", name => {
+Cypress.Commands.add("screenshot", (name) => {
   // 375 - iphone
   // 768 - ipad
   // 1024 - ipad pro

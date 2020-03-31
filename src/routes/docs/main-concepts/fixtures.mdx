@@ -172,7 +172,7 @@ new Server({
 Just as with the default scenario, Fixtures will be ignored during tests. If you want to load fixture data in a test, you can call `server.loadFixtures`:
 
 ```js
-test("I can see the countries", async function(assert) {
+test("I can see the countries", async function (assert) {
   server.loadFixtures("countries")
 
   await visit("/")

@@ -10,7 +10,7 @@ export const Lead = ({ children }) => (
   </p>
 )
 
-export const H1 = props => (
+export const H1 = (props) => (
   <h1
     {...props}
     className="mb-6 text-4xl font-normal leading-tight text-gray-900 font-title md:mb-8 md:text-4-5xl "
@@ -19,7 +19,7 @@ export const H1 = props => (
   </h1>
 )
 
-export const H2 = props => (
+export const H2 = (props) => (
   <h2
     {...props}
     className="mt-10 mb-4 text-2xl font-normal leading-tight text-gray-900 font-title md:text-3xl md:mt-14 md:mb-6 before-h-8 xl:before-h-12 "
@@ -28,7 +28,7 @@ export const H2 = props => (
   </h2>
 )
 
-export const H3 = props => (
+export const H3 = (props) => (
   <h3
     {...props}
     className="mt-12 mb-5 font-normal leading-normal text-gray-900 font-title md:mb-6 text-2-25xl before-h-8 xl:before-h-12 "
@@ -37,37 +37,37 @@ export const H3 = props => (
   </h3>
 )
 
-export const P = props => (
+export const P = (props) => (
   <p {...props} className="my-5">
     {props.children}
   </p>
 )
 
-export const OL = props => (
+export const OL = (props) => (
   <ol {...props} className="my-5 ml-8 list-decimal">
     {props.children}
   </ol>
 )
 
-export const UL = props => (
+export const UL = (props) => (
   <ul {...props} className="my-5 ml-8 list-disc">
     {props.children}
   </ul>
 )
 
-export const LI = props => (
+export const LI = (props) => (
   <li {...props} className="md:pl-2">
     {props.children}
   </li>
 )
 
-export const Strong = props => (
+export const Strong = (props) => (
   <strong {...props} className="font-medium">
     {props.children}
   </strong>
 )
 
-export const Blockquote = props => (
+export const Blockquote = (props) => (
   <blockquote
     {...props}
     className="pl-4 my-6 ml-4 italic border-l-4 border-gray-200"
@@ -76,7 +76,7 @@ export const Blockquote = props => (
   </blockquote>
 )
 
-export const EM = props => (
+export const EM = (props) => (
   <em {...props} className="italic">
     {props.children}
   </em>
@@ -84,12 +84,12 @@ export const EM = props => (
 
 export function A({ href, children, ...rest }) {
   let Component = href.startsWith("/")
-    ? p => (
+    ? (p) => (
         <Link to={href} {...p}>
           {children}
         </Link>
       )
-    : p => (
+    : (p) => (
         <a href={href} {...p}>
           {children}
         </a>
@@ -98,11 +98,11 @@ export function A({ href, children, ...rest }) {
   return <Component {...rest} className="underline hover:text-blue-500" />
 }
 
-export const HR = props => (
+export const HR = (props) => (
   <hr {...props} className="mt-6 mb-8 border-t border-gray-300 md:my-8" />
 )
 
-export const InlineCode = props => (
+export const InlineCode = (props) => (
   <code
     {...props}
     className="px-1 font-mono"
@@ -112,7 +112,7 @@ export const InlineCode = props => (
   </code>
 )
 
-export const Pre = props => <div {...props} />
+export const Pre = (props) => <div {...props} />
 
 export const Code = ({ className, ...rest }) => (
   <CodeComponent

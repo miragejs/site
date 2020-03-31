@@ -33,7 +33,7 @@ exports.onCreateNode = ({ node, actions }) => {
 exports.createPages = ({ actions }) => {
   const { createPage, createRedirect } = actions
 
-  const createAppPage = function(url) {
+  const createAppPage = function (url) {
     createPage({
       path: url, // dont shadow path module with local path variable
       matchPath: "/*",
@@ -47,8 +47,8 @@ exports.createPages = ({ actions }) => {
   // 1. If the route is a page, create a page using gatsby API
   // 2. If the route is a parent, redirect the parent URL to the first child page
   router.allRoutes
-    .filter(route => !route.isDynamic)
-    .forEach(route => {
+    .filter((route) => !route.isDynamic)
+    .forEach((route) => {
       if (route.isPage) {
         createAppPage(route.url)
       } else {
@@ -158,7 +158,7 @@ exports.createPages = ({ actions }) => {
 let esdoc = require("esdoc").default
 let tmp = require("tmp")
 
-let slugify = function(str) {
+let slugify = function (str) {
   return str
     .replace(/[^a-zA-Z0-9]+/g, "-")
     .replace(/([A-Z]+)([A-Z][a-z])/g, "$1-$2")
@@ -169,7 +169,7 @@ let slugify = function(str) {
     .toLowerCase()
 }
 
-let generateESDoc = function(config) {
+let generateESDoc = function (config) {
   var tmpdir = tmp.dirSync()
   esdoc.generate({ ...config, ...{ destination: tmpdir.name } })
   let index = fs.readFileSync(`${tmpdir.name}/index.json`)
@@ -206,7 +206,7 @@ exports.sourceNodes = async ({
     ],
   })
 
-  docNodes.forEach(docNode => {
+  docNodes.forEach((docNode) => {
     let node = {
       ...{ slug: slugify(docNode.name) },
       ...docNode,

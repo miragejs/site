@@ -13,7 +13,7 @@ The simplest way to assert that your app is sending over the correct data to you
 Here's an example using Cypress:
 
 ```js
-it("can change the movie title", function() {
+it("can change the movie title", function () {
   let movie = server.create("movie", { title: "Some movie" })
 
   cy.visit(`/movies/${movie.id}`)
@@ -39,7 +39,7 @@ This is a great way to gain some extra confidence that your app is sending over 
 It can also be useful to assert against Mirage's ORM models, to verify things like updates to your model's relationships:
 
 ```js
-it("can add a tag to a post", function() {
+it("can add a tag to a post", function () {
   let programming = server.create("tag", { name: "Programming" })
   let post = server.create("post")
 
@@ -75,13 +75,11 @@ Request tracking is disabled by default to avoid memory issues during long devel
 Now Mirage will track every request (along with the associated response) and make them available to you via `server.pretender.handledRequests`. That way you can assert against requests in that array at the end of your test.
 
 ```js
-it("can filter the table", function() {
+it("can filter the table", function () {
   server.createList("movie", 5, { genre: "Sci-Fi" })
   server.createList("movie", 3, { genre: "Drama" })
 
-  cy.visit("/")
-    .get(".tags")
-    .select("Sci-Fi")
+  cy.visit("/").get(".tags").select("Sci-Fi")
 
   // Assert against our app's UI
   cy.get("tr.movie").should("have.length", 5)

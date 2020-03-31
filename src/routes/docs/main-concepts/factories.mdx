@@ -341,8 +341,8 @@ server.create("actor", {
 In this way you use factories to help you quickly create graphs of relational data:
 
 ```js
-server.createList("user", 5).forEach(user => {
-  server.createList("post", 10, { user }).forEach(post => {
+server.createList("user", 5).forEach((user) => {
+  server.createList("post", 10, { user }).forEach((post) => {
     server.createList("comment", 5, { post })
   })
 })
@@ -645,7 +645,7 @@ For example, you could create a new file for each scenario that contains some se
 
 ```js
 // mirage/scenarios/admin.js
-export default function(server) {
+export default function (server) {
   server.create("user", { isAdmin: true })
 }
 ```
@@ -754,7 +754,7 @@ This advice goes a long way towards keeping your test suite maintainable.
 If you don't use traits and `afterCreate`, your tests will become bogged down in irrelevant details related to setting up the data needed for that test.
 
 ```js
-test("I can see the title of a post", async function(assert) {
+test("I can see the title of a post", async function (assert) {
   let session = server.create("session")
   let user = server.create("user", { session })
   server.create("post", {
@@ -774,7 +774,7 @@ This test is only concerned with asserting the title of a post gets rendered to 
 If we used `afterCreate` instead, the developer writing this test could simply create a post with a specified `title` and `slug`, since those are the only details relevant to the test:
 
 ```js
-test("I can see the title of a post", async function(assert) {
+test("I can see the title of a post", async function (assert) {
   server.create("post", {
     title: "My first post",
     slug: "my-first-post",

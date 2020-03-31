@@ -73,7 +73,7 @@ new Server({
 If you want to add delays to a test, you can override the timing for individual tests by putting the timing parameter in your test
 
 ```js
-test("this route works with a delay", function() {
+test("this route works with a delay", function () {
   server.timing = 10000
 
   // ...
@@ -87,7 +87,7 @@ Because the server is reset after each test, this option won't leak into the res
 Route handlers receive `schema` as their first parameter, which lets them access Mirage's data layer:
 
 ```js
-this.get("/movies", schema => {
+this.get("/movies", (schema) => {
   return schema.movies.all()
 })
 ```
@@ -155,7 +155,7 @@ new Server({
     author: Model,
   },
   routes() {
-    this.post("/authors", function(schema, request) {
+    this.post("/authors", function (schema, request) {
       let attrs = JSON.parse(request.requestBody).author
 
       if (attrs.name) {
@@ -211,7 +211,7 @@ This helper returns the JSON for the given Model or Collection after passing it 
 
 ```js
 // Note: Be sure to use function() here, rather than () => {}
-this.get("/movies", function(schema) {
+this.get("/movies", function (schema) {
   let movies = schema.movies.all()
   let json = this.serialize(movies)
 
@@ -224,7 +224,7 @@ this.get("/movies", function(schema) {
 By default this method uses the named serializer for the given Model or Collection. You can pass in a specific serializer name as the second argument:
 
 ```js
-this.get("/movies", function(schema) {
+this.get("/movies", function (schema) {
   let movies = schema.movies.all()
   let json = this.serialize(movies, "sparse-movie")
 
@@ -268,7 +268,7 @@ For example, if your app makes a POST request with this data
 then `normalizedRequestAttrs()` could be used like this
 
 ```js
-this.post("/users", function(schema, request) {
+this.post("/users", function (schema, request) {
   let attrs = this.normalizedRequestAttrs()
   /*
     attrs is this object:
@@ -292,7 +292,7 @@ Additionally, you'll need to use a full `function` here, as opposed to an ES6 ar
 `normalizedRequestAttrs()` relies on a `modelName` to work and attempts to automatically detect it based on the URL of the request. If you use conventional URLs – for example, PATCH /users/1 – the helper should work. If you are using something custom – for example, PATCH /users/edit/1 – you’ll need to provide the `modelName` to the helper as the first argument:
 
 ```js
-this.patch("/users/edit/:id", function(schema, request) {
+this.patch("/users/edit/:id", function (schema, request) {
   let attrs = this.normalizedRequestAttrs("user")
   // ...
 })

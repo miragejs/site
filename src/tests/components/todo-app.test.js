@@ -37,7 +37,7 @@ test("it fetches todos from the server", async () => {
 
 test.only("it shows a loading spinner while data is being fetched", async () => {
   let respond
-  let response = new Promise(resolve => {
+  let response = new Promise((resolve) => {
     respond = resolve
   })
 

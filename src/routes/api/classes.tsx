@@ -1,3 +1,3 @@
-export default function(props) {
+export default function (props) {
   return props.children
 }

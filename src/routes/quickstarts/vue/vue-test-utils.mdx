@@ -42,7 +42,7 @@ export function makeServer({ environment = "development" } = {}) {
     routes() {
       this.namespace = "api"
 
-      this.get("/users", schema => {
+      this.get("/users", (schema) => {
         return schema.users.all()
       })
     },
@@ -95,8 +95,8 @@ Here's the Vue component we'll be testing.
 
     created() {
       fetch("/api/users")
-        .then(res => res.json())
-        .then(json => {
+        .then((res) => res.json())
+        .then((json) => {
           if (json.error) {
             this.serverError = json.error
           } else {
@@ -160,8 +160,8 @@ it("shows a message if there are no users", async () => {
 
 // This helper method returns a promise that resolves
 // once the selector enters the wrapper's dom.
-const waitFor = function(wrapper, selector) {
-  return new Promise(resolve => {
+const waitFor = function (wrapper, selector) {
+  return new Promise((resolve) => {
     const timer = setInterval(() => {
       const userEl = wrapper.findAll(selector)
       if (userEl.length > 0) {

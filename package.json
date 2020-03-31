@@ -81,7 +81,7 @@
     "esdoc-accessor-plugin": "^1.0.0",
     "esdoc-ecmascript-proposal-plugin": "^1.0.0",
     "eslint": "6.8.0",
-    "eslint-config-react-app": "^5.2.0",
+    "eslint-config-react-app": "^5.2.1",
     "eslint-plugin-cypress": "^2.10.3",
     "eslint-plugin-flowtype": "4.7.0",
     "eslint-plugin-import": "2.x",

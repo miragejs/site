@@ -23,7 +23,7 @@ export function addPersist(server) {
     }
 
     let originalHandled = server.pretender.handledRequest
-    server.pretender.handledRequest = function() {
+    server.pretender.handledRequest = function () {
       originalHandled.call(server.pretender, ...arguments)
       saveDb(server)
     }

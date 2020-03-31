@@ -42,7 +42,7 @@ export function makeServer({ environment = "development" } = {}) {
     routes() {
       this.namespace = "api"
 
-      this.get("/users", schema => {
+      this.get("/users", (schema) => {
         return schema.users.all()
       })
     },
@@ -71,7 +71,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 new Vue({
-  render: h => h(App),
+  render: (h) => h(App),
 }).$mount("#app")
 ```
 
@@ -99,8 +99,8 @@ For example, given the server definition above, the following component would fe
 
     created() {
       fetch("/api/users")
-        .then(res => res.json())
-        .then(json => {
+        .then((res) => res.json())
+        .then((json) => {
           this.users = json.users
         })
     },

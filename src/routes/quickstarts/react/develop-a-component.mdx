@@ -31,15 +31,15 @@ export default function App() {
 
   React.useEffect(() => {
     fetch("/api/users")
-      .then(res => res.json())
-      .then(json => {
+      .then((res) => res.json())
+      .then((json) => {
         setUsers(json.users)
       })
   }, [])
 
   return (
     <ul>
-      {users.map(user => (
+      {users.map((user) => (
         <li key={user.id}>{user.name}</li>
       ))}
     </ul>

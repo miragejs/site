@@ -263,7 +263,7 @@ You can use the `this.serialize` helper method in a route handler to do this - m
 ```js
 new Server({
   routes() {
-    this.get("/movies", function(schema, request) {
+    this.get("/movies", function (schema, request) {
       let movies = schema.movies.all()
       let json = this.serialize(movies)
 
@@ -293,7 +293,7 @@ new Server({
   },
 
   routes() {
-    this.get("/movies/:id", function(schema, request) {
+    this.get("/movies/:id", function (schema, request) {
       let movie = schema.movies.find(request.params.id)
       let json = this.serialize(movie, "movie-with-relationships")
 

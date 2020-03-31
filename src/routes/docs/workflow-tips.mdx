@@ -88,7 +88,7 @@ You can also use your new centralized server definition in tests. Import your `m
 // tests/home-test.js
 import { startMirage } from "./mirage"
 
-describe("homepage", function() {
+describe("homepage", function () {
   let server
 
   beforeEach(() => {
@@ -99,7 +99,7 @@ describe("homepage", function() {
     server.shutdown()
   })
 
-  it("shows the movies", function() {
+  it("shows the movies", function () {
     server.createList("movie", 10)
 
     cy.visit("/")
@@ -118,7 +118,7 @@ Note that even though your tests are using the shared server definition, you can
 import { startMirage } from "./mirage"
 import { Response } from "miragejs"
 
-describe("homepage", function() {
+describe("homepage", function () {
   let server
 
   beforeEach(() => {
@@ -129,7 +129,7 @@ describe("homepage", function() {
     server.shutdown()
   })
 
-  it("shows an error if the server is down", function() {
+  it("shows an error if the server is down", function () {
     // Override the existing /movies route handler, just for this test
     server.get("/movies", () => new Response(500))
 

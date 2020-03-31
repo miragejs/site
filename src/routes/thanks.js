@@ -15,7 +15,7 @@ function EmailUpdate({ date, slug, children }) {
   )
 }
 
-export default function({ children }) {
+export default function ({ children }) {
   return (
     <div className="relative">
       <div className="relative z-10">

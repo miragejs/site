@@ -25,7 +25,7 @@ The above config defines a `BlogPost` model within Mirage.
 To create models, access the model's collection via the `schema` object. You can access the `schema` as the first argument in your route handlers:
 
 ```js
-this.post("/blog-posts", function(schema) {
+this.post("/blog-posts", function (schema) {
   let attrs = this.normalizedRequestAttrs()
 
   schema.blogPosts.create(attrs)

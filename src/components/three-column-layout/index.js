@@ -73,7 +73,7 @@ export function ThreeColumnLayout({
 }
 
 const components = {
-  Link: props => (
+  Link: (props) => (
     <GatsbyLink {...props} className="underline hover:text-blue-500" />
   ),
   h1: H1,

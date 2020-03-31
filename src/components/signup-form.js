@@ -5,7 +5,7 @@ import { animated, useSpring } from "react-spring"
 import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
 
-let isEmailValid = function(email) {
+let isEmailValid = function (email) {
   // eslint-disable-next-line
   let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   return re.test(email)
@@ -13,7 +13,7 @@ let isEmailValid = function(email) {
 
 const SPRING_CONFIG = { tension: 275, clamp: true }
 
-export default function() {
+export default function () {
   // configure
   let feedbackDelay = 900
 
@@ -23,12 +23,12 @@ export default function() {
   let [error, _setError] = useState("")
   let [formState, setFormState] = useState("")
 
-  let setError = function(type) {
+  let setError = function (type) {
     _setError(type)
     setFormState("error")
   }
 
-  let resetForm = function() {
+  let resetForm = function () {
     _setError("")
     setFormState("")
   }
@@ -59,7 +59,7 @@ export default function() {
     }
   }
 
-  let handleSubmit = async function(event) {
+  let handleSubmit = async function (event) {
     event.preventDefault()
 
     if (!email) {
@@ -77,7 +77,7 @@ export default function() {
           body: formData,
         })
 
-        let waitForFeedback = new Promise(resolve => {
+        let waitForFeedback = new Promise((resolve) => {
           setTimeout(resolve, feedbackDelay)
         })
 
@@ -224,7 +224,7 @@ function Button({ isRunning = false, children }) {
     }
   }, [isRunning, isWideButton])
 
-  let handleTransitionEnd = function(e) {
+  let handleTransitionEnd = function (e) {
     e.preventDefault()
     e.stopPropagation()
     setIsNudged(isRunning)
@@ -234,7 +234,7 @@ function Button({ isRunning = false, children }) {
   return (
     <button
       disabled={isRunning}
-      onTransitionEnd={e => handleTransitionEnd(e)}
+      onTransitionEnd={(e) => handleTransitionEnd(e)}
       className={`px-6 py-2 md:px-8 text-white ${
         isNudged ? "bg-green-900 opacity-50" : "bg-green-700"
       } ${isRunning && "cursor-not-allowed"}
@@ -246,7 +246,7 @@ function Button({ isRunning = false, children }) {
       }}
     >
       <div
-        onTransitionEnd={e => handleTransitionEnd(e)}
+        onTransitionEnd={(e) => handleTransitionEnd(e)}
         style={{
           transform: isNudged
             ? `translateX(${-nudgeAmount}px)`
@@ -260,7 +260,7 @@ function Button({ isRunning = false, children }) {
       </div>
       <span
         ref={spinnerEl}
-        onTransitionEnd={e => handleTransitionEnd(e)}
+        onTransitionEnd={(e) => handleTransitionEnd(e)}
         className={`absolute ${isShowingSpinner ? "opacity-100" : "opacity-0"}`}
         style={{
           transition: shouldUseTransitions
@@ -314,9 +314,9 @@ function FadeBetween({ state, children }) {
     config: SPRING_CONFIG,
   })
 
-  const childrenWithProps = React.Children.map(children, child =>
+  const childrenWithProps = React.Children.map(children, (child) =>
     React.cloneElement(child, {
-      cb: height =>
+      cb: (height) =>
         child.props.for === true
           ? setTrueBlockBoundsHeight(height)
           : setFalseBlockBoundsHeight(height),

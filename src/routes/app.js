@@ -19,7 +19,7 @@ import NotFound from "./not-found"
 // Glob import all components in the route directory
 const routeComponentsMap = {}
 function importAll(r) {
-  r.keys().forEach(key => {
+  r.keys().forEach((key) => {
     let keyWithoutExtension = key.substr(0, key.lastIndexOf(".")) || key
 
     routeComponentsMap[keyWithoutExtension] = r(key)
@@ -38,7 +38,7 @@ const themeClasses = {
   },
 }
 
-export default function(props) {
+export default function (props) {
   return (
     <RouterProvider {...props}>
       <ThemeProvider {...props}>
@@ -335,10 +335,10 @@ let memoizedOutlet
 function renderRoutes(routes) {
   return (
     routes.length > 0 &&
-    routes.map(route => {
+    routes.map((route) => {
       let explicitComponent =
         routeComponentsMap[`./${route.fullName.replace(/\./g, "/")}`]
-      let EmptyComponent = props => <Fragment>{props.children}</Fragment>
+      let EmptyComponent = (props) => <Fragment>{props.children}</Fragment>
       let Component = explicitComponent
         ? explicitComponent.default
         : EmptyComponent

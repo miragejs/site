@@ -105,7 +105,7 @@ As you'll learn in the next section, most of your route handlers will interact w
 The most common place you'll use the database directly is in your tests, where you can access it via `server.db`. It can be useful to assert against the state of Mirage's database to verify that your app's network requests are sending over the correct data.
 
 ```js
-test("I can create a movie", async function(assert) {
+test("I can create a movie", async function (assert) {
   await visit("/movies/new")
   await fillIn(".title", "The Dark Knight")
   await click(".submit")

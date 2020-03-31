@@ -51,7 +51,7 @@ function transform(nodes, router) {
 }
 
 function transformRoutes(router) {
-  let menuItemsNoHeadings = router.routes.map(route => {
+  let menuItemsNoHeadings = router.routes.map((route) => {
     let obj = { label: route.label }
 
     if (route.isPage) {
@@ -70,7 +70,7 @@ function addHeadings(nodes, menuItemsNoHeadings) {
   return menuItemsNoHeadings.reduce((array, originalItem) => {
     let item = { ...originalItem }
     if (item.url) {
-      let matchedNode = nodes.find(node => {
+      let matchedNode = nodes.find((node) => {
         let [, path] = node.fileAbsolutePath.match(/(\/docs\/.+)\.md[x]?/)
 
         return urlsMatch(item.url, path)
@@ -78,7 +78,7 @@ function addHeadings(nodes, menuItemsNoHeadings) {
 
       let headings = matchedNode.tableOfContents.items[0].items
       if (headings && headings.length > 0) {
-        item.headings = headings.map(heading => ({
+        item.headings = headings.map((heading) => ({
           anchor: heading.url,
           label: heading.title,
         }))
@@ -92,7 +92,7 @@ function addHeadings(nodes, menuItemsNoHeadings) {
 }
 
 function getActiveHeading(nodes, activeUrl) {
-  let nodeForActiveUrl = nodes.find(node => {
+  let nodeForActiveUrl = nodes.find((node) => {
     let [, path] = node.fileAbsolutePath.match(/(\/docs\/.+)\.md[x]?/)
 
     return urlsMatch(activeUrl, path)

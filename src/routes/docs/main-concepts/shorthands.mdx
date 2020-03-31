@@ -57,7 +57,7 @@ this.get("/contacts") // finds type by singularizing url
 this.get("/contacts", "users") // optionally specify the collection as second param
 
 // equivalent
-this.get("/contacts", schema => {
+this.get("/contacts", (schema) => {
   return schema.contacts.all() // users in the second case
 })
 ```
@@ -102,7 +102,7 @@ this.post("/contacts") // finds type by singularizing url
 this.post("/contacts", "user") // optionally specify the type as second param
 
 // equivalent
-this.post("/contacts", function(schema, request) {
+this.post("/contacts", function (schema, request) {
   let attrs = this.normalizedRequestAttrs()
 
   return schema.contacts.create(attrs)
@@ -121,7 +121,7 @@ this.patch("/contacts/:id") // finds type by singularizing url
 this.patch("/contacts/:id", "user") // optionally specify the type as second param
 
 // equivalent
-this.patch("/contacts/:id", function(schema, request) {
+this.patch("/contacts/:id", function (schema, request) {
   let id = request.params.id
   let attrs = this.normalizedRequestAttrs()
 

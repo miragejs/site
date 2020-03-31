@@ -37,7 +37,7 @@ class ClassDoc {
     this.esdoc = esdoc
 
     let fwd = ["name", "slug", "description", "params"]
-    fwd.forEach(key => {
+    fwd.forEach((key) => {
       Object.defineProperty(this, key, {
         get() {
           return node[key]
@@ -48,22 +48,22 @@ class ClassDoc {
 
   get blocks() {
     return this.esdoc
-      .filter(node => node.memberof === this.node.longname)
+      .filter((node) => node.memberof === this.node.longname)
       .sort(byName)
   }
 
   get isHidden() {
     return (
       this.node.unknown &&
-      this.node.unknown.some(unknown => unknown.tagName === "@hide")
+      this.node.unknown.some((unknown) => unknown.tagName === "@hide")
     )
   }
 
   get public() {
-    return this.blocks.filter(node => {
+    return this.blocks.filter((node) => {
       let hasHideTag =
         node.unknown &&
-        node.unknown.some(unknown => unknown.tagName === "@hide")
+        node.unknown.some((unknown) => unknown.tagName === "@hide")
       let isUndocumented = node.undocument
 
       return !hasHideTag && !isUndocumented
@@ -71,11 +71,11 @@ class ClassDoc {
   }
 
   get accessors() {
-    return this.public.filter(node => node.kind === "get")
+    return this.public.filter((node) => node.kind === "get")
   }
 
   get fields() {
-    return this.public.filter(node => node.kind === "member")
+    return this.public.filter((node) => node.kind === "member")
   }
 
   get properties() {
@@ -83,7 +83,7 @@ class ClassDoc {
   }
 
   get methods() {
-    return this.public.filter(node => node.kind === "method")
+    return this.public.filter((node) => node.kind === "method")
   }
 }
 
@@ -91,7 +91,7 @@ interface IApiDocsHook {
   publicClasses: ClassDoc[]
 }
 
-export default function(): IApiDocsHook {
+export default function (): IApiDocsHook {
   let data = useStaticQuery(graphql`
     fragment DocNode on ESDoc {
       name
@@ -144,7 +144,7 @@ export default function(): IApiDocsHook {
   let publicClasses = data.publicClasses.nodes
     .sort(byName)
     .map((node: EsdocNode) => new ClassDoc(node, esdoc))
-    .filter(classDoc => !classDoc.isHidden)
+    .filter((classDoc) => !classDoc.isHidden)
 
   return {
     publicClasses,

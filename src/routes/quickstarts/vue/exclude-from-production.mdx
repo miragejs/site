@@ -23,7 +23,7 @@ Next, add the following to your `vue.config.js`:
 ```js
 // vue.config.js
 module.exports = {
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     if (
       process.env.NODE_ENV === "production" &&
       process.env.MIRAGE_ENABLED !== "true"
@@ -59,7 +59,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 new Vue({
-  render: h => h(App),
+  render: (h) => h(App),
 }).$mount("#app")
 ```
 

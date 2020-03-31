@@ -11,8 +11,8 @@ export default function TodoApp({ refresh }) {
     setIsLoading(true)
 
     fetch("/api/todos")
-      .then(res => res.json())
-      .then(json => {
+      .then((res) => res.json())
+      .then((json) => {
         if (isLatestAndMounted) {
           setTodos(json)
           setIsLoading(false)
@@ -27,20 +27,20 @@ export default function TodoApp({ refresh }) {
 
   function addTodo(todo) {
     setNewTodo(null)
-    setTodos(todos => [todo, ...todos])
+    setTodos((todos) => [todo, ...todos])
   }
 
   function updateTodo(todo) {
-    setTodos(todos => [
-      ...todos.map(globalTodo =>
+    setTodos((todos) => [
+      ...todos.map((globalTodo) =>
         globalTodo.id === todo.id ? todo : globalTodo
       ),
     ])
   }
 
   function removeTodo(todo) {
-    setTodos(todos => [
-      ...todos.filter(globalTodo => globalTodo.id !== todo.id),
+    setTodos((todos) => [
+      ...todos.filter((globalTodo) => globalTodo.id !== todo.id),
     ])
   }
 
@@ -79,7 +79,7 @@ export default function TodoApp({ refresh }) {
                 {todos
                   .sort((a, b) => (Number(a.id) > Number(b.id) ? 1 : -1))
                   .reverse()
-                  .map(todo => (
+                  .map((todo) => (
                     <TodoItem
                       todo={todo}
                       didSave={updateTodo}
@@ -138,8 +138,8 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
       method: "POST",
       body: JSON.stringify(todo),
     })
-      .then(res => res.json())
-      .then(todo => {
+      .then((res) => res.json())
+      .then((todo) => {
         setIsSaving(false)
         didCreate(todo)
       })
@@ -153,8 +153,8 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
       method: "PATCH",
       body: JSON.stringify(todo),
     })
-      .then(res => res.json())
-      .then(todo => {
+      .then((res) => res.json())
+      .then((todo) => {
         setIsSaving(false)
         didSave(todo)
       })
@@ -188,13 +188,15 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
   return (
     <li key={todo.id} data-testid={`todo-id-${todo.id}`} className="mt-1">
       <div
-        className={`w-full flex items-center transition ${isSaving &&
-          "opacity-50"}`}
+        className={`w-full flex items-center transition ${
+          isSaving && "opacity-50"
+        }`}
       >
         <input
           type="checkbox"
-          className={`form-checkbox cursor-pointer w-5 h-5 rounded-sm mr-2 bg-transparent border-gray-600 text-green-500 ${!todo.id &&
-            "opacity-0"}`}
+          className={`form-checkbox cursor-pointer w-5 h-5 rounded-sm mr-2 bg-transparent border-gray-600 text-green-500 ${
+            !todo.id && "opacity-0"
+          }`}
           checked={isChecked}
           onChange={handleCheckboxChange}
           disabled={isSaving}
@@ -204,7 +206,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
             className="w-full py-1 pl-1 text-lg font-light bg-transparent border-transparent rounded form-input focus:border-transparent focus:shadow-none focus:bg-gray-900 hover:bg-gray-900"
             value={text}
             ref={inputRef}
-            onChange={e => setText(e.target.value)}
+            onChange={(e) => setText(e.target.value)}
             onBlur={handleSubmit}
             disabled={isSaving}
             placeholder="New To-Do"

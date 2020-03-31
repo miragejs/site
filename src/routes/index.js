@@ -66,7 +66,7 @@ export default function IndexPage() {
   let [playerState, setPlayerState] = useState("loading")
 
   let currentSegment =
-    Object.keys(segments).find(name => {
+    Object.keys(segments).find((name) => {
       let segment = segments[name]
       return segment.start <= currentTime && segment.end > currentTime
     }) || Object.keys(segments)[0]
@@ -210,7 +210,7 @@ export default function IndexPage() {
                   <div className="flex -mx-4">
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={async e => {
+                        onClick={async (e) => {
                           await seekVideo(segments.createServer.start)
                           await playVideo()
                         }}
@@ -228,14 +228,14 @@ export default function IndexPage() {
                           state={playerState}
                           play={playVideo}
                           pause={pauseVideo}
-                          reset={e => seekVideo(segments.createServer.start)}
+                          reset={(e) => seekVideo(segments.createServer.start)}
                         />
                       )}
                     </div>
 
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={async e => {
+                        onClick={async (e) => {
                           await seekVideo(segments.useDatabase.start)
                           await playVideo()
                         }}
@@ -252,14 +252,14 @@ export default function IndexPage() {
                           state={playerState}
                           play={playVideo}
                           pause={pauseVideo}
-                          reset={e => seekVideo(segments.useDatabase.start)}
+                          reset={(e) => seekVideo(segments.useDatabase.start)}
                         />
                       )}
                     </div>
 
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={async e => {
+                        onClick={async (e) => {
                           await seekVideo(segments.seedFactories.start)
                           await playVideo()
                         }}
@@ -276,13 +276,13 @@ export default function IndexPage() {
                           state={playerState}
                           play={playVideo}
                           pause={pauseVideo}
-                          reset={e => seekVideo(segments.seedFactories.start)}
+                          reset={(e) => seekVideo(segments.seedFactories.start)}
                         />
                       )}
                     </div>
                     <div className="w-1/4 px-4">
                       <button
-                        onClick={async e => {
+                        onClick={async (e) => {
                           await seekVideo(segments.writeTests.start)
                           await playVideo()
                         }}
@@ -299,7 +299,7 @@ export default function IndexPage() {
                           state={playerState}
                           play={playVideo}
                           pause={pauseVideo}
-                          reset={e => seekVideo(segments.writeTests.start)}
+                          reset={(e) => seekVideo(segments.writeTests.start)}
                         />
                       )}
                     </div>
@@ -719,7 +719,7 @@ function VideoSegmentProgress({ start, end, current, paused }) {
       let map = {
         width: {
           duration: segmentRemaining * 1000,
-          easing: t => t,
+          easing: (t) => t,
         },
         backgroundColor: {
           duration: 250,
@@ -825,7 +825,7 @@ function FadeBetween({ children, currentSegment }) {
     return memo
   }, {})
 
-  const transitions = useTransition(currentSegment, i => i, {
+  const transitions = useTransition(currentSegment, (i) => i, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },

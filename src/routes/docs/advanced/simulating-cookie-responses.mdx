@@ -11,7 +11,7 @@ call at the browser level by setting them in a route
 function handler:
 
 ```js
-this.post("/users/login", schema => {
+this.post("/users/login", (schema) => {
   // log in for 24 hours
   let now = new Date()
   let cookieExpiration = new Date(now.getTime() + 24 * 3600 * 1000)

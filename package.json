@@ -22,7 +22,9 @@
     "test-and-build": "run-s test build",
     "build-and-serve": "run-s build serve",
     "test:cy:run": "start-test build-and-serve 9000 cy:run",
-    "test:cy:open": "start-test build-and-serve 9000 cy:open"
+    "test:cy:open": "start-test build-and-serve 9000 cy:open",
+    "prettier:check": "prettier --list-different .",
+    "prettier:write": "prettier --write ."
   },
   "dependencies": {
     "@juggle/resize-observer": "^3.1.2",
@@ -51,7 +53,7 @@
     "gatsby-source-filesystem": "^2.2.1",
     "gatsby-transformer-sharp": "^2.3.19",
     "install": "^0.13.0",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.2",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-dom": "16.12.0",

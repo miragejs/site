@@ -15,11 +15,11 @@ export default function Snippet({ name, backgroundColor }) {
       }
     }
   `)
-  let snippets = data.allFile.nodes.map(node => ({
+  let snippets = data.allFile.nodes.map((node) => ({
     name: node.name,
     body: node.fields.content,
   }))
-  let snippet = snippets.find(snippet => snippet.name === name)
+  let snippet = snippets.find((snippet) => snippet.name === name)
   let lines = snippet.body.split("\n")
   let codeblockArgs = lines.shift()
   let props = {}

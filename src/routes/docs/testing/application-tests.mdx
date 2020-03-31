@@ -53,7 +53,7 @@ afterEach(() => {
   server.shutdown()
 })
 
-it("shows the movies", function() {
+it("shows the movies", function () {
   cy.visit("/")
 
   cy.get("li.movie").should("have.length", 10)
@@ -89,7 +89,7 @@ afterEach(() => {
   server.shutdown()
 })
 
-it("shows the movies", function() {
+it("shows the movies", function () {
   cy.visit("/")
 
   cy.get("li.movie").should("have.length", 10)
@@ -127,7 +127,7 @@ afterEach(() => {
   server.shutdown()
 })
 
-it("shows the movies", function() {
+it("shows the movies", function () {
   server.createList("movie", 10)
 
   cy.visit("/")
@@ -180,7 +180,7 @@ Now, import this function and use it in your test:
 // App.test.js
 import { startMirage } from "./mirage"
 
-describe("homepage", function() {
+describe("homepage", function () {
   let server
 
   beforeEach(() => {
@@ -191,7 +191,7 @@ describe("homepage", function() {
     server.shutdown()
   })
 
-  it("shows the movies", function() {
+  it("shows the movies", function () {
     server.createList("movie", 10)
 
     cy.visit("/")
@@ -282,7 +282,7 @@ Now in our tests, we can pass in `test` as the environment. Our tests will run w
 If you find yourself debugging a test and want to view the network requests going in and out of Mirage, you can enable logging within that test by setting the `server.logging` option to `true`:
 
 ```js
-it("shows the movies", function() {
+it("shows the movies", function () {
   server.logging = true // enable logs for this test while debugging
   server.createList("movie", 10)
 
@@ -345,7 +345,7 @@ afterEach(() => {
   server.shutdown()
 })
 
-it("shows all the movies", function() {
+it("shows all the movies", function () {
   server.createList("movie", 10)
 
   cy.visit("/")
@@ -353,7 +353,7 @@ it("shows all the movies", function() {
   cy.get("li.movie").should("have.length", 10)
 })
 
-it("shows the movie's title on the detail route", function() {
+it("shows the movie's title on the detail route", function () {
   let movie = this.server.create("movie", {
     title: "Interstellar",
   })
@@ -379,7 +379,7 @@ Mirage recommends using the [Arrange, Act, Assert approach](https://github.com/t
 You can see this structure in our test from above:
 
 ```js
-it("shows all the movies", function() {
+it("shows all the movies", function () {
   // ARRANGE
   server.createList("movie", 10)
 
@@ -400,7 +400,7 @@ To test how your app responds to a server error, you can overwrite a route handl
 ```js
 import { Response } from "miragejs"
 
-it("shows an error if the save attempt fails", function() {
+it("shows an error if the save attempt fails", function () {
   server.post("/questions", () => {
     return new Response(500, {}, { errors: ["The database went on vacation"] })
   })
@@ -470,7 +470,7 @@ afterEach(() => {
   server.shutdown()
 })
 
-it("shows all the movies", function() {
+it("shows all the movies", function () {
   server.createList("movie", 10)
 
   cy.visit("/")

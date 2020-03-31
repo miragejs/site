@@ -4,10 +4,10 @@ import { H1 } from "../../../components/ui"
 
 import { Markdown } from "../../../components/markdown"
 
-let humanizeType = type => (type === "*" ? "any" : type)
+let humanizeType = (type) => (type === "*" ? "any" : type)
 let toJSXCommaList = (prev, curr) => [prev, ", ", curr]
 
-const Params = function({ esdoc }) {
+const Params = function ({ esdoc }) {
   return esdoc.params
     ? esdoc.params
         .map((param, index) => (
@@ -20,15 +20,15 @@ const Params = function({ esdoc }) {
     : null
 }
 
-const Returns = function({ esdoc }) {
+const Returns = function ({ esdoc }) {
   return <Types types={esdoc.return ? esdoc.return.types : ["any"]} />
 }
 
-const Type = function({ esdoc }) {
+const Type = function ({ esdoc }) {
   return <Types types={esdoc.type ? esdoc.type.types : ["any"]} />
 }
 
-let Types = function({ types }) {
+let Types = function ({ types }) {
   return (
     <span className="italic">
       {types.map(humanizeType).reduce(toJSXCommaList)}
@@ -36,10 +36,10 @@ let Types = function({ types }) {
   )
 }
 
-export default function(props) {
+export default function (props) {
   let classSlug = props.classSlug
   let { publicClasses } = useApiDocs()
-  let publicClass = publicClasses.find(doc => doc.slug === classSlug)
+  let publicClass = publicClasses.find((doc) => doc.slug === classSlug)
 
   return (
     <div>
@@ -55,7 +55,7 @@ export default function(props) {
           >
             <a href="#properties">Properties</a>
           </h2>
-          {publicClass.properties.map(property => (
+          {publicClass.properties.map((property) => (
             <div key={property.longname} className="pb-4">
               <h3
                 id={property.slug}
@@ -82,7 +82,7 @@ export default function(props) {
           >
             <a href="#methods">Methods</a>
           </h2>
-          {publicClass.methods.map(method => (
+          {publicClass.methods.map((method) => (
             <div key={method.longname} className="pb-4">
               <h3
                 id={method.slug}

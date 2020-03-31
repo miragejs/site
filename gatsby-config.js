@@ -89,13 +89,8 @@ module.exports = {
       options: {
         extractors: [
           {
-            extractor: class {
-              /**
-               * @param {object} content
-               */
-              static extract(content) {
-                return content.match(/[\w-/:+]+(?<!:)/g) || []
-              }
+            extractor: (content) => {
+              return content.match(/[\w-/:+]+(?<!:)/g) || []
             },
             extensions: ["js", "ts", "jsx", "tsx", "mdx"],
           },

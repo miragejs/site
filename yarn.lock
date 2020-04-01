@@ -2336,10 +2336,10 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@u-wave/react-vimeo@^0.8.2":
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/@u-wave/react-vimeo/-/react-vimeo-0.8.2.tgz#365f82e74a3c09985513397f25219c1c773fce83"
-  integrity sha512-dDHB3UuXhtPPhmC5nzEWofoAmJS1tA6wewj4/donGsFdgSF7kNDizB8j/O6J8Tk4SnGrNDPHGK1bZutCvXSl9Q==
+"@u-wave/react-vimeo@^0.8.3":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@u-wave/react-vimeo/-/react-vimeo-0.8.3.tgz#c313e0f3286d3865b2f8a7e7840077bc1faef2ef"
+  integrity sha512-TmsKocxbfYNF6/quTOSJL7mf8PotcDWY7gHXiqJLWipeym2BK3zOISHV2wnzHem5dR5EDc0shh2jhIWIdJPt/w==
   dependencies:
     "@vimeo/player" "^2.10.0"
     prop-types "^15.7.2"

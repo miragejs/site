@@ -131,6 +131,17 @@ const allRoutes: RouteDefinition[] = [
         ],
       },
       {
+        label: "Next",
+        name: "next",
+        routes: [
+          { label: "Develop a page", name: "develop-a-page" },
+          {
+            label: "Develop an app",
+            name: "develop-an-app",
+          },
+        ],
+      },
+      {
         label: "Vue",
         name: "vue",
         routes: [

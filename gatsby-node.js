@@ -171,7 +171,11 @@ let slugify = function (str) {
 
 let generateESDoc = function (config) {
   var tmpdir = tmp.dirSync()
+  let originalLog = console.log
+  console.log("Generating ESDoc index")
+  console.log = () => {}
   esdoc.generate({ ...config, ...{ destination: tmpdir.name } })
+  console.log = originalLog
   let index = fs.readFileSync(`${tmpdir.name}/index.json`)
   let result = JSON.parse(index)
   tmpdir.removeCallback()

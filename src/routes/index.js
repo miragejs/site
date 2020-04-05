@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react"
 import { ReactComponent as QuoteOpen } from "../assets/images/quote-open.svg"
 import { ReactComponent as QuoteClose } from "../assets/images/quote-close.svg"
-import ringsUrl from "../assets/images/rings.svg"
+import ringsUrl from "../assets/images/rings.png"
 import testingImageUrl from "../assets/images/homepage/testing.png"
 import prototypeImageUrl from "../assets/images/homepage/prototype.png"
 import overlayMeteorsImageUrl from "../assets/images/homepage/overlay-meteors.png"

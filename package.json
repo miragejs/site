@@ -13,7 +13,7 @@
     "dev": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
-    "develop": "npm run clean && gatsby develop -H 0.0.0.0",
+    "develop": "gatsby develop -H 0.0.0.0",
     "serve": "gatsby serve",
     "test": "jest",
     "percy:exec": "percy exec",

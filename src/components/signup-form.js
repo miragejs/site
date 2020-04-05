@@ -334,9 +334,12 @@ function FadeBetween({ state, children }) {
 
 function State({ cb, animatedOpacity, children }) {
   const [ref, bounds] = useMeasure({ polyfill: ResizeObserver })
-  if (bounds.height > 0) {
-    cb(bounds.height)
-  }
+
+  useEffect(() => {
+    if (bounds.height > 0) {
+      cb(bounds.height)
+    }
+  })
 
   return (
     <animated.div

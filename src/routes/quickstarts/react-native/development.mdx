@@ -16,50 +16,11 @@ npm install --save-dev miragejs
 yarn add --dev miragejs
 ```
 
-## Step 2: Create a server
+## Step 2: Create a Server alongside your networking code
 
-At the top of `App.js`, import Mirage and create a server that mocks out an endpoint:
+At the top of `App.js`, import `Server` from Mirage, create a server, and start mocking out API endpoints that your code needs:
 
-```js{4-22}
-// App.js
-import React from "react"
-import { Text, View } from "react-native"
-import { Server } from "miragejs"
-
-if (window.server) {
-  server.shutdown()
-}
-
-window.server = new Server({
-  routes() {
-    this.get("/api/movies", () => {
-      return {
-        movies: [
-          { id: 1, name: "Inception", year: 2010 },
-          { id: 2, name: "Interstellar", year: 2014 },
-          { id: 3, name: "Dunkirk", year: 2017 },
-        ],
-      }
-    })
-  },
-})
-
-export default function App() {
-  return (
-    <View>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  )
-}
-```
-
-Note that before we call `new Server()`, we check to see if one already exists, and if so we shut it down. This is needed so React Native's hot module reloading doesn't cause multiple servers to exist at once.
-
-## Step 3: Make an API request
-
-Now, whenever your app makes an API request, Mirage will intercept and respond to it:
-
-```jsx{24-30,34-38}
+```js{3-21}
 import React from "react"
 import { Text, View } from "react-native"
 import { Server } from "miragejs"
@@ -87,13 +48,13 @@ export default function App() {
 
   React.useEffect(() => {
     fetch("/api/movies")
-      .then(res => res.json())
-      .then(json => setMovies(json.movies))
+      .then((res) => res.json())
+      .then((json) => setMovies(json.movies))
   }, [])
 
   return (
     <View>
-      {movies.map(movie => (
+      {movies.map((movie) => (
         <Text key={movie.id}>
           {movie.name} ({movie.year})
         </Text>
@@ -102,5 +63,9 @@ export default function App() {
   )
 }
 ```
+
+Note that before we call `new Server()`, we check to see if one already exists, and if so we shut it down. This is needed so React Native's hot module reloading doesn't cause multiple servers to exist at once.
+
+Now, whenever your app makes an API request, Mirage will intercept and respond to it.
 
 You're ready to continue developing your React Native app, mocking out your API endpoints with Mirage along the way.

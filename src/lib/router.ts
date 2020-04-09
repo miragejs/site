@@ -139,6 +139,17 @@ const allRoutes: RouteDefinition[] = [
           { label: "Production builds", name: "exclude-from-production" },
         ],
       },
+      {
+        label: "React Native",
+        name: "react-native",
+        routes: [
+          { label: "Development", name: "development" },
+          {
+            label: "React Native Testing Library",
+            name: "react-native-testing-library",
+          },
+        ],
+      },
       { label: "Ember", name: "ember" },
       { label: "Cypress", name: "cypress" },
     ],

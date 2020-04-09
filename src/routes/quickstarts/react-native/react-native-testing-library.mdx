@@ -1,0 +1,101 @@
+# Mock API Requests in React Native Testing Library with Mirage
+
+Use your Mirage server to test your React Native app under different server scenarios using [@testing-library/react-native](https://github.com/testing-library/native-testing-library), [Jest Native](https://github.com/testing-library/jest-native), and [Jest Expo](https://docs.expo.io/versions/latest/guides/testing-with-jest/).
+
+_This guide assumes your app is already set up with React Native Testing Library, Jest Native, and Expo. It should also work with both [react-test-renderer](https://reactjs.org/docs/test-renderer.html) and [react-native-testing-library](https://github.com/callstack/react-native-testing-library)._
+
+## Step 1: Install Mirage
+
+First, make sure you have Mirage installed:
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Step 2: Setup your testing environment
+
+We'll need to update our Jest environment to work with Mirage.
+
+First, install the polyfill for XMLHttpRequest:
+
+```bash
+# Using npm
+npm install --save-dev xmlhttprequest
+
+# Using Yarn
+yarn add --dev xmlhttprequest
+```
+
+Then create a new `jest.setup.js` file in the root of your project. We'll use this file to patch the `global` variable and add support for XMLHttpRequest, self, and window.
+
+```js
+// jest.setup.js
+global.self = global
+global.window = {}
+global.XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
+```
+
+Finally, have Jest to load the environment that we just created using `jest.config.js`.
+
+```js
+// jest.config.js
+const jestPreset = require("@testing-library/react-native/jest-preset")
+
+module.exports = {
+  preset: "jest-expo",
+  setupFiles: [...jestPreset.setupFiles],
+  setupFilesAfterEnv: ["./jest.setup.js"],
+}
+```
+
+Here we're telling Jest to execute our `jest.setup.js` after it sets up the test environment.
+
+## Step 3: Create a Mirage Server within a test
+
+Within a test file, import `Server` from Mirage, create a server, and mock out the API endpoints your code depends on:
+
+```js{5-15,18-21}
+// App.test.js
+import React from "react"
+import { render, waitForElement } from "@testing-library/react-native"
+import App from "../App"
+import { Server } from "miragejs"
+
+let server
+
+beforeEach(() => {
+  server = new Server()
+})
+
+afterEach(() => {
+  server.shutdown()
+})
+
+it("shows the users from our server", async () => {
+  server.get("/users", () => [
+    { id: 1, name: "Luke" },
+    { id: 2, name: "Leia" },
+  ])
+
+  const { getByTestId } = render(<App />)
+  await waitForElement(() => getByTestId("user-1"))
+  await waitForElement(() => getByTestId("user-2"))
+
+  expect(getByTestId("user-1")).toHaveTextContent("Luke")
+  expect(getByTestId("user-2")).toHaveTextContent("Leia")
+})
+```
+
+When the `<App />` component renders and makes a network request to `/users`, Mirage will intercept and respond with the data above.
+
+Note that we've called `server.shutdown()` after each test, so that Mirage has a chance to clean itself up and not leak into other tests.
+
+---
+
+_For a more complete example, check out the [Mirage React Native demo](https://github.com/miragejs/react-native-demo) on GitHub._
+
+_To learn about Mirage's powerful testing features, read the [Application Testing guide](/docs/testing/application-tests/)._

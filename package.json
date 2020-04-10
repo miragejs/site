@@ -37,6 +37,7 @@
     "@u-wave/react-vimeo": "^0.8.3",
     "autoprefixer": "^9.7.6",
     "babel-plugin-styled-components": "^1.10.7",
+    "docsearch.js": "^2.6.3",
     "gatsby": "^2.20.15",
     "gatsby-image": "^2.3.2",
     "gatsby-plugin-manifest": "^2.3.3",

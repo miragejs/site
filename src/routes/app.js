@@ -16,6 +16,8 @@ import SignupForm from "../components/signup-form"
 import ErrorBoundary from "../components/error-boundary"
 import NotFound from "./not-found"
 import { sidebarWidth } from "../components/three-column-layout/desktop-nav"
+import "docsearch.js/dist/cdn/docsearch.min.css"
+import docsearch from "docsearch.js"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -92,6 +94,7 @@ function AppInner(props) {
 function Header({ showHeaderNav }) {
   const { theme } = useTheme()
   const [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
+  const [isShowingSearch, setIsShowingSearch] = useState(true)
   const router = useRouter()
 
   return (
@@ -223,8 +226,8 @@ function Header({ showHeaderNav }) {
               ) : null}
 
               <div className="hidden md:flex md:items-center md:ml-auto">
-                <a
-                  href="https://discord.gg/pPsdsrn"
+                <button
+                  onClick={() => setIsShowingSearch(true)}
                   className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
                 >
                   <svg viewBox="0 0 20 20" className="w-5 h-5 fill-current">
@@ -235,7 +238,7 @@ function Header({ showHeaderNav }) {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                </a>
+                </button>
                 {/* <div
                   className={`w-px h-5 mr-8 border-l ${themeClasses[theme]["divider"]}`}
                 /> */}
@@ -319,6 +322,8 @@ function Header({ showHeaderNav }) {
           </header>
         </div>
       </div>
+
+      {isShowingSearch && <Search />}
     </div>
   )
 }
@@ -504,5 +509,34 @@ function Footer() {
         </div>
       </div>
     </footer>
+  )
+}
+
+function Search() {
+  useEffect(() => {
+    docsearch({
+      // apiKey: "25626fae796133dc1e734c6bcaaeac3c",
+      // indexName: "docsearch",
+      apiKey: "bad63e97db98b6b8bbe427d715e87dde",
+      indexName: "mirage",
+      appId: "C1CG9FQQS9", // Should be only included if you are running DocSearch on your own.
+      inputSelector: "#mirage-algolia-search-input",
+      debug: false, // Set debug to true to inspect the dropdown
+    })
+  }, [])
+
+  return (
+    <div className="fixed inset-0 flex flex-col items-center">
+      <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+      <div className="w-full max-w-xl mt-24">
+        <div className="relative rounded-md shadow-xl">
+          <input
+            id="mirage-algolia-search-input"
+            className="block w-full px-5 py-4 text-lg rounded-lg focus:outline-none"
+            placeholder="Search..."
+          />
+        </div>
+      </div>
+    </div>
   )
 }

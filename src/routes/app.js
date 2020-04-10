@@ -15,6 +15,7 @@ import SEO from "../components/seo"
 import SignupForm from "../components/signup-form"
 import ErrorBoundary from "../components/error-boundary"
 import NotFound from "./not-found"
+import { sidebarWidth } from "../components/three-column-layout/desktop-nav"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -31,10 +32,12 @@ const themeClasses = {
   light: {
     active: "text-gray-900",
     inactive: "text-gray-600 hover:text-gray-900",
+    divider: "border-gray-300",
   },
   dark: {
     active: "text-gray-100",
     inactive: "text-gray-500 hover:text-gray-100",
+    divider: "border-gray-700",
   },
 }
 
@@ -111,34 +114,30 @@ function Header({ showHeaderNav }) {
                 theme === "dark" ? "h-24" : "h-16"
               }`}
             >
-              <Link
-                to="/"
-                className={`px-5 md:px-0 flex items-center flex-shrink-0  ${
-                  // theme === "dark" ? "text-green-500" : "text-gray-900"
-                  theme === "dark" ? "text-green-500" : "text-green-500"
-                }`}
-                onClick={() => setIsShowingMobileNav(false)}
-              >
-                <LogoAndName
-                  className={`
-                  ${
-                    theme === "dark"
-                      ? "w-24 md:w-28 lg:w-34 py-3 text-gray-100"
-                      : "w-24 md:w-28 text-gray-900"
+              <div
+                className="flex items-center lg:border-r lg:border-gray-200"
+                css={`
+                  @media (min-width: 1024px) {
+                    width: ${sidebarWidth}px;
                   }
                 `}
-                />
-              </Link>
-
-              {/* Leaving out for now, but want to make this work. Just need to figure out a treatment for homepage. */}
-              {/* <span
-                style={{ marginLeft: "125px", marginRight: "50px" }}
-                className={`hidden lg:block py-4 border-l ${
-                  theme === "dark"
-                    ? "border-gray-700"
-                    : "lg:block border-gray-200"
-                }`}
-              ></span> */}
+              >
+                <Link
+                  to="/"
+                  className="px-5 md:px-0"
+                  onClick={() => setIsShowingMobileNav(false)}
+                >
+                  <LogoAndName
+                    className={`
+                    ${
+                      theme === "dark"
+                        ? "w-24 md:w-28 lg:w-34 py-3 text-gray-100"
+                        : "w-24 md:w-28 text-gray-900"
+                    }
+                  `}
+                  />
+                </Link>
+              </div>
 
               {/* Mobile nav button */}
               {showHeaderNav ? (
@@ -157,32 +156,89 @@ function Header({ showHeaderNav }) {
               ) : null}
 
               {/* Desktop nav */}
-              <div
-                className={`hidden md:flex md:items-center md:ml-8 lg:ml-16
-                  ${theme === "dark" ? "pt-1" : ""}`}
-              >
-                {showHeaderNav ? (
-                  <Fragment>
-                    <NavLink
-                      to={router.routerFor("/docs").pages[0].url}
-                      activeFor="/docs/*"
-                    >
-                      Guides
-                    </NavLink>
-                    <NavLink to="/api/classes/association/" activeFor="/api/*">
-                      API
-                    </NavLink>
-                    <NavLink
-                      to={router.routerFor("/quickstarts").pages[0].url}
-                      activeFor="/quickstarts/*"
-                    >
-                      Quickstarts
-                    </NavLink>
-                  </Fragment>
-                ) : null}
-              </div>
+              {showHeaderNav ? (
+                <>
+                  <div
+                    className={`hidden md:flex md:items-center md:ml-8
+                      ${theme === "dark" ? "pt-1" : ""}
+                    `}
+                    css={`
+                      /*
+                        here be dragons...
+
+                        The next one is easier to read, read that first.
+
+                        ...welcome back. This one depends on the viewport width. 100vw - 64px is
+                        now the total space reserved for the <main> area. Minus 280px for the sidebar,
+                        and then the rest is the same. The only other difference is we use the max()
+                        function because 2rem (the padding) will win when the content area starts
+                        getting less than 720px.
+                      */
+                      @media (min-width: 1024px) {
+                        margin-left: max(
+                          2rem,
+                          2rem + ((100vw - 64px - 280px - 2rem - 720px) / 2)
+                        );
+                      }
+
+                      /*
+                        This is a magic number. The sidebar is 280px, leaving 1152px - 280px
+                        room for the main area. There's 2rem of padding, and above @media(1220px)
+                        the main text area will be 720px. That leaves 
+
+                          (1152px - 280px - 2rem - 720px)
+
+                        space left on either side of it for the dynamic margin value. Divid by 2
+                        to get the dynamic margin-left value, then add back in the padding.
+                      */
+                      @media (min-width: 1220px) {
+                        margin-left: calc(
+                          ((1152px - 280px - 2rem - 720px) / 2) + 2rem
+                        );
+                      }
+                    `}
+                  >
+                    <div className="-ml-1">
+                      <NavLink
+                        to={router.routerFor("/docs").pages[0].url}
+                        activeFor="/docs/*"
+                      >
+                        Guides
+                      </NavLink>
+                      <NavLink
+                        to="/api/classes/association/"
+                        activeFor="/api/*"
+                      >
+                        API
+                      </NavLink>
+                      <NavLink
+                        to={router.routerFor("/quickstarts").pages[0].url}
+                        activeFor="/quickstarts/*"
+                      >
+                        Quickstarts
+                      </NavLink>
+                    </div>
+                  </div>
+                </>
+              ) : null}
 
               <div className="hidden md:flex md:items-center md:ml-auto">
+                <a
+                  href="https://discord.gg/pPsdsrn"
+                  className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
+                >
+                  <svg viewBox="0 0 20 20" className="w-5 h-5 fill-current">
+                    <title>Search</title>
+                    <path
+                      fillRule="evenodd"
+                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </a>
+                {/* <div
+                  className={`w-px h-5 mr-8 border-l ${themeClasses[theme]["divider"]}`}
+                /> */}
                 <a
                   href="https://discord.gg/pPsdsrn"
                   className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}

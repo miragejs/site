@@ -18,6 +18,10 @@ import NotFound from "./not-found"
 import { sidebarWidth } from "../components/three-column-layout/desktop-nav"
 import "docsearch.js/dist/cdn/docsearch.min.css"
 import docsearch from "docsearch.js"
+import "@reach/dialog/styles.css"
+import { DialogOverlay, DialogContent } from "@reach/dialog"
+import useKeyboardShortcut from "../hooks/use-keyboard-shortcut"
+import { createGlobalStyle } from "styled-components"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -69,7 +73,7 @@ function AppInner(props) {
   }
 
   return (
-    <Fragment>
+    <div className="relative z-0">
       <Helmet>
         <html className={`${theme === "dark" ? "bg-gray-1000" : "bg-white"}`} />
       </Helmet>
@@ -87,7 +91,7 @@ function AppInner(props) {
 
         <Footer />
       </div>
-    </Fragment>
+    </div>
   )
 }
 
@@ -96,6 +100,8 @@ function Header({ showHeaderNav }) {
   const [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
   const [isShowingSearch, setIsShowingSearch] = useState(true)
   const router = useRouter()
+
+  useKeyboardShortcut(() => setIsShowingSearch(true))
 
   return (
     <div
@@ -227,7 +233,7 @@ function Header({ showHeaderNav }) {
 
               <div className="hidden md:flex md:items-center md:ml-auto">
                 <button
-                  onClick={() => setIsShowingSearch(true)}
+                  onClick={() => setIsShowingSearch(!isShowingSearch)}
                   className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
                 >
                   <svg viewBox="0 0 20 20" className="w-5 h-5 fill-current">
@@ -323,7 +329,24 @@ function Header({ showHeaderNav }) {
         </div>
       </div>
 
-      {isShowingSearch && <Search />}
+      {isShowingSearch && (
+        <DialogOverlay
+          className="bg-gray-900.50"
+          onDismiss={() => setIsShowingSearch(false)}
+        >
+          <DialogContent
+            aria-label="search"
+            style={{
+              margin: 0,
+              padding: 0,
+              width: "auto",
+              background: "transparent",
+            }}
+          >
+            <Search />
+          </DialogContent>
+        </DialogOverlay>
+      )}
     </div>
   )
 }
@@ -512,24 +535,49 @@ function Footer() {
   )
 }
 
-function Search() {
+const AlgoliaStyles = createGlobalStyle`
+  .algolia-autocomplete {
+    display: block !important;
+  }
+  .algolia-autocomplete .ds-dropdown-menu {
+    width: 100%;
+  }
+  .algolia-autocomplete .suggestion-layout-simple .algolia-docsearch-suggestion--text .algolia-docsearch-suggestion--highlight{
+    color: red;
+  }
+  .algolia-autocomplete .ds-dropdown-menu .ds-suggestion.ds-cursor .algolia-docsearch-suggestion:not(.suggestion-layout-simple) .algolia-docsearch-suggestion--content {
+    background-color: rgba(5, 199, 126, .10)
+  }
+  .algolia-autocomplete .algolia-docsearch-suggestion--highlight {
+    color: rgba(3, 166, 103);
+  }
+  .algolia-autocomplete .algolia-docsearch-suggestion--category-header .algolia-docsearch-suggestion--category-header-lvl0 .algolia-docsearch-suggestion--highlight,.algolia-autocomplete .algolia-docsearch-suggestion--category-header .algolia-docsearch-suggestion--category-header-lvl1 .algolia-docsearch-suggestion--highlight,.algolia-autocomplete .algolia-docsearch-suggestion--text .algolia-docsearch-suggestion--highlight{
+    box-shadow: inset 0 -2px 0 0 rgba(3, 166, 103, .8);
+  }
+`
+
+function Search({ onDismiss }) {
   useEffect(() => {
-    docsearch({
-      // apiKey: "25626fae796133dc1e734c6bcaaeac3c",
-      // indexName: "docsearch",
-      apiKey: "bad63e97db98b6b8bbe427d715e87dde",
-      indexName: "mirage",
-      appId: "C1CG9FQQS9", // Should be only included if you are running DocSearch on your own.
-      inputSelector: "#mirage-algolia-search-input",
-      debug: false, // Set debug to true to inspect the dropdown
-    })
-  }, [])
+    if (document.querySelector("#mirage-algolia-search-input")) {
+      docsearch({
+        apiKey: "4df96bd592d6cdcc40aae9c4a76adc64",
+        indexName: "miragejs",
+        inputSelector: "#mirage-algolia-search-input",
+        debug: false, // Set debug to true to inspect the dropdown
+      })
+    }
+  })
+
+  // Seems like aloglia stops keys from propagating. Would like to make ctrl+n/p navigate list.
+  // useKeyboardShortcut("ctrl+n", () => {
+  //   console.log("hi")
+  // })
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center">
-      <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
-      <div className="w-full max-w-xl mt-24">
-        <div className="relative rounded-md shadow-xl">
+    <>
+      <AlgoliaStyles />
+      <div className="flex items-center mt-24">
+        <div className="relative flex-1 max-w-xl mx-auto rounded-md shadow-xl">
           <input
             id="mirage-algolia-search-input"
             className="block w-full px-5 py-4 text-lg rounded-lg focus:outline-none"
@@ -537,6 +585,6 @@ function Search() {
           />
         </div>
       </div>
-    </div>
+    </>
   )
 }

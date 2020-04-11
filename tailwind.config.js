@@ -1,3 +1,5 @@
+const plugin = require("tailwindcss/plugin")
+
 function px(pixels) {
   return `${pixels / 16}rem`
 }
@@ -126,5 +128,23 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/custom-forms")],
+
+  variants: {
+    borderColor: ["responsive", "hover", "focus", "focus-visible"],
+    boxShadow: ["responsive", "hover", "focus", "focus-visible"],
+    zIndex: ["responsive", "focus", "focus-visible"],
+  },
+
+  plugins: [
+    require("@tailwindcss/custom-forms"),
+    plugin(function ({ addVariant, e }) {
+      addVariant("focus-visible", ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => {
+          return `.${e(
+            `focus-visible${separator}${className}`
+          )}[data-focus-visible-added]`
+        })
+      })
+    }),
+  ],
 }

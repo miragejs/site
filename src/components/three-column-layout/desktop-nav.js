@@ -96,7 +96,7 @@ function CollapsibleMenu({ section, isOpen, toggleSection }) {
   return (
     <>
       <button
-        className={`flex items-center text-gray-900 focus:outline-none ${
+        className={`flex items-center text-gray-900 focus:outline-none focus-visible:shadow-outline ${
           sectionIsActive ? "font-medium" : ""
         }
           `}
@@ -199,7 +199,7 @@ function DesktopNavLink({ link }) {
         <Link
           onClick={scrollOrNavigate}
           to={link.url}
-          className={`${
+          className={`focus:outline-none focus-visible:shadow-outline ${
             isActiveRoute
               ? "text-gray-900 font-medium"
               : "text-gray-800 hover:text-gray-900"
@@ -216,6 +216,7 @@ function DesktopNavLink({ link }) {
                 <li className="pt-3 text-base-" key={index}>
                   <a
                     href={heading.anchor}
+                    className="inline-block focus:outline-none focus-visible:shadow-outline"
                     onClick={(e) => {
                       e.preventDefault()
                       scrollToSection(heading.anchor)

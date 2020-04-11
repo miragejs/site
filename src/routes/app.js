@@ -22,6 +22,7 @@ import "@reach/dialog/styles.css"
 import { DialogOverlay, DialogContent } from "@reach/dialog"
 import useKeyboardShortcut from "../hooks/use-keyboard-shortcut"
 import { createGlobalStyle } from "styled-components"
+import "focus-visible/dist/focus-visible.min.js"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -140,7 +141,7 @@ function Header({ showHeaderNav }) {
               >
                 <Link
                   to="/"
-                  className="px-5 md:px-0"
+                  className="px-5 md:px-0 focus:outline-none focus-visible:shadow-outline"
                   onClick={() => setIsShowingMobileNav(false)}
                 >
                   <LogoAndName
@@ -250,7 +251,7 @@ function Header({ showHeaderNav }) {
               <div className="hidden md:flex md:items-center md:ml-auto">
                 <button
                   onClick={() => setIsShowingSearch(!isShowingSearch)}
-                  className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
+                  className={`focus:outline-none focus-visible:shadow-outline px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
                 >
                   <svg viewBox="0 0 20 20" className="w-5 h-5 fill-current">
                     <title>Search</title>
@@ -266,19 +267,19 @@ function Header({ showHeaderNav }) {
                 /> */}
                 <a
                   href="https://discord.gg/pPsdsrn"
-                  className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
+                  className={`focus:outline-none focus-visible:shadow-outline px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
                 >
                   <Discord className="h-5 fill-current" />
                 </a>
                 <a
                   href="https://twitter.com/miragejs"
-                  className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
+                  className={`focus:outline-none focus-visible:shadow-outline px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
                 >
                   <Twitter className="h-5 fill-current" />
                 </a>
                 <a
                   href="https://github.com/miragejs/miragejs"
-                  className={`px-1 ${themeClasses[theme]["inactive"]}`}
+                  className={`focus:outline-none focus-visible:shadow-outline px-1 ${themeClasses[theme]["inactive"]}`}
                 >
                   <Github className="h-5 fill-current" />
                 </a>
@@ -422,7 +423,7 @@ function NavLink({ activeFor, ...props }) {
         return (
           <Link
             {...props}
-            className={`mr-5 lg:mr-7 px-1 font-medium ${themeClasses[theme][state]}`}
+            className={`focus:outline-none focus-visible:shadow-outline mr-5 lg:mr-7 px-1 font-medium ${themeClasses[theme][state]}`}
           />
         )
       }}

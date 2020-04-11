@@ -24,7 +24,12 @@ export const H2 = (props) => (
     {...props}
     className="mt-10 mb-4 text-2xl font-normal leading-tight text-gray-900 font-title md:text-3xl md:mt-14 md:mb-6 before-h-8 xl:before-h-12 "
   >
-    <a href={`#${props.id}`}>{props.children}</a>
+    <a
+      href={`#${props.id}`}
+      className="inline-block focus:outline-none focus-visible:shadow-outline"
+    >
+      {props.children}
+    </a>
   </h2>
 )
 
@@ -33,7 +38,12 @@ export const H3 = (props) => (
     {...props}
     className="mt-12 mb-5 font-normal leading-normal text-gray-900 font-title md:mb-6 text-2-25xl before-h-8 xl:before-h-12 "
   >
-    <a href={`#${props.id}`}>{props.children}</a>
+    <a
+      href={`#${props.id}`}
+      className="inline-block focus:outline-none focus-visible:shadow-outline"
+    >
+      {props.children}
+    </a>
   </h3>
 )
 
@@ -95,7 +105,12 @@ export function A({ href, children, ...rest }) {
         </a>
       )
 
-  return <Component {...rest} className="underline hover:text-blue-500" />
+  return (
+    <Component
+      {...rest}
+      className="underline hover:text-blue-500 focus:outline-none focus-visible:shadow-outline"
+    />
+  )
 }
 
 export const HR = (props) => (

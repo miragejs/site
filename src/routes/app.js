@@ -98,10 +98,15 @@ function AppInner(props) {
 function Header({ showHeaderNav }) {
   const { theme } = useTheme()
   const [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
-  const [isShowingSearch, setIsShowingSearch] = useState(true)
+  const [isShowingSearch, setIsShowingSearch] = useState(false)
   const router = useRouter()
 
   useKeyboardShortcut(() => setIsShowingSearch(true))
+
+  function handleSearchSelect(url) {
+    setIsShowingSearch(false)
+    navigate(new URL(url).pathname)
+  }
 
   return (
     <div
@@ -124,10 +129,12 @@ function Header({ showHeaderNav }) {
               }`}
             >
               <div
-                className="flex items-center lg:border-r lg:border-gray-200"
+                className={`flex items-center ${
+                  theme === "light" ? "lg:border-r lg:border-gray-200" : ""
+                }`}
                 css={`
                   @media (min-width: 1024px) {
-                    width: ${sidebarWidth}px;
+                    width: ${theme === "dark" ? "auto" : `${sidebarWidth}px`};
                   }
                 `}
               >
@@ -171,7 +178,9 @@ function Header({ showHeaderNav }) {
                     className={`hidden md:flex md:items-center md:ml-8
                       ${theme === "dark" ? "pt-1" : ""}
                     `}
-                    css={`
+                    css={
+                      theme === "light"
+                        ? `
                       /*
                         here be dragons...
 
@@ -191,9 +200,9 @@ function Header({ showHeaderNav }) {
                       }
 
                       /*
-                        This is a magic number. The sidebar is 280px, leaving 1152px - 280px
-                        room for the main area. There's 2rem of padding, and above @media(1220px)
-                        the main text area will be 720px. That leaves 
+                        This is a magic number for screens 1220px and above. The sidebar is 280px,
+                        leaving 1152px - 280px room for the main area. There's 2rem of padding, and
+                        above @media(1220px) the main text area will be 720px. That leaves 
 
                           (1152px - 280px - 2rem - 720px)
 
@@ -205,9 +214,16 @@ function Header({ showHeaderNav }) {
                           ((1152px - 280px - 2rem - 720px) / 2) + 2rem
                         );
                       }
-                    `}
+                    `
+                        : `
+                      @media (min-width: 1024px) {
+                        margin-left: 4rem;
+                      }
+                      `
+                    }
                   >
-                    <div className="-ml-1">
+                    {/* adjust for vertical border on light screens */}
+                    <div className={theme === "light" ? "-ml-1" : ""}>
                       <NavLink
                         to={router.routerFor("/docs").pages[0].url}
                         activeFor="/docs/*"
@@ -343,7 +359,7 @@ function Header({ showHeaderNav }) {
               background: "transparent",
             }}
           >
-            <Search />
+            <Search onSelect={handleSearchSelect} />
           </DialogContent>
         </DialogOverlay>
       )}
@@ -556,7 +572,7 @@ const AlgoliaStyles = createGlobalStyle`
   }
 `
 
-function Search({ onDismiss }) {
+function Search({ onSelect }) {
   useEffect(() => {
     if (document.querySelector("#mirage-algolia-search-input")) {
       docsearch({
@@ -564,6 +580,15 @@ function Search({ onDismiss }) {
         indexName: "miragejs",
         inputSelector: "#mirage-algolia-search-input",
         debug: false, // Set debug to true to inspect the dropdown
+        handleSelected: function (
+          input,
+          event,
+          suggestion,
+          datasetNumber,
+          context
+        ) {
+          onSelect(suggestion.url)
+        },
       })
     }
   })
@@ -581,7 +606,7 @@ function Search({ onDismiss }) {
           <input
             id="mirage-algolia-search-input"
             className="block w-full px-5 py-4 text-lg rounded-lg focus:outline-none"
-            placeholder="Search..."
+            placeholder={`Search the docs (press "/" to focus)`}
           />
         </div>
       </div>

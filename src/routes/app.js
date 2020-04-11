@@ -102,7 +102,7 @@ function Header({ showHeaderNav }) {
   const [isShowingSearch, setIsShowingSearch] = useState(false)
   const router = useRouter()
 
-  useKeyboardShortcut(() => setIsShowingSearch(true))
+  useKeyboardShortcut("/", () => setIsShowingSearch(true))
 
   function handleSearchSelect(url) {
     setIsShowingSearch(false)

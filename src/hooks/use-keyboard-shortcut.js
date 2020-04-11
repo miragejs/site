@@ -5,8 +5,8 @@ import { useHotkeys } from "react-hotkeys-hook"
   stroke. Otherwise, an unwanted keystroke might appear, e.g. if the 
   shortcut brings up a dialog with a form in it.
 */
-export default function (f) {
-  useHotkeys("/", (event) => {
+export default function (key, f) {
+  useHotkeys(key, (event) => {
     event.preventDefault()
     f()
   })

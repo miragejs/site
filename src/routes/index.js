@@ -19,6 +19,7 @@ import { ReactComponent as PauseIcon } from "../assets/images/pause.svg"
 import { ReactComponent as ReplayIcon } from "../assets/images/replay2.svg"
 import { useSpring, animated, useTransition } from "react-spring"
 import { usePrevious } from "../hooks/use-previous"
+import useIsMountedRef from "../hooks/use-is-mounted-ref"
 
 const scroll = keyframes`
   from {
@@ -30,6 +31,7 @@ const scroll = keyframes`
 `
 
 export default function IndexPage() {
+  let isMounted = useIsMountedRef()
   const router = useRouter()
   const data = useStaticQuery(graphql`
     query {
@@ -81,12 +83,16 @@ export default function IndexPage() {
 
   async function pauseVideo() {
     await videoPlayer.current.player.pause()
-    setPlayerState("paused")
+    if (isMounted.current) {
+      setPlayerState("paused")
+    }
   }
 
   async function playVideo() {
     await videoPlayer.current.player.play()
-    setPlayerState("playing")
+    if (isMounted.current) {
+      setPlayerState("playing")
+    }
   }
 
   return (

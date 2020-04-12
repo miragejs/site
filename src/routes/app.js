@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react"
+import React, { useState, useEffect, Fragment, useRef } from "react"
 import { Router, Link, Match, navigate } from "@reach/router"
 import { Helmet } from "react-helmet"
 import { ReactComponent as LogoAndName } from "../assets/images/logo-and-name.svg"
@@ -17,7 +17,6 @@ import ErrorBoundary from "../components/error-boundary"
 import NotFound from "./not-found"
 import { sidebarWidth } from "../components/three-column-layout/desktop-nav"
 import "docsearch.js/dist/cdn/docsearch.min.css"
-import docsearch from "docsearch.js"
 import "@reach/dialog/styles.css"
 import { DialogOverlay, DialogContent } from "@reach/dialog"
 import useKeyboardShortcut from "../hooks/use-keyboard-shortcut"
@@ -574,24 +573,29 @@ const AlgoliaStyles = createGlobalStyle`
 `
 
 function Search({ onSelect }) {
+  let inputRef = useRef()
   useEffect(() => {
-    if (document.querySelector("#mirage-algolia-search-input")) {
-      docsearch({
-        apiKey: "4df96bd592d6cdcc40aae9c4a76adc64",
-        indexName: "miragejs",
-        inputSelector: "#mirage-algolia-search-input",
-        debug: false, // Set debug to true to inspect the dropdown
-        handleSelected: function (
-          input,
-          event,
-          suggestion,
-          datasetNumber,
-          context
-        ) {
-          onSelect(suggestion.url)
-        },
-      })
-    }
+    import("docsearch.js").then((module) => {
+      if (document.querySelector("#mirage-algolia-search-input")) {
+        module.default({
+          apiKey: "4df96bd592d6cdcc40aae9c4a76adc64",
+          indexName: "miragejs",
+          inputSelector: "#mirage-algolia-search-input",
+          debug: false, // Set debug to true to inspect the dropdown
+          handleSelected: function (
+            input,
+            event,
+            suggestion,
+            datasetNumber,
+            context
+          ) {
+            onSelect(suggestion.url)
+          },
+        })
+
+        inputRef.current.focus()
+      }
+    })
   })
 
   // Seems like aloglia stops keys from propagating. Would like to make ctrl+n/p navigate list.
@@ -606,6 +610,7 @@ function Search({ onSelect }) {
         <div className="relative flex-1 max-w-xl mx-auto rounded-md shadow-xl">
           <input
             id="mirage-algolia-search-input"
+            ref={inputRef}
             className="block w-full px-5 py-4 text-lg rounded-lg focus:outline-none"
             placeholder={`Search the docs (press "/" to focus)`}
           />

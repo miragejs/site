@@ -354,9 +354,11 @@ function Header({ showHeaderNav }) {
           <DialogContent
             aria-label="search"
             style={{
-              margin: 0,
+              marginTop: 0,
+              marginBottom: 0,
               padding: 0,
               width: "auto",
+              maxWidth: "36rem",
               background: "transparent",
             }}
           >
@@ -608,7 +610,7 @@ function Search({ onSelect }) {
     <>
       <AlgoliaStyles />
       <div className="flex items-center mt-24">
-        <div className="relative flex-1 max-w-xl mx-auto rounded-md shadow-xl">
+        <div className="relative flex-1 rounded-md shadow-xl">
           <input
             id="mirage-algolia-search-input"
             ref={inputRef}

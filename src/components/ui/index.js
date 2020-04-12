@@ -10,19 +10,19 @@ export const Lead = ({ children }) => (
   </p>
 )
 
-export const H1 = (props) => (
+export const H1 = ({ id, ...rest }) => (
   <h1
-    {...props}
-    className="mb-6 text-4xl font-normal leading-tight text-gray-900 font-title md:mb-8 md:text-4-5xl "
+    {...rest}
+    className="mb-6 text-4xl font-normal leading-tight text-gray-900 font-title md:mb-8 md:text-4-5xl before-h-8 xl:before-h-12"
   >
-    {props.children}
+    {rest.children}
   </h1>
 )
 
 export const H2 = (props) => (
   <h2
     {...props}
-    className="mt-10 mb-4 text-2xl font-normal leading-tight text-gray-900 font-title md:text-3xl md:mt-14 md:mb-6 before-h-8 xl:before-h-12 "
+    className="mt-10 mb-4 text-2xl font-normal leading-tight text-gray-900 font-title md:text-3xl md:mt-14 md:mb-6 before-h-8 xl:before-h-12"
   >
     <a
       href={`#${props.id}`}
@@ -36,7 +36,7 @@ export const H2 = (props) => (
 export const H3 = (props) => (
   <h3
     {...props}
-    className="mt-12 mb-5 font-normal leading-normal text-gray-900 font-title md:mb-6 text-2-25xl before-h-8 xl:before-h-12 "
+    className="mt-12 mb-5 font-normal leading-normal text-gray-900 font-title md:mb-6 text-2-25xl before-h-8 xl:before-h-12"
   >
     <a
       href={`#${props.id}`}

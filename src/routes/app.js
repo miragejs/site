@@ -103,9 +103,10 @@ function Header({ showHeaderNav }) {
 
   useKeyboardShortcut("/", () => setIsShowingSearch(true))
 
-  function handleSearchSelect(url) {
+  function handleSearchSelect(productionAlgoliaUrl) {
     setIsShowingSearch(false)
-    navigate(new URL(url).pathname)
+    let url = new URL(productionAlgoliaUrl)
+    navigate(`${url.pathname}${url.hash}`)
   }
 
   return (

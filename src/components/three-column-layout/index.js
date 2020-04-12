@@ -44,7 +44,7 @@ export function ThreeColumnLayout({
                   {previousPage ? (
                     <Link
                       to={previousPage.url}
-                      className="block hover:opacity-75"
+                      className="block focus:outline-none focus-visible:shadow-outline hover:opacity-75"
                     >
                       <div className="text-sm">Previous</div>
                       <div className="text-xl text-blue-500">
@@ -55,7 +55,10 @@ export function ThreeColumnLayout({
                 </div>
                 <div>
                   {nextPage ? (
-                    <Link to={nextPage.url} className="block hover:opacity-75">
+                    <Link
+                      to={nextPage.url}
+                      className="block focus:outline-none focus-visible:shadow-outline hover:opacity-75"
+                    >
                       <div className="text-sm text-right">Next</div>
                       <div className="text-xl text-blue-500">
                         {nextPage.label}

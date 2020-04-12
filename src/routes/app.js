@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react"
+import React, { useState, useEffect, Fragment, useRef } from "react"
 import { Router, Link, Match, navigate } from "@reach/router"
 import { Helmet } from "react-helmet"
 import { ReactComponent as LogoAndName } from "../assets/images/logo-and-name.svg"
@@ -15,6 +15,13 @@ import SEO from "../components/seo"
 import SignupForm from "../components/signup-form"
 import ErrorBoundary from "../components/error-boundary"
 import NotFound from "./not-found"
+import { sidebarWidth } from "../components/three-column-layout/desktop-nav"
+import "docsearch.js/dist/cdn/docsearch.min.css"
+import "@reach/dialog/styles.css"
+import { DialogOverlay, DialogContent } from "@reach/dialog"
+import useKeyboardShortcut from "../hooks/use-keyboard-shortcut"
+import { createGlobalStyle } from "styled-components"
+import "focus-visible/dist/focus-visible.min.js"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -31,10 +38,12 @@ const themeClasses = {
   light: {
     active: "text-gray-900",
     inactive: "text-gray-600 hover:text-gray-900",
+    divider: "border-gray-300",
   },
   dark: {
     active: "text-gray-100",
     inactive: "text-gray-500 hover:text-gray-100",
+    divider: "border-gray-700",
   },
 }
 
@@ -64,7 +73,7 @@ function AppInner(props) {
   }
 
   return (
-    <Fragment>
+    <div className="relative z-0">
       <Helmet>
         <html className={`${theme === "dark" ? "bg-gray-1000" : "bg-white"}`} />
       </Helmet>
@@ -82,14 +91,23 @@ function AppInner(props) {
 
         <Footer />
       </div>
-    </Fragment>
+    </div>
   )
 }
 
 function Header({ showHeaderNav }) {
   const { theme } = useTheme()
   const [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
+  const [isShowingSearch, setIsShowingSearch] = useState(false)
   const router = useRouter()
+
+  useKeyboardShortcut("/", () => setIsShowingSearch(true))
+
+  function handleSearchSelect(productionAlgoliaUrl) {
+    setIsShowingSearch(false)
+    let url = new URL(productionAlgoliaUrl)
+    navigate(`${url.pathname}${url.hash}`)
+  }
 
   return (
     <div
@@ -111,34 +129,32 @@ function Header({ showHeaderNav }) {
                 theme === "dark" ? "h-24" : "h-16"
               }`}
             >
-              <Link
-                to="/"
-                className={`px-5 md:px-0 flex items-center flex-shrink-0  ${
-                  // theme === "dark" ? "text-green-500" : "text-gray-900"
-                  theme === "dark" ? "text-green-500" : "text-green-500"
+              <div
+                className={`flex items-center ${
+                  theme === "light" ? "lg:border-r lg:border-gray-200" : ""
                 }`}
-                onClick={() => setIsShowingMobileNav(false)}
-              >
-                <LogoAndName
-                  className={`
-                  ${
-                    theme === "dark"
-                      ? "w-24 md:w-28 lg:w-34 py-3 text-gray-100"
-                      : "w-24 md:w-28 text-gray-900"
+                css={`
+                  @media (min-width: 1024px) {
+                    width: ${theme === "dark" ? "auto" : `${sidebarWidth}px`};
                   }
                 `}
-                />
-              </Link>
-
-              {/* Leaving out for now, but want to make this work. Just need to figure out a treatment for homepage. */}
-              {/* <span
-                style={{ marginLeft: "125px", marginRight: "50px" }}
-                className={`hidden lg:block py-4 border-l ${
-                  theme === "dark"
-                    ? "border-gray-700"
-                    : "lg:block border-gray-200"
-                }`}
-              ></span> */}
+              >
+                <Link
+                  to="/"
+                  className="px-5 md:px-0 focus:outline-none focus-visible:shadow-outline"
+                  onClick={() => setIsShowingMobileNav(false)}
+                >
+                  <LogoAndName
+                    className={`
+                    ${
+                      theme === "dark"
+                        ? "w-24 md:w-28 lg:w-34 py-3 text-gray-100"
+                        : "w-24 md:w-28 text-gray-900"
+                    }
+                  `}
+                  />
+                </Link>
+              </div>
 
               {/* Mobile nav button */}
               {showHeaderNav ? (
@@ -157,47 +173,113 @@ function Header({ showHeaderNav }) {
               ) : null}
 
               {/* Desktop nav */}
-              <div
-                className={`hidden md:flex md:items-center md:ml-8 lg:ml-16
-                  ${theme === "dark" ? "pt-1" : ""}`}
-              >
-                {showHeaderNav ? (
-                  <Fragment>
-                    <NavLink
-                      to={router.routerFor("/docs").pages[0].url}
-                      activeFor="/docs/*"
-                    >
-                      Guides
-                    </NavLink>
-                    <NavLink to="/api/classes/association/" activeFor="/api/*">
-                      API
-                    </NavLink>
-                    <NavLink
-                      to={router.routerFor("/quickstarts").pages[0].url}
-                      activeFor="/quickstarts/*"
-                    >
-                      Quickstarts
-                    </NavLink>
-                  </Fragment>
-                ) : null}
-              </div>
+              {showHeaderNav ? (
+                <>
+                  <div
+                    className={`hidden md:flex md:items-center md:ml-8
+                      ${theme === "dark" ? "pt-1" : ""}
+                    `}
+                    css={
+                      theme === "light"
+                        ? `
+                      /*
+                        here be dragons...
+
+                        The next one is easier to read, read that first.
+
+                        ...welcome back. This one depends on the viewport width. 100vw - 64px is
+                        now the total space reserved for the <main> area. Minus 280px for the sidebar,
+                        and then the rest is the same. The only other difference is we use the max()
+                        function because 2rem (the padding) will win when the content area starts
+                        getting less than 720px.
+                      */
+                      @media (min-width: 1024px) {
+                        margin-left: max(
+                          2rem,
+                          2rem + ((100vw - 64px - 280px - 2rem - 720px) / 2)
+                        );
+                      }
+
+                      /*
+                        This is a magic number for screens 1220px and above. The sidebar is 280px,
+                        leaving 1152px - 280px room for the main area. There's 2rem of padding, and
+                        above @media(1220px) the main text area will be 720px. That leaves 
+
+                          (1152px - 280px - 2rem - 720px)
+
+                        space left on either side of it for the dynamic margin value. Divid by 2
+                        to get the dynamic margin-left value, then add back in the padding.
+                      */
+                      @media (min-width: 1220px) {
+                        margin-left: calc(
+                          ((1152px - 280px - 2rem - 720px) / 2) + 2rem
+                        );
+                      }
+                    `
+                        : `
+                      @media (min-width: 1024px) {
+                        margin-left: 4rem;
+                      }
+                      `
+                    }
+                  >
+                    {/* adjust for vertical border on light screens */}
+                    <div className={theme === "light" ? "-ml-1" : ""}>
+                      <NavLink
+                        to={router.routerFor("/docs").pages[0].url}
+                        activeFor="/docs/*"
+                      >
+                        Guides
+                      </NavLink>
+                      <NavLink
+                        to="/api/classes/association/"
+                        activeFor="/api/*"
+                      >
+                        API
+                      </NavLink>
+                      <NavLink
+                        to={router.routerFor("/quickstarts").pages[0].url}
+                        activeFor="/quickstarts/*"
+                      >
+                        Quickstarts
+                      </NavLink>
+                    </div>
+                  </div>
+                </>
+              ) : null}
 
               <div className="hidden md:flex md:items-center md:ml-auto">
+                <button
+                  onClick={() => setIsShowingSearch(!isShowingSearch)}
+                  className={`focus:outline-none focus-visible:shadow-outline px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
+                >
+                  <svg viewBox="0 0 20 20" className="w-5 h-5 fill-current">
+                    <title>Search</title>
+                    <path
+                      fillRule="evenodd"
+                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+                {/* <div
+                  className={`w-px h-5 mr-8 border-l ${themeClasses[theme]["divider"]}`}
+                /> */}
                 <a
                   href="https://discord.gg/pPsdsrn"
-                  className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
+                  className={`focus:outline-none focus-visible:shadow-outline px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
                 >
                   <Discord className="h-5 fill-current" />
                 </a>
                 <a
                   href="https://twitter.com/miragejs"
-                  className={`px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
+                  className={`focus:outline-none focus-visible:shadow-outline px-1 mr-5 ${themeClasses[theme]["inactive"]}`}
                 >
                   <Twitter className="h-5 fill-current" />
                 </a>
                 <a
                   href="https://github.com/miragejs/miragejs"
-                  className={`px-1 ${themeClasses[theme]["inactive"]}`}
+                  className={`focus:outline-none focus-visible:shadow-outline px-1 ${themeClasses[theme]["inactive"]}`}
                 >
                   <Github className="h-5 fill-current" />
                 </a>
@@ -263,6 +345,27 @@ function Header({ showHeaderNav }) {
           </header>
         </div>
       </div>
+
+      {isShowingSearch && (
+        <DialogOverlay
+          className="bg-gray-900.50"
+          onDismiss={() => setIsShowingSearch(false)}
+        >
+          <DialogContent
+            aria-label="search"
+            style={{
+              marginTop: 0,
+              marginBottom: 0,
+              padding: 0,
+              width: "auto",
+              maxWidth: "36rem",
+              background: "transparent",
+            }}
+          >
+            <Search onSelect={handleSearchSelect} />
+          </DialogContent>
+        </DialogOverlay>
+      )}
     </div>
   )
 }
@@ -322,7 +425,7 @@ function NavLink({ activeFor, ...props }) {
         return (
           <Link
             {...props}
-            className={`mr-5 lg:mr-7 px-1 font-medium ${themeClasses[theme][state]}`}
+            className={`focus:outline-none focus-visible:shadow-outline mr-5 lg:mr-7 px-1 font-medium ${themeClasses[theme][state]}`}
           />
         )
       }}
@@ -448,5 +551,74 @@ function Footer() {
         </div>
       </div>
     </footer>
+  )
+}
+
+const AlgoliaStyles = createGlobalStyle`
+  .algolia-autocomplete {
+    display: block !important;
+  }
+  .algolia-autocomplete .ds-dropdown-menu {
+    width: 100%;
+  }
+  .algolia-autocomplete .suggestion-layout-simple .algolia-docsearch-suggestion--text .algolia-docsearch-suggestion--highlight{
+    color: red;
+  }
+  .algolia-autocomplete .ds-dropdown-menu .ds-suggestion.ds-cursor .algolia-docsearch-suggestion:not(.suggestion-layout-simple) .algolia-docsearch-suggestion--content {
+    background-color: rgba(5, 199, 126, .10)
+  }
+  .algolia-autocomplete .algolia-docsearch-suggestion--highlight {
+    color: rgba(3, 166, 103);
+  }
+  .algolia-autocomplete .algolia-docsearch-suggestion--category-header .algolia-docsearch-suggestion--category-header-lvl0 .algolia-docsearch-suggestion--highlight,.algolia-autocomplete .algolia-docsearch-suggestion--category-header .algolia-docsearch-suggestion--category-header-lvl1 .algolia-docsearch-suggestion--highlight,.algolia-autocomplete .algolia-docsearch-suggestion--text .algolia-docsearch-suggestion--highlight{
+    box-shadow: inset 0 -2px 0 0 rgba(3, 166, 103, .8);
+  }
+`
+
+function Search({ onSelect }) {
+  let inputRef = useRef()
+  useEffect(() => {
+    import("docsearch.js").then((module) => {
+      if (document.querySelector("#mirage-algolia-search-input")) {
+        module.default({
+          apiKey: "4df96bd592d6cdcc40aae9c4a76adc64",
+          indexName: "miragejs",
+          inputSelector: "#mirage-algolia-search-input",
+          debug: false, // Set debug to true to inspect the dropdown
+          handleSelected: function (
+            input,
+            event,
+            suggestion,
+            datasetNumber,
+            context
+          ) {
+            onSelect(suggestion.url)
+          },
+        })
+
+        inputRef.current.focus()
+      }
+    })
+  })
+
+  // Seems like aloglia stops keys from propagating. Would like to make ctrl+n/p navigate list.
+  // useKeyboardShortcut("ctrl+n", () => {
+  //   console.log("hi")
+  // })
+
+  return (
+    <>
+      <AlgoliaStyles />
+      <div className="flex items-center mt-24">
+        <div className="relative flex-1 rounded-md shadow-xl">
+          <input
+            id="mirage-algolia-search-input"
+            ref={inputRef}
+            className="block w-full px-5 py-4 text-lg rounded-lg focus:outline-none"
+            placeholder={`Search the docs (press "/" to focus)`}
+          />
+        </div>
+      </div>
+    </>
   )
 }

@@ -8,6 +8,9 @@ import OutsideClickHandler from "react-outside-click-handler"
 import { useRouter } from "../../hooks/use-router"
 import { urlsMatch } from "../../utils"
 
+// This is used by the header in app.js
+export const sidebarWidth = 280
+
 export function DesktopNav({ menuItems }) {
   let router = useRouter()
   let activeUrl = router.activeUrl
@@ -37,7 +40,7 @@ export function DesktopNav({ menuItems }) {
   return (
     <div
       className="relative flex-shrink-0 hidden lg:block"
-      style={{ width: 280 }}
+      style={{ width: sidebarWidth }}
     >
       <div className="absolute inset-y-0 right-0 w-screen border-r border-gray-200 bg-gray-50"></div>
       <nav className="sticky h-screen pt-8 pr-8 overflow-y-scroll leading-snug top-16 lg:pt-10 xl:pt-12">
@@ -93,7 +96,7 @@ function CollapsibleMenu({ section, isOpen, toggleSection }) {
   return (
     <>
       <button
-        className={`flex items-center text-gray-900 focus:outline-none ${
+        className={`flex items-center text-gray-900 focus:outline-none focus-visible:shadow-outline ${
           sectionIsActive ? "font-medium" : ""
         }
           `}
@@ -196,7 +199,7 @@ function DesktopNavLink({ link }) {
         <Link
           onClick={scrollOrNavigate}
           to={link.url}
-          className={`${
+          className={`focus:outline-none focus-visible:shadow-outline ${
             isActiveRoute
               ? "text-gray-900 font-medium"
               : "text-gray-800 hover:text-gray-900"
@@ -213,6 +216,7 @@ function DesktopNavLink({ link }) {
                 <li className="pt-3 text-base-" key={index}>
                   <a
                     href={heading.anchor}
+                    className="inline-block focus:outline-none focus-visible:shadow-outline"
                     onClick={(e) => {
                       e.preventDefault()
                       scrollToSection(heading.anchor)

@@ -1,3 +1,5 @@
+const plugin = require("tailwindcss/plugin")
+
 function px(pixels) {
   return `${pixels / 16}rem`
 }
@@ -27,6 +29,7 @@ module.exports = {
         900: "#2B2F31",
         1000: "#1A1C1D",
       },
+      "gray-900.50": "rgba(43, 47, 49, 0.50)",
       blue: {
         100: "#EBF8FF",
         200: "#BEE3F8",
@@ -40,8 +43,8 @@ module.exports = {
       },
       green: {
         200: "#BEFFE7",
-        400: "#2BCF91",
-        500: "#05C77E",
+        400: "#2BCF91", // rgb(43, 207, 145)
+        500: "#05C77E", // rgb(5, 199, 126)
         600: "#03a667",
         700: "#08a066",
         900: "#048b57",
@@ -125,5 +128,23 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/custom-forms")],
+
+  variants: {
+    borderColor: ["responsive", "hover", "focus", "focus-visible"],
+    boxShadow: ["responsive", "hover", "focus", "focus-visible"],
+    zIndex: ["responsive", "focus", "focus-visible"],
+  },
+
+  plugins: [
+    require("@tailwindcss/custom-forms"),
+    plugin(function ({ addVariant, e }) {
+      addVariant("focus-visible", ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => {
+          return `.${e(
+            `focus-visible${separator}${className}`
+          )}[data-focus-visible-added]`
+        })
+      })
+    }),
+  ],
 }

@@ -96,6 +96,14 @@ module.exports = {
           },
         ],
         purgeOnly: ["/tailwind-utils.css"],
+        /*
+          This is needed because our focus-visible Tailwind plugin adds the
+          [data-focus-visible-addded] attribute at runtime using JS, but the
+          generated css file has it in the classname. So purge won't ever find 
+          a match in our raw source. So we add it here to trick purge into thinking
+          it matches the "data-focus-visible-added" string in every file.
+        */
+        whitelist: ["data-focus-visible-added"],
         content: [
           path.join(process.cwd(), "src/**/!(*.d).{ts,js,jsx,tsx,mdx}"),
         ],

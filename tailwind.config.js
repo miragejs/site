@@ -137,6 +137,11 @@ module.exports = {
 
   plugins: [
     require("@tailwindcss/custom-forms"),
+
+    /*
+      This plugin required updates to the purgecss extractor – see gatsby-config.js
+      for the related change.
+    */
     plugin(function ({ addVariant, e }) {
       addVariant("focus-visible", ({ modifySelectors, separator }) => {
         modifySelectors(({ className }) => {

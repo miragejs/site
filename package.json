@@ -43,7 +43,7 @@
     "gatsby": "^2.20.19",
     "gatsby-image": "^2.3.2",
     "gatsby-plugin-manifest": "^2.3.3",
-    "gatsby-plugin-mdx": "^1.1.6",
+    "gatsby-plugin-mdx": "^1.1.7",
     "gatsby-plugin-netlify": "^2.2.1",
     "gatsby-plugin-postcss": "^2.2.1",
     "gatsby-plugin-purgecss": "^5.0.0",

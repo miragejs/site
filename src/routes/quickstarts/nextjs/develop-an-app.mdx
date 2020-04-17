@@ -1,6 +1,8 @@
-# Develop a Next App against a Shared Mirage Server
+# Develop a Next.js App against a Shared Mirage Server
 
 Once you're ready to [centralize your Mirage server and share it between development and testing](/docs/workflow-tips/#sharing-your-server-between-development-and-testing), follow these steps.
+
+_Note: At this time, Mirage only runs in the browser, meaning it will not mock out any server-side network calls your Next.js app makes._
 
 ## Step 1: Install Mirage
 
@@ -50,7 +52,7 @@ export function makeServer({ environment = "test" } = {}) {
 
 ## Step 3: Start your server in development
 
-Open your Next app's initialization file (`pages/_app.js`), import your `makeServer` function, and call it in the development environment:
+Open your Next.js app's initialization file (`pages/_app.js`), import your `makeServer` function, and call it in the development environment:
 
 ```js
 // pages/_app.js
@@ -69,4 +71,4 @@ export default MyApp
 
 Now, whenever any page in your application makes a network request in development, Mirage will intercept that request and respond with the data from your server definition.
 
-You now have a central place to define and update your Mirage server as you continue local development on your Next app.
+You now have a central place to define and update your Mirage server as you continue local development on your Next.js app.

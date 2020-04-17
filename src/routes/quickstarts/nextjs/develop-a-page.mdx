@@ -1,6 +1,8 @@
-# Develop Next page with Mirage
+# Develop a Next.js page with Mirage
 
-Mock out API endpoints directly inside your Next page so you can continue local development without any backend services.
+Mock out API endpoints directly inside your Next.js page so you can continue local development without any backend services.
+
+_Note: At this time, Mirage only runs in the browser, meaning it will not mock out any server-side network calls your Next.js app makes._
 
 ## Step 1: Install Mirage
 
@@ -18,13 +20,16 @@ yarn add --dev miragejs
 
 Within a page file, import `Server` from Mirage, create a server, and start mocking out API endpoints that your code needs:
 
-```js{3-6}
+```js{3-9}
 // pages/index.js
 import { useState, useEffect } from "react"
 import { Server } from "miragejs"
 
-let server = new Server()
-server.get("/api/users", { users: [{ id: 1, name: "Bob" }] })
+new Server({
+  routes() {
+    this.get("/api/users", { users: [{ id: 1, name: "Bob" }] })
+  },
+})
 
 export default function App() {
   let [users, setUsers] = useState([])

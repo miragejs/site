@@ -20,16 +20,16 @@ Within a component file, import `Server` from Mirage, create a server, and start
 
 ```js{3-6}
 // src/App.js
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Server } from "miragejs"
 
 let server = new Server()
 server.get("/api/users", { users: [{ id: 1, name: "Bob" }] })
 
 export default function App() {
-  let [users, setUsers] = React.useState([])
+  let [users, setUsers] = useState([])
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetch("/api/users")
       .then((res) => res.json())
       .then((json) => {

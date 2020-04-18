@@ -598,6 +598,27 @@ new Server({
 
 and you can fully develop and test the feature. In this way you can build up your server definition piece by piece - adding some solid acceptance tests for each state of your server as you go.
 
+If your're using data urls, Mirage will still raise an unhandleled exception even you're using `this.passthrough()`.  To workaround this, you can benefit from the pretender instance that resides on the server.
+
+```js
+new Server({
+  routes() {
+    // Passthrough data urls
+    this.pretender.unhandledRequest = (verb, path, request) => {
+      if (request.url.indexOf("data:") === 0) {
+        request.passthrough();
+      }
+     };
+     
+    // Mock this route and Mirage will intercept it
+    this.get("/movies")
+
+    // All other API requests will still pass through
+    this.passthrough()
+  },
+})
+
+
 ---
 
 That should be enough to get you started!

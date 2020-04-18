@@ -2,7 +2,7 @@
 
 Once you're ready to [centralize your Mirage server and share it between development and testing](/docs/workflow-tips/#sharing-your-server-between-development-and-testing), follow these steps.
 
-_Note: At this time, Mirage only runs in the browser, meaning it will not mock out any server-side network calls your Next.js app makes._
+_Note: At this time, Mirage only runs in the browser, meaning it will not mock out any server-side network calls your Next.js app makes via hooks like getServerSideProps._
 
 ## Step 1: Install Mirage
 
@@ -29,19 +29,20 @@ export function makeServer({ environment = "test" } = {}) {
     environment,
 
     models: {
-      user: Model,
+      movie: Model,
     },
 
     seeds(server) {
-      server.create("user", { name: "Bob" })
-      server.create("user", { name: "Alice" })
+      server.create("movie", { name: "Inception", year: 2010 })
+      server.create("movie", { name: "Interstellar", year: 2014 })
+      server.create("movie", { name: "Dunkirk", year: 2017 })
     },
 
     routes() {
       this.namespace = "api"
 
-      this.get("/users", (schema) => {
-        return schema.users.all()
+      this.get("/movies", (schema) => {
+        return schema.movies.all()
       })
     },
   })
@@ -54,12 +55,12 @@ export function makeServer({ environment = "test" } = {}) {
 
 Open your Next.js app's initialization file (`pages/_app.js`), import your `makeServer` function, and call it in the development environment:
 
-```js
+```js{2-6}
 // pages/_app.js
 import { makeServer } from "../mirage"
 
 if (process.env.NODE_ENV === "development") {
-  makeServer()
+  makeServer({ environment: "development" })
 }
 
 function MyApp({ Component, pageProps }) {

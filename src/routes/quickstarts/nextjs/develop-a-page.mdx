@@ -1,8 +1,8 @@
 # Develop a Next.js page with Mirage
 
-Mock out API endpoints directly inside your Next.js page so you can continue local development without any backend services.
+Mock out client-side API requests directly within a page of your Next.js app so you can continue local development without any backend services.
 
-_Note: At this time, Mirage only runs in the browser, meaning it will not mock out any server-side network calls your Next.js app makes._
+_Note: At this time, Mirage only runs in the browser, meaning it will not mock out any server-side network calls your Next.js app makes via hooks like getServerSideProps._
 
 ## Step 1: Install Mirage
 
@@ -16,36 +16,44 @@ npm install --save-dev miragejs
 yarn add --dev miragejs
 ```
 
-## Step 2: Create a Server alongside your networking code
+## Step 2: Create a Server in a page
 
 Within a page file, import `Server` from Mirage, create a server, and start mocking out API endpoints that your code needs:
 
-```js{3-9}
+```js{3-15}
 // pages/index.js
 import { useState, useEffect } from "react"
 import { Server } from "miragejs"
 
 new Server({
   routes() {
-    this.get("/api/users", { users: [{ id: 1, name: "Bob" }] })
+    this.get("/api/movies", () => ({
+      movies: [
+        { id: 1, name: "Inception", year: 2010 },
+        { id: 2, name: "Interstellar", year: 2014 },
+        { id: 3, name: "Dunkirk", year: 2017 },
+      ],
+    }))
   },
 })
 
-export default function App() {
-  let [users, setUsers] = useState([])
+export default function Index() {
+  let [movies, setMovies] = useState([])
 
   useEffect(() => {
-    fetch("/api/users")
+    fetch("/api/movies")
       .then((res) => res.json())
       .then((json) => {
-        setUsers(json.users)
+        setMovies(json.movies)
       })
   }, [])
 
   return (
     <ul>
-      {users.map((user) => (
-        <li key={user.id}>{user.name}</li>
+      {movies.map((movie) => (
+        <li key={movie.id}>
+          {movie.name} ({movie.year})
+        </li>
       ))}
     </ul>
   )
@@ -54,8 +62,4 @@ export default function App() {
 
 You can now continue to develop your page, mocking out your backend API endpoints with Mirage as you go.
 
-Read the [route handlers guide](/docs/main-concepts/route-handlers/) to learn more about writing route handlers.
-
----
-
-_Ready to share your mocking code across multiple pages? Check out the guide on [Sharing your server between development and testing](/docs/workflow-tips/#sharing-your-server-between-development-and-testing)._
+_Note: You can only have one Mirage Server instantiated at a time, so if you want to share your mocking code across multiple pages, check out the guide on [centralizing and sharing your Mirage server](/docs/workflow-tips/#sharing-your-server-between-development-and-testing)._

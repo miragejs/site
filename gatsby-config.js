@@ -37,6 +37,13 @@ module.exports = {
         name: "snippets",
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/src/tutorial-assets/snippets`,
+        name: "snippets",
+      },
+    },
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     {

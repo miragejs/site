@@ -15,6 +15,13 @@ const allRoutes: RouteDefinition[] = [
     },
   },
   {
+    name: "repl",
+    label: "REPL",
+    meta: {
+      fullWidthHeader: true,
+    },
+  },
+  {
     name: "docs",
     label: "Documentation",
     routes: [

@@ -11,45 +11,6 @@ module.exports = {
       body: `"GT America", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`,
       mono: `Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`,
     },
-    colors: {
-      transparent: "transparent",
-      white: "white",
-      black: "black",
-      editor: "#282c34",
-      gray: {
-        50: "#fbfdfe",
-        100: "#F7FAFC",
-        200: "#E4ECF0",
-        300: "#CAD4DB",
-        400: "#B0BCC4",
-        500: "#98A3AA",
-        600: "#7A848B",
-        700: "#52595D",
-        800: "#41474A",
-        900: "#2B2F31",
-        1000: "#1A1C1D",
-      },
-      "gray-900.50": "rgba(43, 47, 49, 0.50)",
-      blue: {
-        100: "#EBF8FF",
-        200: "#BEE3F8",
-        300: "#90CDF4",
-        400: "#63B3ED",
-        500: "#4299E1",
-        600: "#3182CE",
-        700: "#2B6CB0",
-        800: "#2C5282",
-        900: "#2A4365",
-      },
-      green: {
-        200: "#BEFFE7",
-        400: "#2BCF91",
-        500: "#05C77E",
-        600: "#03a667",
-        700: "#08a066",
-        900: "#048b57",
-      },
-    },
 
     customForms: (theme) => ({
       default: {
@@ -88,6 +49,32 @@ module.exports = {
     }),
 
     extend: {
+      colors: {
+        transparent: "transparent",
+        editor: "#282c34",
+        gray: {
+          50: "#fbfdfe",
+          100: "#F7FAFC",
+          200: "#E4ECF0",
+          300: "#CAD4DB",
+          400: "#B0BCC4",
+          500: "#98A3AA",
+          600: "#7A848B",
+          700: "#52595D",
+          800: "#41474A",
+          900: "#2B2F31",
+          1000: "#1A1C1D",
+        },
+        "gray-900.50": "rgba(43, 47, 49, 0.50)",
+        green: {
+          200: "#BEFFE7",
+          400: "#2BCF91",
+          500: "#05C77E",
+          600: "#03a667",
+          700: "#08a066",
+          900: "#048b57",
+        },
+      },
       screens: {
         "2xl": "1440px",
       },

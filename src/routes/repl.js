@@ -3,6 +3,7 @@ import * as Inspector from "../components/inspector"
 import { useStaticQuery, graphql } from "gatsby"
 import { useMachine } from "@xstate/react"
 import { Machine, assign } from "xstate"
+import queryString from "query-string"
 
 const inspectorMachine = Machine(
   {
@@ -45,18 +46,23 @@ const inspectorMachine = Machine(
   }
 )
 
-export default function () {
+export default function ({ location, navigate }) {
+  let queryParams = queryString.parse(location.search) ?? {}
+  let configFromQueryParam = queryParams?.config
+    ? atob(queryParams.config)
+    : null
+  let configInput = configFromQueryParam ?? useTutorialSnippet("starting-input")
+
   let [currentInspectorState, send] = useMachine(inspectorMachine)
   let [activeServerTab, setActiveServerTab] = React.useState("Config")
-  let [configInput, setConfigInput] = React.useState(
-    useTutorialSnippet("starting-input")
-  )
   let [db, setDb] = React.useState({})
   let [response, setResponse] = React.useState({})
 
   function handleConfigInputChange(newConfigInput) {
     send("CONFIG_CHANGE")
-    setConfigInput(newConfigInput)
+    // queryParams.config = btoa(newConfigInput)
+    // navigate(`/repl/?${queryString.stringify(queryParams)}`)
+    navigate(`/repl/?config=${btoa(newConfigInput)}`, { replace: true })
   }
 
   function handleMessage({ data }) {
@@ -125,95 +131,105 @@ export default function () {
   let srcDoc = shellLines.join("\n")
 
   return (
-    <div className="flex mt-16" style={{ height: "calc(100vh - 4rem)" }}>
-      <div className="flex flex-col w-1/2">
-        <div className="z-0 z-10 flex flex-col shadow h-28">
-          <div className="flex items-center justify-between px-4 mt-6 md:px-6">
-            <h2 className="text-gray-800 text-1-5xl">Server</h2>
-            {currentInspectorState.value === "loading" && (
-              <p
-                className="text-xs font-medium text-gray-500 uppercase"
-                data-testid="sandbox-loading"
+    <div
+      className="flex flex-col mt-16"
+      style={{ height: "calc(100vh - 4rem)" }}
+    >
+      {/* This will be the title bar */}
+      {/* <div className="flex items-center px-6 py-1 text-sm bg-gray-200">
+        <p className="font-semibold text-gray-900">REPL</p>
+        <button className="ml-5 text-gray-700">Share</button>
+      </div> */}
+      <div className="flex flex-1">
+        <div className="flex flex-col w-1/2">
+          <div className="z-0 z-10 flex flex-col shadow h-28">
+            <div className="flex items-center justify-between px-4 mt-6 md:px-6">
+              <h2 className="text-gray-800 text-1-5xl">Server</h2>
+              {currentInspectorState.value === "loading" && (
+                <p
+                  className="text-xs font-medium text-gray-500 uppercase"
+                  data-testid="sandbox-loading"
+                >
+                  Loading...
+                </p>
+              )}
+            </div>
+
+            <div className="px-4 py-3 mt-auto text-sm md:px-6">
+              {["Config", "Database"].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveServerTab(tab)}
+                  className={`mr-4 text-sm font-medium focus:outline-none
+                  ${
+                    tab === activeServerTab
+                      ? "text-gray-800"
+                      : "text-gray-400 hover:text-gray-800"
+                  }
+                  `}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col flex-1 h-0 overflow-y-auto">
+            {activeServerTab === "Config" && (
+              <Inspector.ConfigEditor
+                value={configInput}
+                onChange={handleConfigInputChange}
+              />
+            )}
+
+            <div
+              className={`h-full flex flex-col ${
+                activeServerTab !== "Database" ? "hidden" : null
+              }`}
+            >
+              <Inspector.Database db={db} />
+            </div>
+
+            {currentInspectorState.value === "error" && (
+              <div
+                data-testid="parse-error"
+                className="px-4 py-3 text-xs font-medium text-white bg-red-600"
               >
-                Loading...
-              </p>
+                <pre>{currentInspectorState.context.error}</pre>
+              </div>
             )}
           </div>
-
-          <div className="px-4 py-3 mt-auto text-sm md:px-6">
-            {["Config", "Database"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveServerTab(tab)}
-                className={`mr-4 text-sm font-medium focus:outline-none
-                ${
-                  tab === activeServerTab
-                    ? "text-gray-800"
-                    : "text-gray-400 hover:text-gray-800"
-                }
-                `}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
         </div>
-
-        <div className="flex flex-col flex-1 h-0 overflow-y-auto">
-          {activeServerTab === "Config" && (
-            <Inspector.ConfigEditor
-              value={configInput}
-              onChange={handleConfigInputChange}
-            />
-          )}
-
-          <div
-            className={`h-full flex flex-col ${
-              activeServerTab !== "Database" ? "hidden" : null
-            }`}
-          >
-            <Inspector.Database db={db} />
-          </div>
-
-          {currentInspectorState.value === "error" && (
-            <div
-              data-testid="parse-error"
-              className="px-4 py-3 text-xs font-medium text-white bg-red-600"
-            >
-              <pre>{currentInspectorState.context.error}</pre>
+        <div className="flex flex-col w-1/2 border-l-4 border-gray-200">
+          <div className="flex flex-col border-b h-1/2">
+            <div className="relative z-10 flex flex-col shadow h-28">
+              <h2 className="px-4 mt-6 text-gray-800 text-1-5xl md:px-6">
+                Client
+              </h2>
+              <div className="px-4 py-3 mt-auto text-sm md:px-6">
+                <button className="mr-4 text-sm font-medium text-gray-700 focus:outline-none">
+                  Request
+                </button>
+                <button className="hidden mr-4 text-sm font-medium text-gray-700 focus:outline-none">
+                  UI
+                </button>
+              </div>
             </div>
-          )}
-        </div>
-      </div>
-      <div className="flex flex-col w-1/2 border-l-4 border-gray-200">
-        <div className="flex flex-col border-b h-1/2">
-          <div className="relative z-10 flex flex-col shadow h-28">
-            <h2 className="px-4 mt-6 text-gray-800 text-1-5xl md:px-6">
-              Client
+            <div className="relative z-0 flex-1 bg-gray-100">
+              <Inspector.Request onRequest={handleRequest} />
+              <Inspector.Sandbox srcDoc={srcDoc} iframeRef={iframeRef} />
+            </div>
+          </div>
+          <div className="p-4 overflow-y-auto bg-gray-100 md:px-6 h-1/2">
+            <h2>
+              Status code:{" "}
+              <span data-testid="response-code">{response.code}</span>
             </h2>
-            <div className="px-4 py-3 mt-auto text-sm md:px-6">
-              <button className="mr-4 text-sm font-medium text-gray-700 focus:outline-none">
-                Request
-              </button>
-              <button className="hidden mr-4 text-sm font-medium text-gray-700 focus:outline-none">
-                UI
-              </button>
-            </div>
-          </div>
-          <div className="relative z-0 flex-1 bg-gray-100">
-            <Inspector.Request onRequest={handleRequest} />
-            <Inspector.Sandbox srcDoc={srcDoc} iframeRef={iframeRef} />
-          </div>
-        </div>
-        <div className="p-4 overflow-y-auto bg-gray-100 md:px-6 h-1/2">
-          <h2>
-            Status code:{" "}
-            <span data-testid="response-code">{response.code}</span>
-          </h2>
 
-          <pre className="mt-4 text-sm" data-testid="response-body">
-            {JSON.stringify(response.data, null, 2)}
-          </pre>
+            <pre className="mt-4 text-sm" data-testid="response-body">
+              {JSON.stringify(response.data, null, 2)}
+            </pre>
+          </div>
         </div>
       </div>
     </div>

@@ -115,13 +115,18 @@ describe("REPL", () => {
         d`
         import { Server } from "miragejs"
 
-        export default new Server()
+        export default new Server({
+          routes() {
+            this.get("/api/posts", () => ({
+              text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam."
+            }))
+          },
+        })
         `
       )
-
-      cy.url().should(
-        "include",
-        "/repl/?config=aW1wb3J0IHsgU2VydmVyIH0gZnJvbSAibWlyYWdlanMiCgpleHBvcnQgZGVmYXVsdCBuZXcgU2VydmVyKCk"
+      cy.get("[data-testid=config-length-warning]").should(
+        "contain",
+        "Your config is too long"
       )
     })
   })

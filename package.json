@@ -17,7 +17,7 @@
     "serve": "gatsby serve",
     "test": "jest",
     "percy:exec": "percy exec",
-    "cy:run": "cypress run --config baseUrl=http://localhost:8000",
+    "cy:run": "cypress run",
     "cy:open": "cypress open --config baseUrl=http://localhost:8000",
     "test-and-build": "run-s test build",
     "build-and-serve": "run-s build serve",

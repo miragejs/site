@@ -51,7 +51,8 @@ export default function ({ location, navigate }) {
   let configFromQueryParam = queryParams?.config
     ? atob(queryParams.config)
     : null
-  let configInput = configFromQueryParam ?? useTutorialSnippet("starting-input")
+  let defaultStartingConfig = useTutorialSnippet("starting-input")
+  let configInput = configFromQueryParam ?? defaultStartingConfig
 
   let [currentInspectorState, send] = useMachine(inspectorMachine)
   let [activeServerTab, setActiveServerTab] = React.useState("Config")
@@ -60,9 +61,8 @@ export default function ({ location, navigate }) {
 
   function handleConfigInputChange(newConfigInput) {
     send("CONFIG_CHANGE")
-    // queryParams.config = btoa(newConfigInput)
-    // navigate(`/repl/?${queryString.stringify(queryParams)}`)
-    navigate(`/repl/?config=${btoa(newConfigInput)}`, { replace: true })
+    queryParams.config = btoa(newConfigInput)
+    navigate(`/repl/?${queryString.stringify(queryParams)}`, { replace: true })
   }
 
   function handleMessage({ data }) {

@@ -91,7 +91,24 @@ describe("REPL", () => {
       )
     })
 
-    it.only("tracks the config's value in the URL with a base 64-encoded query param", () => {
+    it("tracks the config's value in the URL with a base 64-encoded query param", () => {
+      cy.visit("/repl")
+
+      cy.get(".CodeMirror").typeInCodemirror(
+        d`
+        import { Server } from "miragejs"
+
+        export default new Server()
+        `
+      )
+
+      cy.url().should(
+        "include",
+        "/repl/?config=aW1wb3J0IHsgU2VydmVyIH0gZnJvbSAibWlyYWdlanMiCgpleHBvcnQgZGVmYXVsdCBuZXcgU2VydmVyKCk"
+      )
+    })
+
+    it("shows a message if the config is too large to be tracked in the URL", () => {
       cy.visit("/repl")
 
       cy.get(".CodeMirror").typeInCodemirror(

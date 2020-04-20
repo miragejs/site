@@ -44,6 +44,10 @@ Cypress.Commands.add(
   }
 )
 
+Cypress.Commands.add("getContent", { prevSubject: true }, (elements) => {
+  return elements[0].CodeMirror.getValue()
+})
+
 // Were not able to configure delay :(
 // cy.get(".CodeMirror textarea").type(
 //   d`

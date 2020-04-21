@@ -1,8 +1,9 @@
 import React from "react"
+import { useQueryParam } from "../../hooks/use-query-param"
 
 export default function ({ onRequest }) {
-  let [method, setMethod] = React.useState("GET")
-  let [url, setUrl] = React.useState("")
+  let [method, setMethod] = useQueryParam("method")
+  let [url, setUrl] = useQueryParam("url")
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -19,6 +20,7 @@ export default function ({ onRequest }) {
               value={method}
               onChange={(e) => setMethod(e.target.value)}
               aria-label="Method"
+              data-testid="request-method"
               className="h-full py-0 pl-3 text-gray-600 bg-transparent border-transparent rounded-md form-select pr-7 sm:text-sm sm:leading-5"
             >
               <option value="GET">GET</option>
@@ -29,7 +31,7 @@ export default function ({ onRequest }) {
             </select>
           </div>
           <input
-            value={url}
+            value={url ?? ""}
             onChange={(e) => setUrl(e.target.value)}
             className="block w-full transition duration-150 ease-in-out border-gray-300 rounded-none pl-26 form-input rounded-l-md sm:text-sm sm:leading-5"
             placeholder="/users"
@@ -39,6 +41,7 @@ export default function ({ onRequest }) {
         <button
           className="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium leading-5 text-gray-600 transition duration-150 ease-in-out border border-gray-300 rounded-r-md bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline focus:border-blue-300 active:bg-gray-100 active:text-gray-500"
           type="submit"
+          data-testid="send-request"
         >
           <span className="px-1">Send</span>
           <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">

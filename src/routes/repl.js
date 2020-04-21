@@ -3,8 +3,7 @@ import * as Inspector from "../components/inspector"
 import { useStaticQuery, graphql } from "gatsby"
 import { useMachine } from "@xstate/react"
 import { Machine, assign } from "xstate"
-import queryString from "query-string"
-import { useLocation, useNavigate } from "@reach/router"
+import { useQueryParam } from "../hooks/use-query-param"
 
 const inspectorMachine = Machine(
   {
@@ -47,23 +46,10 @@ const inspectorMachine = Machine(
   }
 )
 
-function useQueryParam(key) {
-  let navigate = useNavigate()
-  let location = useLocation()
-  let queryParams = queryString.parse(location.search) ?? {}
-  let value = queryParams[key] ? atob(queryParams[key]) : null
-
-  function setter(newValue) {
-    queryParams[key] = newValue ? btoa(newValue) : undefined
-
-    let url = `${location.pathname}?${queryString.stringify(queryParams)}`
-    navigate(url, { replace: true })
-  }
-  return [value, setter]
-}
-
 export default function () {
-  let [queryParamConfig, setQueryParamConfig] = useQueryParam("config")
+  let [queryParamConfig, setQueryParamConfig] = useQueryParam("config", {
+    type: "binary",
+  })
   let defaultConfig = useTutorialSnippet("starting-input")
 
   let [currentInspectorState, send] = useMachine(inspectorMachine)

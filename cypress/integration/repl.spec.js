@@ -29,6 +29,20 @@ describe("REPL", () => {
             })
           `
         )
+
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
+        "not.exist"
+      )
+
+      cy.get("[data-testid=request-url]").type("/api/movies{enter}")
+      cy.get("[data-testid=response-code]").should("contain", "200")
+      cy.get("[data-testid=response-body]")
+        .invoke("text")
+        .then((text) => {
+          let json = JSON.parse(text)
+
+          expect(json.movies).to.have.lengthOf(3)
+        })
     })
   })
   context("editing the config", () => {

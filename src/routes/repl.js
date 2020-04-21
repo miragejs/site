@@ -4,6 +4,7 @@ import { useStaticQuery, graphql } from "gatsby"
 import { useMachine } from "@xstate/react"
 import { Machine, assign } from "xstate"
 import queryString from "query-string"
+import { useLocation, useNavigate } from "@reach/router"
 
 const inspectorMachine = Machine(
   {
@@ -46,11 +47,23 @@ const inspectorMachine = Machine(
   }
 )
 
-export default function ({ location, navigate }) {
+function useQueryParam(key) {
+  let navigate = useNavigate()
+  let location = useLocation()
   let queryParams = queryString.parse(location.search) ?? {}
-  let configFromQueryParam = queryParams?.config
-    ? atob(queryParams.config)
-    : null
+  let value = queryParams[key] ? atob(queryParams[key]) : null
+
+  function setter(newValue) {
+    queryParams[key] = btoa(newValue)
+
+    let url = `${location.pathname}?${queryString.stringify(queryParams)}`
+    navigate(url, { replace: true })
+  }
+  return [value, setter]
+}
+
+export default function ({ location, navigate }) {
+  let [configFromQueryParam, setConfigFromQueryParam] = useQueryParam("config")
   let defaultStartingConfig = useTutorialSnippet("starting-input")
 
   let [currentInspectorState, send] = useMachine(inspectorMachine)
@@ -64,17 +77,15 @@ export default function ({ location, navigate }) {
 
   function handleConfigInputChange(newConfigInput) {
     send("CONFIG_CHANGE")
-    queryParams.config = btoa(newConfigInput)
-    let url = `/repl/?${queryString.stringify(queryParams)}`
 
-    if (url.length > 2000) {
-      setLocalConfigInput(newConfigInput)
-      setUrlOverage(url.length - 2000)
-
-      navigate("/repl", { replace: true })
-    } else {
+    if (btoa(newConfigInput).length < 2000) {
       setUrlOverage(null)
-      navigate(url, { replace: true })
+      setConfigFromQueryParam(newConfigInput)
+    } else {
+      setLocalConfigInput(newConfigInput)
+      setUrlOverage(btoa(newConfigInput).length - 2000)
+
+      setConfigFromQueryParam(null)
     }
   }
 

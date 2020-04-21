@@ -3,7 +3,7 @@ import * as Inspector from "../components/inspector"
 import { useStaticQuery, graphql } from "gatsby"
 import { useMachine } from "@xstate/react"
 import { Machine, assign } from "xstate"
-import queryString from "query-string"
+import { useQueryParam } from "../hooks/use-query-param"
 
 const inspectorMachine = Machine(
   {
@@ -46,35 +46,29 @@ const inspectorMachine = Machine(
   }
 )
 
-export default function ({ location, navigate }) {
-  let queryParams = queryString.parse(location.search) ?? {}
-  let configFromQueryParam = queryParams?.config
-    ? atob(queryParams.config)
-    : null
-  let defaultStartingConfig = useTutorialSnippet("starting-input")
+export default function () {
+  let [queryParamConfig, setQueryParamConfig] = useQueryParam("config", {
+    type: "binary",
+  })
+  let defaultConfig = useTutorialSnippet("starting-input")
 
   let [currentInspectorState, send] = useMachine(inspectorMachine)
   let [activeServerTab, setActiveServerTab] = React.useState("Config")
   let [db, setDb] = React.useState({})
   let [response, setResponse] = React.useState({})
-  let [localConfigInput, setLocalConfigInput] = useState()
-  let [urlOverage, setUrlOverage] = useState(null)
-  let configInput =
-    configFromQueryParam ?? localConfigInput ?? defaultStartingConfig
+  let [localConfig, setLocalConfig] = useState(null)
+  let configInput = queryParamConfig ?? localConfig ?? defaultConfig
+  let configIsTooLargeForURL = localConfig !== null
 
   function handleConfigInputChange(newConfigInput) {
     send("CONFIG_CHANGE")
-    queryParams.config = btoa(newConfigInput)
-    let url = `/repl/?${queryString.stringify(queryParams)}`
 
-    if (url.length > 2000) {
-      setLocalConfigInput(newConfigInput)
-      setUrlOverage(url.length - 2000)
-
-      navigate("/repl", { replace: true })
+    if (btoa(newConfigInput).length < 2000) {
+      setQueryParamConfig(newConfigInput)
+      setLocalConfig(null)
     } else {
-      setUrlOverage(null)
-      navigate(url, { replace: true })
+      setQueryParamConfig(null)
+      setLocalConfig(newConfigInput)
     }
   }
 
@@ -217,7 +211,7 @@ export default function ({ location, navigate }) {
                 <Inspector.Database db={db} />
               </div>
 
-              {urlOverage && (
+              {configIsTooLargeForURL && (
                 <div
                   data-testid="config-length-warning"
                   className="px-4 py-3 text-xs font-medium text-gray-900 bg-yellow-400"

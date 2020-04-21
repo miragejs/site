@@ -2,7 +2,7 @@ import d from "dedent"
 
 describe("REPL", () => {
   context("loading the repl", () => {
-    it("can use a base 64-encoded query param for the config's initial value", () => {
+    it("can use a query param for the config's initial value", () => {
       cy.visit(
         "/repl?config=aW1wb3J0IHsgU2VydmVyIH0gZnJvbSAibWlyYWdlanMiCgpleHBvcnQgZGVmYXVsdCBuZXcgU2VydmVyKHsKICByb3V0ZXMoKSB7CiAgICB0aGlzLmdldCgiL2FwaS9tb3ZpZXMiLCAoKSA9PiB7CiAgICAgIHJldHVybiB7CiAgICAgICAgbW92aWVzOiBbCiAgICAgICAgICB7IGlkOiAxLCBuYW1lOiAiSW5jZXB0aW9uIiwgeWVhcjogMjAxMCB9LAogICAgICAgICAgeyBpZDogMiwgbmFtZTogIkludGVyc3RlbGxhciIsIHllYXI6IDIwMTQgfSwKICAgICAgICAgIHsgaWQ6IDMsIG5hbWU6ICJEdW5raXJrIiwgeWVhcjogMjAxNyB9LAogICAgICAgIF0sCiAgICAgIH0KICAgIH0pCiAgfSwKfSk="
       )
@@ -44,7 +44,28 @@ describe("REPL", () => {
           expect(json.movies).to.have.lengthOf(3)
         })
     })
+
+    it("can use a query param for the method and url's initial value", () => {
+      cy.visit("/repl?method=GET&url=%2Fusers%2F1")
+
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
+        "not.exist"
+      )
+
+      cy.get("[data-testid=request-method]").should("have.value", "GET")
+      cy.get("[data-testid=request-url]").should("have.value", "/users/1")
+      cy.get("[data-testid=send-request]").click()
+      cy.get("[data-testid=response-code]").should("contain", "200")
+      cy.get("[data-testid=response-body]")
+        .invoke("text")
+        .then((text) => {
+          let json = JSON.parse(text)
+
+          expect(json.user).to.exist
+        })
+    })
   })
+
   context("editing the config", () => {
     it("shows a parsing error", () => {
       cy.visit("/repl")
@@ -105,7 +126,7 @@ describe("REPL", () => {
       )
     })
 
-    it("tracks the config's value in the URL with a base 64-encoded query param", () => {
+    it("tracks the config's value in the config query param in the URL", () => {
       cy.visit("/repl")
 
       cy.get(".CodeMirror").typeInCodemirror(
@@ -147,6 +168,9 @@ describe("REPL", () => {
 
   context("making a request", () => {
     xit("shows an error message if the URL is blank", () => {})
+    xit("a request updates the database", () => {})
+    xit("a delete request shows in the response panel", () => {})
+    xit("I can set a request body for patch/post/delete", () => {})
 
     it("shows the JSON response after submitting a request", () => {
       cy.visit("/repl")
@@ -184,6 +208,15 @@ describe("REPL", () => {
 
           expect(json.users).to.have.lengthOf(2)
         })
+    })
+
+    it("tracks the method and URL's value in their respective query params", () => {
+      cy.visit("/repl")
+
+      cy.get("[data-testid=request-method]").select("DELETE")
+      cy.get("[data-testid=request-url]").type("/users/1")
+
+      cy.url().should("include", "/repl/?method=DELETE&url=%2Fusers%2F1")
     })
   })
 })

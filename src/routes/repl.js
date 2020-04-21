@@ -54,7 +54,7 @@ function useQueryParam(key) {
   let value = queryParams[key] ? atob(queryParams[key]) : null
 
   function setter(newValue) {
-    queryParams[key] = btoa(newValue)
+    queryParams[key] = newValue ? btoa(newValue) : undefined
 
     let url = `${location.pathname}?${queryString.stringify(queryParams)}`
     navigate(url, { replace: true })
@@ -62,30 +62,27 @@ function useQueryParam(key) {
   return [value, setter]
 }
 
-export default function ({ location, navigate }) {
-  let [configFromQueryParam, setConfigFromQueryParam] = useQueryParam("config")
-  let defaultStartingConfig = useTutorialSnippet("starting-input")
+export default function () {
+  let [queryParamConfig, setQueryParamConfig] = useQueryParam("config")
+  let defaultConfig = useTutorialSnippet("starting-input")
 
   let [currentInspectorState, send] = useMachine(inspectorMachine)
   let [activeServerTab, setActiveServerTab] = React.useState("Config")
   let [db, setDb] = React.useState({})
   let [response, setResponse] = React.useState({})
-  let [localConfigInput, setLocalConfigInput] = useState()
-  let [urlOverage, setUrlOverage] = useState(null)
-  let configInput =
-    configFromQueryParam ?? localConfigInput ?? defaultStartingConfig
+  let [localConfig, setLocalConfig] = useState(null)
+  let configInput = queryParamConfig ?? localConfig ?? defaultConfig
+  let configIsTooLargeForURL = localConfig !== null
 
   function handleConfigInputChange(newConfigInput) {
     send("CONFIG_CHANGE")
 
     if (btoa(newConfigInput).length < 2000) {
-      setUrlOverage(null)
-      setConfigFromQueryParam(newConfigInput)
+      setQueryParamConfig(newConfigInput)
+      setLocalConfig(null)
     } else {
-      setLocalConfigInput(newConfigInput)
-      setUrlOverage(btoa(newConfigInput).length - 2000)
-
-      setConfigFromQueryParam(null)
+      setQueryParamConfig(null)
+      setLocalConfig(newConfigInput)
     }
   }
 
@@ -228,7 +225,7 @@ export default function ({ location, navigate }) {
                 <Inspector.Database db={db} />
               </div>
 
-              {urlOverage && (
+              {configIsTooLargeForURL && (
                 <div
                   data-testid="config-length-warning"
                   className="px-4 py-3 text-xs font-medium text-gray-900 bg-yellow-400"

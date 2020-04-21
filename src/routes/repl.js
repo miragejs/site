@@ -102,7 +102,7 @@ export default function ({ location, navigate }) {
         })
       } else {
         console.log("new message")
-        console.log(data.message)
+        console.log({ data })
 
         // setSandboxIsReady(true)
         // setParseError(data.message.toString())

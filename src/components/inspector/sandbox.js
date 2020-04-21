@@ -1,6 +1,8 @@
 import React from "react"
 
-export default function({ srcDoc, iframeRef }) {
+export default function ({ srcDoc, iframeRef }) {
+  if (typeof window === "undefined") return null
+
   return (
     <iframe
       ref={iframeRef}

@@ -4,6 +4,8 @@ import { useStaticQuery, graphql } from "gatsby"
 import { useMachine } from "@xstate/react"
 import { Machine, assign } from "xstate"
 import { useQueryParam } from "../hooks/use-query-param"
+import useMeasure from "react-use-measure"
+import { ResizeObserver } from "@juggle/resize-observer"
 
 const inspectorMachine = Machine(
   {
@@ -15,7 +17,7 @@ const inspectorMachine = Machine(
     states: {
       loading: {
         on: {
-          READY: "running",
+          SUCCESS: "running",
           ERROR: {
             target: "error",
             actions: assign({
@@ -25,12 +27,12 @@ const inspectorMachine = Machine(
         },
       },
       running: {
+        entry: "clearError",
         on: {
           CONFIG_CHANGE: "loading",
         },
       },
       error: {
-        exit: "clearError",
         on: {
           CONFIG_CHANGE: "loading",
         },
@@ -57,6 +59,9 @@ export default function () {
   let [db, setDb] = React.useState({})
   let [response, setResponse] = React.useState({})
   let [localConfig, setLocalConfig] = useState(null)
+  let [errorMessageRef, errorMessagebounds] = useMeasure({
+    polyfill: ResizeObserver,
+  })
   let configInput = queryParamConfig ?? localConfig ?? defaultConfig
   let configIsTooLargeForURL = localConfig !== null
 
@@ -76,7 +81,7 @@ export default function () {
     if (data.fromSandbox) {
       if (data.type === "mirage:db") {
         setDb(data.message)
-        send("READY")
+        send("SUCCESS")
       } else if (data.type === "mirage:response") {
         console.log("handing response")
 
@@ -148,7 +153,7 @@ export default function () {
         <button className="ml-5 text-gray-700">Share</button>
       </div> */}
       <div className="flex flex-col flex-1">
-        <p className="px-6 py-1 text-sm text-white text-yellow-800 bg-yellow-200">
+        <p className="px-6 py-2 text-xs font-medium text-gray-900 bg-yellow-400">
           <span className="font-semibold">Hello!</span> You've landed on the
           Mirage REPL, which is under active development. Please{" "}
           <a
@@ -195,12 +200,21 @@ export default function () {
               </div>
             </div>
 
-            <div className="flex flex-col flex-1 h-0 overflow-y-auto">
+            <div className="relative flex flex-col flex-1 h-0 overflow-y-auto">
               {activeServerTab === "Config" && (
-                <Inspector.ConfigEditor
-                  value={configInput}
-                  onChange={handleConfigInputChange}
-                />
+                <div
+                  className="flex-1 p-4 overflow-y-auto md:px-5"
+                  style={{
+                    paddingBottom: currentInspectorState.context.error
+                      ? `${errorMessagebounds.height}px`
+                      : null,
+                  }}
+                >
+                  <Inspector.ConfigEditor
+                    value={configInput}
+                    onChange={handleConfigInputChange}
+                  />
+                </div>
               )}
 
               <div
@@ -223,12 +237,15 @@ export default function () {
                 </div>
               )}
 
-              {currentInspectorState.value === "error" && (
+              {currentInspectorState.context.error && (
                 <div
+                  ref={errorMessageRef}
                   data-testid="parse-error"
-                  className="px-4 py-3 text-xs font-medium text-white bg-red-600"
+                  className="absolute inset-x-0 bottom-0 z-10 px-4 py-3 text-xs font-medium text-white bg-red-600"
                 >
-                  <pre>{currentInspectorState.context.error}</pre>
+                  <pre className="whitespace-pre-wrap">
+                    {currentInspectorState.context.error}
+                  </pre>
                 </div>
               )}
             </div>

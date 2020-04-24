@@ -44,7 +44,7 @@ export default function ({ value, onChange }) {
   return (
     <>
       <GlobalStyle />
-      <div className="flex-1 p-4 md:px-5" ref={editorDivRef}></div>
+      <div ref={editorDivRef}></div>
     </>
   )
 }

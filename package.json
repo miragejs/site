@@ -58,7 +58,7 @@
     "gatsby-plugin-svgr": "^2.0.2",
     "gatsby-plugin-typescript": "^2.3.3",
     "gatsby-source-filesystem": "^2.2.4",
-    "gatsby-transformer-sharp": "^2.4.5",
+    "gatsby-transformer-sharp": "^2.5.0",
     "install": "^0.13.0",
     "prettier": "^2.0.4",
     "prop-types": "^15.7.2",

@@ -233,6 +233,12 @@ function Header({ showHeaderNav }) {
                       >
                         Guides
                       </NavLink>
+                      {/* <NavLink
+                        to={router.routerFor("/tutorial").pages[0].url}
+                        activeFor="/tutorial/*"
+                      >
+                        Tutorial
+                      </NavLink> */}
                       <NavLink
                         to="/api/classes/association/"
                         activeFor="/api/*"
@@ -303,6 +309,19 @@ function Header({ showHeaderNav }) {
                     Guides
                   </MobileNavLink>
                 </div>
+
+                {/* <div
+                  className={`border-t ${
+                    theme === "dark" ? "border-gray-800" : "border-gray-200"
+                  }`}
+                >
+                  <MobileNavLink
+                    to={router.routerFor("/tutorial").pages[0].url}
+                    onClick={() => setIsShowingMobileNav(false)}
+                  >
+                    Tutorial
+                  </MobileNavLink>
+                </div> */}
 
                 <div
                   className={`border-t ${

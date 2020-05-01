@@ -97,6 +97,24 @@ const allRoutes: RouteDefinition[] = [
     ],
   },
   {
+    label: "Tutorial",
+    name: "tutorial",
+    routes: [
+      {
+        label: "Intro",
+        name: "intro",
+      },
+      {
+        label: "Part 1",
+        name: "part-1",
+      },
+      {
+        label: "Part 2",
+        name: "part-2",
+      },
+    ],
+  },
+  {
     label: "API",
     name: "api",
     routes: [

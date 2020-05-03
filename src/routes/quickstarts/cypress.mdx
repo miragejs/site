@@ -133,8 +133,8 @@ it("shows the users from our server", () => {
 
   cy.visit("/")
 
-  cy.get('[data-testid="user-1"]').contains("Luke")
-  cy.get('[data-testid="user-2"]').contains("Leia")
+  cy.get('[data-test-id="user-1"]').contains("Luke")
+  cy.get('[data-test-id="user-2"]').contains("Leia")
 })
 
 it("shows a message if there are no users", () => {
@@ -142,7 +142,7 @@ it("shows a message if there are no users", () => {
 
   cy.visit("/")
 
-  cy.get('[data-testid="no-users"]').should("be.visible")
+  cy.get('[data-test-id="no-users"]').should("be.visible")
 })
 ```
 
@@ -167,7 +167,7 @@ it("handles error responses from the server", () => {
 
   cy.visit("/")
 
-  cy.get('[data-testid="server-error"]').contains(
+  cy.get('[data-test-id="server-error"]').contains(
     "The database is on vacation."
   )
 })

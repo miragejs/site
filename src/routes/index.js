@@ -107,7 +107,7 @@ export default function IndexPage() {
                 <div className="md:text-center">
                   <h1
                     className="tracking-tight text-white leading-tighter text-4-5xl font-title md:text-4-75xl md:leading-tighter lg:text-5xl 2xl:text-5-5xl "
-                    data-testid="title"
+                    data-test-id="title"
                   >
                     Build complete frontend features,{" "}
                     <br className="hidden md:block" />

@@ -49,7 +49,7 @@ export default function TodoApp({ refresh }) {
       <div className="max-w-sm mx-auto">
         <div
           className="px-5 pt-3 pb-6 text-lg text-white border-t-8 border-green-500 rounded-lg shadow-lg bg-gray-1000"
-          data-testid="todo-app"
+          data-test-id="todo-app"
         >
           <div className="flex items-center justify-between">
             <p className="text-2xl font-bold text-gray-100">Todos</p>
@@ -65,9 +65,9 @@ export default function TodoApp({ refresh }) {
 
           <div className="mt-6">
             {isLoading ? (
-              <p data-testid="loading">Loading...</p>
+              <p data-test-id="loading">Loading...</p>
             ) : (
-              <ul data-testid="todo-list">
+              <ul data-test-id="todo-list">
                 {newTodo && (
                   <TodoItem
                     todo={newTodo}
@@ -186,7 +186,7 @@ function TodoItem({ todo, didCreate, didSave, didDestroy, autofocus }) {
   }, [isChecked, didDestroy, todo])
 
   return (
-    <li key={todo.id} data-testid={`todo-id-${todo.id}`} className="mt-1">
+    <li key={todo.id} data-test-id={`todo-id-${todo.id}`} className="mt-1">
       <div
         className={`w-full flex items-center transition ${
           isSaving && "opacity-50"

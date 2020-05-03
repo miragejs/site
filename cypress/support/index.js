@@ -18,3 +18,10 @@ import "./commands"
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+Cypress.Server.defaults({
+  // Disable XHR logging from Cypress
+  whitelist: (xhr) => {
+    return true
+  },
+})

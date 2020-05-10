@@ -105,12 +105,16 @@ const allRoutes: RouteDefinition[] = [
         name: "intro",
       },
       {
-        label: "Part 1",
+        label: "Part 1 – Static GET Handler",
         name: "part-1",
       },
       {
-        label: "Part 2",
+        label: "Part 2 – Static POST Handler",
         name: "part-2",
+      },
+      {
+        label: "Part 3 – Dynamic Handlers",
+        name: "part-3",
       },
     ],
   },

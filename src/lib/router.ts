@@ -116,6 +116,14 @@ const allRoutes: RouteDefinition[] = [
         label: "Part 3 – Dynamic Handlers",
         name: "part-3",
       },
+      {
+        label: "Part 4 – Seeds",
+        name: "part-4",
+      },
+      {
+        label: "Part 5 – Dynamic segments",
+        name: "part-5",
+      },
     ],
   },
   {

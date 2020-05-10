@@ -1,0 +1,26 @@
+# Part 5 – Dynamic segments
+
+If you hover a Reminder, you'll see an "X" icon pop up. If you click it you'll delete the Reminder – except if you look in the console you'll see an error:
+
+> Mirage: Your app tried to DELETE '/api/reminders/1, but there was no route defined to handle this request.
+
+Let's mock out this DELETE request. We'll need to use a dynamic segment in our URL, since the DELETE requests will go to `/api/reminders/1`, `/api/reminders/2` and so on.
+
+Add this new route handler to your server's `routes()`:
+
+```js
+this.delete("/api/reminders/:id", (schema, request) => {
+  let id = request.params.id
+
+  return schema.reminders.find(id).destroy()
+})
+```
+
+The colon `:` is how we denote a dynamic segment in our URL. We can access the runtime value of the segment via `request.params.id`. We then use `schema` to find the corresponding reminder, and then call `destroy()` on it to remove it from Mirage's database.
+
+Reload your app and try deleting a reminder. You should see a 204 successful response, and if you navigate to About and back, the data that comes back from the new GET call to `/api/reminders` won't include your deleted reminder.
+
+## Takeaways
+
+- Use `:segmentName` to define a dynamic segment in the URL for a route handler
+- Access dynamic segments via `request.params.segmentName`

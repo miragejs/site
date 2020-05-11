@@ -1,6 +1,6 @@
 import d from "dedent"
 
-describe("REPL", () => {
+describe.skip("REPL", () => {
   context("loading the repl", () => {
     it("can use a query param for the config's initial value", () => {
       cy.visit(

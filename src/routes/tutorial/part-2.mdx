@@ -1,1 +1,109 @@
-# Part 2
+# Part 2 – Static POST Handler
+
+Try adding a Reminder to "Shop for groceries" by filling out the input field and hitting enter.
+
+![](/foo.png)
+
+You should see another error:
+
+> "Mirage: Your app tried to POST '/api/reminders', but there was no route defined to handle this request.
+
+Let's mock out this POST request. Start by copying the highlighted lines into your server's `routes()` hook:
+
+```js{11-14}
+new Server({
+  routes() {
+    this.get("/api/reminders", () => ({
+      reminders: [
+        { id: 1, text: "Walk the dog" },
+        { id: 2, text: "Take out the trash" },
+        { id: 3, text: "Work out" },
+      ],
+    }))
+
+    this.post("/api/reminders", (schema, request) => {
+      let attrs = JSON.parse(request.requestBody)
+      console.log(attrs)
+      debugger
+    })
+  },
+})
+```
+
+We're using the `this.post` helper to intercept our app's POST request. We're also using the `request` argument to access the data sent over from our application. The `request.requestBody` property contains the request body as a JSON string, so after parsing it we log it to the console.
+
+After saving this new code, make sure your JavaScript console is open and try adding a Reminder for "Shop for groceries" again. The devtools should hit the `debugger` statement in your route handler, and you should see the object `{ text: "Shop for groceries" }` logged to your console.
+
+![](/foo.png)
+
+Press the Play button to allow JavaScript to continue execution. Your console should show that Mirage handled the response successfully with a 201 status code, but if you inspect the response you'll see that it's an empty object. You'll also that our React app is throwing an error.
+
+![](/foo.png)
+
+Our app is expecting our server to respond with an object that looks like this:
+
+```json
+{
+  "reminder": {
+    "id": 4,
+    "text": "Shop for groceries"
+  }
+}
+```
+
+Let's add an ID to our `attrs` object and update our response. We'll use 4 since our existing reminders use IDs 1 through 3.
+
+Update your route handler to look like this:
+
+```js
+this.post("/api/reminders", (schema, request) => {
+  let attrs = JSON.parse(request.requestBody)
+  attrs.id = 4
+
+  return { reminder: attrs }
+})
+```
+
+Now when you add a todo, there's no more errors and the app updates correctly.
+
+Unless you try to create another todo!
+
+If we try to create "Clean the bathroom", React gives us another error:
+
+> Encountered two children with the same key, `4`.
+
+Our server can't hard-code 4 as the ID, so let's use an incrementing number.
+
+Here's the final server:
+
+```js{13-19}
+import { Server } from "miragejs"
+
+new Server({
+  routes() {
+    this.get("/api/reminders", () => ({
+      reminders: [
+        { id: 1, text: "Walk the dog" },
+        { id: 2, text: "Take out the trash" },
+        { id: 3, text: "Work out" },
+      ],
+    }))
+
+    let newId = 4
+    this.post("/api/reminders", (schema, request) => {
+      let attrs = JSON.parse(request.requestBody)
+      attrs.id = newId++
+
+      return { reminder: attrs }
+    })
+  },
+})
+```
+
+Now our app works no matter how many reminders we create.
+
+## Takeaways
+
+- Mirage can handle POST requests
+- Route handlers can use data from the request when constructing the response
+- Route handlers should faithfully recreate important details of production server endpoints, like unique IDs

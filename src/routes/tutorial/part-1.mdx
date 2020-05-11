@@ -1,4 +1,4 @@
-# Part 1: Static GET Handler
+# Part 1 – Static GET Handler
 
 If you haven't already, click Part 1 in your running Tutorial app. You should see this screen:
 
@@ -6,26 +6,21 @@ If you haven't already, click Part 1 in your running Tutorial app. You should se
 
 As you can see from the interface, our Reminders app is trying to make an API request for its data, but the request is failing. That's because there's no API server we're talking to.
 
-Let's use Mirage to mock the failing API request. Open the `src/tutorial/part-1.js` file in your editor.
+Let's use Mirage to mock the failing API request. Open the `src/server.js` file in your editor.
 
-At the top of the file, import `Server` from `miragejs`, and create a new server right alongside the React component:
+At the top of the file, import `Server` from `miragejs`, and create a new server:
 
-```js{2,4}
-import React, { useState, useEffect } from "react"
+```js
 import { Server } from "miragejs"
 
 new Server()
-
-export default function Part1() {
-  // ...
-}
 ```
 
-If you open your JavaScript console, (Command + Shift + C) you should see that Mirage has thrown an error:
+If you open your JavaScript console, you should see that Mirage has thrown an error:
 
 > "Mirage: Your app tried to GET '/api/reminders', but there was no route defined to handle this request. Define a route for this endpoint in your routes() config. Did you forget to define a namespace?"
 
-This means Mirage is up and running. It's telling you that your JavaScript app is making a GET request that hasn't been mocked out.
+This means Mirage is running, and that your JavaScript app is making a GET request that hasn't been mocked out.
 
 Let's mock it out using the `routes()` hook. Update the Server in your app by copying in the highlighted code:
 
@@ -40,21 +35,17 @@ new Server({
     }))
   },
 })
-
-export default function Part1() {
-  // ...
-}
 ```
 
-The `this.get()` method lets us mock out GET requests. The first argument is the URL we're handling (`/api/reminders`), and the second argument is a function that returns some data from Mirage back to our JavaScript app.
+The `this.get()` method lets us mock out GET requests. The first argument is the URL we're handling (`/api/reminders`) and the second argument is a function that responds to our JavaScript app with some data.
 
 You should see the app reload and then render a message saying "No reminders":
 
-![img](./another-image)
+![img](../../assets/images/tutorial/no-reminders.png)
 
 Open the console and you'll see Mirage handled the request with a 200 status code and the object from our handler.
 
-Let's update our server to respond with some data:
+Let's add some data to our response:
 
 ```js{4-8}
 new Server({
@@ -74,6 +65,6 @@ The app now renders this data.
 
 ## Takeaways
 
-- Mirage runs right alongside our frontend code – no new processes to manage
-- Returning mock data from Mirage is fast and easy
-- We don't alter our React code to consume data from Mirage – React thinks it's talking to a real network
+- Mirage runs in the browser – no new terminal processes to manage.
+- Returning data from Mirage is as fast and easy as writing frontend code.
+- You don't alter your React code to consume data from Mirage. Your app thinks it's talking to a real network.

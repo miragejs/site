@@ -1,0 +1,43 @@
+# Part 4 – Seeds
+
+We've fixed our GET and POST route handlers, but our app starts our empty. We can use the `seeds` hook to seed Mirage with some initial data.
+
+Copy the highlighted lines into your code:
+
+```js{8-12}
+import { Server, Model } from "miragejs"
+
+new Server({
+  models: {
+    reminder: Model,
+  },
+
+  seeds(server) {
+    server.create("reminder", { text: "Walk the dog" })
+    server.create("reminder", { text: "Take out the trash" })
+    server.create("reminder", { text: "Work out" })
+  },
+
+  routes() {
+    this.get("/api/reminders", (schema) => {
+      return schema.reminders.all()
+    })
+
+    this.post("/api/reminders", (schema, request) => {
+      let attrs = JSON.parse(request.requestBody)
+
+      return schema.reminders.create(attrs)
+    })
+  },
+})
+```
+
+The `server.create` function lets us create new reminders in Mirage's data layer. IDs are automatically assigned, just like whne we call `reminders.create()` in route handlers.
+
+Now if you save and reload your app, you'll see it starts off with three reminders.
+
+Try creating a fourth reminder, "Buy groceries." The app will work, even if you navigate to the About route and back. If you inspect the console, you'll see your new reminder has an ID of 4. Mirage is taking care of maintaining database consistency for you.
+
+## Takeaways
+
+- Use the `seeds` hook and `server.create` to create initial data for your server

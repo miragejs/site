@@ -45,6 +45,7 @@ module.exports = {
       },
     },
     `gatsby-plugin-sharp`,
+    `gatsby-remark-images`,
     `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-plugin-manifest`,
@@ -87,6 +88,11 @@ module.exports = {
       options: {
         extensions: [".mdx", ".md"],
         remarkPlugins: [require("remark-slug")],
+        gatsbyRemarkPlugins: [
+          {
+            resolve: 'gatsby-remark-images'
+          }
+        ]
       },
     },
 

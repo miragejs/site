@@ -75,6 +75,7 @@ describe("REPL", () => {
       cy.visit("/repl")
 
       cy.get("[data-test-id=config-input]").typeInCodemirror("asdf")
+      cy.get("[data-test-id=sandbox-loading]").should("exist")
       cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
@@ -89,6 +90,7 @@ describe("REPL", () => {
       cy.visit("/repl")
 
       cy.get("[data-test-id=config-input]").typeInCodemirror("asdf")
+      cy.get("[data-test-id=sandbox-loading]").should("exist")
       cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
@@ -106,6 +108,7 @@ describe("REPL", () => {
         })
       `
       )
+      cy.get("[data-test-id=sandbox-loading]").should("exist")
       cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
@@ -120,6 +123,7 @@ describe("REPL", () => {
         export default "foo"
       `
       )
+      cy.get("[data-test-id=sandbox-loading]").should("exist")
       cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
@@ -175,6 +179,7 @@ describe("REPL", () => {
 
     it("shows an error message if the URL is blank", () => {
       cy.visit("/repl")
+      cy.get("[data-test-id=sandbox-loading]").should("exist")
       cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
@@ -185,6 +190,7 @@ describe("REPL", () => {
 
     it("shows an error for an unhandled request", () => {
       cy.visit("/repl")
+      cy.get("[data-test-id=sandbox-loading]").should("exist")
       cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
@@ -219,6 +225,7 @@ describe("REPL", () => {
         })
       `
       )
+      cy.get("[data-test-id=sandbox-loading]").should("exist")
       cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
@@ -257,6 +264,7 @@ describe("REPL", () => {
         })
       `
       )
+      cy.get("[data-test-id=sandbox-loading]").should("exist")
       cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
@@ -298,6 +306,7 @@ describe("REPL", () => {
         })
       `
       )
+      cy.get("[data-test-id=sandbox-loading]").should("exist")
       cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
@@ -346,6 +355,7 @@ describe("REPL", () => {
         })
       `
       )
+      cy.get("[data-test-id=sandbox-loading]").should("exist")
       cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
@@ -398,6 +408,7 @@ describe("REPL", () => {
         })
       `
       )
+      cy.get("[data-test-id=sandbox-loading]").should("exist")
       cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
@@ -446,6 +457,7 @@ describe("REPL", () => {
         })
       `
       )
+      cy.get("[data-test-id=sandbox-loading]").should("exist")
       cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )

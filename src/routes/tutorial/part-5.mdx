@@ -16,7 +16,7 @@ this.delete("/api/reminders/:id", (schema, request) => {
 })
 ```
 
-The colon `:` is how we denote a dynamic segment in our URL. We can access the runtime value of the segment via `request.params.id`. We then use `schema` to find the corresponding reminder, and then call `destroy()` on it to remove it from Mirage's database.
+The colon `:` in `/api/reminders/:id` is how we denote a dynamic segment in our URL. We can access the runtime value of the segment via `request.params.id`. We then use `schema` to find the corresponding reminder, and then call `destroy()` on it to remove it from Mirage's database.
 
 Reload your app and try deleting a reminder. You should see a 204 successful response, and if you navigate to About and back, the data that comes back from the new GET call to `/api/reminders` won't include your deleted reminder.
 
@@ -24,3 +24,4 @@ Reload your app and try deleting a reminder. You should see a 204 successful res
 
 - Use `:segmentName` to define a dynamic segment in the URL for a route handler
 - Access dynamic segments via `request.params.segmentName`
+- Use `schema.*` methods like `destroy()` to maintain data integrity

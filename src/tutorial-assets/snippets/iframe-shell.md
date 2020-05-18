@@ -133,6 +133,8 @@
       runtime
         .import("./index.js")
         .then(() => {
+          console.log("SENDING MESSAGE")
+
           sendMessage("mirage:success")
         })
         .catch((error) => {

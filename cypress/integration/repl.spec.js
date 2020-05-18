@@ -30,10 +30,7 @@ describe("REPL", () => {
           `
         )
 
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=request-url]").type("/api/movies{enter}")
       cy.get("[data-testid=response-code]").should("contain", "200")
@@ -49,10 +46,7 @@ describe("REPL", () => {
     it("can use a query param for the method and url's initial value", () => {
       cy.visit("/repl?method=GET&url=%2Fusers%2F1")
 
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=request-method]").should("have.value", "GET")
       cy.get("[data-testid=request-url]").should("have.value", "/users/1")
@@ -75,10 +69,8 @@ describe("REPL", () => {
       cy.visit("/repl")
 
       cy.get("[data-testid=config-input]").typeInCodemirror("asdf")
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+
+      cy.get("[data-testid=sandbox-error]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=parse-error]").should(
         "contain",
@@ -90,10 +82,7 @@ describe("REPL", () => {
       cy.visit("/repl")
 
       cy.get("[data-testid=config-input]").typeInCodemirror("asdf")
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-error]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=parse-error]").should(
         "contain",
@@ -108,10 +97,7 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
       cy.get("[data-testid=parse-error]").should("not.exist")
     })
 
@@ -123,16 +109,15 @@ describe("REPL", () => {
         export default "foo"
       `
       )
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-error]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=parse-error]").should(
         "contain",
         "A Mirage Server instance must be the default export from your config."
       )
     })
+
+    xit("shows a message if the config is blank")
 
     it("tracks the config's value in the config query param in the URL", () => {
       cy.visit("/repl")
@@ -179,10 +164,7 @@ describe("REPL", () => {
 
     it("shows an error message if the URL is blank", () => {
       cy.visit("/repl")
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
       cy.get("[data-testid=request-url]").type("{enter}")
 
       cy.contains("The URL cannot be blank").should("exist")
@@ -190,10 +172,7 @@ describe("REPL", () => {
 
     it("shows an error for an unhandled request", () => {
       cy.visit("/repl")
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
       cy.get("[data-testid=request-url]").type("/foo{enter}")
 
       cy.contains(
@@ -225,10 +204,7 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=request-url]").type("/foo{enter}")
       cy.get("[data-testid=response-code]").should("contain", "500")
@@ -264,10 +240,7 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=request-url]").type("/users{enter}")
       cy.get("[data-testid=response-code]").should("contain", "200")
@@ -306,10 +279,7 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=request-method]").select("PATCH")
       cy.get("[data-testid=request-url]").type("/users/1")
@@ -355,10 +325,7 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=request-method]").select("POST")
       cy.get("[data-testid=request-url]").type("/users")
@@ -408,10 +375,7 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=request-method]").select("DELETE")
       cy.get("[data-testid=request-url]").type("/users/1")
@@ -457,10 +421,7 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-testid=sandbox-loading]").should("exist")
-      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
-        "not.exist"
-      )
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=database]").click()
       cy.get("[data-testid=database-record]").should("have.length", 3)

@@ -96,6 +96,9 @@ const inspectorMachine = Machine(
       clearError: assign({
         error: null,
       }),
+      log(context, event) {
+        console.log({ context }, { event })
+      },
     },
   }
 )
@@ -131,9 +134,12 @@ export default function () {
     }
   }
 
+  console.log(`current state: ${inspectorState.value}`)
   function handleMessage({ data }) {
     if (data.fromSandbox) {
       if (data.type === "mirage:db") {
+        console.log(`sending SUCCESS from ${inspectorState.value}`)
+
         send("SUCCESS", { db: data.message })
       } else if (data.type === "mirage:response") {
         send("RESPONSE", {
@@ -153,7 +159,10 @@ export default function () {
           message: data.message.message,
         })
       } else {
-        console.log("new message")
+        // UNHANDLED MESSAGE
+        console.log(
+          `Unhandled REPL message (current state: ${inspectorState.value}): `
+        )
         console.log({ data })
 
         // setSandboxIsReady(true)
@@ -214,14 +223,42 @@ export default function () {
             <div className="z-0 z-10 flex flex-col shadow h-28">
               <div className="flex items-center justify-between px-4 mt-6 md:px-6">
                 <h2 className="text-gray-800 text-1-5xl">Server</h2>
-                {inspectorState.value === "loading" && (
+                {inspectorState.value === "loading" ? (
                   <p
                     className="text-xs font-medium text-gray-500 uppercase"
                     data-testid="sandbox-loading"
                   >
                     Loading...
                   </p>
-                )}
+                ) : inspectorState.value === "running" ? (
+                  <p data-testid="sandbox-ready">
+                    <svg
+                      className="w-4 h-4 text-green-600"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                        fillRule="evenodd"
+                      ></path>
+                    </svg>
+                  </p>
+                ) : inspectorState.value === "error" ? (
+                  <p data-testid="sandbox-error">
+                    <svg
+                      className="w-4 h-4 text-red-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                        fillRule="evenodd"
+                      ></path>
+                    </svg>
+                  </p>
+                ) : null}
               </div>
 
               <div className="px-4 py-3 mt-auto text-sm md:px-6">

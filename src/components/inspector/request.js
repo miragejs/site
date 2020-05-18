@@ -51,7 +51,7 @@ export default function ({ onRequest }) {
                 value={method}
                 onChange={(e) => setMethod(e.target.value)}
                 aria-label="Method"
-                data-test-id="request-method"
+                data-testid="request-method"
                 className="h-full py-0 pl-3 text-gray-600 bg-transparent border-transparent rounded-md form-select pr-7 sm:text-sm sm:leading-5"
               >
                 <option value="GET">GET</option>
@@ -73,13 +73,13 @@ export default function ({ onRequest }) {
                 }
                 `}
               placeholder="e.g. /users"
-              data-test-id="request-url"
+              data-testid="request-url"
             />
           </div>
           <button
             className="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium leading-5 text-gray-600 transition duration-150 ease-in-out border border-gray-300 rounded-r-md bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline focus:border-blue-300 active:bg-gray-100 active:text-gray-500"
             type="submit"
-            data-test-id="send-request"
+            data-testid="send-request"
           >
             <span className="px-1">Send</span>
             <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
@@ -97,7 +97,7 @@ export default function ({ onRequest }) {
             <label className="mt-4 text-sm text-gray-600">Request body</label>
             <div className="relative flex-1 p-3 mt-1 overflow-hidden bg-white border border-gray-300 rounded-md shadow-sm">
               <CodeEditor
-                data-test-id="request-body-input"
+                data-testid="request-body-input"
                 value={body}
                 onChange={setBody}
                 extraKeys={{

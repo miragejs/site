@@ -61,11 +61,11 @@ Here's the Vue component we'll be testing.
 ```html
 <!-- src/App.vue -->
 <template>
-  <div v-if="serverError" data-test-id="server-error">
+  <div v-if="serverError" data-testid="server-error">
     {{ serverError }}
   </div>
 
-  <div v-else-if="users.length === 0" data-test-id="no-users">
+  <div v-else-if="users.length === 0" data-testid="no-users">
     No users!
   </div>
 
@@ -74,7 +74,7 @@ Here's the Vue component we'll be testing.
       <li
         v-for="user in users"
         v-bind:key="user.id"
-        :data-test-id="'user-' + user.id"
+        :data-testid="'user-' + user.id"
       >
         {{ user.name }}
       </li>
@@ -141,21 +141,21 @@ it("shows the users from our server", async () => {
   const wrapper = mount(App)
 
   // let's wait for our vue component to finish loading data
-  // we know it's done when the data-test-id enters the dom.
-  await waitFor(wrapper, '[data-test-id="user-1"]')
-  await waitFor(wrapper, '[data-test-id="user-2"]')
+  // we know it's done when the data-testid enters the dom.
+  await waitFor(wrapper, '[data-testid="user-1"]')
+  await waitFor(wrapper, '[data-testid="user-2"]')
 
-  expect(wrapper.find('[data-test-id="user-1"]').text()).toBe("Luke")
-  expect(wrapper.find('[data-test-id="user-2"]').text()).toBe("Leia")
+  expect(wrapper.find('[data-testid="user-1"]').text()).toBe("Luke")
+  expect(wrapper.find('[data-testid="user-2"]').text()).toBe("Leia")
 })
 
 it("shows a message if there are no users", async () => {
   // Don't create any users
 
   const wrapper = mount(App)
-  await waitFor(wrapper, '[data-test-id="no-users"]')
+  await waitFor(wrapper, '[data-testid="no-users"]')
 
-  expect(wrapper.find('[data-test-id="no-users"]').text()).toBe("No users!")
+  expect(wrapper.find('[data-testid="no-users"]').text()).toBe("No users!")
 })
 
 // This helper method returns a promise that resolves
@@ -197,9 +197,9 @@ it("handles error responses from the server", async () => {
 
   const wrapper = mount(App)
 
-  await waitFor(wrapper, '[data-test-id="server-error"]')
+  await waitFor(wrapper, '[data-testid="server-error"]')
 
-  expect(wrapper.find('[data-test-id="server-error"]').text()).toBe(
+  expect(wrapper.find('[data-testid="server-error"]').text()).toBe(
     "The database is on vacation."
   )
 })

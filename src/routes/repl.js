@@ -217,7 +217,7 @@ export default function () {
                 {inspectorState.value === "loading" && (
                   <p
                     className="text-xs font-medium text-gray-500 uppercase"
-                    data-test-id="sandbox-loading"
+                    data-testid="sandbox-loading"
                   >
                     Loading...
                   </p>
@@ -239,7 +239,7 @@ export default function () {
                 </button>
                 <button
                   onClick={() => setActiveServerTab("Database")}
-                  data-test-id="database"
+                  data-testid="database"
                   className={`mr-4 text-sm font-medium focus:outline-none
                     ${
                       activeServerTab === "Database"
@@ -264,7 +264,7 @@ export default function () {
                   }}
                 >
                   <CodeEditor
-                    data-test-id="config-input"
+                    data-testid="config-input"
                     value={configInput}
                     onChange={handleConfigInputChange}
                   />
@@ -281,7 +281,7 @@ export default function () {
 
               {configIsTooLargeForURL && (
                 <div
-                  data-test-id="config-length-warning"
+                  data-testid="config-length-warning"
                   className="px-4 py-3 text-xs font-medium text-gray-900 bg-yellow-400"
                 >
                   <p>
@@ -294,7 +294,7 @@ export default function () {
               {inspectorState.context.error && (
                 <div
                   ref={errorMessageRef}
-                  data-test-id="parse-error"
+                  data-testid="parse-error"
                   className="absolute inset-x-0 bottom-0 z-10 px-4 py-3 text-xs font-medium text-white bg-red-600"
                 >
                   <pre className="whitespace-pre-wrap">
@@ -343,7 +343,7 @@ export default function () {
                 </button>
                 {/* <button
                   onClick={() => setActiveResponseTab("Headers")}
-                  data-test-id="headers"
+                  data-testid="headers"
                   className={`mr-4 text-sm font-medium focus:outline-none
                     ${
                       activeResponseTab === "Headers"
@@ -357,7 +357,7 @@ export default function () {
 
                 {inspectorState.value === "handledRequest" && (
                   <span
-                    data-test-id="response-code"
+                    data-testid="response-code"
                     className={`ml-auto inline-flex items-center px-2 py-1 rounded-full text-xs font-medium leading-none 
                     ${
                       inspectorState.context.response.code
@@ -387,11 +387,11 @@ export default function () {
 
               <div className="p-4 md:px-6">
                 {inspectorState.value === "pendingRequest" ? (
-                  <p className="text-sm" data-test-id="request-pending">
+                  <p className="text-sm" data-testid="request-pending">
                     Pending...
                   </p>
                 ) : inspectorState.value === "handledRequest" ? (
-                  <pre className="text-sm-" data-test-id="response-body">
+                  <pre className="text-sm-" data-testid="response-body">
                     {JSON.stringify(
                       inspectorState.context.response.data,
                       null,

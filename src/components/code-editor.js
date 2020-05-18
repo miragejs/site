@@ -19,7 +19,7 @@ export default function CodeEditor({
   value = "",
   onChange = () => {},
   extraKeys,
-  "data-test-id": dataTestId,
+  "data-testid": dataTestId,
 }) {
   let editorDivRef = React.useRef()
   let editorRef = React.useRef()
@@ -43,7 +43,7 @@ export default function CodeEditor({
       if (dataTestId) {
         editorRef.current
           .getWrapperElement()
-          .setAttribute("data-test-id", dataTestId)
+          .setAttribute("data-testid", dataTestId)
       }
 
       editorRef.current.setOption("extraKeys", extraKeys)

@@ -7,7 +7,7 @@ describe("REPL", () => {
         "/repl?config=aW1wb3J0IHsgU2VydmVyIH0gZnJvbSAibWlyYWdlanMiCgpleHBvcnQgZGVmYXVsdCBuZXcgU2VydmVyKHsKICByb3V0ZXMoKSB7CiAgICB0aGlzLmdldCgiL2FwaS9tb3ZpZXMiLCAoKSA9PiB7CiAgICAgIHJldHVybiB7CiAgICAgICAgbW92aWVzOiBbCiAgICAgICAgICB7IGlkOiAxLCBuYW1lOiAiSW5jZXB0aW9uIiwgeWVhcjogMjAxMCB9LAogICAgICAgICAgeyBpZDogMiwgbmFtZTogIkludGVyc3RlbGxhciIsIHllYXI6IDIwMTQgfSwKICAgICAgICAgIHsgaWQ6IDMsIG5hbWU6ICJEdW5raXJrIiwgeWVhcjogMjAxNyB9LAogICAgICAgIF0sCiAgICAgIH0KICAgIH0pCiAgfSwKfSk="
       )
 
-      cy.get("[data-test-id=config-input]")
+      cy.get("[data-testid=config-input]")
         .getContent()
         .should(
           "eq",
@@ -30,14 +30,14 @@ describe("REPL", () => {
           `
         )
 
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
 
-      cy.get("[data-test-id=request-url]").type("/api/movies{enter}")
-      cy.get("[data-test-id=response-code]").should("contain", "200")
-      cy.get("[data-test-id=response-body]")
+      cy.get("[data-testid=request-url]").type("/api/movies{enter}")
+      cy.get("[data-testid=response-code]").should("contain", "200")
+      cy.get("[data-testid=response-body]")
         .invoke("text")
         .then((text) => {
           let json = JSON.parse(text)
@@ -49,18 +49,18 @@ describe("REPL", () => {
     it("can use a query param for the method and url's initial value", () => {
       cy.visit("/repl?method=GET&url=%2Fusers%2F1")
 
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
 
-      cy.get("[data-test-id=request-method]").should("have.value", "GET")
-      cy.get("[data-test-id=request-url]").should("have.value", "/users/1")
-      cy.get("[data-test-id=send-request]").click()
-      cy.get("[data-test-id=request-pending]").should("not.exist")
+      cy.get("[data-testid=request-method]").should("have.value", "GET")
+      cy.get("[data-testid=request-url]").should("have.value", "/users/1")
+      cy.get("[data-testid=send-request]").click()
+      cy.get("[data-testid=request-pending]").should("not.exist")
 
-      cy.get("[data-test-id=response-code]").should("contain", "200")
-      cy.get("[data-test-id=response-body]")
+      cy.get("[data-testid=response-code]").should("contain", "200")
+      cy.get("[data-testid=response-body]")
         .invoke("text")
         .then((text) => {
           let json = JSON.parse(text)
@@ -74,13 +74,13 @@ describe("REPL", () => {
     it("shows a parsing error", () => {
       cy.visit("/repl")
 
-      cy.get("[data-test-id=config-input]").typeInCodemirror("asdf")
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=config-input]").typeInCodemirror("asdf")
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
 
-      cy.get("[data-test-id=parse-error]").should(
+      cy.get("[data-testid=parse-error]").should(
         "contain",
         "asdf is not defined"
       )
@@ -89,18 +89,18 @@ describe("REPL", () => {
     it("can recover from a parsing error", () => {
       cy.visit("/repl")
 
-      cy.get("[data-test-id=config-input]").typeInCodemirror("asdf")
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=config-input]").typeInCodemirror("asdf")
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
 
-      cy.get("[data-test-id=parse-error]").should(
+      cy.get("[data-testid=parse-error]").should(
         "contain",
         "asdf is not defined"
       )
 
-      cy.get("[data-test-id=config-input]").typeInCodemirror(
+      cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
         import { Server } from "miragejs"
 
@@ -108,27 +108,27 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
-      cy.get("[data-test-id=parse-error]").should("not.exist")
+      cy.get("[data-testid=parse-error]").should("not.exist")
     })
 
     it("shows a message if the config doesn't export a Mirage server instance", () => {
       cy.visit("/repl")
 
-      cy.get("[data-test-id=config-input]").typeInCodemirror(
+      cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
         export default "foo"
       `
       )
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
 
-      cy.get("[data-test-id=parse-error]").should(
+      cy.get("[data-testid=parse-error]").should(
         "contain",
         "A Mirage Server instance must be the default export from your config."
       )
@@ -137,7 +137,7 @@ describe("REPL", () => {
     it("tracks the config's value in the config query param in the URL", () => {
       cy.visit("/repl")
 
-      cy.get("[data-test-id=config-input]").typeInCodemirror(
+      cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
         import { Server } from "miragejs"
 
@@ -154,7 +154,7 @@ describe("REPL", () => {
     it("shows a message if the config is too large to be tracked in the URL", () => {
       cy.visit("/repl")
 
-      cy.get("[data-test-id=config-input]").typeInCodemirror(
+      cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
         import { Server } from "miragejs"
 
@@ -167,7 +167,7 @@ describe("REPL", () => {
         })
         `
       )
-      cy.get("[data-test-id=config-length-warning]").should(
+      cy.get("[data-testid=config-length-warning]").should(
         "contain",
         "Your config is too long"
       )
@@ -179,22 +179,22 @@ describe("REPL", () => {
 
     it("shows an error message if the URL is blank", () => {
       cy.visit("/repl")
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
-      cy.get("[data-test-id=request-url]").type("{enter}")
+      cy.get("[data-testid=request-url]").type("{enter}")
 
       cy.contains("The URL cannot be blank").should("exist")
     })
 
     it("shows an error for an unhandled request", () => {
       cy.visit("/repl")
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
-      cy.get("[data-test-id=request-url]").type("/foo{enter}")
+      cy.get("[data-testid=request-url]").type("/foo{enter}")
 
       cy.contains(
         "Your app tried to GET '/foo', but there was no route defined to handle this request"
@@ -204,8 +204,8 @@ describe("REPL", () => {
     it("tracks the method and URL's value in their respective query params", () => {
       cy.visit("/repl")
 
-      cy.get("[data-test-id=request-method]").select("DELETE")
-      cy.get("[data-test-id=request-url]").type("/users/1")
+      cy.get("[data-testid=request-method]").select("DELETE")
+      cy.get("[data-testid=request-url]").type("/users/1")
 
       cy.url().should("include", "method=DELETE")
       cy.url().should("include", "url=%2Fusers%2F1")
@@ -214,7 +214,7 @@ describe("REPL", () => {
     it("works for a GET request that responds with an HTTP error", () => {
       cy.visit("/repl")
 
-      cy.get("[data-test-id=config-input]").typeInCodemirror(
+      cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
         import { Server, Response } from "miragejs"
 
@@ -225,14 +225,14 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
 
-      cy.get("[data-test-id=request-url]").type("/foo{enter}")
-      cy.get("[data-test-id=response-code]").should("contain", "500")
-      cy.get("[data-test-id=response-body]")
+      cy.get("[data-testid=request-url]").type("/foo{enter}")
+      cy.get("[data-testid=response-code]").should("contain", "500")
+      cy.get("[data-testid=response-body]")
         .invoke("text")
         .then((text) => {
           let json = JSON.parse(text)
@@ -244,7 +244,7 @@ describe("REPL", () => {
     it("works for a GET request that responds with an HTTP success", () => {
       cy.visit("/repl")
 
-      cy.get("[data-test-id=config-input]").typeInCodemirror(
+      cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
         import { Server, Model, belongsTo } from "miragejs"
 
@@ -264,14 +264,14 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
 
-      cy.get("[data-test-id=request-url]").type("/users{enter}")
-      cy.get("[data-test-id=response-code]").should("contain", "200")
-      cy.get("[data-test-id=response-body]")
+      cy.get("[data-testid=request-url]").type("/users{enter}")
+      cy.get("[data-testid=response-code]").should("contain", "200")
+      cy.get("[data-testid=response-body]")
         .invoke("text")
         .then((text) => {
           let json = JSON.parse(text)
@@ -283,7 +283,7 @@ describe("REPL", () => {
     it("works for a PATCH request with a request body", () => {
       cy.visit("/repl")
 
-      cy.get("[data-test-id=config-input]").typeInCodemirror(
+      cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
         import { Server, Model, RestSerializer } from "miragejs"
 
@@ -306,14 +306,14 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
 
-      cy.get("[data-test-id=request-method]").select("PATCH")
-      cy.get("[data-test-id=request-url]").type("/users/1")
-      cy.get("[data-test-id=request-body-input]").typeInCodemirror(
+      cy.get("[data-testid=request-method]").select("PATCH")
+      cy.get("[data-testid=request-url]").type("/users/1")
+      cy.get("[data-testid=request-body-input]").typeInCodemirror(
         d`
         {
           user: {
@@ -322,9 +322,9 @@ describe("REPL", () => {
         }
         `
       )
-      cy.get("[data-test-id=send-request]").click()
-      cy.get("[data-test-id=response-code]").should("contain", "200")
-      cy.get("[data-test-id=response-body]")
+      cy.get("[data-testid=send-request]").click()
+      cy.get("[data-testid=response-code]").should("contain", "200")
+      cy.get("[data-testid=response-body]")
         .invoke("text")
         .then((text) => {
           let json = JSON.parse(text)
@@ -336,7 +336,7 @@ describe("REPL", () => {
     it("works for a POST request with a request body", () => {
       cy.visit("/repl")
 
-      cy.get("[data-test-id=config-input]").typeInCodemirror(
+      cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
         import { Server, Model, RestSerializer } from "miragejs"
 
@@ -355,14 +355,14 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
 
-      cy.get("[data-test-id=request-method]").select("POST")
-      cy.get("[data-test-id=request-url]").type("/users")
-      cy.get("[data-test-id=request-body-input]").typeInCodemirror(
+      cy.get("[data-testid=request-method]").select("POST")
+      cy.get("[data-testid=request-url]").type("/users")
+      cy.get("[data-testid=request-body-input]").typeInCodemirror(
         d`
         {
           user: {
@@ -371,9 +371,9 @@ describe("REPL", () => {
         }
         `
       )
-      cy.get("[data-test-id=send-request]").click()
-      cy.get("[data-test-id=response-code]").should("contain", "201")
-      cy.get("[data-test-id=response-body]")
+      cy.get("[data-testid=send-request]").click()
+      cy.get("[data-testid=response-code]").should("contain", "201")
+      cy.get("[data-testid=response-body]")
         .invoke("text")
         .then((text) => {
           let json = JSON.parse(text)
@@ -385,7 +385,7 @@ describe("REPL", () => {
     it("works for a DELETE request", () => {
       cy.visit("/repl")
 
-      cy.get("[data-test-id=config-input]").typeInCodemirror(
+      cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
         import { Server, Model, RestSerializer } from "miragejs"
 
@@ -408,21 +408,21 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
 
-      cy.get("[data-test-id=request-method]").select("DELETE")
-      cy.get("[data-test-id=request-url]").type("/users/1")
-      cy.get("[data-test-id=send-request]").click()
-      cy.get("[data-test-id=response-code]").should("contain", "204")
+      cy.get("[data-testid=request-method]").select("DELETE")
+      cy.get("[data-testid=request-url]").type("/users/1")
+      cy.get("[data-testid=send-request]").click()
+      cy.get("[data-testid=response-code]").should("contain", "204")
 
-      cy.get("[data-test-id=request-method]").select("GET")
-      cy.get("[data-test-id=request-url]").type("{selectall}/users")
-      cy.get("[data-test-id=send-request]").click()
-      cy.get("[data-test-id=response-code]").should("contain", "200")
-      cy.get("[data-test-id=response-body]")
+      cy.get("[data-testid=request-method]").select("GET")
+      cy.get("[data-testid=request-url]").type("{selectall}/users")
+      cy.get("[data-testid=send-request]").click()
+      cy.get("[data-testid=response-code]").should("contain", "200")
+      cy.get("[data-testid=response-body]")
         .invoke("text")
         .then((text) => {
           let json = JSON.parse(text)
@@ -434,7 +434,7 @@ describe("REPL", () => {
     it("updates the database after a mutation", () => {
       cy.visit("/repl")
 
-      cy.get("[data-test-id=config-input]").typeInCodemirror(
+      cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
         import { Server, Model, RestSerializer } from "miragejs"
 
@@ -457,20 +457,20 @@ describe("REPL", () => {
         })
       `
       )
-      cy.get("[data-test-id=sandbox-loading]").should("exist")
-      cy.get("[data-test-id=sandbox-loading]", { timeout: 10000 }).should(
+      cy.get("[data-testid=sandbox-loading]").should("exist")
+      cy.get("[data-testid=sandbox-loading]", { timeout: 10000 }).should(
         "not.exist"
       )
 
-      cy.get("[data-test-id=database]").click()
-      cy.get("[data-test-id=database-record]").should("have.length", 3)
+      cy.get("[data-testid=database]").click()
+      cy.get("[data-testid=database-record]").should("have.length", 3)
 
-      cy.get("[data-test-id=request-method]").select("DELETE")
-      cy.get("[data-test-id=request-url]").type("/users/1")
-      cy.get("[data-test-id=send-request]").click()
-      cy.get("[data-test-id=response-code]").should("contain", "204")
+      cy.get("[data-testid=request-method]").select("DELETE")
+      cy.get("[data-testid=request-url]").type("/users/1")
+      cy.get("[data-testid=send-request]").click()
+      cy.get("[data-testid=response-code]").should("contain", "204")
 
-      cy.get("[data-test-id=database-record]").should("have.length", 2)
+      cy.get("[data-testid=database-record]").should("have.length", 2)
     })
   })
 })

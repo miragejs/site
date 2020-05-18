@@ -134,12 +134,9 @@ export default function () {
     }
   }
 
-  console.log(`current state: ${inspectorState.value}`)
   function handleMessage({ data }) {
     if (data.fromSandbox) {
       if (data.type === "mirage:db") {
-        console.log(`sending SUCCESS from ${inspectorState.value}`)
-
         send("SUCCESS", { db: data.message })
       } else if (data.type === "mirage:response") {
         send("RESPONSE", {

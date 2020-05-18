@@ -1,38 +1,39 @@
 import queryString from "query-string"
-import { useLocation, useNavigate } from "@reach/router"
+import { useState } from "react"
 
+// For initial value, priority is (1) url, (2) options.initialValue
 export function useQueryParam(key, options = {}) {
   let type = options.type || "string"
   let initialValue = options.initialValue || undefined
 
-  let navigate = useNavigate()
-  let location = useLocation()
-  let queryParams = queryString.parse(location.search) ?? {}
+  let queryParams = queryString.parse(window.location.search) ?? {}
 
-  let value
+  let qpOrInitialValue
   if (queryParams[key]) {
     if (type === "binary") {
-      value = queryParams[key] ? atob(queryParams[key]) : null
+      qpOrInitialValue = queryParams[key] ? atob(queryParams[key]) : null
     } else {
-      value = queryParams[key]
+      qpOrInitialValue = queryParams[key]
     }
   } else {
-    value = initialValue
+    qpOrInitialValue = initialValue
   }
 
-  function setter(newValue) {
-    if (type === "binary") {
-      newValue = newValue ? btoa(newValue) : undefined
-    } else {
-      newValue = newValue || undefined
-    }
-    queryParams[key] = newValue
-    let serializedQueryString = queryString.stringify(queryParams)
-    let url = `${location.pathname}${
-      serializedQueryString ? `?${serializedQueryString}` : ""
-    }`
+  let [value, setValue] = useState(qpOrInitialValue)
 
-    navigate(url, { replace: true })
+  function setter(newValue) {
+    let newValueSerialized
+    if (type === "binary") {
+      newValueSerialized = newValue ? btoa(newValue) : undefined
+    } else {
+      newValueSerialized = newValue || undefined
+    }
+    queryParams[key] = newValueSerialized
+    let serializedQueryString = queryString.stringify(queryParams)
+    let search = serializedQueryString ? `?${serializedQueryString}` : ""
+
+    window.history.replaceState(null, null, search)
+    setValue(newValue)
   }
 
   return [value, setter]

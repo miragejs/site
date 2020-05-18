@@ -143,7 +143,7 @@ describe("REPL", () => {
 
       cy.url().should(
         "include",
-        "/repl/?config=aW1wb3J0IHsgU2VydmVyIH0gZnJvbSAibWlyYWdlanMiCgpleHBvcnQgZGVmYXVsdCBuZXcgU2VydmVyKCk"
+        "config=aW1wb3J0IHsgU2VydmVyIH0gZnJvbSAibWlyYWdlanMiCgpleHBvcnQgZGVmYXVsdCBuZXcgU2VydmVyKCk"
       )
     })
 
@@ -201,7 +201,8 @@ describe("REPL", () => {
       cy.get("[data-test-id=request-method]").select("DELETE")
       cy.get("[data-test-id=request-url]").type("/users/1")
 
-      cy.url().should("include", "/repl/?method=DELETE&url=%2Fusers%2F1")
+      cy.url().should("include", "method=DELETE")
+      cy.url().should("include", "url=%2Fusers%2F1")
     })
 
     it("works for a GET request that responds with an HTTP error", () => {

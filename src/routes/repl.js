@@ -7,6 +7,7 @@ import { useQueryParam } from "../hooks/use-query-param"
 import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
 import CodeEditor from "../components/code-editor"
+import { log } from "xstate/lib/actions"
 
 const inspectorMachine = Machine(
   {

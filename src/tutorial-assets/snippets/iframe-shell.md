@@ -133,8 +133,6 @@
       runtime
         .import("./index.js")
         .then(() => {
-          console.log("SENDING MESSAGE")
-
           sendMessage("mirage:success")
         })
         .catch((error) => {
@@ -147,9 +145,7 @@
               "A Mirage Server instance must be the default export from your config."
             )
           } else {
-            console.log(error)
-
-            sendMessage("mirage:parse-error", error)
+            sendMessage("mirage:parse-error", error.toString())
           }
         })
     </script>

@@ -7,7 +7,7 @@ export function useQueryParam(key, options = {}) {
   let type = options.type || "string"
   let initialValue = options.initialValue || undefined
 
-  let { search } = useLocation()
+  let { pathname, search } = useLocation()
   let navigate = useNavigate()
 
   let queryParams = queryString.parse(search) ?? {}
@@ -33,11 +33,13 @@ export function useQueryParam(key, options = {}) {
       newValueSerialized = newValue || undefined
     }
     queryParams[key] = newValueSerialized
+
     let serializedQueryString = queryString.stringify(queryParams)
     let search = serializedQueryString ? `?${serializedQueryString}` : ""
+    let url = `${pathname}${search}`
 
     setValue(newValue)
-    navigate(search, { replace: true })
+    navigate(url, { replace: true })
   }
 
   return [value, setter]

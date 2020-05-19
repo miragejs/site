@@ -15,11 +15,18 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-export default function ({ value, onChange }) {
+export default function CodeEditor({
+  value = "",
+  onChange = () => {},
+  extraKeys,
+  "data-testid": dataTestId,
+}) {
   let editorDivRef = React.useRef()
   let editorRef = React.useRef()
 
   React.useEffect(() => {
+    let handler = (cm) => onChange(cm.getValue())
+
     // Load CodeMirror + its plugins using dynamic import, since they
     // only work in the browser.
     const f = async () => {
@@ -31,20 +38,31 @@ export default function ({ value, onChange }) {
           value,
           mode: "javascript",
         })
-
-        editorRef.current.on("change", (cm) => {
-          onChange(cm.getValue())
-        })
       }
+
+      if (dataTestId) {
+        editorRef.current
+          .getWrapperElement()
+          .setAttribute("data-testid", dataTestId)
+      }
+
+      editorRef.current.setOption("extraKeys", extraKeys)
+      editorRef.current.on("change", handler)
     }
 
     f()
-  }, [onChange, value])
+
+    return () => {
+      if (editorRef.current) {
+        editorRef.current.off("change", handler)
+      }
+    }
+  }, [onChange, value, dataTestId])
 
   return (
     <>
       <GlobalStyle />
-      <div ref={editorDivRef}></div>
+      <div className="h-full" ref={editorDivRef}></div>
     </>
   )
 }

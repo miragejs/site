@@ -30,6 +30,7 @@
             },
             "*"
           )
+          window.server = server
 
           // let originalHandler = server.pretender.handledRequest.bind(
           //   server.pretender
@@ -70,22 +71,29 @@
         e.stopImmediatePropagation()
         e.preventDefault()
 
-        sendMessage("mirage:runtimeError", e.reason)
+        sendMessage("mirage:unhandled-rejection", e.reason)
       })
 
       window.addEventListener("message", async function ({ data }) {
         if (data.fromInspector) {
           switch (data.type) {
             case "mirage:request":
-              let { method, url } = data.message
+              let { method, url, body } = data.message
 
-              let res = await fetch(url, { method })
-              let json = await res.json()
+              let res = await fetch(url, { method, body })
+              let text = await res.text()
+              let json
+              try {
+                json = JSON.parse(text)
+              } catch (error) {}
 
               sendMessage("mirage:response", {
-                data: json,
-                code: res.status,
-                headers: res.headers.map,
+                response: {
+                  data: json || text,
+                  code: res.status,
+                  headers: res.headers.map,
+                },
+                db: window.server.db.dump(),
               })
               break
 
@@ -125,6 +133,8 @@
       runtime
         .import("./index.js")
         .then(() => {
+          console.log("SENDING MESSAGE")
+
           sendMessage("mirage:success")
         })
         .catch((error) => {

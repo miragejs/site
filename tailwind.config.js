@@ -1,7 +1,15 @@
 const plugin = require("tailwindcss/plugin")
+const hexRgb = require("hex-rgb") // copied from @tailwindcss/ui. Remove once we add.
+const defaultTheme = require("tailwindcss/defaultTheme")
 
 function px(pixels) {
   return `${pixels / 16}rem`
+}
+
+// rgba function copied from @tailwindcss/ui. Remove once we add.
+function rgba(hex, alpha) {
+  const { red, green, blue } = hexRgb(hex)
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`
 }
 
 module.exports = {
@@ -67,6 +75,7 @@ module.exports = {
         },
         "gray-900.50": "rgba(43, 47, 49, 0.50)",
         green: {
+          100: "#def7ec",
           200: "#BEFFE7",
           400: "#2BCF91",
           500: "#05C77E",
@@ -84,6 +93,8 @@ module.exports = {
         black:
           "0 10px 25px 5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.8)",
         outline: "0 0 0 3px rgba(164,202,254,.45)",
+        // outline-* shadows copied from @tailwindcss/ui. Remove once we add.
+        "outline-red": `0 0 0 3px ${rgba(defaultTheme.colors.red[300], 0.45)}`,
       },
       lineHeight: {
         tighter: 1.125,

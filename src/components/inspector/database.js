@@ -72,6 +72,7 @@ export default function ({ db }) {
                         <tr
                           key={index}
                           className={index % 2 ? "bg-gray-50" : "bg-white"}
+                          data-testid="database-record"
                         >
                           {row.attrs.map((attr, index) => (
                             <td

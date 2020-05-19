@@ -6,12 +6,16 @@ import { Machine, assign } from "xstate"
 import { useQueryParam } from "../hooks/use-query-param"
 import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
+import CodeEditor from "../components/code-editor"
 
 const inspectorMachine = Machine(
   {
     id: "inspector",
     context: {
+      iframeRef: null,
       error: null,
+      errorHandlingRequest: null,
+      db: {},
     },
     initial: "loading",
     states: {
@@ -26,24 +30,75 @@ const inspectorMachine = Machine(
           },
         },
       },
-      running: {
-        entry: "clearError",
+      error: {
         on: {
           CONFIG_CHANGE: "loading",
         },
       },
-      error: {
+      running: {
+        entry: ["clearError", "updateDatabase"],
         on: {
           CONFIG_CHANGE: "loading",
+          REQUEST: "pendingRequest",
+        },
+      },
+      pendingRequest: {
+        entry: "makeRequest",
+        on: {
+          RESPONSE: {
+            target: "handledRequest",
+            actions: ["updateResponse", "updateDatabase"],
+          },
+          ERROR: {
+            target: "failedRequest",
+            actions: assign({
+              errorHandlingRequest: (context, event) => event.message,
+            }),
+          },
+        },
+      },
+      handledRequest: {
+        on: {
+          CONFIG_CHANGE: "loading",
+          REQUEST: "pendingRequest",
+        },
+      },
+      failedRequest: {
+        on: {
+          CONFIG_CHANGE: "loading",
+          REQUEST: "pendingRequest",
         },
       },
     },
   },
   {
     actions: {
+      makeRequest(context, { method, url, body }) {
+        context.iframeRef.current.contentWindow.postMessage(
+          {
+            fromInspector: true,
+            type: "mirage:request",
+            message: {
+              method,
+              url,
+              body: body ? JSON.stringify(body) : undefined,
+            },
+          },
+          "*"
+        )
+      },
+      updateResponse: assign({
+        response: (context, event) => event.response,
+      }),
+      updateDatabase: assign({
+        db: (context, event) => event.db,
+      }),
       clearError: assign({
         error: null,
       }),
+      log(context, event) {
+        console.log({ context }, { event })
+      },
     },
   }
 )
@@ -54,10 +109,12 @@ export default function () {
   })
   let defaultConfig = useTutorialSnippet("starting-input")
 
-  let [currentInspectorState, send] = useMachine(inspectorMachine)
+  let iframeRef = React.useRef()
+  let [inspectorState, send] = useMachine(inspectorMachine, {
+    context: { iframeRef },
+  })
   let [activeServerTab, setActiveServerTab] = React.useState("Config")
-  let [db, setDb] = React.useState({})
-  let [response, setResponse] = React.useState({})
+  let [activeResponseTab, setActiveResponseTab] = React.useState("JSON")
   let [localConfig, setLocalConfig] = useState(null)
   let [errorMessageRef, errorMessagebounds] = useMeasure({
     polyfill: ResizeObserver,
@@ -80,27 +137,29 @@ export default function () {
   function handleMessage({ data }) {
     if (data.fromSandbox) {
       if (data.type === "mirage:db") {
-        setDb(data.message)
-        send("SUCCESS")
+        send("SUCCESS", { db: data.message })
       } else if (data.type === "mirage:response") {
-        console.log("handing response")
-
-        setResponse(data.message)
-
-        // } else if (data.type === "error") {
-        // setLastError(data.message)
+        send("RESPONSE", {
+          response: data.message.response,
+          db: data.message.db,
+        })
       } else if (data.type === "mirage:parse-error") {
-        send({
-          type: "ERROR",
+        send("ERROR", {
           message: data.message.toString(),
         })
       } else if (data.type === "mirage:runtime-error") {
-        send({
-          type: "ERROR",
+        send("ERROR", {
           message: data.message.toString(),
         })
+      } else if (data.type === "mirage:unhandled-rejection") {
+        send("ERROR", {
+          message: data.message.message,
+        })
       } else {
-        console.log("new message")
+        // UNHANDLED MESSAGE
+        console.log(
+          `Unhandled REPL message (current state: ${inspectorState.value}): `
+        )
         console.log({ data })
 
         // setSandboxIsReady(true)
@@ -125,16 +184,6 @@ export default function () {
 
     return () => window.removeEventListener("message", handleMessage)
   })
-
-  let iframeRef = React.useRef()
-  function handleRequest(method, url) {
-    console.log({ method, url })
-
-    iframeRef.current.contentWindow.postMessage(
-      { fromInspector: true, type: "mirage:request", message: { method, url } },
-      "*"
-    )
-  }
 
   // Splice in the Input into the iframe shell
   let shellLines = useTutorialSnippet("iframe-shell").split("\n")
@@ -171,32 +220,70 @@ export default function () {
             <div className="z-0 z-10 flex flex-col shadow h-28">
               <div className="flex items-center justify-between px-4 mt-6 md:px-6">
                 <h2 className="text-gray-800 text-1-5xl">Server</h2>
-                {currentInspectorState.value === "loading" && (
+                {inspectorState.value === "loading" ? (
                   <p
                     className="text-xs font-medium text-gray-500 uppercase"
                     data-testid="sandbox-loading"
                   >
                     Loading...
                   </p>
-                )}
+                ) : inspectorState.value === "running" ? (
+                  <p data-testid="sandbox-ready">
+                    <svg
+                      className="w-4 h-4 text-green-600"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                        fillRule="evenodd"
+                      ></path>
+                    </svg>
+                  </p>
+                ) : inspectorState.value === "error" ? (
+                  <p data-testid="sandbox-error">
+                    <svg
+                      className="w-4 h-4 text-red-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                        fillRule="evenodd"
+                      ></path>
+                    </svg>
+                  </p>
+                ) : null}
               </div>
 
               <div className="px-4 py-3 mt-auto text-sm md:px-6">
-                {["Config", "Database"].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveServerTab(tab)}
-                    className={`mr-4 text-sm font-medium focus:outline-none
+                <button
+                  onClick={() => setActiveServerTab("Config")}
+                  className={`mr-4 text-sm font-medium focus:outline-none
                     ${
-                      tab === activeServerTab
+                      activeServerTab === "Config"
                         ? "text-gray-800"
                         : "text-gray-400 hover:text-gray-800"
                     }
                     `}
-                  >
-                    {tab}
-                  </button>
-                ))}
+                >
+                  Config
+                </button>
+                <button
+                  onClick={() => setActiveServerTab("Database")}
+                  data-testid="database"
+                  className={`mr-4 text-sm font-medium focus:outline-none
+                    ${
+                      activeServerTab === "Database"
+                        ? "text-gray-800"
+                        : "text-gray-400 hover:text-gray-800"
+                    }
+                    `}
+                >
+                  Database
+                </button>
               </div>
             </div>
 
@@ -205,12 +292,13 @@ export default function () {
                 <div
                   className="flex-1 p-4 overflow-y-auto md:px-5"
                   style={{
-                    paddingBottom: currentInspectorState.context.error
+                    paddingBottom: inspectorState.context.error
                       ? `${errorMessagebounds.height}px`
                       : null,
                   }}
                 >
-                  <Inspector.ConfigEditor
+                  <CodeEditor
+                    data-testid="config-input"
                     value={configInput}
                     onChange={handleConfigInputChange}
                   />
@@ -222,7 +310,7 @@ export default function () {
                   activeServerTab !== "Database" ? "hidden" : null
                 }`}
               >
-                <Inspector.Database db={db} />
+                <Inspector.Database db={inspectorState.context.db} />
               </div>
 
               {configIsTooLargeForURL && (
@@ -237,14 +325,14 @@ export default function () {
                 </div>
               )}
 
-              {currentInspectorState.context.error && (
+              {inspectorState.context.error && (
                 <div
                   ref={errorMessageRef}
                   data-testid="parse-error"
                   className="absolute inset-x-0 bottom-0 z-10 px-4 py-3 text-xs font-medium text-white bg-red-600"
                 >
                   <pre className="whitespace-pre-wrap">
-                    {currentInspectorState.context.error}
+                    {inspectorState.context.error}
                   </pre>
                 </div>
               )}
@@ -257,7 +345,7 @@ export default function () {
                   Client
                 </h2>
                 <div className="px-4 py-3 mt-auto text-sm md:px-6">
-                  <button className="mr-4 text-sm font-medium text-gray-700 focus:outline-none">
+                  <button className="mr-4 text-sm font-medium text-gray-800 focus:outline-none">
                     Request
                   </button>
                   <button className="hidden mr-4 text-sm font-medium text-gray-700 focus:outline-none">
@@ -266,19 +354,93 @@ export default function () {
                 </div>
               </div>
               <div className="relative z-0 flex-1 bg-gray-100">
-                <Inspector.Request onRequest={handleRequest} />
+                <Inspector.Request
+                  onRequest={(request) => send("REQUEST", request)}
+                />
+
                 <Inspector.Sandbox srcDoc={srcDoc} iframeRef={iframeRef} />
               </div>
             </div>
-            <div className="p-4 overflow-y-auto bg-gray-100 md:px-6 h-1/2">
-              <h2>
-                Status code:{" "}
-                <span data-testid="response-code">{response.code}</span>
-              </h2>
+            <div className="overflow-y-auto bg-gray-100 h-1/2">
+              <div className="bg-white py-2 px-4 md:px-6 shadow flex">
+                <button
+                  onClick={() => setActiveResponseTab("JSON")}
+                  className={`mr-4 text-sm font-medium focus:outline-none
+                    ${
+                      activeResponseTab === "JSON"
+                        ? "text-gray-800"
+                        : "text-gray-400 hover:text-gray-800"
+                    }
+                    `}
+                >
+                  JSON
+                </button>
+                {/* <button
+                  onClick={() => setActiveResponseTab("Headers")}
+                  data-testid="headers"
+                  className={`mr-4 text-sm font-medium focus:outline-none
+                    ${
+                      activeResponseTab === "Headers"
+                        ? "text-gray-800"
+                        : "text-gray-400 hover:text-gray-800"
+                    }
+                    `}
+                >
+                  Headers
+                </button> */}
 
-              <pre className="mt-4 text-sm" data-testid="response-body">
-                {JSON.stringify(response.data, null, 2)}
-              </pre>
+                {inspectorState.value === "handledRequest" && (
+                  <span
+                    data-testid="response-code"
+                    className={`ml-auto inline-flex items-center px-2 py-1 rounded-full text-xs font-medium leading-none 
+                    ${
+                      inspectorState.context.response.code
+                        .toString()
+                        .startsWith(2)
+                        ? "bg-green-100 text-green-900"
+                        : inspectorState.context.response.code
+                            .toString()
+                            .startsWith(3)
+                        ? "bg-green-100 text-green-900"
+                        : inspectorState.context.response.code
+                            .toString()
+                            .startsWith(4)
+                        ? "bg-red-100 text-red-900"
+                        : inspectorState.context.response.code
+                            .toString()
+                            .startsWith(5)
+                        ? "bg-red-100 text-red-900"
+                        : ""
+                    }
+                    `}
+                  >
+                    {inspectorState.context.response.code}
+                  </span>
+                )}
+              </div>
+
+              <div className="p-4 md:px-6">
+                {inspectorState.value === "pendingRequest" ? (
+                  <p className="text-sm" data-testid="request-pending">
+                    Pending...
+                  </p>
+                ) : inspectorState.value === "handledRequest" ? (
+                  <pre className="text-sm-" data-testid="response-body">
+                    {JSON.stringify(
+                      inspectorState.context.response.data,
+                      null,
+                      2
+                    )}
+                  </pre>
+                ) : inspectorState.value === "failedRequest" ? (
+                  <div>
+                    <p>The REPL threw an error.</p>
+                    <p className="pt-2 text-red-600 font-medium">
+                      {inspectorState.context.errorHandlingRequest}
+                    </p>
+                  </div>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>

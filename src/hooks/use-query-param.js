@@ -1,12 +1,16 @@
 import queryString from "query-string"
 import { useState } from "react"
+import { useLocation, useNavigate } from "@reach/router"
 
 // For initial value, priority is (1) url, (2) options.initialValue
 export function useQueryParam(key, options = {}) {
   let type = options.type || "string"
   let initialValue = options.initialValue || undefined
 
-  let queryParams = queryString.parse(window.location.search) ?? {}
+  let { search } = useLocation()
+  let navigate = useNavigate()
+
+  let queryParams = queryString.parse(search) ?? {}
 
   let qpOrInitialValue
   if (queryParams[key]) {
@@ -32,8 +36,8 @@ export function useQueryParam(key, options = {}) {
     let serializedQueryString = queryString.stringify(queryParams)
     let search = serializedQueryString ? `?${serializedQueryString}` : ""
 
-    window.history.replaceState(null, null, search)
     setValue(newValue)
+    navigate(search, { replace: true })
   }
 
   return [value, setter]

@@ -7,7 +7,6 @@ import { useQueryParam } from "../hooks/use-query-param"
 import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
 import CodeEditor from "../components/code-editor"
-import { log } from "xstate/lib/actions"
 
 const inspectorMachine = Machine(
   {
@@ -22,7 +21,7 @@ const inspectorMachine = Machine(
     states: {
       loading: {
         on: {
-          SUCCESS: "running",
+          SUCCESS: "ready",
           ERROR: {
             target: "error",
             actions: assign({
@@ -36,38 +35,43 @@ const inspectorMachine = Machine(
           CONFIG_CHANGE: "loading",
         },
       },
-      running: {
+      ready: {
         entry: ["clearError", "updateDatabase"],
         on: {
           CONFIG_CHANGE: "loading",
-          REQUEST: "pendingRequest",
         },
-      },
-      pendingRequest: {
-        entry: "makeRequest",
-        on: {
-          RESPONSE: {
-            target: "handledRequest",
-            actions: ["updateResponse", "updateDatabase"],
+        initial: "idle",
+        states: {
+          idle: {
+            on: {
+              REQUEST: "pendingRequest",
+            },
           },
-          ERROR: {
-            target: "failedRequest",
-            actions: assign({
-              errorHandlingRequest: (context, event) => event.message,
-            }),
+          pendingRequest: {
+            entry: "makeRequest",
+            on: {
+              RESPONSE: {
+                target: "handledRequest",
+                actions: ["updateResponse", "updateDatabase"],
+              },
+              ERROR: {
+                target: "failedRequest",
+                actions: assign({
+                  errorHandlingRequest: (context, event) => event.message,
+                }),
+              },
+            },
           },
-        },
-      },
-      handledRequest: {
-        on: {
-          CONFIG_CHANGE: "loading",
-          REQUEST: "pendingRequest",
-        },
-      },
-      failedRequest: {
-        on: {
-          CONFIG_CHANGE: "loading",
-          REQUEST: "pendingRequest",
+          handledRequest: {
+            on: {
+              REQUEST: "pendingRequest",
+            },
+          },
+          failedRequest: {
+            on: {
+              REQUEST: "pendingRequest",
+            },
+          },
         },
       },
     },
@@ -221,14 +225,14 @@ export default function () {
             <div className="z-0 z-10 flex flex-col shadow h-28">
               <div className="flex items-center justify-between px-4 mt-6 md:px-6">
                 <h2 className="text-gray-800 text-1-5xl">Server</h2>
-                {inspectorState.value === "loading" ? (
+                {inspectorState.matches("loading") ? (
                   <p
                     className="text-xs font-medium text-gray-500 uppercase"
                     data-testid="sandbox-loading"
                   >
                     Loading...
                   </p>
-                ) : inspectorState.value === "running" ? (
+                ) : inspectorState.matches("ready") ? (
                   <p data-testid="sandbox-ready">
                     <svg
                       className="w-4 h-4 text-green-600"
@@ -242,7 +246,7 @@ export default function () {
                       ></path>
                     </svg>
                   </p>
-                ) : inspectorState.value === "error" ? (
+                ) : inspectorState.matches("error") ? (
                   <p data-testid="sandbox-error">
                     <svg
                       className="w-4 h-4 text-red-500"
@@ -390,7 +394,7 @@ export default function () {
                   Headers
                 </button> */}
 
-                {inspectorState.value === "handledRequest" && (
+                {inspectorState.matches("ready.handledRequest") && (
                   <span
                     data-testid="response-code"
                     className={`ml-auto inline-flex items-center px-2 py-1 rounded-full text-xs font-medium leading-none 
@@ -421,11 +425,11 @@ export default function () {
               </div>
 
               <div className="p-4 md:px-6">
-                {inspectorState.value === "pendingRequest" ? (
+                {inspectorState.matches("ready.pendingRequest") ? (
                   <p className="text-sm" data-testid="request-pending">
                     Pending...
                   </p>
-                ) : inspectorState.value === "handledRequest" ? (
+                ) : inspectorState.matches("ready.handledRequest") ? (
                   <pre className="text-sm-" data-testid="response-body">
                     {JSON.stringify(
                       inspectorState.context.response.data,
@@ -433,7 +437,7 @@ export default function () {
                       2
                     )}
                   </pre>
-                ) : inspectorState.value === "failedRequest" ? (
+                ) : inspectorState.matches("ready.failedRequest") ? (
                   <div>
                     <p>The REPL threw an error.</p>
                     <p className="pt-2 text-red-600 font-medium">

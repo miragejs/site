@@ -23,10 +23,11 @@ export default function CodeEditor({
 }) {
   let editorDivRef = React.useRef()
   let editorRef = React.useRef()
+  let handlerRef = React.useRef()
+
+  handlerRef.current = onChange
 
   React.useEffect(() => {
-    let handler = (cm) => onChange(cm.getValue())
-
     // Load CodeMirror + its plugins using dynamic import, since they
     // only work in the browser.
     const f = async () => {
@@ -38,6 +39,10 @@ export default function CodeEditor({
           value,
           mode: "javascript",
         })
+
+        editorRef.current.on("change", (cm) => {
+          handlerRef.current(cm.getValue())
+        })
       }
 
       if (dataTestId) {
@@ -47,17 +52,10 @@ export default function CodeEditor({
       }
 
       editorRef.current.setOption("extraKeys", extraKeys)
-      editorRef.current.on("change", handler)
     }
 
     f()
-
-    return () => {
-      if (editorRef.current) {
-        editorRef.current.off("change", handler)
-      }
-    }
-  }, [onChange, value, dataTestId])
+  }, [value, dataTestId, extraKeys])
 
   return (
     <>

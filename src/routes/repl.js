@@ -32,13 +32,13 @@ const inspectorMachine = Machine(
       },
       error: {
         on: {
-          CONFIG_CHANGE: "loading",
+          RESTART: "loading",
         },
       },
       ready: {
         entry: ["clearError", "updateDatabase"],
         on: {
-          CONFIG_CHANGE: "loading",
+          RESTART: "loading",
         },
         initial: "idle",
         states: {
@@ -128,8 +128,6 @@ export default function () {
   let configIsTooLargeForURL = localConfig !== null
 
   function handleConfigInputChange(newConfigInput) {
-    send("CONFIG_CHANGE")
-
     if (btoa(newConfigInput).length < 2000) {
       setQueryParamConfig(newConfigInput)
       setLocalConfig(null)
@@ -141,7 +139,9 @@ export default function () {
 
   function handleMessage({ data }) {
     if (data.fromSandbox) {
-      if (data.type === "mirage:db") {
+      if (data.type === "mirage:initializing") {
+        send("RESTART")
+      } else if (data.type === "mirage:db") {
         send("SUCCESS", { db: data.message })
       } else if (data.type === "mirage:response") {
         send("RESPONSE", {

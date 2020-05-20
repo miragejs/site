@@ -130,6 +130,8 @@
       //   )
       // }
 
+      sendMessage("mirage:initializing")
+
       runtime
         .import("./index.js")
         .then(() => {

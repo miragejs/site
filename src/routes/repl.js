@@ -367,7 +367,7 @@ export default function () {
               </div>
             </div>
             <div className="overflow-y-auto bg-gray-100 h-1/2">
-              <div className="bg-white py-2 px-4 md:px-6 shadow flex">
+              <div className="flex px-4 py-2 bg-white shadow md:px-6">
                 <button
                   onClick={() => setActiveResponseTab("JSON")}
                   className={`mr-4 text-sm font-medium focus:outline-none
@@ -440,7 +440,7 @@ export default function () {
                 ) : inspectorState.matches("ready.failedRequest") ? (
                   <div>
                     <p>The REPL threw an error.</p>
-                    <p className="pt-2 text-red-600 font-medium">
+                    <p className="pt-2 font-medium text-red-600">
                       {inspectorState.context.errorHandlingRequest}
                     </p>
                   </div>

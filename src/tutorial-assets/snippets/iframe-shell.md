@@ -104,32 +104,6 @@
         }
       })
 
-      // const log = console.log.bind(console)
-      // console.log = (...args) => {
-      //   log(...args)
-      //   window.parent.postMessage(
-      //     {
-      //       fromSandbox: true,
-      //       type: "log",
-      //       message: args,
-      //     },
-      //     "*"
-      //   )
-      // }
-
-      // const groupCollapsed = console.groupCollapsed.bind(console)
-      // console.groupCollapsed = (...args) => {
-      //   groupCollapsed(...args)
-      //   window.parent.postMessage(
-      //     {
-      //       fromSandbox: true,
-      //       type: "log",
-      //       message: args,
-      //     },
-      //     "*"
-      //   )
-      // }
-
       sendMessage("mirage:initializing")
 
       runtime

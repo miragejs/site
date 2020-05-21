@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import * as Inspector from "../components/inspector"
 import { useStaticQuery, graphql } from "gatsby"
 import { useMachine } from "@xstate/react"
@@ -184,7 +184,7 @@ export default function () {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener("message", handleMessage)
 
     return () => window.removeEventListener("message", handleMessage)
@@ -330,7 +330,7 @@ export default function () {
                 </div>
               )}
 
-              {inspectorState.context.error && (
+              {inspectorState.matches("error") && (
                 <div
                   ref={errorMessageRef}
                   data-testid="parse-error"

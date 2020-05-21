@@ -106,24 +106,19 @@
 
       sendMessage("mirage:initializing")
 
-      runtime
-        .import("./index.js")
-        .then(() => {
-          sendMessage("mirage:success")
-        })
-        .catch((error) => {
-          if (
-            error.originalErr &&
-            error.originalErr.type === "no-server-export"
-          ) {
-            sendMessage(
-              "mirage:runtime-error",
-              "A Mirage Server instance must be the default export from your config."
-            )
-          } else {
-            sendMessage("mirage:parse-error", error.toString())
-          }
-        })
+      runtime.import("./index.js").catch((error) => {
+        if (
+          error.originalErr &&
+          error.originalErr.type === "no-server-export"
+        ) {
+          sendMessage(
+            "mirage:runtime-error",
+            "A Mirage Server instance must be the default export from your config."
+          )
+        } else {
+          sendMessage("mirage:parse-error", error.toString())
+        }
+      })
     </script>
   </body>
 </html>

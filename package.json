@@ -80,7 +80,7 @@
     "tailwindcss": "^1.4.6",
     "tmp": "^0.1.0",
     "ts-node": "^8.10.1",
-    "xstate": "^4.9.1"
+    "xstate": "^4.10.0"
   },
   "devDependencies": {
     "@percy/cypress": "^2.3.1",

@@ -59,7 +59,7 @@
     "gatsby-plugin-typescript": "^2.4.2",
     "gatsby-remark-images": "^3.3.7",
     "gatsby-source-filesystem": "^2.3.8",
-    "gatsby-transformer-sharp": "^2.5.2",
+    "gatsby-transformer-sharp": "^2.5.3",
     "hex-rgb": "^4.1.0",
     "install": "^0.13.0",
     "prettier": "^2.0.5",

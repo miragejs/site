@@ -172,14 +172,6 @@ describe("REPL", () => {
   })
 
   context("making a request", () => {
-    it("shows an error message if the request body is blank", () => {
-      cy.visit("/repl")
-      cy.get("[data-testid=request-method]").select("POST")
-      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
-      cy.get("[data-testid=request-url]").type("{enter}")
-      cy.contains("Request body must be JSON").should("exist")
-    })
-
     it("shows an error message if the request body is invalid JSON", () => {
       cy.visit("/repl")
       cy.get("[data-testid=request-method]").select("POST")

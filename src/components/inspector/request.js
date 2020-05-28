@@ -11,15 +11,14 @@ export default function ({ onRequest }) {
   let [urlIsValid, setUrlIsValid] = useState(true)
   let [requestBodyIsValid, setRequestBodyIsValid] = useState(true)
 
-
-  function handleUrlChange(e) {
-    setUrlIsValid(true)
-    setUrl(e.target.value)
-  }
-
   function handleBodyChange(e) {
     setRequestBodyIsValid(true)
     setBody(e)
+  }
+
+  function handleMethodChange(e) {
+    setRequestBodyIsValid(true)
+    setMethod(e.target.value)
   }
 
   function handleSubmit(e) {
@@ -27,8 +26,13 @@ export default function ({ onRequest }) {
     submit()
   }
 
+  function handleUrlChange(e) {
+    setUrlIsValid(true)
+    setUrl(e.target.value)
+  }
+
   function hasJsonStructure(str) {
-    if (typeof str !== 'string') return false;
+    if (typeof str !== 'string' || str == '') return true;
     try {
       const result = JSON5.parse(str);
       const type = Object.prototype.toString.call(result);
@@ -43,11 +47,11 @@ export default function ({ onRequest }) {
       setUrlIsValid(false)
     }
 
-    if (method !== "GET" && method !== "DELETE" && !hasJsonStructure(body)) {
+    if (method !== "GET" && !hasJsonStructure(body)) {
       setRequestBodyIsValid(false)
     }
 
-    if (!url || (method !== "GET" && method !== "DELETE" && !hasJsonStructure(body))) {
+    if (!url || (method !== "GET" && !hasJsonStructure(body))) {
       return
     }
     
@@ -75,7 +79,7 @@ export default function ({ onRequest }) {
             <div className="absolute inset-y-0 left-0 flex items-center">
               <select
                 value={method}
-                onChange={(e) => setMethod(e.target.value)}
+                onChange={handleMethodChange}
                 aria-label="Method"
                 data-testid="request-method"
                 className="h-full py-0 pl-3 text-gray-600 bg-transparent border-transparent rounded-md form-select pr-7 sm:text-sm sm:leading-5"

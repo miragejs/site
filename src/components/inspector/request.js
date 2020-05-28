@@ -2,16 +2,24 @@
 import React, { useState } from "react"
 import { useQueryParam } from "../../hooks/use-query-param"
 import CodeEditor from "../code-editor"
+import JSON5 from "json5"
 
 export default function ({ onRequest }) {
   let [method, setMethod] = useQueryParam("method", { initialValue: "GET" })
   let [url, setUrl] = useQueryParam("url")
   let [body, setBody] = useQueryParam("body")
   let [urlIsValid, setUrlIsValid] = useState(true)
+  let [requestBodyIsValid, setRequestBodyIsValid] = useState(true)
+
 
   function handleUrlChange(e) {
     setUrlIsValid(true)
     setUrl(e.target.value)
+  }
+
+  function handleBodyChange(e) {
+    setRequestBodyIsValid(true)
+    setBody(e)
   }
 
   function handleSubmit(e) {
@@ -19,12 +27,30 @@ export default function ({ onRequest }) {
     submit()
   }
 
+  function hasJsonStructure(str) {
+    if (typeof str !== 'string') return false;
+    try {
+      const result = JSON5.parse(str);
+      const type = Object.prototype.toString.call(result);
+      return type === '[object Object]' || type === '[object Array]';
+    } catch (error) {
+      return false
+    }
+  }
+
   function submit() {
     if (!url) {
       setUrlIsValid(false)
-      return
     }
 
+    if (method !== "GET" && method !== "DELETE" && !hasJsonStructure(body)) {
+      setRequestBodyIsValid(false)
+    }
+
+    if (!url || (method !== "GET" && method !== "DELETE" && !hasJsonStructure(body))) {
+      return
+    }
+    
     let parsedBody
     if (method !== "GET" && body) {
       try {
@@ -95,11 +121,22 @@ export default function ({ onRequest }) {
         {method !== "GET" && (
           <>
             <label className="mt-4 text-sm text-gray-600">Request body</label>
-            <div className="relative flex-1 p-3 mt-1 overflow-hidden bg-white border border-gray-300 rounded-md shadow-sm">
+            <div 
+              className={
+              `relative flex-1 p-3 mt-1 overflow-hidden bg-white border border-gray-300 rounded-md shadow-sm
+              ${requestBodyIsValid ? "border-gray-300" : null}
+              ${
+                !requestBodyIsValid
+                  ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red"
+                  : null
+              }
+              `}
+              data-testid="request-body"
+              >
               <CodeEditor
                 data-testid="request-body-input"
                 value={body}
-                onChange={setBody}
+                onChange={handleBodyChange}
                 extraKeys={{
                   "Cmd-Enter": submit,
                 }}
@@ -108,6 +145,11 @@ export default function ({ onRequest }) {
                 Cmd+Enter to Send
               </span>
             </div>
+            {!requestBodyIsValid && (
+          <p className="mt-2 text-sm text-red-600" id="request-body-error">
+            Request body must be JSON.
+          </p>
+        )}
           </>
         )}
       </form>

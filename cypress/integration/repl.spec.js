@@ -117,7 +117,19 @@ describe("REPL", () => {
       )
     })
 
-    xit("shows a message if the config is blank")
+    it("shows a message if the config is blank", () => {
+      cy.visit("/repl")
+      
+      cy.get("[data-testid=config-input]").typeInCodemirror(
+        d``
+      )
+
+      cy.get("[data-testid=sandbox-error]").should("exist")
+      cy.get("[data-testid=parse-error]").should(
+        "contain",
+        "A Mirage Server instance must be the default export from your config."
+      )
+    })
 
     it("tracks the config's value in the config query param in the URL", () => {
       cy.visit("/repl")
@@ -160,7 +172,16 @@ describe("REPL", () => {
   })
 
   context("making a request", () => {
-    xit("does what if the request body is not JSON?", () => {})
+    it("shows an error message if the request body is invalid JSON", () => {
+      cy.visit("/repl")
+      cy.get("[data-testid=request-method]").select("POST")
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
+      cy.get("[data-testid=request-body-input]").typeInCodemirror(
+        d`invalid JSON!`
+      )
+      cy.get("[data-testid=request-url]").type("{enter}")
+      cy.contains("Request body must be JSON").should("exist")
+    })
 
     it("shows an error message if the URL is blank", () => {
       cy.visit("/repl")

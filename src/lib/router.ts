@@ -124,6 +124,14 @@ const allRoutes: RouteDefinition[] = [
         label: "Part 5 – Dynamic segments",
         name: "part-5",
       },
+      {
+        label: "Part 6 – Relationships",
+        name: "part-6",
+      },
+      {
+        label: "Part 7 – Serializers",
+        name: "part-7",
+      },
     ],
   },
   {

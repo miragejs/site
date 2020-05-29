@@ -26,6 +26,7 @@ export function ThreeColumnLayout({
   previousPage,
   nextPage,
   children,
+  BeforeNav,
 }) {
   return (
     <div className="pt-16 bg-white">
@@ -33,7 +34,7 @@ export function ThreeColumnLayout({
 
       <div className="px-5 md:px-6">
         <div className="flex flex-1 max-w-6xl mx-auto">
-          <DesktopNav menuItems={menuItems} />
+          <DesktopNav BeforeNav={BeforeNav} menuItems={menuItems} />
 
           <div className="flex-1 w-full min-w-0 text-base font-normal text-gray-800 pt-7 lg:pl-8 leading-relaxed-sm sm:pt-8 md:leading-relaxed md:pt-8 lg:pt-10 xl:pt-12">
             <div className="max-w-md mx-auto md:text-lg md:max-w-2xl lg:max-w-2-5xl">

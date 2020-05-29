@@ -35,12 +35,14 @@ export default function TutorialPage(props) {
     <>
       <SEO title={heading} />
 
-      <div className="absolute inset-x-0 z-10 px-6 py-2 text-xs font-medium text-gray-900 bg-yellow-300 top-16">
-        <p className="max-w-6xl mx-auto">
-          Somehow you found the Tutorial. This is a work in progress.
-        </p>
-      </div>
       <ThreeColumnLayout
+        BeforeNav={() => (
+          <div className="pb-4 -mt-4">
+            <p className="rounded px-6 py-2 text-xs font-medium text-gray-900 bg-yellow-300">
+              This tutorial is a work in progress.
+            </p>
+          </div>
+        )}
         menuItems={menuItems}
         previousPage={tutorialRouter.previousPage}
         nextPage={tutorialRouter.nextPage}

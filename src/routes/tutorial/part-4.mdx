@@ -5,9 +5,9 @@ We've fixed our GET and POST route handlers, but our app starts our empty. We ca
 Copy the highlighted lines into your code:
 
 ```js{8-12}
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
-new Server({
+createServer({
   models: {
     reminder: Model,
   },

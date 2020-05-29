@@ -43,9 +43,9 @@ The easiest way to mock out endpoints that deal with _relational data_ in Mirage
 In this app, there's a one-to-many relationship between lists and reminders (a list can have many reminders), so we'll use `hasMany` and `belongsTo` helpers to define this relationship:
 
 ```js{1,6,10}
-import { Server, Model, hasMany, belongsTo } from "miragejs"
+import { createServer, Model, hasMany, belongsTo } from "miragejs"
 
-export default new Server({
+createServer({
   models: {
     list: Model.extend({
       reminders: hasMany(),

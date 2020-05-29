@@ -1,34 +1,32 @@
 # Part 1 – Static GET Handler
 
-If you haven't already, click Part 1 in your running Tutorial app. You should see this screen:
+As you can see from the interface, our Reminders app is trying to make an API request for its data, but the request is failing.
 
-![part 1](./some-img)
+![Failing request](../../assets/images/tutorial/part-1-failing.png)
 
-As you can see from the interface, our Reminders app is trying to make an API request for its data, but the request is failing. That's because there's no API server we're talking to.
+That's because there's no API server for our app to talk to. Let's use Mirage to mock out the failing API request.
 
-Let's use Mirage to mock the failing API request. Open the `src/server.js` file in your editor.
-
-At the top of the file, import `Server` from `miragejs`, and create a new server:
+Open the `src/server.js` file in your editor, import `createServer` from `miragejs`, and create a new server:
 
 ```js
-import { Server } from "miragejs"
+// src/server.js
+import { createServer } from "miragejs"
 
-new Server()
+createServer()
 ```
 
 If you open your JavaScript console, you should see that Mirage has thrown an error:
 
-> "Mirage: Your app tried to GET '/api/reminders', but there was no route defined to handle this request. Define a route for this endpoint in your routes() config. Did you forget to define a namespace?"
+> Mirage: Your app tried to GET '/api/reminders', but there was no route defined to handle this request.
 
-This means Mirage is running, and that your JavaScript app is making a GET request that hasn't been mocked out.
+This means Mirage is running, and that the Reminders app is making a GET request that hasn't been mocked out.
 
-Let's mock it out using the `routes()` hook. Update the Server in your app by copying in the highlighted code:
+We can mock it out using the `routes()` hook. Update the Server in your app by copying in the highlighted code:
 
-```js{4-10}
-import React, { useState, useEffect } from "react"
-import { Server } from "miragejs"
+```js{3-9}
+import { createServer } from "miragejs"
 
-new Server({
+createServer({
   routes() {
     this.get("/api/reminders", () => ({
       reminders: [],
@@ -37,18 +35,18 @@ new Server({
 })
 ```
 
-The `this.get()` method lets us mock out GET requests. The first argument is the URL we're handling (`/api/reminders`) and the second argument is a function that responds to our JavaScript app with some data.
+The `routes()` hook is where we define out route handlers, and the `this.get()` method lets us mock out GET requests. The first argument is the URL we're handling (`/api/reminders`) and the second argument is a function that responds to our app with some data.
 
-You should see the app reload and then render a message saying "No reminders":
+You should see the app reload and then render a message saying "All done!":
 
-![img](../../assets/images/tutorial/no-reminders.png)
+![All done](../../assets/images/tutorial/part-1-all-done.png)
 
 Open the console and you'll see Mirage handled the request with a 200 status code and the object from our handler.
 
 Let's add some data to our response:
 
 ```js{4-8}
-new Server({
+createServer({
   routes() {
     this.get("/api/reminders", () => ({
       reminders: [
@@ -62,6 +60,8 @@ new Server({
 ```
 
 The app now renders this data.
+
+![All done](../../assets/images/tutorial/part-1-reminders.png)
 
 ## Takeaways
 

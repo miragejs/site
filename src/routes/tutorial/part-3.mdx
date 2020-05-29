@@ -6,16 +6,16 @@ After reloading your app, try adding a new Reminder to "Buy groceries" and save 
 
 The original three Reminders will reload, but our newly created one isn't in the list.
 
-![](./png)
+![Failing](../../assets/images/tutorial/part-3-failing.png)
 
-That's because our GET handler is _static_ and returns the same three hard-coded todos every time. We've broken the _referential integrity_ of our application data, and it no longer behaves the same way our production app will.
+That's because our GET handler is _static_ and returns the same three hard-coded todos every time. We've broken the _referential integrity_ of our application data, and it no longer behaves the same way our production API will.
 
 Let's fix this by using Mirage's data layer. We'll start with our GET handler.
 
 ```js{1,4-6,9-11}
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
-new Server({
+createServer({
   models: {
     reminder: Model,
   },
@@ -43,9 +43,9 @@ Once you save and reload the app, you should see the "All done!" message again. 
 Next update your POST handler to create new Reminder models:
 
 ```js{13-17}
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
-new Server({
+createServer({
   models: {
     reminder: Model,
   },

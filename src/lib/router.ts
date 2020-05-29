@@ -132,6 +132,18 @@ const allRoutes: RouteDefinition[] = [
         label: "Part 7 – Serializers",
         name: "part-7",
       },
+      {
+        label: "Part 8 – Factories",
+        name: "part-8",
+      },
+      {
+        label: "Part 9 – Testing",
+        name: "part-9",
+      },
+      {
+        label: "Wrapping up",
+        name: "wrapping-up",
+      },
     ],
   },
   {

@@ -11,7 +11,7 @@ import { urlsMatch } from "../../utils"
 // This is used by the header in app.js
 export const sidebarWidth = 280
 
-export function DesktopNav({ menuItems }) {
+export function DesktopNav({ menuItems, BeforeNav }) {
   let router = useRouter()
   let activeUrl = router.activeUrl
   let previousActiveUrl = usePrevious(activeUrl)
@@ -44,6 +44,7 @@ export function DesktopNav({ menuItems }) {
     >
       <div className="absolute inset-y-0 right-0 w-screen border-r border-gray-200 bg-gray-50"></div>
       <nav className="sticky h-screen pt-8 pr-8 overflow-y-scroll leading-snug top-16 lg:pt-10 xl:pt-12">
+        {BeforeNav && <BeforeNav />}
         <ul className="-mt-4">
           {menuItems.map((menuItem, index) =>
             menuItem.url ? (

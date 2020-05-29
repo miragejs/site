@@ -2,16 +2,18 @@
 
 Try adding a Reminder to "Shop for groceries" by filling out the input field and hitting enter.
 
-![](/foo.png)
-
 You should see another error:
 
-> "Mirage: Your app tried to POST '/api/reminders', but there was no route defined to handle this request.
+![Failing request](../../assets/images/tutorial/part-2-failing.png)
+
+If you check the console, you'll also see a message:
+
+> Mirage: Your app tried to POST '/api/reminders', but there was no route defined to handle this request.
 
 Let's mock out this POST request. Start by copying the highlighted lines into your server's `routes()` hook:
 
-```js{11-14}
-new Server({
+```js{11-16}
+createServer({
   routes() {
     this.get("/api/reminders", () => ({
       reminders: [
@@ -25,6 +27,8 @@ new Server({
       let attrs = JSON.parse(request.requestBody)
       console.log(attrs)
       debugger
+
+      return attrs
     })
   },
 })
@@ -34,11 +38,11 @@ We're using the `this.post` helper to intercept our app's POST request. We're al
 
 After saving this new code, make sure your JavaScript console is open and try adding a Reminder for "Shop for groceries" again. The devtools should hit the `debugger` statement in your route handler, and you should see the object `{ text: "Shop for groceries" }` logged to your console.
 
-![](/foo.png)
+![Failing request](../../assets/images/tutorial/part-2-debugger.png)
 
 Press the Play button to allow JavaScript to continue execution. Your console should show that Mirage handled the response successfully with a 201 status code, but if you inspect the response you'll see that it's an empty object. You'll also that our React app is throwing an error.
 
-![](/foo.png)
+![First error](../../assets/images/tutorial/part-2-first-error.png)
 
 Our app is expecting our server to respond with an object that looks like this:
 

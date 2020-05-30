@@ -12,7 +12,7 @@ If you check the console, you'll also see a message:
 
 Let's mock out this POST request. Start by copying the highlighted lines into your server's `routes()` hook:
 
-```js{11-16}
+```js{11-15}
 createServer({
   routes() {
     this.get("/api/reminders", () => ({
@@ -27,8 +27,6 @@ createServer({
       let attrs = JSON.parse(request.requestBody)
       console.log(attrs)
       debugger
-
-      return attrs
     })
   },
 })
@@ -40,11 +38,15 @@ After saving this new code, make sure your JavaScript console is open and try ad
 
 ![Failing request](../../assets/images/tutorial/part-2-debugger.png)
 
-Press the Play button to allow JavaScript to continue execution. Your console should show that Mirage handled the response successfully with a 201 status code, but if you inspect the response you'll see that it's an empty object. You'll also that our React app is throwing an error.
+Press the Play button to allow JavaScript to continue execution. Mirage will respond successfully with a 201 status code, but the app will crash with an error:
+
+> Cannot read property 'id' of undefined
+
+Here's a screenshot of what you should see:
 
 ![First error](../../assets/images/tutorial/part-2-first-error.png)
 
-Our app is expecting our server to respond with an object that looks like this:
+Our app is expecting the API server to respond with an object that looks like this:
 
 ```json
 {
@@ -55,9 +57,11 @@ Our app is expecting our server to respond with an object that looks like this:
 }
 ```
 
-Let's add an ID to our `attrs` object and update our response. We'll use 4 since our existing reminders use IDs 1 through 3.
+but right now we're not returning anything from our route handler.
 
-Update your route handler to look like this:
+Let's return an object that looks like this. We'll use the `attrs` from our request, and also add in an `id` key. We'll use 4 since our existing reminders use ids 1 through 3.
+
+Here's our new route handler – copy this into your server:
 
 ```js
 this.post("/api/reminders", (schema, request) => {
@@ -70,13 +74,11 @@ this.post("/api/reminders", (schema, request) => {
 
 Now when you add a todo, there's no more errors and the app updates correctly.
 
-Unless you try to create another todo!
+Unless you try to create a second todo! Try adding "Shop for groceries" then "Clean the bathroom". React will throw an error on the second new reminder:
 
-If we try to create "Clean the bathroom", React gives us another error:
+> Encountered two children with the same key, '4'.
 
-> Encountered two children with the same key, `4`.
-
-Our server can't hard-code 4 as the ID, so let's use an incrementing number.
+We shouldn't hard-code the `id` as 4. Let's use an incrementing number instead.
 
 Here's the final server:
 

@@ -95,12 +95,32 @@ export const EM = (props) => (
 export function A({ href, children, ...rest }) {
   let Component = href.startsWith("/")
     ? (p) => (
-        <Link to={href} {...p}>
+        <Link
+          to={href}
+          {...p}
+          css={`
+            text-decoration-color: #b0bcc4;
+
+            &:hover {
+              text-decoration-color: #90cdf4;
+            }
+          `}
+        >
           {children}
         </Link>
       )
     : (p) => (
-        <a href={href} {...p}>
+        <a
+          href={href}
+          {...p}
+          css={`
+            text-decoration-color: #b0bcc4;
+
+            &:hover {
+              text-decoration-color: #90cdf4;
+            }
+          `}
+        >
           {children}
         </a>
       )

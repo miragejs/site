@@ -2,7 +2,7 @@
 
 Mirage also has a Serializer layer that can help with the kinds of transforms that are commonly applied to JSON payloads, like whether your object keys are camelCased or snake_cased, or how related data gets included in a response.
 
-Our Reminders app has another feature that we haven't seen because of how we've mocked our responses so far. It will show the list a Reminder comes from when on the "All" home screen. In order to make this work, our app is expecting the GET request to `/api/reminders` to return the list data embedded alongside each reminder, like this:
+Our Reminders app has another feature that we haven't seen because of how we've mocked our responses so far. It will show the list a Reminder comes from when on the "All" home screen. In order to make this work, our app is expecting the GET request to `/api/reminders` to return each Reminder's List embedded alongside it, like this:
 
 ```json
 // GET /api/reminders
@@ -18,7 +18,7 @@ Our Reminders app has another feature that we haven't seen because of how we've 
 }
 ```
 
-Serializers leverage Mirage's data layer to help you mock complex API responses like this. Let's see how.
+Serializers leverage Mirage's data layer to help you mock complex API responses like this one. Let's see how.
 
 We'll import `RestSerializer`, set it as the serializer for our Reminder model, and tell it to embed any related lists:
 
@@ -43,7 +43,7 @@ createServer({
 })
 ```
 
-This new `serializers` key is an option that lets us define serializers on a per-model basis, as well as an `application` serializer if we wanted to apply general transformations to all our responses.
+This new `serializers` key is an option that lets us define serializers on a per-model basis. We could also set an `application` serializer if we wanted to apply general transformations to all our responses.
 
 The `RestSerializer` class that we're using is one of three named serializers included in Mirage, and is a good starting point for many REST APIs. There's also the `ActiveModelSerializer` for Rails-like APIs, and the `JSONAPISerializer` for APIs that follow the JSON:API spec.
 

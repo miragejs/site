@@ -16,11 +16,14 @@ const inspectorMachine = Machine(
       error: null,
       errorHandlingRequest: null,
       db: {},
+      revision: 0,
     },
     initial: "loading",
     states: {
       loading: {
+        entry: ["newRevision"],
         on: {
+          CONFIG_CHANGE: "loading",
           SUCCESS: "ready",
           ERROR: {
             target: "error",
@@ -32,13 +35,13 @@ const inspectorMachine = Machine(
       },
       error: {
         on: {
-          RESTART: "loading",
+          CONFIG_CHANGE: "loading",
         },
       },
       ready: {
         entry: ["clearError", "updateDatabase"],
         on: {
-          RESTART: "loading",
+          CONFIG_CHANGE: "loading",
         },
         initial: "idle",
         states: {
@@ -104,6 +107,9 @@ const inspectorMachine = Machine(
       log(context, event) {
         console.log({ context }, { event })
       },
+      newRevision: assign({
+        revision: (context) => context.revision + 1,
+      }),
     },
   }
 )
@@ -128,6 +134,8 @@ export default function () {
   let configIsTooLargeForURL = localConfig !== null
 
   function handleConfigInputChange(newConfigInput) {
+    send("CONFIG_CHANGE")
+
     if (btoa(newConfigInput).length < 2000) {
       setQueryParamConfig(newConfigInput)
       setLocalConfig(null)
@@ -139,10 +147,11 @@ export default function () {
 
   function handleMessage({ data }) {
     if (data.fromSandbox) {
-      if (data.type === "mirage:initializing") {
-        send("RESTART")
+      let isValidMessage = data.revision === inspectorState.context.revision
+      if (!isValidMessage) {
+        // ignore stale message
       } else if (data.type === "mirage:db") {
-        send("SUCCESS", { db: data.message })
+        send("SUCCESS", { db: data.message.db })
       } else if (data.type === "mirage:response") {
         send("RESPONSE", {
           response: data.message.response,
@@ -190,8 +199,17 @@ export default function () {
     return () => window.removeEventListener("message", handleMessage)
   })
 
-  // Splice in the Input into the iframe shell
   let shellLines = useTutorialSnippet("iframe-shell").split("\n")
+
+  // Splice in the revision into the iframe shell
+  let lineForRevision = shellLines.findIndex((line) =>
+    line.match("const revision = 1")
+  )
+  shellLines[
+    lineForRevision
+  ] = `const revision = ${inspectorState.context.revision}`
+
+  // Splice in the Input into the iframe shell
   let lineForApp = shellLines.findIndex((line) => line.match("App.js"))
   shellLines.splice(lineForApp + 1, 0, ...configInput.split("\n"))
   let srcDoc = shellLines.join("\n")

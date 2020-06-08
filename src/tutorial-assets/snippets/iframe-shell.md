@@ -6,6 +6,9 @@
     <div id="demo"></div>
     <script src="https://unpkg.com/@plnkr/runtime@1.0.0-pre.9/dist/runtime.js"></script>
     <script>
+      // current revision provided by parent component
+      const revision = 1
+
       const files = {
         "package.json": JSON.stringify({
           dependencies: {
@@ -22,14 +25,6 @@
             throw Object.assign(new Error(), { type: 'no-server-export' })
           }
 
-          window.parent.postMessage(
-            {
-              fromSandbox: true,
-              type: "mirage:db",
-              message: server.db.dump(),
-            },
-            "*"
-          )
           window.server = server
 
           // let originalHandler = server.pretender.handledRequest.bind(
@@ -58,7 +53,10 @@
       const runtime = new PlnkrRuntime.Runtime({ host })
 
       function sendMessage(type, message) {
-        window.parent.postMessage({ fromSandbox: true, type, message }, "*")
+        window.parent.postMessage(
+          { fromSandbox: true, revision, type, message },
+          "*"
+        )
       }
 
       window.myOnError = function (e) {
@@ -104,21 +102,24 @@
         }
       })
 
-      sendMessage("mirage:initializing")
-
-      runtime.import("./index.js").catch((error) => {
-        if (
-          error.originalErr &&
-          error.originalErr.type === "no-server-export"
-        ) {
-          sendMessage(
-            "mirage:runtime-error",
-            "A Mirage Server instance must be the default export from your config."
-          )
-        } else {
-          sendMessage("mirage:parse-error", error.toString())
-        }
-      })
+      runtime
+        .import("./index.js")
+        .then(() => {
+          sendMessage("mirage:db", { db: server.db.dump() })
+        })
+        .catch((error) => {
+          if (
+            error.originalErr &&
+            error.originalErr.type === "no-server-export"
+          ) {
+            sendMessage(
+              "mirage:runtime-error",
+              "A Mirage Server instance must be the default export from your config."
+            )
+          } else {
+            sendMessage("mirage:parse-error", error.toString())
+          }
+        })
     </script>
   </body>
 </html>

@@ -93,23 +93,9 @@ export const EM = (props) => (
 )
 
 export function A({ href, children, ...rest }) {
-  let Component = href.startsWith("/")
+  let isExternal = href.startsWith("/") || rest?.target === "_blank"
+  let Component = isExternal
     ? (p) => (
-        <Link
-          to={href}
-          {...p}
-          css={`
-            text-decoration-color: #b0bcc4;
-
-            &:hover {
-              text-decoration-color: #90cdf4;
-            }
-          `}
-        >
-          {children}
-        </Link>
-      )
-    : (p) => (
         <a
           href={href}
           {...p}
@@ -123,6 +109,21 @@ export function A({ href, children, ...rest }) {
         >
           {children}
         </a>
+      )
+    : (p) => (
+        <Link
+          to={href}
+          {...p}
+          css={`
+            text-decoration-color: #b0bcc4;
+
+            &:hover {
+              text-decoration-color: #90cdf4;
+            }
+          `}
+        >
+          {children}
+        </Link>
       )
 
   return (

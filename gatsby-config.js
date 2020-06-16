@@ -90,9 +90,20 @@ module.exports = {
         remarkPlugins: [require("remark-slug")],
         gatsbyRemarkPlugins: [
           {
-            resolve: 'gatsby-remark-images'
-          }
-        ]
+            resolve: "gatsby-remark-images",
+            options: {
+              maxWidth: 720,
+              wrapperStyle: (fluidResult) => {
+                let [, name, ext] = fluidResult.originalName.match(
+                  /(.+?)(\.[^.]*$|$)/
+                )
+                let borderColor = name.endsWith("-dark") ? "#52595D" : "#F7FAFC"
+
+                return `margin: 50px 0; border: 8px solid ${borderColor};`
+              },
+            },
+          },
+        ],
       },
     },
 

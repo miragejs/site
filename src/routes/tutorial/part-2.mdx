@@ -1,12 +1,10 @@
 # Part 2 – Static POST Handler
 
-Try adding a Reminder to "Shop for groceries" by filling out the input field and hitting enter.
-
-You should see another error:
+Try adding a Reminder to "Shop for groceries" by filling out the input field and hitting enter. You should see another error:
 
 ![Failing request](../../assets/images/tutorial/part-2-failing.png)
 
-If you check the console, you'll also see a message:
+If you check your console you'll see this message:
 
 > Mirage: Your app tried to POST '/api/reminders', but there was no route defined to handle this request.
 
@@ -32,7 +30,7 @@ createServer({
 })
 ```
 
-We're using the `this.post` helper to intercept our app's POST request. We're also using the `request` argument to access the data sent over from our application. The `request.requestBody` property contains the request body as a JSON string, so after parsing it we log it to the console.
+We're using `this.post` to handle this request. We're also using the `request` argument to access the data sent over from our application. The `request.requestBody` property contains the request body as a JSON string, so after parsing it we log it to the console.
 
 After saving this new code, make sure your JavaScript console is open and try adding a Reminder for "Shop for groceries" again. The devtools should hit the `debugger` statement in your route handler, and you should see the object `{ text: "Shop for groceries" }` logged to your console.
 

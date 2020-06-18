@@ -46,35 +46,6 @@ After wiring up any interceptor (Mirage, MSW, Pretender, fetch-mock, etc.), impl
 
 Some other advantages Mirage has:
 
-- Mirage is easier to set up – just one import alongside any frontend code:
-
-  ```js
-  import { createServer } from "miragejs"
-
-  let server = createServer()
-  server.get("/api/movies", () => ["Interstellar", "Inception"])
-  ```
-
-  MSW requires some additional setup. Their docs have you generate a file that needs to be in the public project of your dev setup, and that you also need to ensure is stripped from production builds. You can then setup a worker in development, but because the service worker is asynchronous, you need to wait for it to finish before rendering your app.
-
-  Here's an example from the docs:
-
-  ```js
-  import { worker } from "./mocks"
-
-  async function bootstrap() {
-    await worker.start()
-
-    ReactDOM.render(<App />, document.getElementById("root"))
-  }
-
-  bootstrap()
-  ```
-
-  The service worker, while enabling usage of devtools, does add a bit more complexity to the overall integration. For example you also need to ensure your service worker [updates on source code reloads](https://redd.gitbook.io/msw/getting-started#chrome).
-
-- Because there is no service worker barrier, it's trivial to interact with Mirage's server and DB during development. People have even made dev-time tools to tweak their server at runtime – for example, a floating React component with a slider bound to Mirage's timing delays.
-
 - Mirage was built for testing and brings along concepts like development vs. testing data seeds, and the ability to create different data scenarios directly within your tests without having to rewrite route handlers.
 
 MSW is a great library and the service worker concept might even make it into Mirage at some point, but mocking every endpoint by hand is tedious and hard to maintain over time. Having some conventions around your mocks and ensuring that they maintain the referential integrity of your data as your JavaScript app makes read and write requests is [the reason Mirage was created in the first place](/docs/about).

@@ -32,7 +32,9 @@ JSON Server does have some advantages over Mirage:
 
 [MSW](https://github.com/mswjs/msw) is a mocking library that can run in the browser or node.
 
-While Mirage and MSW both run in the client alongside your frontend code, the main difference is that MSW runs in a service worker. The main advantage of this is that requests are shown in the Network tab of the DevTools – they're real HTTP requests from the perspective of the browser. This makes the developer experience of inspecting responses from MSW closer to that of interacting with a real server-side API.
+While Mirage and MSW both run in the client alongside your frontend code, the main difference is that MSW uses a Service Worker to intercept network requests, whereas Mirage uses [Pretender.js](https://github.com/pretenderjs/pretender) which works by monkey-patching `window.fetch` and `window.XMLHttpRequest`.
+
+The main advantage of using a Service Worker is that requests are shown in the Network tab of the DevTools – they're real HTTP requests from the perspective of the browser. This makes the developer experience of inspecting responses from MSW closer to that of interacting with a real server-side API.
 
 Some other advantages MSW has:
 
@@ -40,13 +42,13 @@ Some other advantages MSW has:
 
 - It has first-party APIs to help you mock out GraphQL. ([Mirage can also be used to mock out GraphQL](https://gist.github.com/samselikoff/0e176a76e5be53cbb94e85020fc2b115), there are just currently no first-party APIs in the library to help you do it.)
 
-The primary advantages Mirage has compared to MSW are similar to those it has over other libraries that only provide low-level interceptor functionality. MSW's main API is a route handler that gives you a request and lets you write a response. Mirage provides a similar route handler API that can be used in exactly the same way, but in addition, it has a DB, support for relationships, factories that make creating different data scenarios easy, a serializer layer to help you match the shape of your JSON payloads to your production API, and a server instance that makes asserting against DB state and mutations easy within your tests.
+The primary advantages Mirage has compared to MSW are similar to those it has over other libraries that only provide low-level interceptor functionality. MSW's main API is a route handler that gives you a request and lets you write a response. Mirage provides a similar route handler API that can be used in exactly the same way, but it also brings along a DB, support for relationships, factories that make creating different data scenarios easy, a serializer layer to help you match the shape of your JSON payloads to your production API, and a server instance that makes asserting against DB state and mutations easy within your tests.
 
 After wiring up any interceptor (Mirage, MSW, Pretender, fetch-mock, etc.), implementing your API routes in a way that faithfully reproduces the behavior of your production API is typically where most of the complexity of your mocking code lives. So, any library that only provides interceptor functionality is leaving this work up to you. This is true for both GraphQL and REST APIs.
 
 Some other advantages Mirage has:
 
-- Mirage is easier to set up – just one import alongside any frontend code:
+- Mirage is slightly easier to set up – just one import alongside any frontend code:
 
   ```js
   import { createServer } from "miragejs"
@@ -55,25 +57,7 @@ Some other advantages Mirage has:
   server.get("/api/movies", () => ["Interstellar", "Inception"])
   ```
 
-  MSW requires some additional setup. Their docs have you generate a file that needs to be in the public project of your dev setup, and that you also need to ensure is stripped from production builds. You can then setup a worker in development, but because the service worker is asynchronous, you need to wait for it to finish before rendering your app.
-
-  Here's an example from the docs:
-
-  ```js
-  import { worker } from "./mocks"
-
-  async function bootstrap() {
-    await worker.start()
-
-    ReactDOM.render(<App />, document.getElementById("root"))
-  }
-
-  bootstrap()
-  ```
-
-  The service worker, while enabling usage of devtools, does add a bit more complexity to the overall integration. For example you also need to ensure your service worker [updates on source code reloads](https://redd.gitbook.io/msw/getting-started#chrome).
-
-- Because there is no service worker barrier, it's trivial to interact with Mirage's server and DB during development. People have even made dev-time tools to tweak their server at runtime – for example, a floating React component with a slider bound to Mirage's timing delays.
+  MSW requires one additional step - you need to generate a Service Worker file in the public directory of your project, which you might also want to strip from production builds.
 
 - Mirage was built for testing and brings along concepts like development vs. testing data seeds, and the ability to create different data scenarios directly within your tests without having to rewrite route handlers.
 

@@ -57,7 +57,7 @@ Some other advantages Mirage has:
   server.get("/api/movies", () => ["Interstellar", "Inception"])
   ```
 
-  MSW requires one additional step - you need to generate a file that in the public directory of your project, which you might also want to strip from production builds.
+  MSW requires one additional step - you need to generate a Service Worker file in the public directory of your project, which you might also want to strip from production builds.
 
 - Mirage was built for testing and brings along concepts like development vs. testing data seeds, and the ability to create different data scenarios directly within your tests without having to rewrite route handlers.
 

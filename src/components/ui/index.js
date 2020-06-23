@@ -93,35 +93,15 @@ export const EM = (props) => (
 )
 
 export function A({ href, children, ...rest }) {
-  let isExternal = href.startsWith("/") || rest?.target === "_blank"
+  let isExternal = !href.startsWith("/") || rest?.target === "_blank"
   let Component = isExternal
     ? (p) => (
-        <a
-          href={href}
-          {...p}
-          css={`
-            text-decoration-color: #b0bcc4;
-
-            &:hover {
-              text-decoration-color: #90cdf4;
-            }
-          `}
-        >
+        <a href={href} {...p}>
           {children}
         </a>
       )
     : (p) => (
-        <Link
-          to={href}
-          {...p}
-          css={`
-            text-decoration-color: #b0bcc4;
-
-            &:hover {
-              text-decoration-color: #90cdf4;
-            }
-          `}
-        >
+        <Link to={href} {...p}>
           {children}
         </Link>
       )
@@ -129,7 +109,7 @@ export function A({ href, children, ...rest }) {
   return (
     <Component
       {...rest}
-      className="underline hover:text-blue-500 focus:outline-none focus-visible:shadow-outline"
+      className="text-blue-500 font-medium hover:underline focus:outline-none focus-visible:shadow-outline"
     />
   )
 }

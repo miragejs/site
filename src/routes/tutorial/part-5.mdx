@@ -4,7 +4,9 @@ If you hover a Reminder, you'll see an "X" icon pop up. If you click it you'll d
 
 > Mirage: Your app tried to DELETE '/api/reminders/1, but there was no route defined to handle this request.
 
-Let's mock out this DELETE request. We'll need to use a dynamic segment in our URL, since the DELETE requests will go to `/api/reminders/1`, `/api/reminders/2` and so on.
+That's because we haven't mocked out this DELETE request. Let's do that now.
+
+We'll need to use a dynamic segment in our URL, since the DELETE requests can go to `/api/reminders/1`, `/api/reminders/2` and so on.
 
 Add this new route handler to your server's `routes()`:
 

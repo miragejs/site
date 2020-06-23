@@ -6,16 +6,20 @@ As you can see from the interface, our Reminders app is trying to make an API re
 
 That's because there's no API server for our app to talk to. Let's use Mirage to mock out the failing API request.
 
-Open the `src/server.js` file in your editor, import `createServer` from `miragejs`, and create a new server:
+Open the `src/server.js` file in your editor, import `createServer` from `miragejs`, and export a default function that creates a new server:
 
 ```js
 // src/server.js
 import { createServer } from "miragejs"
 
-createServer()
+export default function () {
+  createServer()
+}
 ```
 
-If you open your JavaScript console, you should see that Mirage has thrown an error:
+We import and run this function for you in `index.js`, but in your own apps you can set it up however you like.
+
+Back in the app, if you open your JavaScript console, you should see an error from Mirage:
 
 > Mirage: Your app tried to GET '/api/reminders', but there was no route defined to handle this request.
 
@@ -23,16 +27,18 @@ This means Mirage is running, and that the Reminders app is making a GET request
 
 We can mock it out using the `routes()` hook. Update the Server in your app by copying in the highlighted code:
 
-```js{3-9}
+```js{4-10}
 import { createServer } from "miragejs"
 
-createServer({
-  routes() {
-    this.get("/api/reminders", () => ({
-      reminders: [],
-    }))
-  },
-})
+export default function () {
+  createServer({
+    routes() {
+      this.get("/api/reminders", () => ({
+        reminders: [],
+      }))
+    },
+  })
+}
 ```
 
 The `routes()` hook is where we define out route handlers, and the `this.get()` method lets us mock out GET requests. The first argument is the URL we're handling (`/api/reminders`) and the second argument is a function that responds to our app with some data.

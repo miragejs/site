@@ -2,7 +2,7 @@
 
 Mirage includes a Factory layer to help simplify the process of seeding your Mirage server with realistic, relational data.
 
-Currently, if we want to make a realistic Reminder, we need to do something like this in our `seeds()` hook:
+Currently, if we want to make a Reminder, we need to do something like this in our `seeds()` hook:
 
 ```js
 seeds(server) {
@@ -10,37 +10,46 @@ seeds(server) {
 }
 ```
 
-Having to always specify every attribute for every model you create can add a lot of boilerplate to your code, especially during testing. It gets even more complicated when relationships are always required.
+Having to always specify every attribute for every model you create can add a lot of boilerplate to your code, especially during testing. It gets even more complicated when relationships are required for your data to be valid.
 
-Factories are the perfect place to encode the constraints of your data, making it easier for you to quickly create valid graphs of data. Let's see how.
+Factories are the perfect place to encode the constraints of your data, making it easier for you to quickly create valid graphs of data. Let's see how they work.
 
-For this app, Reminders always have a `text` property. Let's define a Reminder factory that defines this:
+For this app, Reminders always have a `text` property. Let's define a Reminder factory that encodes this:
 
-```js{1,14-18}
-import { createServer, Model, hasMany, belongsTo, Factory } from "miragejs"
+```js{7,22-26}
+import {
+  createServer,
+  Model,
+  hasMany,
+  belongsTo,
+  RestSerializer,
+  Factory,
+} from "miragejs"
 
-createServer({
-  models: {
-    list: Model.extend({
-      reminders: hasMany(),
-    }),
+export default function () {
+  createServer({
+    models: {
+      list: Model.extend({
+        reminders: hasMany(),
+      }),
 
-    reminder: Model.extend({
-      list: belongsTo(),
-    }),
-  },
+      reminder: Model.extend({
+        list: belongsTo(),
+      }),
+    },
 
-  factories: {
-    reminder: Factory.extend({
-      text: "Reminder text",
-    }),
-  },
+    factories: {
+      reminder: Factory.extend({
+        text: "Reminder text",
+      }),
+    },
 
-  // ...rest of server
-})
+    // ...rest of server
+  })
+}
 ```
 
-First we import `Factory`, and then call `.extend(config)` on it passing in an config object. Keys of the config correspond to properties on your models.
+First we import `Factory`, and then define a Reminder factory using the new `factories` key of our server. We can use `Factory.extend(config)` to pass in a config object, where the keys of the config object correspond to properties on our models.
 
 Now we can update our `seeds()` to just call `server.create('reminder')`, without passing anything else in:
 
@@ -52,7 +61,7 @@ seeds(server) {
 }
 ```
 
-With this seed data the app looks like this:
+With this seed data, the app now looks like this:
 
 ![Failing request](../../assets/images/tutorial/part-8-static-attrs.png)
 
@@ -68,7 +77,11 @@ factories: {
 },
 ```
 
-Now each reminder has its own unique text. Libraries like [faker.js](https://github.com/marak/Faker.js/) also work well in function properties to create more realistic data.
+Now each reminder has its own unique text:
+
+![Dyanamic attr](../../assets/images/tutorial/part-8-dynamic-attr.png)
+
+Libraries like [faker.js](https://github.com/marak/Faker.js/) also work well in function properties to create even higher fidelity data.
 
 Combined with `server.createList`, we can now easily create many Reminders using our Factory definition:
 
@@ -78,11 +91,11 @@ seeds(server) {
 }
 ```
 
-This gives us a bigger dataset:
+This quickly gives us a big dataset:
 
-![Dyanmic list](../../assets/images/tutorial/part-8-create-list.png)
+![Dyanamic list](../../assets/images/tutorial/part-8-create-list.png)
 
-But what if we want to override specific properties that we've defined on our Factory? We can always do that by passing in attributes into `server.create()`:
+But what if we want to override specific properties that we've defined on our Factory? We can always do that by passing attributes into `server.create()`. These attributes will override anything defined on our base factories.
 
 ```js
 seeds(server) {
@@ -179,9 +192,9 @@ we'll see that our `afterCreate` hook is triggered for both lists, and now our H
 
 ![After create](../../assets/images/tutorial/part-8-after-create.png)
 
-We can updadate our `afterCreate` logic to first check if our newly created List already has Reminders passed into it, and only create default reminders if it doesn't:
+We can update our `afterCreate` logic to first check if our newly created List already has Reminders passed into it, and only create default reminders if it doesn't:
 
-```js{8-10}
+```js{7-11}
 factories: {
   list: Factory.extend({
     name(i) {

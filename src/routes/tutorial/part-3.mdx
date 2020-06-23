@@ -2,75 +2,127 @@
 
 We've mocked out two API routes so far, but we have a problem.
 
-After reloading your app, try adding a new Reminder to "Buy groceries" and save it. Then, click the About link in the header, and then click Home again.
+Try adding a new Reminder to "Buy groceries", and save it. Then click the About link in the header, and then click Reminders to return home again.
 
 The original three Reminders will reload, but our newly created one isn't in the list.
 
 ![Failing](../../assets/images/tutorial/part-3-failing.png)
 
-That's because our GET handler is _static_ and returns the same three hard-coded todos every time. We've broken the _referential integrity_ of our application data, and it no longer behaves the same way our production API will.
+That's because our GET handler is currently _static_, and returns the same three hard-coded Reminders every time it runs:
 
-Let's fix this by using Mirage's data layer. We'll start with our GET handler.
-
-```js{1,4-6,9-11}
-import { createServer, Model } from "miragejs"
-
-createServer({
-  models: {
-    reminder: Model,
-  },
-
-  routes() {
-    this.get("/api/reminders", (schema) => {
-      return schema.reminders.all()
-    })
-
-    let newId = 4
-    this.post("/api/reminders", (schema, request) => {
-      let attrs = JSON.parse(request.requestBody)
-      attrs.id = newId++
-
-      return { reminder: attrs }
-    })
-  },
-})
+```js
+this.get("/api/reminders", () => ({
+  reminders: [
+    { id: 1, text: "Walk the dog" },
+    { id: 2, text: "Take out the trash" },
+    { id: 3, text: "Work out" },
+  ],
+}))
 ```
 
-First we import `Model` and define a `reminder` model. Next, we update our GET route handler to use the `schema` argument to respond with all the reminders in Mirage's database at the time of the request.
+We've broken the _referential integrity_ of our application data, and it no longer behaves the same way our production API will.
+
+Let's fix this by using Mirage's data layer.
+
+We'll start by defining a Reminder model, which will tell Mirage to create a `reminders` collection for us in its in-memory database:
+
+```js{1,5-7}
+import { createServer, Model } from "miragejs"
+
+export default function () {
+  createServer({
+    models: {
+      reminder: Model,
+    },
+
+    routes() {
+      this.get("/api/reminders", () => ({
+        reminders: [
+          { id: 1, text: "Walk the dog" },
+          { id: 2, text: "Take out the trash" },
+          { id: 3, text: "Work out" },
+        ],
+      }))
+
+      let newId = 4
+      this.post("/api/reminders", (schema, request) => {
+        let attrs = JSON.parse(request.requestBody)
+        attrs.id = newId++
+
+        return { reminder: attrs }
+      })
+    },
+  })
+}
+```
+
+Now we can update our GET route handler to return all the Reminders in the database at the time of the request – just like a real server does.
+
+```js{10-12}
+import { createServer, Model } from "miragejs"
+
+export default function () {
+  createServer({
+    models: {
+      reminder: Model,
+    },
+
+    routes() {
+      this.get("/api/reminders", (schema) => {
+        return schema.reminders.all()
+      })
+
+      let newId = 4
+      this.post("/api/reminders", (schema, request) => {
+        let attrs = JSON.parse(request.requestBody)
+        attrs.id = newId++
+
+        return { reminder: attrs }
+      })
+    },
+  })
+}
+```
+
+The `schema` argument, which is the first argument passed into all route handlers, is the primary way you interact with Mirage's data layer.
 
 Once you save and reload the app, you should see the "All done!" message again. That's because Mirage's database starts out empty.
 
-Next update your POST handler to create new Reminder models:
+Next, let's update our POST handler to create new Reminder models in Mirage's data layer:
 
-```js{13-17}
+```js{14-18}
 import { createServer, Model } from "miragejs"
 
-createServer({
-  models: {
-    reminder: Model,
-  },
+export default function () {
+  createServer({
+    models: {
+      reminder: Model,
+    },
 
-  routes() {
-    this.get("/api/reminders", (schema) => {
-      return schema.reminders.all()
-    })
+    routes() {
+      this.get("/api/reminders", (schema) => {
+        return schema.reminders.all()
+      })
 
-    this.post("/api/reminders", (schema, request) => {
-      let attrs = JSON.parse(request.requestBody)
+      this.post("/api/reminders", (schema, request) => {
+        let attrs = JSON.parse(request.requestBody)
 
-      return schema.reminders.create(attrs)
-    })
-  },
-})
+        return schema.reminders.create(attrs)
+      })
+    },
+  })
+}
 ```
 
-The `schema` argument is how we both access and create data in Mirage.
+Here we're getting the `attrs` from the request just like before, but now we're using the `create` method from our `schema` to create new Reminder models.
 
-Now, save your changes and try to create some Reminders in your app. If you inspect the response, you'll see that the data layer automatically assigns autoincrementing IDs to new records.
+Now if we save our changes and try to create some Reminders, we'll see our POST API route responds successfully. If you inspect the response in the console, you'll even see that Mirage's data layer has automatically assigned auto-incrementing IDs to each new Reminder for us.
 
-Also, after you've created some reminders, click About then click Home again. You should see all the reminders you've created appear again. Because all our route handlers are interacting with Mirage's schema, we've restored the referential integrity of our data, and our app behaves as expected.
+After you create some reminders, click About then click Reminders again. You should see all the reminders you've created re-appear! We've fixed the bug.
+
+Because all of our route handlers are reading from and writing to Mirage's data layer, we've restored the referential integrity of our API, and our app behaves just like it would in a production-like situation.
 
 ## Takeaways
 
 - Mirage has a database that acts as a single source of truth for your mock server data
-- Route handlers should read from and modify the database via the `schema` argument in order to preserve the referential integrity of your mock data across write operations
+- Route handlers should read from and modify the database via the `schema` argument in order to preserve the referential integrity of your mock data across route handlers

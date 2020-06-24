@@ -36,13 +36,6 @@ export default function TutorialPage(props) {
       <SEO title={heading} />
 
       <ThreeColumnLayout
-        BeforeNav={() => (
-          <div className="pb-4 -mt-4">
-            <p className="rounded px-6 py-2 text-xs font-medium text-gray-900 bg-yellow-300">
-              This tutorial is a work in progress.
-            </p>
-          </div>
-        )}
         menuItems={menuItems}
         previousPage={tutorialRouter.previousPage}
         nextPage={tutorialRouter.nextPage}

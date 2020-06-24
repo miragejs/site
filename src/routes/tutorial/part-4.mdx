@@ -2,41 +2,45 @@
 
 We've fixed our GET and POST route handlers, but our app starts our empty. We can use the `seeds` hook to seed Mirage with some initial data.
 
-Copy the highlighted lines into your code:
+Copy these lines into your server definition:
 
-```js{8-12}
+```js{9-13}
 import { createServer, Model } from "miragejs"
 
-createServer({
-  models: {
-    reminder: Model,
-  },
+export default function () {
+  createServer({
+    models: {
+      reminder: Model,
+    },
 
-  seeds(server) {
-    server.create("reminder", { text: "Walk the dog" })
-    server.create("reminder", { text: "Take out the trash" })
-    server.create("reminder", { text: "Work out" })
-  },
+    seeds(server) {
+      server.create("reminder", { text: "Walk the dog" })
+      server.create("reminder", { text: "Take out the trash" })
+      server.create("reminder", { text: "Work out" })
+    },
 
-  routes() {
-    this.get("/api/reminders", (schema) => {
-      return schema.reminders.all()
-    })
+    routes() {
+      this.get("/api/reminders", (schema) => {
+        return schema.reminders.all()
+      })
 
-    this.post("/api/reminders", (schema, request) => {
-      let attrs = JSON.parse(request.requestBody)
+      this.post("/api/reminders", (schema, request) => {
+        let attrs = JSON.parse(request.requestBody)
 
-      return schema.reminders.create(attrs)
-    })
-  },
-})
+        return schema.reminders.create(attrs)
+      })
+    },
+  })
+}
 ```
+
+Once you save, you should see the app reload with these three Reminders as its initial data.
 
 The `server.create` function lets us create new reminders in Mirage's data layer. IDs are automatically assigned, just like when we call `reminders.create()` in route handlers.
 
-Now if you save and reload your app, you'll see it starts off with three reminders.
+Try using the app to create a fourth reminder to "Buy groceries". You should see the new Reminder get an ID of 4 if you inspect the response. And, if you navigate to the About page and back, you'll see all four Reminders show up just as you'd expect.
 
-Try creating a fourth reminder, "Buy groceries." The app will work, even if you navigate to the About route and back. If you inspect the console, you'll see your new reminder has an ID of 4. Mirage is taking care of maintaining database consistency for you.
+Mirage's seeds are loaded on initialization and work right alongside any data that's created or modified from route handlers as you interact with your app in the browser, so all your API data remains consistent.
 
 ## Takeaways
 

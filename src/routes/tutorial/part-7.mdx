@@ -1,12 +1,13 @@
 # Part 7 – Serializers
 
-Mirage also has a Serializer layer that can help with the kinds of transforms that are commonly applied to JSON payloads, like whether your object keys are camelCased or snake_cased, or how related data gets included in a response.
+Mirage also has a Serializer layer that can help you emulate the kinds of transforms that are commonly applied to APIs, like whether your JSON object keys are camelCased or snake_cased, or how related data gets included in a response.
 
-Our Reminders app has another feature that we haven't seen because of how we've mocked our responses so far. It will show the list a Reminder comes from when on the "All" home screen. In order to make this work, our app is expecting the GET request to `/api/reminders` to return each Reminder's List embedded alongside it, like this:
+Our Reminders app has another feature that we haven't seen because of how we've mocked our responses so far. Reminders on the "All" screen should actually show which List they belong to, if any.
+
+In order to make this work, our app is expecting the GET request to `/api/reminders` to return each Reminder's List embedded alongside it, like this:
 
 ```json
 // GET /api/reminders
-
 {
   "reminders": [
     { "id": "1", "text": "Walk the dog" },
@@ -22,7 +23,7 @@ Serializers leverage Mirage's data layer to help you mock complex API responses 
 
 We'll import `RestSerializer`, set it as the serializer for our Reminder model, and tell it to embed any related lists:
 
-```js{6,10-15}
+```js{6,11-16}
 import {
   createServer,
   Model,
@@ -31,27 +32,29 @@ import {
   RestSerializer,
 } from "miragejs"
 
-createServer({
-  serializers: {
-    reminder: RestSerializer.extend({
-      include: ["list"],
-      embed: true,
-    }),
-  },
+export default function () {
+  createServer({
+    serializers: {
+      reminder: RestSerializer.extend({
+        include: ["list"],
+        embed: true,
+      }),
+    },
 
-  // rest of definition
-})
+    // rest of server
+  })
+}
 ```
 
 This new `serializers` key is an option that lets us define serializers on a per-model basis. We could also set an `application` serializer if we wanted to apply general transformations to all our responses.
 
 The `RestSerializer` class that we're using is one of three named serializers included in Mirage, and is a good starting point for many REST APIs. There's also the `ActiveModelSerializer` for Rails-like APIs, and the `JSONAPISerializer` for APIs that follow the JSON:API spec.
 
-Finally, we added two customizations to our RestSerializer:
+Finally, we added two customizations to our RestSerializer.
 
-- First, `include: ['list']` tells Mirage that every time it encounters a Reminder model in the response of a route handler, it should include its associated List (if it has one).
+First, `include: ['list']` tells Mirage that every time it encounters a Reminder model in the response of a route handler, it should include its associated List (if it has one).
 
-- Second, `embed: true` tells Mirage _how_ to serialize the included resources. By default they are side-loaded but this API expects them to be embedded, as shown in the JSON snippet above.
+Second, `embed: true` tells Mirage _how_ to serialize the included resources. By default they are side-loaded but this API expects them to be embedded, as shown in the JSON snippet above.
 
 With those changes added, if you refresh your app on the "All" page you should see List labels next to the Reminders that belong to a list:
 

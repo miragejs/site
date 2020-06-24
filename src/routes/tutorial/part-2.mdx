@@ -1,12 +1,10 @@
 # Part 2 – Static POST Handler
 
-Try adding a Reminder to "Shop for groceries" by filling out the input field and hitting enter.
-
-You should see another error:
+Try adding a Reminder to "Shop for groceries" by pressing "+", filling out the input field and hitting enter. You should see another error:
 
 ![Failing request](../../assets/images/tutorial/part-2-failing.png)
 
-If you check the console, you'll also see a message:
+If you check your console you'll see this message:
 
 > Mirage: Your app tried to POST '/api/reminders', but there was no route defined to handle this request.
 
@@ -32,9 +30,9 @@ createServer({
 })
 ```
 
-We're using the `this.post` helper to intercept our app's POST request. We're also using the `request` argument to access the data sent over from our application. The `request.requestBody` property contains the request body as a JSON string, so after parsing it we log it to the console.
+We're using `this.post` to handle this request. We're also using the `request` argument to access the data sent over from our application. The `request.requestBody` property contains the request body as a JSON string, so after parsing it we log it to the console.
 
-After saving this new code, make sure your JavaScript console is open and try adding a Reminder for "Shop for groceries" again. The devtools should hit the `debugger` statement in your route handler, and you should see the object `{ text: "Shop for groceries" }` logged to your console.
+After saving this new code, make sure your JavaScript console is open and try adding a Reminder to "Shop for groceries" again. The devtools should hit the `debugger` statement in your route handler, and you should see the object `{ text: "Shop for groceries" }` logged to your console.
 
 ![Failing request](../../assets/images/tutorial/part-2-debugger.png)
 
@@ -59,9 +57,9 @@ Our app is expecting the API server to respond with an object that looks like th
 
 but right now we're not returning anything from our route handler.
 
-Let's return an object that looks like this. We'll use the `attrs` from our request, and also add in an `id` key. We'll use 4 since our existing reminders use ids 1 through 3.
+Let's return an object that looks like this. We'll use the `attrs` from our request, and also add in an `id` key. We'll use the number 4 as the ID since our existing reminders use IDs 1 through 3.
 
-Here's our new route handler – copy this into your server:
+Here's our new route handler – go ahead and copy this into your server:
 
 ```js
 this.post("/api/reminders", (schema, request) => {
@@ -72,41 +70,43 @@ this.post("/api/reminders", (schema, request) => {
 })
 ```
 
-Now when you add a todo, there's no more errors and the app updates correctly.
+Now add a Reminder to "Shop for groceries" – there's no more errors, and the app updates correctly!
 
-Unless you try to create a second todo! Try adding "Shop for groceries" then "Clean the bathroom". React will throw an error on the second new reminder:
+...unless you try to create a second todo! Try adding a second Reminder to "Clean the bathroom". React will throw an error:
 
 > Encountered two children with the same key, '4'.
 
-We shouldn't hard-code the `id` as 4. Let's use an incrementing number instead.
+Instead of hard-coding the ID as 4, let's use an incrementing number:
 
-Here's the final server:
+```js{14-20}
+import { createServer } from "miragejs"
 
-```js{13-19}
-import { Server } from "miragejs"
+export default function () {
+  return createServer({
+    routes() {
+      this.get("/api/reminders", () => ({
+        reminders: [
+          { id: 1, text: "Walk the dog" },
+          { id: 2, text: "Take out the trash" },
+          { id: 3, text: "Work out" },
+        ],
+      }))
 
-new Server({
-  routes() {
-    this.get("/api/reminders", () => ({
-      reminders: [
-        { id: 1, text: "Walk the dog" },
-        { id: 2, text: "Take out the trash" },
-        { id: 3, text: "Work out" },
-      ],
-    }))
+      let newId = 4
+      this.post("/api/reminders", (schema, request) => {
+        let attrs = JSON.parse(request.requestBody)
+        attrs.id = newId++
 
-    let newId = 4
-    this.post("/api/reminders", (schema, request) => {
-      let attrs = JSON.parse(request.requestBody)
-      attrs.id = newId++
-
-      return { reminder: attrs }
-    })
-  },
-})
+        return { reminder: attrs }
+      })
+    },
+  })
+}
 ```
 
-Now our app works no matter how many reminders we create.
+Now our app works no matter how many reminders we create. If you inspect the Mirage response, you should see the new incrementing IDs being returned from our route handler.
+
+![First error](../../assets/images/tutorial/part-2-working.png)
 
 ## Takeaways
 

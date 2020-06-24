@@ -1,10 +1,10 @@
 # Part 9 – Testing
 
-In this final section, we're going to learn how to use Mirage to test our app in a variety of different server states.
+In this final section, we're going to learn how to use Mirage to test our app given a variety of different server states.
 
 Our project is already set up with **Jest** and **Testing Library**. We've also provided a `visit(url)` helper that renders our Reminders app at a given URL.
 
-Let's open `__tests__/app.js` and write our first test.
+Let's open `src/__tests__/app.js` and write our first test.
 
 We want to verify that our app shows "All done!" when there are no reminders. Here's the code for the test – go ahead and copy it into your project:
 
@@ -21,11 +21,15 @@ test("it shows a message when there are no reminders", async () => {
 })
 ```
 
-No in your terminal, run `yarn test`. Jest should start a watcher that will re-run your tests every time you make a change.
+Now in a new terminal window, run `yarn test`. Jest should start a watcher that will re-run your tests every time you make a change.
 
-After the test finishes its first run, you should see an error: "Unable to find an element with the text: All done!". You should also see an error that says "Network request failed."
+After the test finishes its first run, you should see an error:
 
-And if you look at the debug output, you'll even see the familiar network error UI showing up in the DOM:
+> Unable to find an element with the text: All done!
+
+You should also see an error that says "Network request failed.
+
+And if you look at the debug output, you'll even see the familiar network error UI from Part 1 of this tutorial showing up in the DOM:
 
 ![Network error](../../assets/images/tutorial/part-9-network-error-dark.png)
 
@@ -47,17 +51,17 @@ test("it shows a message when there are no reminders", async () => {
 })
 ```
 
-Now we have a new error:
+Our test is still failing, but if we scroll through the debug output we don't see the message about a failed Network Request anymore.
 
-> Unable to find an element with the text: All done!
-
-If we look at the debug output, we'll see that the DOM has the existing reminders we created in `seeds()` from where we left off in the previous part:
+Instead, we'll see that the DOM is rendering the existing reminders we created in the `seeds()` hook from the previous part of the tutorial:
 
 ![Dev seeds](../../assets/images/tutorial/part-9-dev-seeds-dark.png)
 
 This makes sense, since we're creating the exact same Mirage server as we do in development, and we seeded that server with these five reminders to help us develop the app.
 
-So, one way we could solve this would be to go back to our server definition and delete all our `seeds()` data. But there's a better way that doesn't involve changing our dev seeds: we can start our Mirage server in "test" mode using the `environment` option.
+So, we'd like to have a fresh instance of our Mirage server here, one without any data, so we can verify that the empty state shows the "All done!" message. One way we could accomplish this would be to go back to our server definition and delete all our `seeds()` data.
+
+But there's a better way that doesn't involve changing our dev seeds: we can start our Mirage server in "test" mode using the `environment` option.
 
 To see how this works, open your `server.js` file and add the `environment: 'test'` option:
 
@@ -69,32 +73,38 @@ export default function () {
   return createServer({
     environment: "test",
 
-    // rest of config
+    // rest of server
   })
 }
 ```
 
 Save that change, and once your test re-runs, it should pass!
 
-So, what does the `"test"` environment do to our server? Two things: first, it sets the `timing` to 0 so that our tests run fast; but second and more importantly, it skips the `seeds()` hook.
+So, what does the `"test"` environment do to our server? A few things: it sets the `timing` to 0 so that our tests run fast; it hides Mirage's logging so your test output remains clean; and most importantly, it skips the `seeds()` hook.
 
-So, we get to reuse all of our models, serializers, factories and routes, but keep the `seeds()` data set apart for development mode. In testing, we will use each test to set up the data for our server in exactly the state we need for each test.
+So, we get to reuse all of our models, serializers, factories and routes, but keep the `seeds()` data set apart for development mode. In testing, we will use each test to set up the data for our server in exactly the state we need for that test.
 
-So for our current test, since we're just creating the server, that database will start out empty. And that's why we see the "All done" message assertion pass – which is exactly what we want for this test.
+For our current test, we actually want the database to be empty, so we just need to start the server without creating any extra data. That allows Mirage to handle the GET API request correctly, and it responds with an empty dataset. And now our "All done" message assertion is passing, which is exactly what we want for this test.
 
-If you switch back to your development server (or run `yarn start` in another terminal window), you'll notice that the Reminders we created in `seeds()` no longer show up, and that's because our dev server is also running in test mode. Let's fix this by updating the function we're exporting from `server.js` to take in an environment argument, and we'll use that to set our server's environment:
+![First test passing](../../assets/images/tutorial/part-9-first-passing-dark.png)
+
+Now, if you switch back to your development server (or run `yarn start` in another terminal window), you'll notice that the Reminders we created in `seeds()` no longer show up. That's because our dev server is now also running in test mode.
+
+Let's fix this by updating the function we're exporting from `server.js` to take in an environment argument, and we'll use that to set our server's environment:
 
 ```js
 export default function (environment = "development") {
   return createServer({
     environment,
 
-    // ...rest of server definition
+    // ...rest of server
   })
 }
 ```
 
-Now our dev server is using our seeds again, and has an artificial delay to help us develop, but our test should be failing again. Back in our test file we'll update our call to `makeServer` and pass in an environment of "test"
+Now our dev server is using our seeds again, and has an artificial delay and console logs to help us develop, but our test should be failing again.
+
+Back in our test file we'll update our call to `makeServer` and pass in an environment of "test":
 
 ```js{6}
 import { visit } from "../lib/test-helpers"
@@ -112,9 +122,9 @@ test("it shows a message when there are no reminders", async () => {
 
 and now our test passes, but our dev environment still has its own isolated seed data to help us during development!
 
-This is just one way to customize Mirage. In your own projects, how you set up the arguments and choose the defaults are up to you.
+This is just one way to set up Mirage. In your own projects, how you set up the arguments and choose the defaults are up to you. But the key point is you should be sharing your Mirage server across both your development and testing environments.
 
-Now that we have an easy way to create isolated Mirage servers in our tests, let's keep going and see how we can write a test for our app given that three Reminders already exist on the server.
+Now that we have an easy way to create isolated Mirage servers in our tests, let's keep going and see how we can write a test for our UI when three Reminders already exist on the server.
 
 We'll start by copying and pasting our previous test, and updating the description:
 
@@ -128,35 +138,30 @@ test("it shows existing reminders", async () => {
 })
 ```
 
-Since we want to alter our server before we render our app, we can assign the return value of `makeServer` into a local variable, and use that variable to seed our server with Reminder models, in exactly the same way we do within our `seeds()` hook.
-
-In fact, let's copy those three `server.create` statements and bring them right into our test:
-
-```js{2-5}
-test("it shows existing reminders", async () => {
-  let server = makeServer("test")
-  server.create("reminder", { text: "Walk the dog" })
-  server.create("reminder", { text: "Take out the trash" })
-  server.create("reminder", { text: "Work out" })
-
-  render(<App />)
-  await waitForElementToBeRemoved(() => screen.getByText("Loading..."))
-
-  expect(screen.getByText("All done!")).toBeInTheDocument()
-})
-```
-
-When we run this test we should see a warning:
+As soon as you save, Jest will run both tests and you should see the following warning:
 
 > You created a second Pretender instance while there was already one running
 
 Mirage uses the Pretender library under the hood, and Pretender is telling us we have two servers that are colliding with each other. We need to use the `server.shutdown()` method to clean up after our previous test, as well as the end of this new one.
 
-```js{2,8,21}
+We can do that by first opening up our `server.js` file, and making sure our `makeServer` function returns the server instance:
+
+```js{3}
+// server.js
+export default function (environment = "development") {
+  return createServer({
+    // rest of server
+  })
+}
+```
+
+And then back in our test, we can assign the return value of `makeServer` to a local variable, and use that to call `server.shutdown()` at the end of each test:
+
+```js{2,8,12,18}
 test("it shows a message when there are no reminders", async () => {
   let server = makeServer("test")
-  render(<App />)
 
+  visit("/")
   await waitForElementToBeRemoved(() => screen.getByText("Loading..."))
 
   expect(screen.getByText("All done!")).toBeInTheDocument()
@@ -165,11 +170,8 @@ test("it shows a message when there are no reminders", async () => {
 
 test("it shows existing reminders", async () => {
   let server = makeServer("test")
-  server.create("reminder", { text: "Walk the dog" })
-  server.create("reminder", { text: "Take out the trash" })
-  server.create("reminder", { text: "Work out" })
 
-  render(<App />)
+  visit("/")
   await waitForElementToBeRemoved(() => screen.getByText("Loading..."))
 
   expect(screen.getByText("All done!")).toBeInTheDocument()
@@ -177,11 +179,39 @@ test("it shows existing reminders", async () => {
 })
 ```
 
-Now we don't see the Pretender warning. But when we run this test, we get a failure since "All done!" isn't showing up anymore. Instead, if we look at the debug output, we see our three reminders in the HTML:
+Now both tests should be running and passing, with no more Pretender warning.
+
+Now let's actually write our second test.
+
+Since we want to test how the UI behaves given the server starts out with three Reminders, we need to create that data before we call `visit('/')`.
+
+We can use our new local `server` variable to seed our server directly in our test, in exactly the same way that we do within our `seeds()` hook. In fact, let's copy those three `server.create` statements and bring them into our test:
+
+```js{3-5}
+test("it shows existing reminders", async () => {
+  let server = makeServer("test")
+  server.create("reminder", { text: "Walk the dog" })
+  server.create("reminder", { text: "Take out the trash" })
+  server.create("reminder", { text: "Work out" })
+
+  visit("/")
+  await waitForElementToBeRemoved(() => screen.getByText("Loading..."))
+
+  expect(screen.getByText("All done!")).toBeInTheDocument()
+})
+```
+
+You should see a test failure:
+
+> Unable to find an element with the text: All done!
+
+And if you look at the debug output, you should see our three reminders in the HTML:
 
 ![Three reminders debug](../../assets/images/tutorial/part-9-three-reminders-debug-dark.png)
 
-And the UI is showing exactly what we expect! Let's update our assertion:
+Which is exactly what we want!
+
+Let's update our assertion:
 
 ```js{10-12}
 test("it shows existing reminders", async () => {
@@ -190,7 +220,7 @@ test("it shows existing reminders", async () => {
   server.create("reminder", { text: "Take out the trash" })
   server.create("reminder", { text: "Work out" })
 
-  render(<App />)
+  visit("/")
   await waitForElementToBeRemoved(() => screen.getByText("Loading..."))
 
   expect(screen.getByText("Walk the dog")).toBeInTheDocument()
@@ -202,9 +232,9 @@ test("it shows existing reminders", async () => {
 
 And with that, both our tests are now passing!
 
-As you can see, each test naturally gives us an isolated place to alter the state of our Mirage server for the sake of whatever scenario we're testing. Since we cleanup after each test, none of these alterations leak from one test into another.
+As you can see, each test gives us an isolated place to alter the state of our Mirage server for the sake of whatever scenario we're testing. Since we cleanup after each test, none of these alterations leak from one test into another.
 
-Since each test will start and stop our base Mirage server, let's refactor our code to do this work in Jest's `beforeEach` and `afterEach` hooks:
+Let's make a quick refactor. Since each test starts and stops our base Mirage server, we can use Jest's `beforeEach` and `afterEach` hooks to clean this up:
 
 ```js{5-13}
 import { visit } from "../lib/test-helpers"
@@ -243,7 +273,9 @@ test("it shows existing reminders", async () => {
 })
 ```
 
-Our tests have become a bit higher level and more expressive, as they avoid lower-level details and stay focused on real-world user stories: _given_ three Reminders exist on the server, _when_ a user visits the app, _then_ they expect to see them on the page.
+Once you save, both tests should pass again.
+
+This change ensures our server is always cleaned up, and it also lets us write tests that are focused on higher-level steps relevant to the real-world user stories we're verifying: _given_ three reminders exist on the server, _when_ a user visits the app, _then_ they expect to see them on the page.
 
 Let's write one more test. We'll test that we can create a new Reminder for a specific list.
 
@@ -258,7 +290,7 @@ test("it can add a reminder to a list", async () => {
 })
 ```
 
-Note how useful it can be to use data from Mirage within our test. If you want to get a sense of the rendered output at this point, you could use the `?open` query param and call `screen.debug()` to see our generated list in the output:
+Note how useful it can be to use data from Mirage within our test. If you want to get a sense of the rendered output at this point, you could use the `?open` query param to make sure the app's sidebar is open, and call `screen.debug()` to see our List in the output:
 
 ```js{4,7}
 test("it can add a reminder to a list", async () => {
@@ -275,13 +307,21 @@ You should see "All" and "List 0" in the sidebar UI:
 
 ![New list in Add Reminders test](../../assets/images/tutorial/part-9-add-reminders-test-list-dark.png)
 
-Now if we create a new Reminder, it should be associated with this list. Let's go through the steps:
+Now if we create a new Reminder from this URL, it should be associated with this list, just like when we did this in development in Part 7.
+
+Let's go through the steps. First add the `userEvent` import to the top of your file:
+
+```js
+import userEvent from "@testing-library/user-event"
+```
+
+Then use it to click and type the appropriate elements. We're using `data-testid` attributes to identify them.
 
 ```js{7-9}
 test("it can add a reminder to a list", async () => {
   let list = server.create("list")
 
-  visit(`/${list.id}?open`)
+  visit(`/${list.id}`)
   await waitForElementToBeRemoved(() => screen.getByText("Loading..."))
 
   userEvent.click(screen.getByTestId("add-reminder"))
@@ -292,15 +332,17 @@ test("it can add a reminder to a list", async () => {
 })
 ```
 
-Now, what should we do after clicking the submit button? If we try to make a Reminder over in our development app, we'll see the text box hides once the Reminder is created.
+Now, what should we do after clicking the submit button?
 
-So in our test, we can wait for the textbox to disappear, and then assert that the new Reminder shows up in the list:
+If you switch back to development and try to make a Reminder, you'll see that the text box fades and then hides once the Reminder is created.
+
+So in our test, we can wait for the input to disappear, and then assert that the new Reminder shows up in the list:
 
 ```js{11-13}
 test("it can add a reminder to a list", async () => {
   let list = server.create("list")
 
-  visit(`/${list.id}?open`)
+  visit(`/${list.id}`)
   await waitForElementToBeRemoved(() => screen.getByText("Loading..."))
 
   userEvent.click(screen.getByTestId("add-reminder"))
@@ -323,7 +365,7 @@ In our case, if everything worked right, we should have a new Reminder in Mirage
 test("it can add a reminder to a list", async () => {
   let list = server.create("list")
 
-  visit(`/${list.id}?open`)
+  visit(`/${list.id}`)
   await waitForElementToBeRemoved(() => screen.getByText("Loading..."))
 
   userEvent.click(screen.getByTestId("add-reminder"))
@@ -342,11 +384,11 @@ You can think of this as a simple way to verify that your UI is sending the righ
 
 ---
 
-Whew - that was the longest step of the Tutorial by far, but you accomplished a lot! You've got four tests covering some important functionality of the app, and you were able to reuse your Mirage server making only the changes you need from test to test.
+Whew – that was the longest step of the Tutorial by far, but you accomplished a lot! You've got four tests covering some important functionality of the app, and you were able to reuse your Mirage server making only the changes you needed from test to test.
 
-As an exercise you could practice writing more tests to improve the coverage of this suite. Testing is all about making sure you're confident in your code, so much so that you'd be willing to automatically deploy it after doing something like upgrading a dependency.
+As an exercise, you could practice writing more tests to improve the coverage of this suite. Testing is all about making sure you're confident in your code, so much so that you'd be willing to automatically deploy it after doing something like upgrading a dependency.
 
-Here's some things our app can do that we don't have tests for yet:
+Here are some things our app can do that we don't have tests for yet:
 
 - The All screen shows all Reminders, along with tags showing which List they belong to
 - A List only shows Reminders that belong to that List
@@ -356,7 +398,7 @@ Here's some things our app can do that we don't have tests for yet:
 
 Writing the rest of these tests will help you get comfortable with important testing practices like keeping your test data minimal and focused, making sure you only assert against things that have changed in your test, and making sure your tests aren't brittle and break due to unrelated changes.
 
-There's a ton more to say here but hopefully you can see how much more pleasant it is to write tests when you're able to leverage a Mirage server that's already been written.
+Hopefully you can see how much more pleasant it is to write tests when you're able to leverage an existing Mirage server, and only tweak what's necessary to get your server into a specific state for each test.
 
 ## Takeaways
 

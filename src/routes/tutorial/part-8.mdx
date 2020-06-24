@@ -220,6 +220,67 @@ Now our same seeds logic lets us easily create a curated "Home" list with only t
 
 ![Improved after create](../../assets/images/tutorial/part-8-better-after-create.png)
 
+As one last refactoring step, there's an even better approach to only creating generic Reminders associated with our List when we want to: Factory Traits.
+
+Traits let us group attributes and `afterCreate` logic together under a name, so they're only invoked when we use that name. Let's add a `withReminders` trait to our List factory.
+
+First we'll import `trait`:
+
+```js{8}
+import {
+  createServer,
+  Model,
+  hasMany,
+  belongsTo,
+  RestSerializer,
+  Factory,
+  trait,
+} from "miragejs"
+```
+
+and then add a `withReminders` trait to our List Factory:
+
+```js{7-11}
+factories: {
+  list: Factory.extend({
+    name(i) {
+      return `List ${i}`;
+    },
+
+    withReminders: trait({
+      afterCreate(list, server) {
+        server.createList('reminder', 5, { list })
+      }
+    })
+  }),
+
+  reminder: Factory.extend({
+    text(i) {
+      return `Reminder ${i}`;
+    },
+  }),
+},
+```
+
+Note that we removed the `list.reminders.length` check since this logic will now only be invoked if we explicitly call the trait.
+
+If you save and check your app, you'll see that our second generic List no longer has any associated reminders. Let's update our `seeds` hook to invoke our new trait for that list:
+
+```js{7}
+seeds(server) {
+  server.create("list", {
+    name: "Home",
+    reminders: [server.create("reminder", { text: "Do taxes" })],
+  });
+
+  server.create("list", "withReminders")
+}
+```
+
+And now our UI is right back to where it was! But we've improved our List Factory by making it less surprising – the base case only creates a single List model.
+
+As we'll see in the next section, good Factory definitions are important for writing good tests.
+
 Factories have [even more features](/docs/main-concepts/factories) that give you flexible ways to create data scenarios, so you can do things like quickly switch your development environment from an anonymous user to an authenticated user, or set up just the data you need within a test.
 
 Using Factories well is one of the best ways to take advantage of all the capabilities of Mirage's data layer.
@@ -230,3 +291,4 @@ Using Factories well is one of the best ways to take advantage of all the capabi
 - You can use static values or functions as attributes
 - You can override Factory defaults wherever you call `server.create()`
 - Use the `afterCreate` hook to perform additional logic, like automatically creating related data for a model
+- Use Traits to group related attribute and `afterCreate` logic, and to keep your factories composable

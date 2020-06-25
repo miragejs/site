@@ -47,3 +47,35 @@ export default class {
   }
 }
 ```
+
+In order to use this identify manager within your server:
+
+```
+import { 
+  Server, 
+  Model, 
+  belongsTo,
+  IdentityManager as DefaultIdentityManager,
+} from "miragejs"
+
+import CustomIdentityManager from './CustomIdentityManager'
+
+new Server({
+  models: {
+    blogPost: Model.extend({
+      author: belongsTo(),
+    }),
+
+    author: Model,
+  },
+
+  //... Other Config
+  identityManagers: {
+    // Default Application Config
+    application: CustomIdentityManager,
+
+    // Per Model Identity Manager
+    blogPost: CustomIdentityManager,
+    author: DefaultIdentityManager,
+  },
+})

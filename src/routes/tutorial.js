@@ -33,7 +33,7 @@ export default function TutorialPage(props) {
 
   return (
     <>
-      <SEO title={heading} />
+      <SEO title={`Tutorial: ${heading}`} />
 
       <ThreeColumnLayout
         menuItems={menuItems}

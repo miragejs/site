@@ -124,19 +124,25 @@ export default function IndexPage() {
                     </Text>
                   </div>
 
-                  <div className="flex mt-8 md:justify-center">
+                  <div className="flex flex-col mt-8 md:mt-10 sm:flex-row sm:justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <Link
+                      to={router.routerFor("/tutorial").pages[0].url}
+                      className="flex items-center justify-center px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded hover:bg-green-700 md:py-2 sm:w-1/2 md:w-auto"
+                    >
+                      Start the Tutorial
+                    </Link>
                     <Link
                       to={router.routerFor("/docs").pages[0].url}
-                      className="flex items-center justify-center block w-full px-4 py-3 text-lg font-medium text-center text-white bg-green-500 rounded hover:bg-green-700 md:py-2 md:w-auto"
+                      className="flex items-center justify-center px-4 py-3 text-lg font-medium text-center text-green-500 hover:text-green-700 rounded md:py-2 sm:w-1/2 md:w-auto"
                     >
-                      Get started <Caret className="inline w-2 ml-2" />
+                      Read the Docs <Caret className="inline w-2 ml-2" />
                     </Link>
                   </div>
                 </div>
               </Container>
             </Gutters>
 
-            <div className="mt-16 2xl:mt-24"></div>
+            <div className="mt-16 md:mt-20 2xl:mt-24"></div>
 
             <div className="md:px-8">
               <div className="max-w-lg mx-auto md:max-w-4xl 2xl:max-w-5xl">

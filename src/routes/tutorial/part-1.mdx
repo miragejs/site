@@ -17,7 +17,7 @@ export default function () {
 }
 ```
 
-We import and run this function for you in `index.js`, but in your own apps you can set it up however you like.
+We import and run this function for you in `index.js` but in your own apps you can wire this up however you like.
 
 Back in the app, if you open your JavaScript console, you should see an error from Mirage:
 
@@ -25,7 +25,7 @@ Back in the app, if you open your JavaScript console, you should see an error fr
 
 This means Mirage is running, and that the Reminders app is making a GET request that hasn't been mocked out.
 
-We can mock it out using the `routes()` hook. Update the Server in your app by copying in the highlighted code:
+We can mock it out using the `routes()` hook. Update the server in your app by copying in the highlighted code:
 
 ```js{4-10}
 import { createServer } from "miragejs"
@@ -41,7 +41,7 @@ export default function () {
 }
 ```
 
-The `routes()` hook is where we define out route handlers, and the `this.get()` method lets us mock out GET requests. The first argument is the URL we're handling (`/api/reminders`) and the second argument is a function that responds to our app with some data.
+The `routes()` hook is how we define our route handlers, and the `this.get()` method lets us mock out GET requests. The first argument is the URL we're handling (`/api/reminders`) and the second argument is a function that responds to our app with some data.
 
 You should see the app reload and then render a message saying "All done!":
 

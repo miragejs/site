@@ -233,12 +233,12 @@ function Header({ showHeaderNav }) {
                       >
                         Guides
                       </NavLink>
-                      {/* <NavLink
+                      <NavLink
                         to={router.routerFor("/tutorial").pages[0].url}
                         activeFor="/tutorial/*"
                       >
                         Tutorial
-                      </NavLink> */}
+                      </NavLink>
                       <NavLink
                         to="/api/classes/association/"
                         activeFor="/api/*"
@@ -310,7 +310,7 @@ function Header({ showHeaderNav }) {
                   </MobileNavLink>
                 </div>
 
-                {/* <div
+                <div
                   className={`border-t ${
                     theme === "dark" ? "border-gray-800" : "border-gray-200"
                   }`}
@@ -321,7 +321,7 @@ function Header({ showHeaderNav }) {
                   >
                     Tutorial
                   </MobileNavLink>
-                </div> */}
+                </div>
 
                 <div
                   className={`border-t ${

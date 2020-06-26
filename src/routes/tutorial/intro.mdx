@@ -5,6 +5,8 @@ While Mirage can be used to mock out GraphQL APIs, this tutorial will cover a ba
 
 You'll learn Mirage by **mocking out the API for a Reminders app**. The app is written in React, but you don't need to know React to follow along since you'll only be writing Mirage code.
 
+There is no real API server running, so the app doesn't work to start. As you implement each API endpoint, you'll be restoring the functionality of the app.
+
 Here's an example of the final result:
 
 [**mirage-tutorial.now.sh**](https://mirage-tutorial.now.sh) ([source](https://github.com/miragejs/tutorial))
@@ -16,15 +18,20 @@ First let’s get your development environment ready. You'll need [**Node.js**](
 Next, download the tutorial and install its dependencies:
 
 ```shell
-npx degit github:miragejs/tutorial mirage-tutorial &&
-  cd mirage-tutorial &&
-  yarn
+npx degit github:miragejs/tutorial mirage-tutorial
+cd mirage-tutorial
+yarn install
+
+# You can also use npm:
+npm install
 ```
 
 Then open the project in your editor and start your app:
 
 ```shell
 yarn start
+
+# or npm run start
 ```
 
 This should run a development server on **port 3000**.

@@ -32,15 +32,17 @@ createServer({
 
 We're using `this.post` to handle this request. We're also using the `request` argument to access the data sent over from our application. The `request.requestBody` property contains the request body as a JSON string, so after parsing it we log it to the console.
 
-After saving this new code, make sure your JavaScript console is open and try adding a Reminder to "Shop for groceries" again. The devtools should hit the `debugger` statement in your route handler, and you should see the object `{ text: "Shop for groceries" }` logged to your console.
+After saving this new code, make sure your JavaScript console is open and try adding a Reminder to "Shop for groceries" again. The DevTools should hit the `debugger` statement in your route handler, and you should see the object `{ text: "Shop for groceries" }` logged to your console.
 
 ![Failing request](../../assets/images/tutorial/part-2-debugger.png)
+
+Being able to use the DevTools to help you write and debug route handlers right alongside your frontend code is a key part of what makes Mirage so productive.
 
 Press the Play button to allow JavaScript to continue execution. Mirage will respond successfully with a 201 status code, but the app will crash with an error:
 
 > Cannot read property 'id' of undefined
 
-Here's a screenshot of what you should see:
+If you scroll up your console to the first error, here's a screenshot of what you should see:
 
 ![First error](../../assets/images/tutorial/part-2-first-error.png)
 

@@ -175,7 +175,7 @@ seeds(server) {
 
 But what if we wanted to bring back some of our more curated, realistic data, either because we're testing something specific or because we want less generic data in development?
 
-Currently, if we do something like this:
+Copy this seeding logic in:
 
 ```js
 seeds(server) {
@@ -188,7 +188,7 @@ seeds(server) {
 }
 ```
 
-we'll see that our `afterCreate` hook is triggered for both lists, and now our Home list has 5 randomly generated reminders along our specific "Do taxes" one:
+If we use this logic, we'll see that our `afterCreate` hook is triggered for both lists, and now our Home list has 5 randomly generated reminders along our specific "Do taxes" one:
 
 ![After create](../../assets/images/tutorial/part-8-after-create.png)
 
@@ -238,7 +238,7 @@ import {
 } from "miragejs"
 ```
 
-and then add a `withReminders` trait to our List Factory:
+and then we'll move our `afterCreate` logic to a `withReminders` trait on our List Factory:
 
 ```js{7-11}
 factories: {
@@ -282,6 +282,26 @@ And now our UI is right back to where it was! But we've improved our List Factor
 As we'll see in the next section, good Factory definitions are important for writing good tests.
 
 Factories have [even more features](/docs/main-concepts/factories) that give you flexible ways to create data scenarios, so you can do things like quickly switch your development environment from an anonymous user to an authenticated user, or set up just the data you need within a test.
+
+Let's revert our seeds logic to our curated data set for now:
+
+```js
+seeds(server) {
+  server.create("reminder", { text: "Walk the dog" });
+  server.create("reminder", { text: "Take out the trash" });
+  server.create("reminder", { text: "Work out" });
+
+  server.create("list", {
+    name: "Home",
+    reminders: [server.create("reminder", { text: "Do taxes" })],
+  });
+
+  server.create("list", {
+    name: "Work",
+    reminders: [server.create("reminder", { text: "Visit bank" })],
+  });
+}
+```
 
 Using Factories well is one of the best ways to take advantage of all the capabilities of Mirage's data layer.
 

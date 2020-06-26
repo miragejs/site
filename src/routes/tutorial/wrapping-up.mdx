@@ -2,11 +2,10 @@
 
 Congratulations on finishing the Mirage tutorial!
 
-As an exercise, there are three more API endpoints left to implement to restore the full functionality of the Reminders app:
+As an exercise, there are two more API endpoints left to implement to restore the full functionality of the Reminders app:
 
 - **POST to `/api/lists`**. This endpoint should create a List using the request attrs. It should look very similar to the Reminder POST route.
-- **DELETE to `/api/reminders/:id`**. This should find the Reminder by ID and delete it. You can use the `destroy()` method on Models to do this.
-- **DELETE to `/api/lists/:id`**. This should also destroy the List, but you can use the Lists's Reminders relationship to destroy the associated Reminders, so no orphan records are left behind.
+- **DELETE to `/api/lists/:id`**. This should look similar to the Reminder's delete endpoint, but you can use the Lists's Reminders relationship to destroy the associated Reminders, so no orphan records are left behind.
 
 Once you implement the rest of the API, you can also practice writing more tests to improve the coverage of this suite. Testing is all about making sure you're confident in your code, so much so that you'd be willing to automatically deploy it after doing something like upgrading a dependency.
 
@@ -19,6 +18,8 @@ Here are some things our app can do that we didn't write tests for yet:
 - The user can delete a List
 
 Writing the rest of these tests will help you get comfortable with important testing practices like keeping your test data minimal and focused, making sure you only assert against things that have changed in your test, and making sure your tests aren't brittle and break due to unrelated changes.
+
+If you'd like to see the solution for both the final server and final test, check out `lib/server-final.js` and `lib/app-test-final.js`.
 
 ## Further reading
 

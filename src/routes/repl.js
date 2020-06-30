@@ -7,6 +7,7 @@ import { useQueryParam } from "../hooks/use-query-param"
 import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
 import CodeEditor from "../components/code-editor"
+import { useQuery } from "urql"
 
 const inspectorMachine = Machine(
   {
@@ -115,6 +116,13 @@ const inspectorMachine = Machine(
 )
 
 export default function () {
+  const [res] = useQuery({
+    query: `
+    query { sandboxes { id config } }
+  `,
+  })
+  console.log(res.data)
+
   let [queryParamConfig, setQueryParamConfig] = useQueryParam("config", {
     type: "binary",
   })

@@ -7,7 +7,7 @@ import { useQueryParam } from "../hooks/use-query-param"
 import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
 import CodeEditor from "../components/code-editor"
-import { useQuery } from "urql"
+import { useQuery, useMutation } from "urql"
 
 const inspectorMachine = Machine(
   {
@@ -229,6 +229,20 @@ export default function () {
   shellLines.splice(lineForApp + 1, 0, ...configInput.split("\n"))
   let srcDoc = shellLines.join("\n")
 
+  const CreateSandbox = `
+    mutation ($config: String) {
+      insert_sandboxes_one(object: {config: $config}) {
+        id
+        config
+      }
+    }
+  `
+  const [createSandboxResponse, createSandbox] = useMutation(CreateSandbox)
+
+  function shareSandbox() {
+    createSandbox({ config: configInput })
+  }
+
   return (
     <div
       className="flex flex-col mt-16"
@@ -256,6 +270,7 @@ export default function () {
         <div className="flex flex-1">
           <div className="flex flex-col w-1/2">
             <div className="z-10 flex flex-col shadow h-28">
+              <button onClick={shareSandbox}>Share</button>
               <div className="flex items-center justify-between px-4 mt-6 md:px-6">
                 <h2 className="text-gray-800 text-1-5xl">Server</h2>
                 {inspectorState.matches("loading") ? (

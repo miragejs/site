@@ -240,7 +240,7 @@ export default function () {
         </p>
         <div className="flex flex-1">
           <div className="flex flex-col w-1/2">
-            <div className="z-0 z-10 flex flex-col shadow h-28">
+            <div className="z-10 flex flex-col shadow h-28">
               <div className="flex items-center justify-between px-4 mt-6 md:px-6">
                 <h2 className="text-gray-800 text-1-5xl">Server</h2>
                 {inspectorState.matches("loading") ? (

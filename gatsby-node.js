@@ -145,6 +145,12 @@ exports.createPages = ({ actions }) => {
     toPath: "/docs/about",
   })
 
+  // Handling client-only routes on Netlify
+  createRedirect({
+    fromPath: "/repl/v1/*",
+    toPath: "/",
+  })
+
   // Netlify 404s
   createRedirect({
     fromPath: "/*",

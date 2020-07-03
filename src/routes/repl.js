@@ -7,7 +7,7 @@ import { useQueryParam } from "../hooks/use-query-param"
 import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
 import CodeEditor from "../components/code-editor"
-import { useQuery, useMutation } from "urql"
+import { useMutation } from "urql"
 
 const inspectorMachine = Machine(
   {
@@ -116,20 +116,6 @@ const inspectorMachine = Machine(
 )
 
 export default function () {
-  const [res] = useQuery({
-    query: `
-      query {
-        sandboxes {
-          id
-          config
-          created_at
-          updated_at
-        }
-      }
-    `,
-  })
-  console.log(res.data)
-
   let [queryParamConfig, setQueryParamConfig] = useQueryParam("config", {
     type: "binary",
   })
@@ -240,7 +226,13 @@ export default function () {
   const [createSandboxResponse, createSandbox] = useMutation(CreateSandbox)
 
   function shareSandbox() {
-    createSandbox({ config: configInput })
+    createSandbox({ config: configInput }).then((res) => {
+      let id = res.data.insert_sandboxes_one.id
+      console.log("Here's your link!");
+      
+      console.log(`localhost:8000/repl/1/${id}`);
+      
+    })
   }
 
   return (

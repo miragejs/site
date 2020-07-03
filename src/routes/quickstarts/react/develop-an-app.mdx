@@ -50,6 +50,10 @@ export function makeServer({ environment = "test" } = {}) {
 
 > In an app build with Create React App, make sure this file is under the `src/` directory so that changes to it trigger rebuilds.
 
+The `environment` argument we're adding to the function signature is just a convention. We're defaulting it to `test` since in most apps, you'll call `makeServer` once in development mode but many times in `test` (across your various test files).
+
+You are free to change the signature to whatever you like.
+
 ## Step 3: Start your server in development
 
 Open your React app's bootstrap file (`src/index.js` in a Create React App), import your `makeServer` function, and call it in the development environment:
@@ -62,14 +66,16 @@ import App from "./App"
 import { makeServer } from "./server"
 
 if (process.env.NODE_ENV === "development") {
-  makeServer()
+  makeServer({ environment: "development" })
 }
 
 ReactDOM.render(<App />, document.getElementById("root"))
 ```
 
-We're using the `process.env.NODE_ENV` environment variable here, which is a common global variable available in many React app environments.
+We're using the `process.env.NODE_ENV` environment variable here, which is a common global variable available in many React app environments. The conditional allows Mirage to be tree-shaken in production, so it won't affect your production bundle.
 
-Now, whenever any component in your application makes a network request in development, Mirage will intercept that request and respond with the data from your server definition.
+Also, note that we're passing in `{ environment: "development" }` here, so that Mirage's `seeds()` load and there is some simulated latency to help you during development.
+
+And that's it! With this code in place, whenever any component in your application makes a network request in development, Mirage will intercept that request and respond with the data from your server definition.
 
 You now have a central place to define and update your Mirage server as you continue local development on your React app.

@@ -5,5 +5,5 @@
 # Handling client-only routes on Netlify
 [[redirects]]
   from = "/repl/v1/*"
-  to = "/"
+  to = "/index.html"
   status = 200

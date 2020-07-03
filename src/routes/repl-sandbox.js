@@ -1,7 +1,7 @@
 import React from "react"
 import { useQuery } from "urql"
 
-export default function ({ id, navigate, noop }) {
+export default function ({ id, navigate }) {
   const [res] = useQuery({
     query: `
       query ($id: Int!) {
@@ -24,7 +24,7 @@ export default function ({ id, navigate, noop }) {
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center">
-      <div>Loading REPL...</div>
+      <div>Loadingggg REPL...</div>
     </div>
   )
 }

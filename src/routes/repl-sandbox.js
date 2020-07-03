@@ -16,11 +16,11 @@ export default function ({ id, navigate, noop }) {
     },
   })
 
-  if (res.data) {
-    let config = res.data.sandboxes_by_pk.config
-    let serializedConfig = btoa(config)
-    navigate(`/repl/?config=${serializedConfig}`)
-  }
+  // if (res.data) {
+  //   let config = res.data.sandboxes_by_pk.config
+  //   let serializedConfig = btoa(config)
+  //   navigate(`/repl/?config=${serializedConfig}`)
+  // }
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center">

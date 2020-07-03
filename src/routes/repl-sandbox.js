@@ -4,7 +4,7 @@ import { useQuery } from "urql"
 export default function ({ id, navigate, noop }) {
   const [res] = useQuery({
     query: `
-      query ($id: uuid!) {
+      query ($id: Int!) {
         sandboxes_by_pk(id: $id) {
           id
           config

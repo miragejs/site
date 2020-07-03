@@ -8,6 +8,7 @@ import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
 import CodeEditor from "../components/code-editor"
 import { useMutation } from "urql"
+import { DialogOverlay, DialogContent } from "@reach/dialog"
 
 const inspectorMachine = Machine(
   {
@@ -115,7 +116,7 @@ const inspectorMachine = Machine(
   }
 )
 
-export default function () {
+export default function ({ location, navigate }) {
   let [queryParamConfig, setQueryParamConfig] = useQueryParam("config", {
     type: "binary",
   })
@@ -128,6 +129,8 @@ export default function () {
   let [activeServerTab, setActiveServerTab] = React.useState("Config")
   let [activeResponseTab, setActiveResponseTab] = React.useState("JSON")
   let [localConfig, setLocalConfig] = useState(null)
+  let [isShowingShareDialog, setIsShowingShareDialog] = useState(false)
+  let [latestShareUrl, setLatestShareUrl] = useState(false)
   let [errorMessageRef, errorMessagebounds] = useMeasure({
     polyfill: ResizeObserver,
   })
@@ -223,46 +226,117 @@ export default function () {
       }
     }
   `
-  const [createSandboxResponse, createSandbox] = useMutation(CreateSandbox)
+  const [, createSandbox] = useMutation(CreateSandbox)
 
   function shareSandbox() {
     createSandbox({ config: configInput }).then((res) => {
       let id = res.data.insert_sandboxes_one.id
-      console.log("Here's your link!");
-      
-      console.log(`localhost:8000/repl/1/${id}`);
-      
+      setLatestShareUrl(`${location.host}/repl/v1/${id}`)
+      setIsShowingShareDialog(true)
     })
   }
+
+  // TODO: Reset all state + navigate
+  // function resetRepl() {
+  //   navigate("/repl")
+  // }
 
   return (
     <div
       className="flex flex-col mt-16"
       style={{ height: "calc(100vh - 4rem)" }}
     >
-      {/* This will be the title bar */}
-      {/* <div className="flex items-center px-6 py-1 text-sm bg-gray-200">
-        <p className="font-semibold text-gray-900">REPL</p>
-        <button className="ml-5 text-gray-700">Share</button>
-      </div> */}
-      <div className="flex flex-col flex-1">
-        <p className="px-6 py-2 text-xs font-medium text-gray-900 bg-yellow-400">
-          <span className="font-semibold">Hello!</span> You've landed on the
-          Mirage REPL, which is under active development. Please{" "}
-          <a
-            href="https://github.com/miragejs/site/issues/new"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline"
+      <div className="flex items-center px-6 py-1 text-sm bg-gray-100 border-t border-b border-gray-300">
+        <p className="font-medium text-gray-500 tracking-wide">REPL</p>
+        <div className="ml-6 space-x-1">
+          {/* TODO: Implement resetRepl above */}
+          {/* <button
+            className="text-gray-800 hover:bg-gray-200 px-3 py-1 rounded"
+            onClick={resetRepl}
           >
-            report any bugs you find
-          </a>
-          .
-        </p>
+            New
+          </button> */}
+          <button
+            className="text-gray-800 hover:bg-gray-200 px-3 py-1 rounded"
+            onClick={shareSandbox}
+          >
+            Share
+          </button>
+        </div>
+        {isShowingShareDialog && (
+          <DialogOverlay
+            className="bg-gray-900.50"
+            onDismiss={() => setIsShowingShareDialog(false)}
+          >
+            <div className="fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center">
+              <DialogContent
+                className="rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="modal-headline"
+                style={{
+                  marginTop: 0,
+                  marginBottom: 0,
+                  padding: 0,
+                  width: "100%",
+                  background: "white",
+                }}
+              >
+                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="sm:flex sm:items-start">
+                    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <svg
+                        class="h-6 w-6 text-green-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <h3
+                        className="text-lg leading-6 font-medium text-gray-900"
+                        id="modal-headline"
+                      >
+                        Share link created
+                      </h3>
+                      <div className="mt-4">
+                        <p className="text-sm leading-5 text-gray-500">
+                          Here's your unique URL:
+                        </p>
+                        <p className="text-sm mt-1 font-medium text-gray-700">
+                          {latestShareUrl}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-100 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                  <span className="flex w-full rounded-md shadow-sm sm:w-auto">
+                    <button
+                      type="button"
+                      onClick={() => setIsShowingShareDialog(false)}
+                      className="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                    >
+                      Close
+                    </button>
+                  </span>
+                </div>
+              </DialogContent>
+            </div>
+          </DialogOverlay>
+        )}
+      </div>
+      <div className="flex flex-col flex-1">
         <div className="flex flex-1">
           <div className="flex flex-col w-1/2">
             <div className="z-10 flex flex-col shadow h-28">
-              <button onClick={shareSandbox}>Share</button>
               <div className="flex items-center justify-between px-4 mt-6 md:px-6">
                 <h2 className="text-gray-800 text-1-5xl">Server</h2>
                 {inspectorState.matches("loading") ? (
@@ -361,7 +435,7 @@ export default function () {
               {configIsTooLargeForURL && (
                 <div
                   data-testid="config-length-warning"
-                  className="px-4 py-3 text-xs font-medium text-gray-900 bg-yellow-400"
+                  className="px-4 py-3 text-xs font-medium text-gray-900 bg-yellow-300"
                 >
                   <p>
                     <span className="font-semibold">Warning: </span>Your config
@@ -487,6 +561,26 @@ export default function () {
                 ) : null}
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className="relative">
+          <div className="absolute inset-x-0 bottom-0 flex items-center justify-center">
+            <p className="m-3 shadow rounded px-4 py-2 text-sm text-black bg-yellow-50 border-l-4 border-yellow-200">
+              <strong className="font-medium">
+                🛠 Welcome to the Mirage REPL!
+              </strong>{" "}
+              We're still under active development. Please{" "}
+              <a
+                href="https://github.com/miragejs/site/issues/new"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                report any bugs you find
+              </a>
+              .
+            </p>
           </div>
         </div>
       </div>

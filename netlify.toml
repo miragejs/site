@@ -1,2 +1,9 @@
+# Don't run builds for Dependabot PRs
 [build]
   ignore = "git log -1 --pretty=%B | grep dependabot"
+
+# Handling client-only routes on Netlify
+[[redirects]]
+  from = "/repl/v1/*"
+  to = "/"
+  status = 200

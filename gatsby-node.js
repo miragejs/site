@@ -145,7 +145,14 @@ exports.createPages = ({ actions }) => {
     toPath: "/docs/about",
   })
 
-  // Netlify 404s
+  // Netlify Redirects
+  createAppPage("/repl/v1/ssr-shell")
+  createRedirect({
+    fromPath: "/repl/v1/*",
+    toPath: "/repl/v1/ssr-shell",
+    statusCode: 200,
+  })
+
   createRedirect({
     fromPath: "/*",
     toPath: "/404.html",

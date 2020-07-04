@@ -94,7 +94,7 @@ module.exports = {
             options: {
               maxWidth: 720,
               wrapperStyle: (fluidResult) => {
-                let [, name, ext] = fluidResult.originalName.match(
+                let [, name] = fluidResult.originalName.match(
                   /(.+?)(\.[^.]*$|$)/
                 )
                 let borderColor = name.endsWith("-dark") ? "#52595D" : "#F7FAFC"

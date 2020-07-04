@@ -529,7 +529,7 @@ export class Route {
 
   didCreateRoute(route: Route): void {
     this._onNewRoute(route)
-    this.parent && this.parent.didCreateRoute(route)
+    this.parent && this.parent?.didCreateRoute(route)
   }
 
   onNewRoute(callback: (route?: Route) => void): void {

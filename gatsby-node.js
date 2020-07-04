@@ -148,7 +148,8 @@ exports.createPages = ({ actions }) => {
   // Netlify 404s
   createRedirect({
     fromPath: "/repl/v1/*",
-    toPath: "/docs/about",
+    toPath: "/index.html",
+    statusCode: 200,
   })
 
   createRedirect({

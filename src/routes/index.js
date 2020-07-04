@@ -97,7 +97,7 @@ export default function IndexPage() {
 
   return (
     <div className="relative">
-      <div className="relative z-10" data-id="it me?">
+      <div className="relative z-10">
         <SEO />
 
         <SectionWithLines>

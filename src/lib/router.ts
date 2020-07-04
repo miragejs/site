@@ -27,11 +27,6 @@ const allRoutes: RouteDefinition[] = [
     path: "/repl/v1/:id",
   },
   {
-    name: "repl-sandbox-ssr-shell",
-    label: "repl-sandbox-ssr-shell",
-    path: "/repl/v1/ssr-shell",
-  },
-  {
     name: "docs",
     label: "Documentation",
     routes: [

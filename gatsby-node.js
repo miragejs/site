@@ -146,6 +146,7 @@ exports.createPages = ({ actions }) => {
   })
 
   // Netlify Redirects
+  createAppPage("/repl/v1/ssr-shell")
   createRedirect({
     fromPath: "/repl/v1/*",
     toPath: "/repl/v1/ssr-shell",

@@ -1,6 +1,5 @@
 import React from "react"
 import { useQuery } from "urql"
-import LoadingShell from "./repl-sandbox-ssr-shell"
 
 export default function ({ id, navigate }) {
   const [res] = useQuery({
@@ -24,13 +23,17 @@ export default function ({ id, navigate }) {
     navigate(`/repl/?config=${serializedConfig}`)
   }
 
-  if (res.data?.sandboxes_by_pk === null) {
+  if (res.error || res.data?.sandboxes_by_pk === null) {
     return (
       <div className="flex flex-col flex-1 items-center justify-center">
         REPL not found.
       </div>
     )
   } else {
-    return <LoadingShell />
+    return (
+      <div className="flex flex-col flex-1 items-center justify-center">
+        <div>Loading REPL...</div>
+      </div>
+    )
   }
 }

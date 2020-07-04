@@ -1,5 +1,6 @@
 import React from "react"
 import { useQuery } from "urql"
+import LoadingShell from "./repl-sandbox-ssr-shell"
 
 export default function ({ id, navigate }) {
   const [res] = useQuery({
@@ -16,15 +17,11 @@ export default function ({ id, navigate }) {
     },
   })
 
-  // if (res.data) {
-  //   let config = res.data.sandboxes_by_pk.config
-  //   let serializedConfig = btoa(config)
-  //   navigate(`/repl/?config=${serializedConfig}`)
-  // }
-
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center">
-      <div>Loadingggg REPL...</div>
-    </div>
-  )
+  if (res.data) {
+    let config = res.data.sandboxes_by_pk.config
+    let serializedConfig = btoa(config)
+    navigate(`/repl/?config=${serializedConfig}`)
+  } else {
+    return <LoadingShell />
+  }
 }

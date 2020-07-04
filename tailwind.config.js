@@ -202,4 +202,6 @@ module.exports = {
       })
     }),
   ],
+
+  purge: false,
 }

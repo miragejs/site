@@ -3,9 +3,10 @@
   ignore = "git log -1 --pretty=%B | grep dependabot"
 
 # Handling client-only routes on Netlify
-[[redirects]]
-  from = "/repl/v1/1234"
-  to = "/docs/about/"
+# [[redirects]]
+#   from = "/repl/v1/1234"
+#   to = "/docs/about/"
+
 
 # [[redirects]]
 #   from = "/repl/v1/1234"

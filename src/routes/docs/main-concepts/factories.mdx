@@ -551,14 +551,22 @@ Combining traits with the `afterCreate` hook is one of the most powerful feature
 
 The `association()` helper provides some sugar for creating `belongsTo` relationships.
 
-As we saw earlier, given a `Post` that `belongsTo` a `User`, we were able to use the `afterCreate` hook to pre-wire that relationship:
+As we saw earlier, the `afterCreate` hook lets us pre-wire relationships:
 
-```js
-import { Server, Factory } from "miragejs"
+```js{14-20}
+import { Server, Model, Factory } from "miragejs"
 
 new Server({
+  models: {
+    user: Model,
+
+    post: Model.extend({
+      user: belongsTo(),
+    }),
+  },
+
   factories: {
-    user: Factory.extend({
+    post: Factory.extend({
       afterCreate(post, server) {
         if (!post.user) {
           post.update({
@@ -573,13 +581,21 @@ new Server({
 
 The `association()` helper effectively replaces this code:
 
-```js
-import { Server, Factory, association } from "miragejs"
+```js{14}
+import { Server, Model, Factory, association } from "miragejs"
 
 new Server({
+  models: {
+    user: Model,
+
+    post: Model.extend({
+      user: belongsTo(),
+    }),
+  },
+
   factories: {
-    user: Factory.extend({
-      post: association(),
+    post: Factory.extend({
+      user: association(),
     }),
   },
 })
@@ -609,7 +625,7 @@ post: Factory.extend({
 })
 ```
 
-There is no equivalent helper for `hasMany` relationships, so you can continue to use the `afterCreate` hook to seed those relationships.
+Note that the `association()` helper cannot be used if your `belongsTo` relationship is polymorphic. Also, `association()` doesn't work for `hasMany` relationships. In both of these cases, you should continue to use the `afterCreate` hook to seed your data.
 
 ## Using factories
 

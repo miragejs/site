@@ -85,7 +85,9 @@ export default function ({ db }) {
                                 }
                               `}
                             >
-                              {attr}
+                              {typeof attr === "object"
+                                ? JSON.stringify(attr)
+                                : attr}
                             </td>
                           ))}
                         </tr>

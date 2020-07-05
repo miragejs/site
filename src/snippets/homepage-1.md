@@ -10,7 +10,7 @@ new Server({
 
     this.get('/todos', ({ db }) => {
       return db.todos;
-    }))
+    })
   }
 })
 

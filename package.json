@@ -18,7 +18,7 @@
     "test": "jest",
     "percy:exec": "percy exec",
     "cy:run": "cypress run",
-    "cy:open": "cypress open --config baseUrl=http://localhost:9000",
+    "cy:open": "cypress open --config baseUrl=http://localhost:8000",
     "test-and-build": "run-s test build",
     "build-and-serve": "run-s build serve",
     "test:cy:run": "start-test build-and-serve 9000 cy:run",

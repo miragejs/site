@@ -64,6 +64,21 @@ describe("REPL", () => {
     })
   })
 
+  context("database tab", () => {
+    it("can show ids for polymorphic relationships ", () => {
+      cy.visit(
+        "/repl/?config=aW1wb3J0IHsgU2VydmVyLCBNb2RlbCwgYmVsb25nc1RvIH0gZnJvbSAibWlyYWdlanMiCgpleHBvcnQgZGVmYXVsdCBuZXcgU2VydmVyKHsKICBtb2RlbHM6IHsKICAgIGJsb2dQb3N0OiBNb2RlbC5leHRlbmQoewogICAgICBjb21tZW50OiBiZWxvbmdzVG8oKSwKICAgIH0pLAoKICAgIGNvbW1lbnQ6IE1vZGVsLmV4dGVuZCh7CiAgICAgIGNvbW1lbnRhYmxlOiBiZWxvbmdzVG8oeyBwb2x5bW9ycGhpYzogdHJ1ZSB9KSwKICAgIH0pLAogIH0sCgogIHNlZWRzKHNlcnZlcikgewogICAgbGV0IGJsb2dQb3N0ID0gc2VydmVyLmNyZWF0ZSgiYmxvZy1wb3N0Iik7CiAgICBzZXJ2ZXIuY3JlYXRlKCdjb21tZW50JywgewogICAgICBjb21tZW50YWJsZTogYmxvZ1Bvc3QKICAgIH0pCiAgfQp9KQ%3D%3D"
+      )
+
+      cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
+
+      cy.get("[data-testid=database]").click()
+      cy.get("button").contains("Comments").click()
+
+      cy.contains(`{"id":"1","type":"blog-post"}`).should("exist")
+    })
+  })
+
   context("editing the config", () => {
     it("shows a parsing error", () => {
       cy.visit("/repl")
@@ -119,10 +134,8 @@ describe("REPL", () => {
 
     it("shows a message if the config is blank", () => {
       cy.visit("/repl")
-      
-      cy.get("[data-testid=config-input]").typeInCodemirror(
-        d``
-      )
+
+      cy.get("[data-testid=config-input]").typeInCodemirror(d``)
 
       cy.get("[data-testid=sandbox-error]").should("exist")
       cy.get("[data-testid=parse-error]").should(

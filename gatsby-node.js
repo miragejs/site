@@ -177,7 +177,7 @@ let slugify = function (str) {
 }
 
 let generateESDoc = function (config) {
-  var tmpdir = tmp.dirSync()
+  var tmpdir = tmp.dirSync({ unsafeCleanup: true })
   let originalLog = console.log
   console.log("Generating ESDoc index")
   console.log = () => {}

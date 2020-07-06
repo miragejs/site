@@ -1,2 +1,2 @@
 [build]
-  ignore = "git log -1 --pretty=%B | grep dependabot"
+  ignore = "git checkout -b pullrequest FETCH_HEAD ; git log -1 --pretty=%B | grep dependabot"

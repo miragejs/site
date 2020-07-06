@@ -7,7 +7,7 @@ export default function (props) {
   let language = props.language || ""
 
   let highlightedLines = props.highlightedLines
-    ? rangeParser.parse(props.highlightedLines)
+    ? rangeParser(props.highlightedLines)
     : []
 
   // Filter out any empty lines at end

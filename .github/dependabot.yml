@@ -1,4 +1,9 @@
 version: 2
+
 updates:
-  - commit-message:
-    prefix: "[skip netlify]"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "[skip netlify]"

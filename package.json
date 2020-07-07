@@ -114,7 +114,7 @@
     "react-test-renderer": "^16.13.1",
     "start-server-and-test": "^1.11.0",
     "ts-jest": "^25.5.1",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.6"
   },
   "keywords": [
     "gatsby"

@@ -117,38 +117,41 @@ Create a new `cypress/integration/app.spec.js` file, import your `makeServer` fu
 ```js
 import { makeServer } from "../../src/server"
 
-let server
+describe("user list", () => {
+  let server;
 
-beforeEach(() => {
-  server = makeServer({ environment: "test" })
-})
+  beforeEach(() => {
+    server = makeServer({ environment: "test" });
+  });
 
-afterEach(() => {
-  server.shutdown()
-})
+  afterEach(() => {
+    server.shutdown();
+  });
 
-it("shows the users from our server", () => {
-  server.create("user", { id: 1, name: "Luke" })
-  server.create("user", { id: 2, name: "Leia" })
+  it("shows the users from our server", () => {
+    server.create("user", { id: 1, name: "Luke" });
+    server.create("user", { id: 2, name: "Leia" });
 
-  cy.visit("/")
+    cy.visit("/");
 
-  cy.get('[data-testid="user-1"]').contains("Luke")
-  cy.get('[data-testid="user-2"]').contains("Leia")
-})
+    cy.get('[data-testid="user-1"]').contains("Luke");
+    cy.get('[data-testid="user-2"]').contains("Leia");
+  });
 
-it("shows a message if there are no users", () => {
-  // Don't create any users
+  it("shows a message if there are no users", () => {
+    // Don't create any users
 
-  cy.visit("/")
+    cy.visit("/");
 
-  cy.get('[data-testid="no-users"]').should("be.visible")
-})
+    cy.get('[data-testid="no-users"]').should("be.visible");
+  });
+});
+
 ```
 
-Note that we pass in `environment: test` option into our `makeServer` function, so that Mirage doesn't load its database seeds. That way, the server starts out empty for each test run, and in the beginning of our tests we can use `server.create` to set up our data scenario.
+Note that we pass in `environment: test` option into our `makeServer` function, so that Mirage doesn't load its database seeds. That way, the server starts out empty for each test run, and in the beginning of our tests we can use `server.create` to set up our data scenario. The test environment also disables logging and latency, so that by default your CI test logs will be clean and your tests will be fast.
 
-The test environment also disables logging and latency, so that by default your CI test logs will be clean and your tests will be fast.
+Also note our usage of Cypress's `describe` blocks, as they will keep our Mirage server scoped to each spec as we add more files, preventing any state leakage between test files.
 
 ## Step 6: Alter your Mirage server to test different server states
 

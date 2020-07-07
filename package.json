@@ -60,7 +60,7 @@
     "gatsby-remark-images": "^3.3.17",
     "gatsby-source-filesystem": "^2.3.18",
     "gatsby-transformer-sharp": "^2.5.10",
-    "graphql": "^15.2.0",
+    "graphql": "^15.3.0",
     "hex-rgb": "^4.1.0",
     "install": "^0.13.0",
     "json5": "^2.1.3",

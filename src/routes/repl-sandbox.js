@@ -1,5 +1,6 @@
 import React from "react"
 import { useQuery } from "urql"
+import queryString from "query-string"
 
 export default function ({ id, navigate }) {
   const [res] = useQuery({
@@ -8,6 +9,9 @@ export default function ({ id, navigate }) {
         sandboxes_by_pk(id: $id) {
           id
           config
+          method
+          request_body
+          url
         }
       }
     `,
@@ -18,9 +22,10 @@ export default function ({ id, navigate }) {
 
   // Redirect if we find a Sandbox
   if (res.data?.sandboxes_by_pk) {
-    let config = res.data.sandboxes_by_pk.config
-    let serializedConfig = btoa(config)
-    navigate(`/repl/?config=${serializedConfig}`)
+    let { config, method, request_body, url } = res.data.sandboxes_by_pk
+    let params = { config: btoa(config), method, url, body: request_body }
+    let search = queryString.stringify(params)
+    navigate(`/repl?${search}`)
   }
 
   if (res.error || res.data?.sandboxes_by_pk === null) {

@@ -117,6 +117,9 @@ const inspectorMachine = Machine(
 )
 
 export default function ({ location, navigate }) {
+  let [method, setMethod] = useQueryParam("method", { initialValue: "GET" })
+  let [url, setUrl] = useQueryParam("url")
+  let [requestBody, setRequestBody] = useQueryParam("body")
   let [queryParamConfig, setQueryParamConfig] = useQueryParam("config", {
     type: "binary",
   })
@@ -219,8 +222,8 @@ export default function ({ location, navigate }) {
   let srcDoc = shellLines.join("\n")
 
   const CreateSandbox = `
-    mutation ($config: String) {
-      insert_sandboxes_one(object: {config: $config}) {
+    mutation ($object: sandboxes_insert_input!) {
+      insert_sandboxes_one(object: $object) {
         id
         config
       }
@@ -229,7 +232,9 @@ export default function ({ location, navigate }) {
   const [, createSandbox] = useMutation(CreateSandbox)
 
   function shareSandbox() {
-    createSandbox({ config: configInput }).then((res) => {
+    createSandbox({
+      object: { config: configInput, method, url, request_body: requestBody },
+    }).then((res) => {
       let id = res.data.insert_sandboxes_one.id
       setLatestShareUrl(`${location.host}/repl/v1/${id}`)
       setIsShowingShareDialog(true)
@@ -286,7 +291,7 @@ export default function ({ location, navigate }) {
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
                       <svg
-                        class="h-6 w-6 text-green-600"
+                        className="h-6 w-6 text-green-600"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -474,6 +479,12 @@ export default function ({ location, navigate }) {
               </div>
               <div className="relative z-0 flex-1 bg-gray-100">
                 <Inspector.Request
+                  method={method}
+                  setMethod={setMethod}
+                  url={url}
+                  setUrl={setUrl}
+                  requestBody={requestBody}
+                  setRequestBody={setRequestBody}
                   onRequest={(request) => send("REQUEST", request)}
                 />
 

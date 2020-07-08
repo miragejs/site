@@ -1,19 +1,23 @@
 /* eslint-disable no-eval */
 import React, { useState } from "react"
-import { useQueryParam } from "../../hooks/use-query-param"
 import CodeEditor from "../code-editor"
 import JSON5 from "json5"
 
-export default function ({ onRequest }) {
-  let [method, setMethod] = useQueryParam("method", { initialValue: "GET" })
-  let [url, setUrl] = useQueryParam("url")
-  let [body, setBody] = useQueryParam("body")
+export default function ({
+  onRequest,
+  method,
+  setMethod,
+  url,
+  setUrl,
+  requestBody,
+  setRequestBody,
+}) {
   let [urlIsValid, setUrlIsValid] = useState(true)
   let [requestBodyIsValid, setRequestBodyIsValid] = useState(true)
 
-  function handleBodyChange(e) {
+  function handleRequestBodyChange(e) {
     setRequestBodyIsValid(true)
-    setBody(e)
+    setRequestBody(e)
   }
 
   function handleMethodChange(e) {
@@ -32,11 +36,11 @@ export default function ({ onRequest }) {
   }
 
   function hasJsonStructure(str) {
-    if (typeof str !== 'string' || str == '') return true;
+    if (typeof str !== "string" || str === "") return true
     try {
-      const result = JSON5.parse(str);
-      const type = Object.prototype.toString.call(result);
-      return type === '[object Object]' || type === '[object Array]';
+      const result = JSON5.parse(str)
+      const type = Object.prototype.toString.call(result)
+      return type === "[object Object]" || type === "[object Array]"
     } catch (error) {
       return false
     }
@@ -47,18 +51,18 @@ export default function ({ onRequest }) {
       setUrlIsValid(false)
     }
 
-    if (method !== "GET" && !hasJsonStructure(body)) {
+    if (method !== "GET" && !hasJsonStructure(requestBody)) {
       setRequestBodyIsValid(false)
     }
 
-    if (!url || (method !== "GET" && !hasJsonStructure(body))) {
+    if (!url || (method !== "GET" && !hasJsonStructure(requestBody))) {
       return
     }
-    
+
     let parsedBody
-    if (method !== "GET" && body) {
+    if (method !== "GET" && requestBody) {
       try {
-        parsedBody = eval("(" + body + ")")
+        parsedBody = eval("(" + requestBody + ")")
       } catch (error) {
         console.warn("The request body could not be parsed")
       }
@@ -125,9 +129,8 @@ export default function ({ onRequest }) {
         {method !== "GET" && (
           <>
             <label className="mt-4 text-sm text-gray-600">Request body</label>
-            <div 
-              className={
-              `relative flex-1 p-3 mt-1 overflow-hidden bg-white border border-gray-300 rounded-md shadow-sm
+            <div
+              className={`relative flex-1 p-3 mt-1 overflow-hidden bg-white border border-gray-300 rounded-md shadow-sm
               ${requestBodyIsValid ? "border-gray-300" : null}
               ${
                 !requestBodyIsValid
@@ -136,11 +139,11 @@ export default function ({ onRequest }) {
               }
               `}
               data-testid="request-body"
-              >
+            >
               <CodeEditor
                 data-testid="request-body-input"
-                value={body}
-                onChange={handleBodyChange}
+                value={requestBody}
+                onChange={handleRequestBodyChange}
                 extraKeys={{
                   "Cmd-Enter": submit,
                 }}
@@ -150,10 +153,10 @@ export default function ({ onRequest }) {
               </span>
             </div>
             {!requestBodyIsValid && (
-          <p className="mt-2 text-sm text-red-600" id="request-body-error">
-            Request body must be JSON.
-          </p>
-        )}
+              <p className="mt-2 text-sm text-red-600" id="request-body-error">
+                Request body must be JSON.
+              </p>
+            )}
           </>
         )}
       </form>

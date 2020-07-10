@@ -32,6 +32,8 @@ describe("REPL", () => {
 
       cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
+      cy.url().should("eq", `${Cypress.config().baseUrl}/repl`)
+
       cy.get("[data-testid=request-url]").type("/api/movies{enter}")
       cy.get("[data-testid=response-code]").should("contain", "200")
       cy.get("[data-testid=response-body]")
@@ -47,6 +49,8 @@ describe("REPL", () => {
       cy.visit("/repl?method=GET&url=%2Fusers%2F1")
 
       cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
+
+      cy.url().should("eq", `${Cypress.config().baseUrl}/repl`)
 
       cy.get("[data-testid=request-method]").should("have.value", "GET")
       cy.get("[data-testid=request-url]").should("have.value", "/users/1")
@@ -143,45 +147,6 @@ describe("REPL", () => {
         "A Mirage Server instance must be the default export from your config."
       )
     })
-
-    it("tracks the config's value in the config query param in the URL", () => {
-      cy.visit("/repl")
-
-      cy.get("[data-testid=config-input]").typeInCodemirror(
-        d`
-        import { Server } from "miragejs"
-
-        export default new Server()
-        `
-      )
-
-      cy.url().should(
-        "include",
-        "config=aW1wb3J0IHsgU2VydmVyIH0gZnJvbSAibWlyYWdlanMiCgpleHBvcnQgZGVmYXVsdCBuZXcgU2VydmVyKCk"
-      )
-    })
-
-    it("shows a message if the config is too large to be tracked in the URL", () => {
-      cy.visit("/repl")
-
-      cy.get("[data-testid=config-input]").typeInCodemirror(
-        d`
-        import { Server } from "miragejs"
-
-        export default new Server({
-          routes() {
-            this.get("/api/posts", () => ({
-              text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus facilis pariatur dolorum corporis nemo perspiciatis officia deserunt minus eum quos animi tenetur nesciunt magnam nobis, modi minima cumque magni aperiam."
-            }))
-          },
-        })
-        `
-      )
-      cy.get("[data-testid=config-length-warning]").should(
-        "contain",
-        "Your config is too long"
-      )
-    })
   })
 
   context("making a request", () => {
@@ -212,16 +177,6 @@ describe("REPL", () => {
       cy.contains(
         "Your app tried to GET '/foo', but there was no route defined to handle this request"
       ).should("exist")
-    })
-
-    it("tracks the method and URL's value in their respective query params", () => {
-      cy.visit("/repl")
-
-      cy.get("[data-testid=request-method]").select("DELETE")
-      cy.get("[data-testid=request-url]").type("/users/1")
-
-      cy.url().should("include", "method=DELETE")
-      cy.url().should("include", "url=%2Fusers%2F1")
     })
 
     it("works for a GET request that responds with an HTTP error", () => {

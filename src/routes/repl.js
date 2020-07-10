@@ -3,12 +3,13 @@ import * as Inspector from "../components/inspector"
 import { useStaticQuery, graphql } from "gatsby"
 import { useMachine } from "@xstate/react"
 import { Machine, assign } from "xstate"
-import { useQueryParam } from "../hooks/use-query-param"
 import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
 import CodeEditor from "../components/code-editor"
 import { useMutation } from "urql"
 import { DialogOverlay, DialogContent } from "@reach/dialog"
+import queryString from "query-string"
+import { useDebounce } from "use-debounce"
 
 const inspectorMachine = Machine(
   {
@@ -117,13 +118,24 @@ const inspectorMachine = Machine(
 )
 
 export default function ({ location, navigate }) {
-  let [method, setMethod] = useQueryParam("method", { initialValue: "GET" })
-  let [url, setUrl] = useQueryParam("url")
-  let [requestBody, setRequestBody] = useQueryParam("body")
-  let [queryParamConfig, setQueryParamConfig] = useQueryParam("config", {
-    type: "binary",
-  })
+  // Gather initial values from URL query params, if they exist
+  let queryParams = queryString.parse(location.search) ?? {}
   let defaultConfig = useTutorialSnippet("starting-input")
+  let initialConfigInput = queryParams?.config
+    ? atob(queryParams.config)
+    : defaultConfig
+
+  // And if there are query params, navigate to root /repl
+  useEffect(() => {
+    if (location.search) {
+      navigate("/repl")
+    }
+  })
+
+  let [method, setMethod] = useState(queryParams?.method || "GET")
+  let [url, setUrl] = useState(queryParams?.url || "")
+  let [requestBody, setRequestBody] = useState(queryParams?.body || "")
+  let [configInput, setConfigInput] = useState(initialConfigInput)
 
   let iframeRef = React.useRef()
   let [inspectorState, send] = useMachine(inspectorMachine, {
@@ -131,25 +143,15 @@ export default function ({ location, navigate }) {
   })
   let [activeServerTab, setActiveServerTab] = React.useState("Config")
   let [activeResponseTab, setActiveResponseTab] = React.useState("JSON")
-  let [localConfig, setLocalConfig] = useState(null)
   let [isShowingShareDialog, setIsShowingShareDialog] = useState(false)
   let [latestShareUrl, setLatestShareUrl] = useState(false)
   let [errorMessageRef, errorMessagebounds] = useMeasure({
     polyfill: ResizeObserver,
   })
-  let configInput = queryParamConfig ?? localConfig ?? defaultConfig
-  let configIsTooLargeForURL = localConfig !== null
 
   function handleConfigInputChange(newConfigInput) {
     send("CONFIG_CHANGE")
-
-    if (btoa(newConfigInput).length < 2000) {
-      setQueryParamConfig(newConfigInput)
-      setLocalConfig(null)
-    } else {
-      setQueryParamConfig(null)
-      setLocalConfig(newConfigInput)
-    }
+    setConfigInput(newConfigInput)
   }
 
   function handleMessage({ data }) {
@@ -220,6 +222,7 @@ export default function ({ location, navigate }) {
   let lineForApp = shellLines.findIndex((line) => line.match("App.js"))
   shellLines.splice(lineForApp + 1, 0, ...configInput.split("\n"))
   let srcDoc = shellLines.join("\n")
+  const [debouncedSrcDoc] = useDebounce(srcDoc, 225)
 
   const CreateSandbox = `
     mutation ($object: sandboxes_insert_input!) {
@@ -437,18 +440,6 @@ export default function ({ location, navigate }) {
                 <Inspector.Database db={inspectorState.context.db} />
               </div>
 
-              {configIsTooLargeForURL && (
-                <div
-                  data-testid="config-length-warning"
-                  className="px-4 py-3 text-xs font-medium text-gray-900 bg-yellow-300"
-                >
-                  <p>
-                    <span className="font-semibold">Warning: </span>Your config
-                    is too long and won't be serialized in the URL.
-                  </p>
-                </div>
-              )}
-
               {inspectorState.matches("error") && (
                 <div
                   ref={errorMessageRef}
@@ -488,7 +479,10 @@ export default function ({ location, navigate }) {
                   onRequest={(request) => send("REQUEST", request)}
                 />
 
-                <Inspector.Sandbox srcDoc={srcDoc} iframeRef={iframeRef} />
+                <Inspector.Sandbox
+                  srcDoc={debouncedSrcDoc}
+                  iframeRef={iframeRef}
+                />
               </div>
             </div>
             <div className="overflow-y-auto bg-gray-100 h-1/2">
@@ -572,26 +566,6 @@ export default function ({ location, navigate }) {
                 ) : null}
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="relative">
-          <div className="absolute inset-x-0 bottom-0 flex items-center justify-center">
-            <p className="m-3 shadow rounded px-4 py-2 text-sm text-black bg-yellow-50 border-l-4 border-yellow-200">
-              <strong className="font-medium">
-                🛠 Welcome to the Mirage REPL!
-              </strong>{" "}
-              We're still under active development. Please{" "}
-              <a
-                href="https://github.com/miragejs/site/issues/new"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline"
-              >
-                report any bugs you find
-              </a>
-              .
-            </p>
           </div>
         </div>
       </div>

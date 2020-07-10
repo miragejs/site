@@ -258,6 +258,7 @@ function Header({ showHeaderNav }) {
                       >
                         Quickstarts
                       </NavLink>
+                      <NavLink to="/repl">REPL</NavLink>
                     </div>
                   </div>
                 </>
@@ -353,6 +354,19 @@ function Header({ showHeaderNav }) {
                     onClick={() => setIsShowingMobileNav(false)}
                   >
                     Quickstarts
+                  </MobileNavLink>
+                </div>
+
+                <div
+                  className={`border-t ${
+                    theme === "dark" ? "border-gray-800" : "border-gray-200"
+                  }`}
+                >
+                  <MobileNavLink
+                    to='/repl'
+                    onClick={() => setIsShowingMobileNav(false)}
+                  >
+                    REPL
                   </MobileNavLink>
                 </div>
 
@@ -530,12 +544,20 @@ function Footer() {
                     </Link>
                   </li>
                   <li className="py-1 text-white">
+                    <Link to={router.routerFor("/tutorial").pages[0].url}>
+                      Tutorial
+                    </Link>
+                  </li>
+                  <li className="py-1 text-white">
                     <Link to="/api/classes/association/">API</Link>
                   </li>
                   <li className="py-1 text-white">
                     <Link to={router.routerFor("/quickstarts").pages[0].url}>
                       Quickstarts
                     </Link>
+                  </li>
+                  <li className="py-1 text-white">
+                    <Link to="/repl">REPL</Link>
                   </li>
                 </ul>
               </div>

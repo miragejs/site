@@ -83,6 +83,7 @@
     "tmp": "^0.2.1",
     "ts-node": "^8.10.2",
     "urql": "^1.9.8",
+    "use-debounce": "^3.4.3",
     "xstate": "^4.10.0"
   },
   "devDependencies": {

@@ -568,26 +568,6 @@ export default function ({ location, navigate }) {
             </div>
           </div>
         </div>
-
-        <div className="relative">
-          <div className="absolute inset-x-0 bottom-0 flex items-center justify-center">
-            <p className="m-3 shadow rounded px-4 py-2 text-sm text-black bg-yellow-50 border-l-4 border-yellow-200">
-              <strong className="font-medium">
-                🛠 Welcome to the Mirage REPL!
-              </strong>{" "}
-              We're still under active development. Please{" "}
-              <a
-                href="https://github.com/miragejs/site/issues/new"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline"
-              >
-                report any bugs you find
-              </a>
-              .
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   )

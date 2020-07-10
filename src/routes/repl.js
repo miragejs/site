@@ -9,6 +9,7 @@ import CodeEditor from "../components/code-editor"
 import { useMutation } from "urql"
 import { DialogOverlay, DialogContent } from "@reach/dialog"
 import queryString from "query-string"
+import { useDebounce } from "use-debounce"
 
 const inspectorMachine = Machine(
   {
@@ -221,6 +222,7 @@ export default function ({ location, navigate }) {
   let lineForApp = shellLines.findIndex((line) => line.match("App.js"))
   shellLines.splice(lineForApp + 1, 0, ...configInput.split("\n"))
   let srcDoc = shellLines.join("\n")
+  const [debouncedSrcDoc] = useDebounce(srcDoc, 225)
 
   const CreateSandbox = `
     mutation ($object: sandboxes_insert_input!) {
@@ -477,7 +479,10 @@ export default function ({ location, navigate }) {
                   onRequest={(request) => send("REQUEST", request)}
                 />
 
-                <Inspector.Sandbox srcDoc={srcDoc} iframeRef={iframeRef} />
+                <Inspector.Sandbox
+                  srcDoc={debouncedSrcDoc}
+                  iframeRef={iframeRef}
+                />
               </div>
             </div>
             <div className="overflow-y-auto bg-gray-100 h-1/2">

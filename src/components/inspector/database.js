@@ -76,7 +76,7 @@ export default function ({ db }) {
                         >
                           {row.attrs.map((attr, index) => (
                             <td
-                              key={attr}
+                              key={fields[index]}
                               className={`px-4 py-4 text-sm leading-5 text-gray-700 truncate
                                 ${
                                   index === row.attrs.length - 1

@@ -113,7 +113,7 @@
     "parse-numeric-range": "^1.2.0",
     "react-syntax-highlighter": "^12.2.1",
     "react-test-renderer": "^16.13.1",
-    "start-server-and-test": "^1.11.1",
+    "start-server-and-test": "^1.11.2",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.6"
   },

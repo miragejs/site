@@ -239,7 +239,7 @@ export default function ({ location, navigate }) {
       object: { config: configInput, method, url, request_body: requestBody },
     }).then((res) => {
       let id = res.data.insert_sandboxes_one.id
-      setLatestShareUrl(`${location.host}/repl/v1/${id}`)
+      setLatestShareUrl(`${location.origin}/repl/v1/${id}`)
       setIsShowingShareDialog(true)
     })
   }

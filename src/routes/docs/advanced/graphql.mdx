@@ -1,15 +1,15 @@
 # GraphQL
 
-Mirage ships with support for mocking RESTful APIs; however, it doesn't currently support mocking GraphQL APIs out-of-the-box. This is where the [Mirage GraphQL](https://github.com/miragejs/graphql) library comes in.
+Mirage ships with first-class helper functions for mocking RESTful APIs, but it doesn't currently have out-of-the-box support for GraphQL. This is where the [Mirage GraphQL](https://github.com/miragejs/graphql) library comes in.
 
-Mirage GraphQL provides helpful functions to create request handlers for your GraphQL endpoint(s) and to create your own optional resolvers.
+Mirage GraphQL provides helpful functions to create request handlers for your GraphQL endpoint(s), and to optionally create your own custom resolvers.
 
 To get started, import the `createGraphQLHandler` function from Mirage GraphQL and pass in both your GraphQL and Mirage schemas. Mirage GraphQL will do as much work as possible to automatically resolve GraphQL queries for you.
 
 In the following example, you don't need to supply your own resolvers for any of the queries or mutations. Additionally, you don't need to create any Mirage models. Mirage GraphQL will create models for you based on your GraphQL schema.
 
 ```js
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 import { createGraphQLHandler } from "@miragejs/graphql"
 import { request } from "graphql-request"
 
@@ -35,10 +35,11 @@ const graphQLSchema = `
   }
 `
 
-new Server({
+createServer({
   routes() {
     this.post("/graphql", createGraphQLHandler(graphQLSchema, this.schema))
   },
+  
   seeds(server) {
     server.create("Movie", {
       title: "The Lord of the Rings: The Fellowship of the Ring"
@@ -85,11 +86,16 @@ request(
 ).then(/* ... */)
 ```
 
-*Note: It's also possible, and recommended, that you import your GraphQL schema from a separate file.*
+*Note: This example is in a single file to keep things simple. In a real app, you should import your GraphQL schema from a separate file.*
 
-There are a lot more things Mirage GraphQL can do. For example:
-* You can supply your own resolvers so you can do things like sort results or add three movies in one mutation.
-* You can provide a context object to the handler so you can mock things like user auth.
-* You can give the handler a root object for cases where your backend has one and you need to mock it.
+There are a lot more things Mirage GraphQL can do. For example, you can
 
-To learn more, check out the README of [Mirage GraphQL](https://github.com/miragejs/graphql) and feel free to peruse the intergration tests for more in-depth examples of options, queries and mutations.
+* supply your own resolvers, so you can do things like sort results or add three movies in one mutation
+* provide a context object to the handler so you can mock things like user auth
+* give the handler a root object for cases where your backend has one and you need to mock it
+
+and more.
+
+Mirage GraphQL is v0.1.0, but extracted from years of work on the `ember-cli-mirage-graphq` library.
+
+To learn more, check out the README of [Mirage GraphQL](https://github.com/miragejs/graphql). Also check out the intergration tests for more in-depth examples of options, queries and mutations.

@@ -1,0 +1,95 @@
+# GraphQL
+
+Mirage ships with support for mocking RESTful APIs; however, it doesn't currently support mocking GraphQL APIs out-of-the-box. This is where the [Mirage GraphQL](https://github.com/miragejs/graphql) library comes in.
+
+Mirage GraphQL provides helpful functions to create request handlers for your GraphQL endpoint(s) and to create your own optional resolvers.
+
+To get started, import the `createGraphQLHandler` function from Mirage GraphQL and pass in both your GraphQL and Mirage schemas. Mirage GraphQL will do as much work as possible to automatically resolve GraphQL queries for you.
+
+In the following example, you don't need to supply your own resolvers for any of the queries or mutations. Additionally, you don't need to create any Mirage models. Mirage GraphQL will create models for you based on your GraphQL schema.
+
+```js
+import { Server } from "miragejs"
+import { createGraphQLHandler } from "@miragejs/graphql"
+import { request } from "graphql-request"
+
+const graphQLSchema = `
+  input MovieInput {
+    title: String
+  }
+
+  type Movie {
+    id: ID!
+    title: String!
+  }
+
+  type Mutation {
+    createMovie(input: MovieInput!): Movie
+    deleteMovie(id: ID!): Movie
+    updateMovie(id: ID!, input: MovieInput!): Movie
+  }
+
+  type Query {
+    movies(title: String): [Movie]
+    movie(id: ID, title: String): Movie
+  }
+`
+
+new Server({
+  routes() {
+    this.post("/graphql", createGraphQLHandler(graphQLSchema, this.schema))
+  },
+  seeds(server) {
+    server.create("Movie", {
+      title: "The Lord of the Rings: The Fellowship of the Ring"
+    })
+    server.create("Movie", {
+      title: "The Lord of the Rings: The Two Towers"
+    })
+    server.create("Movie", {
+      title: "The Lord of the Rings: The Return of the King"
+    })
+  },
+})
+
+// Get a movie by its title
+const movieQuery = `
+query Movie($id: ID, $title: String) {
+  movie(id: $id, title: $title) {
+    id
+    title
+  }
+}
+`
+
+request(
+  "/graphql",
+  movieQuery,
+  { variables: { title: "The Lord of the Rings: The Two Towers" } }
+).then(/* ... */)
+
+// Add a movie
+const createMovieMutation = `
+mutation CreateMovie($input: MovieInput!) {
+  createMovie(input: $input) {
+    id
+    title
+  }
+}
+`
+
+request(
+  "/graphql",
+  createMovieMutation,
+  { variables: { title: "The Hobbit: An Unexpected Journey" } }
+).then(/* ... */)
+```
+
+*Note: It's also possible, and recommended, that you import your GraphQL schema from a separate file.*
+
+There are a lot more things Mirage GraphQL can do. For example:
+* You can supply your own resolvers so you can do things like sort results or add three movies in one mutation.
+* You can provide a context object to the handler so you can mock things like user auth.
+* You can give the handler a root object for cases where your backend has one and you need to mock it.
+
+To learn more, check out the README of [Mirage GraphQL](https://github.com/miragejs/graphql) and feel free to peruse the intergration tests for more in-depth examples of options, queries and mutations.

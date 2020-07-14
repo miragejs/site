@@ -74,6 +74,10 @@ const allRoutes: RouteDefinition[] = [
         label: "Advanced",
         routes: [
           {
+            label: "GraphQL",
+            name: "graphql",
+          },
+          {
             label: "Simulating cookie responses",
             name: "simulating-cookie-responses",
           },

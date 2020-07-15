@@ -4,6 +4,10 @@
   <head></head>
   <body>
     <div id="demo"></div>
+    <script>
+      // Fix for GraphQL (see https://github.com/graphql/graphql-js/issues/2676)
+      window.process = window.process || { env: "production" }
+    </script>
     <script src="https://unpkg.com/@plnkr/runtime@1.0.0-pre.9/dist/runtime.js"></script>
     <script>
       // current revision provided by parent component

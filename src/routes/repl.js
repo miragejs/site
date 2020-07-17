@@ -10,6 +10,7 @@ import { useMutation } from "urql"
 import { DialogOverlay, DialogContent } from "@reach/dialog"
 import queryString from "query-string"
 import { useDebounce } from "use-debounce"
+import { escapeBackticks } from "../utils"
 
 const inspectorMachine = Machine(
   {
@@ -151,7 +152,7 @@ export default function ({ location, navigate }) {
 
   function handleConfigInputChange(newConfigInput) {
     send("CONFIG_CHANGE")
-    setConfigInput(newConfigInput)
+    setConfigInput(escapeBackticks(newConfigInput))
   }
 
   function handleMessage({ data }) {

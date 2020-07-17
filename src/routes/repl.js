@@ -223,7 +223,6 @@ export default function ({ location, navigate }) {
   let lineForApp = shellLines.findIndex((line) => line.match("App.js"))
   shellLines.splice(lineForApp + 1, 0, ...configInput.split("\n"))
   let srcDoc = shellLines.join("\n")
-
   const [debouncedSrcDoc] = useDebounce(srcDoc, 225)
 
   const CreateSandbox = `

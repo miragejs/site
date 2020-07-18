@@ -152,7 +152,7 @@ export default function ({ location, navigate }) {
 
   function handleConfigInputChange(newConfigInput) {
     send("CONFIG_CHANGE")
-    setConfigInput(escapeBackticks(newConfigInput))
+    setConfigInput(newConfigInput)
   }
 
   function handleMessage({ data }) {
@@ -221,7 +221,8 @@ export default function ({ location, navigate }) {
 
   // Splice in the Input into the iframe shell
   let lineForApp = shellLines.findIndex((line) => line.match("App.js"))
-  shellLines.splice(lineForApp + 1, 0, ...configInput.split("\n"))
+  let escapedConfigInput = escapeBackticks(configInput)
+  shellLines.splice(lineForApp + 1, 0, ...escapedConfigInput.split("\n"))
   let srcDoc = shellLines.join("\n")
   const [debouncedSrcDoc] = useDebounce(srcDoc, 225)
 

@@ -14757,10 +14757,10 @@ react-hot-loader@^4.12.21:
     shallowequal "^1.1.0"
     source-map "^0.7.3"
 
-react-hotkeys-hook@^2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-2.1.4.tgz#651c3f862b25eca539afcb9c6d8de8fdb446c8f0"
-  integrity sha512-gnz74B7NNbVUl8ea0FUaAnJpFcEi9JLLJA2WEstzQoaiWUl0NWH9KW6U0i6twJc8d/cONZizi0WDgYSRXxqhVQ==
+react-hotkeys-hook@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-2.2.0.tgz#d5bd93829cee03687f0745979ffb52f64a156a9a"
+  integrity sha512-xNiRLY7TSE5sreyOoBFoes+pZn/FUW8PArQEO+zwxcJSKTd5MF8qGXfvzdxK4ISboZ61gXNpyR24KfDLVEmbbg==
   dependencies:
     hotkeys-js "3.8.1"
 

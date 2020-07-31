@@ -8273,10 +8273,10 @@ gatsby-recipes@^0.1.57:
     ws "^7.3.0"
     xstate "^4.11.0"
 
-gatsby-remark-images@^3.3.22:
-  version "3.3.22"
-  resolved "https://registry.yarnpkg.com/gatsby-remark-images/-/gatsby-remark-images-3.3.22.tgz#d870e8ba1c369f6f6412253c65e487bf2fbc893e"
-  integrity sha512-hBaKUY7Jk4cpmOQ2RGKVB7H45oNZneLs9eo+R7kKS0eDlgH63KDqTDoUJ4I37Bql7aYP/1N2uza6LS0moFgzWA==
+gatsby-remark-images@^3.3.23:
+  version "3.3.23"
+  resolved "https://registry.yarnpkg.com/gatsby-remark-images/-/gatsby-remark-images-3.3.23.tgz#ded0152f34e1a4fe9b29b5c7b9a2a723f1d28f7f"
+  integrity sha512-uU93W/uGRgi8/VjE+9Dqcneackc1jem2gwSgvabxl4opHnGBmtD73IZMqxKhN9ID1OppvoF50rujjO+v60MuWQ==
   dependencies:
     "@babel/runtime" "^7.10.3"
     chalk "^2.4.2"
@@ -8285,7 +8285,7 @@ gatsby-remark-images@^3.3.22:
     is-relative-url "^3.0.0"
     lodash "^4.17.15"
     mdast-util-definitions "^1.2.5"
-    potrace "^2.1.6"
+    potrace "^2.1.8"
     query-string "^6.13.1"
     unist-util-select "^1.5.0"
     unist-util-visit-parents "^2.1.2"

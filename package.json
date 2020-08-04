@@ -57,7 +57,7 @@
     "gatsby-plugin-styled-components": "^3.3.9",
     "gatsby-plugin-svgr": "^2.0.2",
     "gatsby-plugin-typescript": "^2.4.15",
-    "gatsby-remark-images": "^3.3.23",
+    "gatsby-remark-images": "^3.3.24",
     "gatsby-source-filesystem": "^2.3.23",
     "gatsby-transformer-sharp": "^2.5.12",
     "graphql": "^15.3.0",

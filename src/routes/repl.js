@@ -257,17 +257,17 @@ export default function ({ location, navigate }) {
       style={{ height: "calc(100vh - 4rem)" }}
     >
       <div className="flex items-center px-6 py-1 text-sm bg-gray-100 border-t border-b border-gray-300">
-        <p className="font-medium text-gray-500 tracking-wide">REPL</p>
+        <p className="font-medium tracking-wide text-gray-500">REPL</p>
         <div className="ml-6 space-x-1">
           {/* TODO: Implement resetRepl above */}
           {/* <button
-            className="text-gray-800 hover:bg-gray-200 px-3 py-1 rounded"
+            className="px-3 py-1 text-gray-800 rounded hover:bg-gray-200"
             onClick={resetRepl}
           >
             New
           </button> */}
           <button
-            className="text-gray-800 hover:bg-gray-200 px-3 py-1 rounded"
+            className="px-3 py-1 text-gray-800 rounded hover:bg-gray-200"
             onClick={shareSandbox}
           >
             Share
@@ -278,9 +278,9 @@ export default function ({ location, navigate }) {
             className="bg-gray-900.50"
             onDismiss={() => setIsShowingShareDialog(false)}
           >
-            <div className="fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center">
+            <div className="fixed inset-x-0 bottom-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center">
               <DialogContent
-                className="rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg"
+                className="overflow-hidden transition-all transform rounded-lg shadow-xl sm:max-w-lg"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="modal-headline"
@@ -292,11 +292,11 @@ export default function ({ location, navigate }) {
                   background: "white",
                 }}
               >
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-green-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
                       <svg
-                        className="h-6 w-6 text-green-600"
+                        className="w-6 h-6 text-green-600"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -311,7 +311,7 @@ export default function ({ location, navigate }) {
                     </div>
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <h3
-                        className="text-lg leading-6 font-medium text-gray-900"
+                        className="text-lg font-medium leading-6 text-gray-900"
                         id="modal-headline"
                       >
                         Share link created
@@ -320,19 +320,19 @@ export default function ({ location, navigate }) {
                         <p className="text-sm leading-5 text-gray-500">
                           Here's your unique URL:
                         </p>
-                        <p className="text-sm mt-1 font-medium text-gray-700">
+                        <p className="mt-1 text-sm font-medium text-gray-700">
                           {latestShareUrl}
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="bg-gray-100 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <div className="px-4 py-3 bg-gray-100 sm:px-6 sm:flex sm:flex-row-reverse">
                   <span className="flex w-full rounded-md shadow-sm sm:w-auto">
                     <button
                       type="button"
                       onClick={() => setIsShowingShareDialog(false)}
-                      className="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                      className="inline-flex justify-center w-full px-4 py-2 text-base font-medium leading-6 text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue sm:text-sm sm:leading-5"
                     >
                       Close
                     </button>
@@ -343,9 +343,9 @@ export default function ({ location, navigate }) {
           </DialogOverlay>
         )}
       </div>
-      <div className="flex flex-col flex-1">
-        <div className="flex flex-1">
-          <div className="flex flex-col w-1/2">
+      <div className="flex flex-col flex-1 min-h-0">
+        <div className="flex flex-1 min-h-0">
+          <div className="flex flex-col w-1/2 min-h-0">
             <div className="z-10 flex flex-col shadow h-28">
               <div className="flex items-center justify-between px-4 mt-6 md:px-6">
                 <h2 className="text-gray-800 text-1-5xl">Server</h2>
@@ -416,7 +416,7 @@ export default function ({ location, navigate }) {
               </div>
             </div>
 
-            <div className="relative flex flex-col flex-1 h-0 overflow-y-auto">
+            <div className="relative flex flex-col flex-1 min-h-0 overflow-y-auto">
               {activeServerTab === "Config" && (
                 <div
                   className="flex-1 p-4 overflow-y-auto md:px-5"

@@ -92,7 +92,7 @@
     "@testing-library/react": "^10.4.8",
     "@types/jest": "^26.0.8",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^26.2.2",
+    "babel-jest": "^26.3.0",
     "babel-preset-gatsby": "^0.5.5",
     "cypress": "^4.12.1",
     "esdoc": "miragejs/esdoc#015a3426b2e53b2b0270a9c00133780db3f1d144",

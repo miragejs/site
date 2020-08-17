@@ -134,7 +134,9 @@ export default function ({ location, navigate }) {
   })
 
   let [method, setMethod] = useState(queryParams?.method || "GET")
-  let [url, setUrl] = useState(queryParams?.url || "")
+  let [url, setUrl] = useState(
+    queryParams?.url || (queryParams?.config ? "" : "/api/movies")
+  )
   let [requestBody, setRequestBody] = useState(queryParams?.body || "")
   let [configInput, setConfigInput] = useState(initialConfigInput)
 

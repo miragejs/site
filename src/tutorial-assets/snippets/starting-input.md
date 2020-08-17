@@ -1,21 +1,19 @@
 ```js
-import { Server, Model, belongsTo } from "miragejs"
+import { createServer } from "miragejs"
 
-export default new Server({
-  models: {
-    user: Model,
-    message: Model.extend({
-      user: belongsTo(),
-    }),
-  },
-
-  seeds(server) {
-    server.create("user", { name: "Ryan" })
-    server.create("user", { name: "Sam" })
-  },
-
+export default createServer({
   routes() {
-    this.resource("user")
+    this.namespace = "api"
+
+    this.get("/movies", () => {
+      return {
+        movies: [
+          { id: 1, name: "Inception", year: 2010 },
+          { id: 2, name: "Interstellar", year: 2014 },
+          { id: 3, name: "Dunkirk", year: 2017 },
+        ],
+      }
+    })
   },
 })
 ```

@@ -106,7 +106,7 @@ export default function ({
                     : null
                 }
                 `}
-              placeholder="e.g. /users"
+              placeholder="e.g. /api/movies"
               data-testid="request-url"
             />
           </div>

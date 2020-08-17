@@ -54,17 +54,6 @@ describe("REPL", () => {
 
       cy.get("[data-testid=request-method]").should("have.value", "GET")
       cy.get("[data-testid=request-url]").should("have.value", "/users/1")
-      cy.get("[data-testid=send-request]").click()
-      cy.get("[data-testid=request-pending]").should("not.exist")
-
-      cy.get("[data-testid=response-code]").should("contain", "200")
-      cy.get("[data-testid=response-body]")
-        .invoke("text")
-        .then((text) => {
-          let json = JSON.parse(text)
-
-          expect(json.user).to.exist
-        })
     })
   })
 
@@ -164,7 +153,8 @@ describe("REPL", () => {
     it("shows an error message if the URL is blank", () => {
       cy.visit("/repl")
       cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
-      cy.get("[data-testid=request-url]").type("{enter}")
+
+      cy.get("[data-testid=request-url]").type("{selectall}{backspace}{enter}")
 
       cy.contains("The URL cannot be blank").should("exist")
     })
@@ -172,7 +162,7 @@ describe("REPL", () => {
     it("shows an error for an unhandled request", () => {
       cy.visit("/repl")
       cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
-      cy.get("[data-testid=request-url]").type("/foo{enter}")
+      cy.get("[data-testid=request-url]").type("{selectall}/foo{enter}")
 
       cy.contains(
         "Your app tried to GET '/foo', but there was no route defined to handle this request"
@@ -195,7 +185,7 @@ describe("REPL", () => {
       )
       cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
-      cy.get("[data-testid=request-url]").type("/foo{enter}")
+      cy.get("[data-testid=request-url]").type("{selectall}/foo{enter}")
       cy.get("[data-testid=response-code]").should("contain", "500")
       cy.get("[data-testid=response-body]")
         .invoke("text")
@@ -231,7 +221,7 @@ describe("REPL", () => {
       )
       cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
-      cy.get("[data-testid=request-url]").type("/users{enter}")
+      cy.get("[data-testid=request-url]").type("{selectall}/users{enter}")
       cy.get("[data-testid=response-code]").should("contain", "200")
       cy.get("[data-testid=response-body]")
         .invoke("text")
@@ -271,7 +261,7 @@ describe("REPL", () => {
       cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=request-method]").select("PATCH")
-      cy.get("[data-testid=request-url]").type("/users/1")
+      cy.get("[data-testid=request-url]").type("{selectall}/users/1")
       cy.get("[data-testid=request-body-input]").typeInCodemirror(
         d`
         {
@@ -317,7 +307,7 @@ describe("REPL", () => {
       cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=request-method]").select("POST")
-      cy.get("[data-testid=request-url]").type("/users")
+      cy.get("[data-testid=request-url]").type("{selectall}/users")
       cy.get("[data-testid=request-body-input]").typeInCodemirror(
         d`
         {
@@ -367,7 +357,7 @@ describe("REPL", () => {
       cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
 
       cy.get("[data-testid=request-method]").select("DELETE")
-      cy.get("[data-testid=request-url]").type("/users/1")
+      cy.get("[data-testid=request-url]").type("{selectall}/users/1")
       cy.get("[data-testid=send-request]").click()
       cy.get("[data-testid=response-code]").should("contain", "204")
 
@@ -416,7 +406,7 @@ describe("REPL", () => {
       cy.get("[data-testid=database-record]").should("have.length", 3)
 
       cy.get("[data-testid=request-method]").select("DELETE")
-      cy.get("[data-testid=request-url]").type("/users/1")
+      cy.get("[data-testid=request-url]").type("{selectall}/users/1")
       cy.get("[data-testid=send-request]").click()
       cy.get("[data-testid=response-code]").should("contain", "204")
 

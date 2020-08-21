@@ -2324,13 +2324,13 @@
     react-remove-scroll "^2.3.0"
     tslib "^1.11.2"
 
-"@reach/dialog@^0.10.5":
-  version "0.10.5"
-  resolved "https://registry.yarnpkg.com/@reach/dialog/-/dialog-0.10.5.tgz#70bd832616fc2b0f31ed65aff81ae9e218c4dbc4"
-  integrity sha512-j2+VaHCen/M5zh+q6L/xMXETMeD5yVywdhjjs0kn2uQ3AolYSj32P8Go1xSpxQNAjS1/zChd02Y/4g02eL3afg==
+"@reach/dialog@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@reach/dialog/-/dialog-0.11.0.tgz#052d90b47d07a3f4c21d1b6c2d6aeefc3d5bd6a6"
+  integrity sha512-KOl12NPEwtFMUPWgLq2uoxiirORJ+XdmzrQNNNcwoDqe+oOK8oEqS1E5mUb3+fGQJV37gSrCl1VhD1oGBmlSTQ==
   dependencies:
-    "@reach/portal" "0.10.5"
-    "@reach/utils" "0.10.5"
+    "@reach/portal" "0.11.0"
+    "@reach/utils" "0.11.0"
     prop-types "^15.7.2"
     react-focus-lock "^2.3.1"
     react-remove-scroll "^2.3.0"
@@ -2383,6 +2383,14 @@
     "@reach/utils" "0.10.5"
     tslib "^2.0.0"
 
+"@reach/portal@0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@reach/portal/-/portal-0.11.0.tgz#efb664144bba5fa94de3ffecc0a2d84317321df8"
+  integrity sha512-eCZAIeD/Te29x6xeoGR8bbjlWH2cDMMC9fFH/z/ai+x2LwvHEPdyCfsklivO8Rgwup2u6ziBUtlHFEZxETWjnA==
+  dependencies:
+    "@reach/utils" "0.11.0"
+    tslib "^2.0.0"
+
 "@reach/rect@0.10.5", "@reach/rect@^0.10.3":
   version "0.10.5"
   resolved "https://registry.yarnpkg.com/@reach/rect/-/rect-0.10.5.tgz#ba68722f155b146c6790e7d10a97dca1fd7ab14e"
@@ -2431,6 +2439,15 @@
   version "0.10.5"
   resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.10.5.tgz#fbac944d29565f6dd7abd0e1b13950e99b1e470b"
   integrity sha512-5E/xxQnUbmpI/LrufBAOXjunl96DnqX6B4zC2MO2KH/dRzLug5gM5VuOwV26egsp0jvsSPxojwciOhS43px3qw==
+  dependencies:
+    "@types/warning" "^3.0.0"
+    tslib "^2.0.0"
+    warning "^4.0.3"
+
+"@reach/utils@0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.11.0.tgz#09ad5e1f42b498253df8a6a4c99ccd0ab2d85464"
+  integrity sha512-A7Ofr1Biq4vUeTBYhbZ/YiLq1B/lEObbEoR2UiuQqCO1r093N95hZNcKqfFwpkRScjD87uob3wSYYGxvq9y/+w==
   dependencies:
     "@types/warning" "^3.0.0"
     tslib "^2.0.0"

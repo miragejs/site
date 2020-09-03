@@ -15,6 +15,10 @@ export default function ({
   let [urlIsValid, setUrlIsValid] = useState(true)
   let [requestBodyIsValid, setRequestBodyIsValid] = useState(true)
 
+  function cleanJSON(json) {
+    return json.replace(/`/g, "'").replace(/\n/g, "")
+  }
+
   function handleRequestBodyChange(e) {
     setRequestBodyIsValid(true)
     setRequestBody(e)
@@ -38,7 +42,7 @@ export default function ({
   function hasJsonStructure(str) {
     if (typeof str !== "string" || str === "") return true
     try {
-      const result = JSON5.parse(str)
+      const result = JSON5.parse(cleanJSON(str))
       const type = Object.prototype.toString.call(result)
       return type === "[object Object]" || type === "[object Array]"
     } catch (error) {

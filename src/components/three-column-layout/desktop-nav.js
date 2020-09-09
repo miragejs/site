@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Link } from "@reach/router"
 import { AnimatedCaret } from "../icons"
 import { animated, useSpring } from "react-spring"
@@ -7,6 +7,8 @@ import { ResizeObserver } from "@juggle/resize-observer"
 import OutsideClickHandler from "react-outside-click-handler"
 import { useRouter } from "../../hooks/use-router"
 import { urlsMatch } from "../../utils"
+import "./styles.css"
+import { useRef } from "react"
 
 // This is used by the header in app.js
 export const sidebarWidth = 280
@@ -37,30 +39,47 @@ export function DesktopNav({ menuItems }) {
     )
   }
 
+  let carbonAdsRef = useRef()
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src =
+      "//cdn.carbonads.com/carbon.js?serve=CE7D42QY&placement=miragejscom"
+    script.id = "_carbonads_js"
+
+    carbonAdsRef.current.appendChild(script)
+  }, [])
+
   return (
     <div
       className="relative flex-shrink-0 hidden lg:block"
       style={{ width: sidebarWidth }}
     >
       <div className="absolute inset-y-0 right-0 w-screen border-r border-gray-200 bg-gray-50"></div>
-      <nav className="sticky h-screen pt-8 pr-8 overflow-y-scroll leading-snug top-16 lg:pt-10 xl:pt-12">
-        <ul className="-mt-4">
-          {menuItems.map((menuItem, index) =>
-            menuItem.url ? (
-              <div className="mt-6" key={index}>
-                <DesktopNavLink link={menuItem} />
-              </div>
-            ) : (
-              <li className="mt-6" key={index}>
-                <CollapsibleMenu
-                  section={menuItem}
-                  isOpen={openSections.includes(index)}
-                  toggleSection={() => toggleSection(index)}
-                />
-              </li>
-            )
-          )}
-        </ul>
+      <nav className="sticky top-0 h-screen -mt-16 overflow-y-scroll leading-snug">
+        <div className="h-full pt-16">
+          <div className="flex flex-col h-full pt-6 pr-8 xl:pt-8">
+            <ul className="flex-1">
+              {menuItems.map((menuItem, index) =>
+                menuItem.url ? (
+                  <div className="mt-6" key={index}>
+                    <DesktopNavLink link={menuItem} />
+                  </div>
+                ) : (
+                  <li className="mt-6" key={index}>
+                    <CollapsibleMenu
+                      section={menuItem}
+                      isOpen={openSections.includes(index)}
+                      toggleSection={() => toggleSection(index)}
+                    />
+                  </li>
+                )
+              )}
+            </ul>
+            <div className="pt-8 pb-6">
+              <div ref={carbonAdsRef}></div>
+            </div>
+          </div>
+        </div>
       </nav>
     </div>
   )

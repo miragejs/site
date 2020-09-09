@@ -39,16 +39,6 @@ export function DesktopNav({ menuItems }) {
     )
   }
 
-  let carbonAdsRef = useRef()
-  useEffect(() => {
-    const script = document.createElement("script")
-    script.src =
-      "//cdn.carbonads.com/carbon.js?serve=CE7D42QY&placement=miragejscom"
-    script.id = "_carbonads_js"
-
-    carbonAdsRef.current.appendChild(script)
-  }, [])
-
   return (
     <div
       className="relative flex-shrink-0 hidden lg:block"
@@ -76,13 +66,27 @@ export function DesktopNav({ menuItems }) {
               )}
             </ul>
             <div className="pt-8 pb-6">
-              <div ref={carbonAdsRef}></div>
+              <CarbonAds />
             </div>
           </div>
         </div>
       </nav>
     </div>
   )
+}
+
+function CarbonAds() {
+  let carbonAdsRef = useRef()
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src =
+      "//cdn.carbonads.com/carbon.js?serve=CE7D42QY&placement=miragejscom"
+    script.id = "_carbonads_js"
+
+    carbonAdsRef.current.appendChild(script)
+  }, [])
+
+  return <div ref={carbonAdsRef}></div>
 }
 
 function CollapsibleMenu({ section, isOpen, toggleSection }) {

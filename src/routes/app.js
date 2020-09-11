@@ -23,6 +23,8 @@ import useKeyboardShortcut from "../hooks/use-keyboard-shortcut"
 import { createGlobalStyle } from "styled-components"
 import "focus-visible/dist/focus-visible.min.js"
 import { createClient, Provider as UrqlProvider } from "urql"
+import { createPortal } from "react-dom"
+import { log } from "xstate/lib/actions"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -64,6 +66,14 @@ export default function (props) {
   )
 }
 
+let hasLoadedAd = false
+function loadCarbonAd() {
+  console.log("loading ad")
+  document.getElementById("carbon-placeholder").innerHTML =
+    "<p id='carbonads'>im the ad</p>"
+  hasLoadedAd = true
+}
+
 function AppInner(props) {
   let { theme } = useTheme()
   let router = useRouter()
@@ -79,6 +89,48 @@ function AppInner(props) {
     title = router.activePage.label
   }
 
+  // useEffect(() => {
+  //   let script = document.createElement("script")
+  //   script.src =
+  //     "//cdn.carbonads.com/carbon.js?serve=CE7D42QY&placement=miragejscom"
+  //   script.id = `_carbonads_js`
+
+  //   // This script asynchronously appends a #carbonads div to the DOM. Because it happens outside
+  //   // of the React render cycle we need to check for it above.
+  //   document.bodiy.appendChild(script)
+  // }, [])
+  let portalContainerWhenHome = useRef()
+  let portalContainerWhenDocs = useRef()
+  let locations = {
+    "/": portalContainerWhenHome,
+    "/docs/getting-started/introduction/": portalContainerWhenDocs,
+  }
+  let currentPortalLocation = locations[router.activeUrl]
+
+  let carbonAdPlaceholder = useRef()
+  useEffect(() => {
+    if (carbonAdPlaceholder.current) {
+      loadCarbonAd(carbonAdPlaceholder.current)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (currentPortalLocation?.current) {
+      console.log("moving carbonads")
+      currentPortalLocation.current.appendChild(
+        document.getElementById("carbonads")
+      )
+    }
+  })
+
+  // let carbonRef = useRef()
+  // useEffect(() => {
+  //   console.log("running")
+  //   if (currentPortalLocation.current) {
+  //     currentPortalLocation.current.appendChild(carbonRef.current)
+  //   }
+  // })
+
   return (
     <div className="relative z-0">
       <Helmet>
@@ -86,6 +138,8 @@ function AppInner(props) {
       </Helmet>
 
       <SEO title={title} />
+
+      <div ref={portalContainerWhenHome} className="h-20 bg-blue-500"></div>
 
       <div className="flex flex-col min-h-screen antialiased leading-normal text-gray-700 font-body">
         <Header showHeaderNav={showHeaderNav} />
@@ -98,8 +152,61 @@ function AppInner(props) {
 
         <Footer />
       </div>
+
+      <div ref={portalContainerWhenDocs} className="h-20 bg-purple-500"></div>
+
+      <div
+        ref={carbonAdPlaceholder}
+        className="hidden"
+        id="carbon-placeholder"
+      />
+
+      {/* <Capture onCapture={(node) => setCapturedNode(node)}>
+        <CarbonAd />
+      </Capture> */}
+
+      {/* <Portal currentPortalLocationRef={currentPortalLocation}>
+        {capturedNode}
+      </Portal> */}
     </div>
   )
+}
+
+// let container = {}
+
+function Portal({ children, currentPortalLocationRef }) {
+  if (currentPortalLocationRef.current) {
+    return createPortal(children, currentPortalLocationRef.current)
+  } else {
+    return null
+  }
+}
+
+function Capture({ children, onCapture }) {
+  useEffect(() => {
+    console.log("rendering Capture")
+    onCapture(children)
+
+    return () => {
+      console.log("unrendering Capture")
+    }
+  }, [])
+  // someRef.current = children
+
+  return <div className="hidden">{children}</div>
+  // return null
+}
+
+function CarbonAd() {
+  useEffect(() => {
+    console.log("rendering CarbonAd")
+
+    return () => {
+      console.log("unrendering CarbonAd")
+    }
+  }, [])
+
+  return <p className="z-50 text-black bg-green-500">here I am</p>
 }
 
 function Header({ showHeaderNav }) {
@@ -363,7 +470,7 @@ function Header({ showHeaderNav }) {
                   }`}
                 >
                   <MobileNavLink
-                    to='/repl'
+                    to="/repl"
                     onClick={() => setIsShowingMobileNav(false)}
                   >
                     REPL

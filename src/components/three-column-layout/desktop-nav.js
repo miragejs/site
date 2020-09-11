@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { Link } from "@reach/router"
 import { AnimatedCaret } from "../icons"
 import { animated, useSpring } from "react-spring"
@@ -8,7 +8,7 @@ import OutsideClickHandler from "react-outside-click-handler"
 import { useRouter } from "../../hooks/use-router"
 import { urlsMatch } from "../../utils"
 import "./styles.css"
-import { useRef } from "react"
+import { CarbonAds } from "./"
 
 // This is used by the header in app.js
 export const sidebarWidth = 280
@@ -66,27 +66,13 @@ export function DesktopNav({ menuItems }) {
               )}
             </ul>
             <div className="pt-8 pb-6">
-              <CarbonAds />
+              {/* <CarbonAds width="desktop" /> */}
             </div>
           </div>
         </div>
       </nav>
     </div>
   )
-}
-
-function CarbonAds() {
-  let carbonAdsRef = useRef()
-  useEffect(() => {
-    const script = document.createElement("script")
-    script.src =
-      "//cdn.carbonads.com/carbon.js?serve=CE7D42QY&placement=miragejscom"
-    script.id = "_carbonads_js"
-
-    carbonAdsRef.current.appendChild(script)
-  }, [])
-
-  return <div ref={carbonAdsRef}></div>
 }
 
 function CollapsibleMenu({ section, isOpen, toggleSection }) {

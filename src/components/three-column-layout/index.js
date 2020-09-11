@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef, useEffect, useState } from "react"
 import { DesktopNav } from "./desktop-nav"
 import { MobileNav } from "./mobile-nav"
 import { MDXProvider } from "@mdx-js/react"
@@ -20,6 +20,7 @@ import {
   Pre,
   Code,
 } from "../../components/ui"
+import { useWindowWidth } from "@react-hook/window-size"
 
 export function ThreeColumnLayout({
   menuItems,
@@ -112,3 +113,68 @@ const components = {
     )
   },
 }
+
+// let script
+// let scriptIsLoaded = false
+let i = 0
+let scriptIsLoading = false
+export function CarbonAds() {
+  // console.log(`render ${i++}`)
+  let carbonAdsRef = useRef()
+  // let isMounted = useIsMounted()
+  console.log({ scriptIsLoading })
+  let _scriptIsLoading = scriptIsLoading
+
+  useEffect(() => {
+    // let isMounted = true
+    let container = carbonAdsRef.current
+
+    if (
+      container &&
+      !document.getElementById("carbonads") &&
+      !_scriptIsLoading
+      // i === 0
+    ) {
+      // i++
+      console.log("makin a script")
+      scriptIsLoading = true
+      let script = document.createElement("script")
+      script.src =
+        "//cdn.carbonads.com/carbon.js?serve=CE7D42QY&placement=miragejscom"
+      script.id = `_carbonads_js`
+
+      // This script asynchronously appends a #carbonads div to the DOM. Because it happens outside
+      // of the React render cycle we need to check for it above.
+      container.appendChild(script)
+
+      // console.log({ isMounted })
+
+      script.onload = () => {
+        console.log("DONE")
+        scriptIsLoading = false
+      }
+      // console.log({ isMounted })
+      // scriptIsLoaded = true
+      // if (!isMounted) {
+      //   script = undefined
+      // }
+      // }
+    }
+
+    // return () => {
+    //   isMounted = false
+    // }
+  }, [])
+
+  return <div ref={carbonAdsRef}></div>
+}
+
+// const useIsMounted = () => {
+//   const [isMounted, setisMounted] = useState(false)
+//   React.useEffect(() => {
+//     setisMounted(true)
+//     return () => setisMounted(false)
+//   }, [])
+
+//   return isMounted
+// }

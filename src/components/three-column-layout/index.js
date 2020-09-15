@@ -114,67 +114,35 @@ const components = {
   },
 }
 
-// let script
-// let scriptIsLoaded = false
-let i = 0
-let scriptIsLoading = false
 export function CarbonAds() {
-  // console.log(`render ${i++}`)
-  let carbonAdsRef = useRef()
-  // let isMounted = useIsMounted()
-  console.log({ scriptIsLoading })
-  let _scriptIsLoading = scriptIsLoading
+  let carbonAdsTargetRef = useRef()
+  let didMoveAdRef = useRef()
 
   useEffect(() => {
-    // let isMounted = true
-    let container = carbonAdsRef.current
+    let ad = document.getElementById("carbonads")
+    let placeholder = document.getElementById("carbon-placeholder")
+    let adIsInPlaceholder = placeholder?.contains(ad)
+    let shouldMoveAd = !didMoveAdRef.current && adIsInPlaceholder
 
-    if (
-      container &&
-      !document.getElementById("carbonads") &&
-      !_scriptIsLoading
-      // i === 0
-    ) {
-      // i++
-      console.log("makin a script")
-      scriptIsLoading = true
-      let script = document.createElement("script")
-      script.src =
-        "//cdn.carbonads.com/carbon.js?serve=CE7D42QY&placement=miragejscom"
-      script.id = `_carbonads_js`
-
-      // This script asynchronously appends a #carbonads div to the DOM. Because it happens outside
-      // of the React render cycle we need to check for it above.
-      container.appendChild(script)
-
-      // console.log({ isMounted })
-
-      script.onload = () => {
-        console.log("DONE")
-        scriptIsLoading = false
-      }
-      // console.log({ isMounted })
-      // scriptIsLoaded = true
-      // if (!isMounted) {
-      //   script = undefined
-      // }
-      // }
+    if (shouldMoveAd) {
+      console.log("moving ad")
+      carbonAdsTargetRef.current.appendChild(
+        document.getElementById("carbonads")
+      )
+      didMoveAdRef.current = true
     }
+  })
 
-    // return () => {
-    //   isMounted = false
-    // }
+  useEffect(() => {
+    return () => {
+      if (didMoveAdRef.current) {
+        console.log("putting ad back")
+        document
+          .getElementById("carbon-placeholder")
+          .appendChild(document.getElementById("carbonads"))
+      }
+    }
   }, [])
 
-  return <div ref={carbonAdsRef}></div>
+  return <div ref={carbonAdsTargetRef} />
 }
-
-// const useIsMounted = () => {
-//   const [isMounted, setisMounted] = useState(false)
-//   React.useEffect(() => {
-//     setisMounted(true)
-//     return () => setisMounted(false)
-//   }, [])
-
-//   return isMounted
-// }

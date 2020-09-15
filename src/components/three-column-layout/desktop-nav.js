@@ -66,7 +66,7 @@ export function DesktopNav({ menuItems }) {
               )}
             </ul>
             <div className="pt-8 pb-6">
-              {/* <CarbonAds width="desktop" /> */}
+              <CarbonAds />
             </div>
           </div>
         </div>

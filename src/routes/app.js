@@ -62,28 +62,21 @@ const client = createClient({
 export const CarbonAdContext = createContext()
 
 function CarbonAdProvider({ children }) {
-  let [targets, setTargets] = useState([])
-
-  console.log({ targets })
+  let [queue, setQueue] = useState([])
 
   const register = useCallback((ref) => {
-    setTargets((targets) => [...targets, ref])
+    setQueue((targets) => [...targets, ref])
   }, [])
 
   const unregister = useCallback((ref) => {
-    setTargets((targets) =>
-      targets.filter((target) => {
-        // console.log("comparing:")
-        // console.log({ refCurrent: ref.current })
-        // console.log({ target })
+    // Remove this ref from the queue
+    setQueue((targets) => targets.filter((target) => target !== ref))
 
-        return target !== ref
-      })
-    )
+    // If this ref currently contains the ad, put it back
     let root = document.getElementById("carbonads-root")
     let container = document.getElementById("carbonads-container")
     if (ref.current.contains(container)) {
-      console.log("putting ad back")
+      console.log("putting back ad")
       root.appendChild(container)
 
       // If carbonads has finished loading by the time we put it back, we can refresh the ad
@@ -99,24 +92,14 @@ function CarbonAdProvider({ children }) {
     let root = document.getElementById("carbonads-root")
     let container = document.getElementById("carbonads-container")
     let containerIsInRoot = root.contains(container)
-    // let queueIsEmpty = targets.length === 0
-    // console.log({ containerIsInRoot })
-    // console.log({ queueIsEmpty })
 
-    let bestTarget = targets.find((target) => target.current !== null)
+    let bestTarget = queue.find((target) => target.current !== null)
 
     if (containerIsInRoot && bestTarget) {
-      console.log("rendering ad")
+      console.log("moving ad")
       bestTarget.current.appendChild(container)
     }
-    //  else if (targets.length === 0 && !containerIsInRoot && container) {
-    //   console.log("moving ad back")
-    //   root.appendChild(container)
-    // }
-    // if (containerIsInRoot && targets.length === 0) {
-    //   ref.current.appendChild(container)
-    // }
-  }, [targets])
+  }, [queue])
 
   return (
     <CarbonAdContext.Provider value={{ register, unregister }}>

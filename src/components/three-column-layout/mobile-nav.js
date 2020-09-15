@@ -7,7 +7,6 @@ import { useWindowWidth } from "@react-hook/window-size"
 export function MobileNav({ menuItems }) {
   let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(false)
   let windowWidth = useWindowWidth()
-  console.log({ windowWidth })
 
   return (
     <div className="lg:hidden">

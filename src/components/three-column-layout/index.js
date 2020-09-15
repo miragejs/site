@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react"
+import React, { useRef, useEffect, useContext } from "react"
 import { DesktopNav } from "./desktop-nav"
 import { MobileNav } from "./mobile-nav"
 import { MDXProvider } from "@mdx-js/react"
@@ -20,6 +20,7 @@ import {
   Pre,
   Code,
 } from "../../components/ui"
+import { CarbonAdContext } from "../../routes/app"
 
 export function ThreeColumnLayout({
   menuItems,
@@ -114,32 +115,42 @@ const components = {
 }
 
 export function CarbonAd() {
+  // console.log("rendering CarbonAd")
+  let { register, unregister } = useContext(CarbonAdContext)
   let carbonAdsTargetRef = useRef()
-  let didMoveAdRef = useRef()
+  // let didMoveAdRef = useRef()
 
   useEffect(() => {
-    let root = document.getElementById("carbonads-root")
-    let container = document.getElementById("carbonads-container")
-    let containerIsInRoot = root.contains(container)
-    let shouldMoveAd = !didMoveAdRef.current
+    register(carbonAdsTargetRef)
 
-    if (shouldMoveAd && containerIsInRoot) {
-      console.log(`moving ad`)
-      carbonAdsTargetRef.current.appendChild(container)
-      didMoveAdRef.current = true
-    }
-  })
-
-  useEffect(() => {
     return () => {
-      if (didMoveAdRef.current) {
-        console.log(`putting ad back`)
-        document
-          .getElementById("carbonads-root")
-          .appendChild(document.getElementById("carbonads-container"))
-      }
+      unregister(carbonAdsTargetRef)
     }
-  }, [])
+  }, [register, unregister])
+
+  // useEffect(() => {
+  //   let root = document.getElementById("carbonads-root")
+  //   let container = document.getElementById("carbonads-container")
+  //   let containerIsInRoot = root.contains(container)
+  //   let shouldMoveAd = !didMoveAdRef.current
+
+  //   if (shouldMoveAd && containerIsInRoot) {
+  //     console.log(`moving ad`)
+  //     carbonAdsTargetRef.current.appendChild(container)
+  //     didMoveAdRef.current = true
+  //   }
+  // })
+
+  // useEffect(() => {
+  //   return () => {
+  //     if (didMoveAdRef.current) {
+  //       console.log(`putting ad back`)
+  //       document
+  //         .getElementById("carbonads-root")
+  //         .appendChild(document.getElementById("carbonads-container"))
+  //     }
+  //   }
+  // }, [])
 
   return <div ref={carbonAdsTargetRef} />
 }

@@ -1,4 +1,11 @@
-import React, { useState, useEffect, Fragment, useRef } from "react"
+import React, {
+  useState,
+  useEffect,
+  Fragment,
+  useRef,
+  createContext,
+  useCallback,
+} from "react"
 import { Router, Link, Match, navigate } from "@reach/router"
 import { Helmet } from "react-helmet"
 import { ReactComponent as LogoAndName } from "../assets/images/logo-and-name.svg"
@@ -52,15 +59,83 @@ const client = createClient({
   url: "https://miragejs-site-backend.herokuapp.com/v1/graphql",
 })
 
+export const CarbonAdContext = createContext()
+
+function CarbonAdProvider({ children }) {
+  let [targets, setTargets] = useState([])
+
+  console.log({ targets })
+
+  const register = useCallback((ref) => {
+    setTargets((targets) => [...targets, ref])
+  }, [])
+
+  const unregister = useCallback((ref) => {
+    setTargets((targets) =>
+      targets.filter((target) => {
+        // console.log("comparing:")
+        // console.log({ refCurrent: ref.current })
+        // console.log({ target })
+
+        return target !== ref
+      })
+    )
+    let root = document.getElementById("carbonads-root")
+    let container = document.getElementById("carbonads-container")
+    if (ref.current.contains(container)) {
+      console.log("putting ad back")
+      root.appendChild(container)
+
+      // If carbonads has finished loading by the time we put it back, we can refresh the ad
+      let carbonads = document.getElementById("carbonads")
+      if (carbonads) {
+        container.innerHTML = ""
+        loadCarbonAd()
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    let root = document.getElementById("carbonads-root")
+    let container = document.getElementById("carbonads-container")
+    let containerIsInRoot = root.contains(container)
+    // let queueIsEmpty = targets.length === 0
+    // console.log({ containerIsInRoot })
+    // console.log({ queueIsEmpty })
+
+    let bestTarget = targets.find((target) => target.current !== null)
+
+    if (containerIsInRoot && bestTarget) {
+      console.log("rendering ad")
+      bestTarget.current.appendChild(container)
+    }
+    //  else if (targets.length === 0 && !containerIsInRoot && container) {
+    //   console.log("moving ad back")
+    //   root.appendChild(container)
+    // }
+    // if (containerIsInRoot && targets.length === 0) {
+    //   ref.current.appendChild(container)
+    // }
+  }, [targets])
+
+  return (
+    <CarbonAdContext.Provider value={{ register, unregister }}>
+      {children}
+    </CarbonAdContext.Provider>
+  )
+}
+
 export default function (props) {
   return (
-    <RouterProvider {...props}>
-      <ThemeProvider {...props}>
-        <UrqlProvider value={client}>
-          <AppInner {...props} />
-        </UrqlProvider>
-      </ThemeProvider>
-    </RouterProvider>
+    <CarbonAdProvider>
+      <RouterProvider {...props}>
+        <ThemeProvider {...props}>
+          <UrqlProvider value={client}>
+            <AppInner {...props} />
+          </UrqlProvider>
+        </ThemeProvider>
+      </RouterProvider>
+    </CarbonAdProvider>
   )
 }
 

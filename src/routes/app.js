@@ -66,8 +66,12 @@ export default function (props) {
 
 function loadCarbonAd() {
   console.log("loading ad")
-  document.getElementById("carbon-placeholder").innerHTML =
-    "<p id='carbonads'>im the ad</p>"
+  const script = document.createElement("script")
+  script.src =
+    "//cdn.carbonads.com/carbon.js?serve=CE7D42QY&placement=miragejscom"
+  script.id = "_carbonads_js"
+
+  document.getElementById("carbonads-container").appendChild(script)
 }
 
 function AppInner(props) {
@@ -85,22 +89,9 @@ function AppInner(props) {
     title = router.activePage.label
   }
 
-  // useEffect(() => {
-  //   let script = document.createElement("script")
-  //   script.src =
-  //     "//cdn.carbonads.com/carbon.js?serve=CE7D42QY&placement=miragejscom"
-  //   script.id = `_carbonads_js`
-
-  //   // This script asynchronously appends a #carbonads div to the DOM. Because it happens outside
-  //   // of the React render cycle we need to check for it above.
-  //   document.bodiy.appendChild(script)
-  // }, [])
-
   let carbonAdPlaceholder = useRef()
   useEffect(() => {
-    if (carbonAdPlaceholder.current) {
-      loadCarbonAd(carbonAdPlaceholder.current)
-    }
+    loadCarbonAd(carbonAdPlaceholder.current)
   }, [])
 
   return (
@@ -123,11 +114,9 @@ function AppInner(props) {
         <Footer />
       </div>
 
-      <div
-        ref={carbonAdPlaceholder}
-        className="hidden"
-        id="carbon-placeholder"
-      />
+      <div ref={carbonAdPlaceholder} className="hidden" id="carbonads-root">
+        <div id="carbonads-container"></div>
+      </div>
     </div>
   )
 }

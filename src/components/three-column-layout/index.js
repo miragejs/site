@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react"
+import React, { useRef, useEffect } from "react"
 import { DesktopNav } from "./desktop-nav"
 import { MobileNav } from "./mobile-nav"
 import { MDXProvider } from "@mdx-js/react"
@@ -20,7 +20,6 @@ import {
   Pre,
   Code,
 } from "../../components/ui"
-import { useWindowWidth } from "@react-hook/window-size"
 
 export function ThreeColumnLayout({
   menuItems,
@@ -114,21 +113,19 @@ const components = {
   },
 }
 
-export function CarbonAds() {
+export function CarbonAd() {
   let carbonAdsTargetRef = useRef()
   let didMoveAdRef = useRef()
 
   useEffect(() => {
-    let ad = document.getElementById("carbonads")
-    let placeholder = document.getElementById("carbon-placeholder")
-    let adIsInPlaceholder = placeholder?.contains(ad)
-    let shouldMoveAd = !didMoveAdRef.current && adIsInPlaceholder
+    let root = document.getElementById("carbonads-root")
+    let container = document.getElementById("carbonads-container")
+    let containerIsInRoot = root.contains(container)
+    let shouldMoveAd = !didMoveAdRef.current
 
-    if (shouldMoveAd) {
-      console.log("moving ad")
-      carbonAdsTargetRef.current.appendChild(
-        document.getElementById("carbonads")
-      )
+    if (shouldMoveAd && containerIsInRoot) {
+      console.log(`moving ad`)
+      carbonAdsTargetRef.current.appendChild(container)
       didMoveAdRef.current = true
     }
   })
@@ -136,10 +133,10 @@ export function CarbonAds() {
   useEffect(() => {
     return () => {
       if (didMoveAdRef.current) {
-        console.log("putting ad back")
+        console.log(`putting ad back`)
         document
-          .getElementById("carbon-placeholder")
-          .appendChild(document.getElementById("carbonads"))
+          .getElementById("carbonads-root")
+          .appendChild(document.getElementById("carbonads-container"))
       }
     }
   }, [])

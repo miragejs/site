@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import { Link } from "@reach/router"
 import { AnimatedCaret } from "../icons"
 import { animated, useSpring } from "react-spring"
@@ -8,7 +8,8 @@ import OutsideClickHandler from "react-outside-click-handler"
 import { useRouter } from "../../hooks/use-router"
 import { urlsMatch } from "../../utils"
 import "./styles.css"
-import { CarbonAds } from "./"
+import { CarbonAd } from "./"
+import { useWindowWidth } from "@react-hook/window-size"
 
 // This is used by the header in app.js
 export const sidebarWidth = 280
@@ -39,6 +40,8 @@ export function DesktopNav({ menuItems }) {
     )
   }
 
+  let windowWidth = useWindowWidth()
+
   return (
     <div
       className="relative flex-shrink-0 hidden lg:block"
@@ -66,7 +69,7 @@ export function DesktopNav({ menuItems }) {
               )}
             </ul>
             <div className="pt-8 pb-6">
-              <CarbonAds />
+              {windowWidth >= 1024 && <CarbonAd />}
             </div>
           </div>
         </div>

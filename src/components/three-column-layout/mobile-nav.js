@@ -1,10 +1,13 @@
 import React, { useState } from "react"
 import { CaretDownWide } from "../icons"
 import { Link } from "@reach/router"
-import { CarbonAds } from "./"
+import { CarbonAd } from "./"
+import { useWindowWidth } from "@react-hook/window-size"
 
 export function MobileNav({ menuItems }) {
   let [mobileSecondaryNavIsOpen, setMobileSecondaryNavIsOpen] = useState(false)
+  let windowWidth = useWindowWidth()
+  console.log({ windowWidth })
 
   return (
     <div className="lg:hidden">
@@ -66,7 +69,7 @@ export function MobileNav({ menuItems }) {
           )}
         </div>
 
-        <div className="mt-4">{/* <CarbonAds /> */}</div>
+        <div className="mt-4">{windowWidth < 1024 && <CarbonAd />}</div>
       </div>
     </div>
   )

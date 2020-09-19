@@ -76,7 +76,6 @@ function CarbonAdProvider({ children }) {
     let root = document.getElementById("carbonads-root")
     let container = document.getElementById("carbonads-container")
     if (ref.current.contains(container)) {
-      console.log("putting back ad")
       root.appendChild(container)
 
       // If carbonads has finished loading by the time we put it back, we can refresh the ad
@@ -123,7 +122,6 @@ export default function (props) {
 }
 
 function loadCarbonAd() {
-  console.log("loading ad")
   const script = document.createElement("script")
   script.src =
     "//cdn.carbonads.com/carbon.js?serve=CE7D42QY&placement=miragejscom"

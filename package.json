@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@juggle/resize-observer": "^3.2.0",
-    "@mdx-js/mdx": "^1.6.16",
+    "@mdx-js/mdx": "^1.6.18",
     "@mdx-js/react": "^1.6.16",
     "@n8tb1t/use-scroll-position": "^1.0.43",
     "@reach/dialog": "^0.10.5",

@@ -69,7 +69,7 @@ export function DesktopNav({ menuItems }) {
               )}
             </ul>
             <div className="pt-8 pb-6">
-              {windowWidth >= 1024 && <CarbonAd />}
+              {windowWidth >= 1024 && <CarbonAd variant="stacked" />}
             </div>
           </div>
         </div>

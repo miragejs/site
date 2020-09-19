@@ -114,11 +114,9 @@ const components = {
   },
 }
 
-export function CarbonAd() {
-  // console.log("rendering CarbonAd")
+export function CarbonAd({ variant }) {
   let { register, unregister } = useContext(CarbonAdContext)
   let carbonAdsTargetRef = useRef()
-  // let didMoveAdRef = useRef()
 
   useEffect(() => {
     register(carbonAdsTargetRef)
@@ -128,29 +126,5 @@ export function CarbonAd() {
     }
   }, [register, unregister])
 
-  // useEffect(() => {
-  //   let root = document.getElementById("carbonads-root")
-  //   let container = document.getElementById("carbonads-container")
-  //   let containerIsInRoot = root.contains(container)
-  //   let shouldMoveAd = !didMoveAdRef.current
-
-  //   if (shouldMoveAd && containerIsInRoot) {
-  //     console.log(`moving ad`)
-  //     carbonAdsTargetRef.current.appendChild(container)
-  //     didMoveAdRef.current = true
-  //   }
-  // })
-
-  // useEffect(() => {
-  //   return () => {
-  //     if (didMoveAdRef.current) {
-  //       console.log(`putting ad back`)
-  //       document
-  //         .getElementById("carbonads-root")
-  //         .appendChild(document.getElementById("carbonads-container"))
-  //     }
-  //   }
-  // }, [])
-
-  return <div ref={carbonAdsTargetRef} />
+  return <div className={variant} ref={carbonAdsTargetRef} />
 }

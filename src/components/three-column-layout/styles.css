@@ -1,120 +1,63 @@
 /* Original */
-/* #carbonads {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial,
-    sans-serif;
+.side-by-side {
+  @apply h-32;
+}
+.side-by-side #carbonads {
+  @apply flex shadow-xs;
 }
 
-#carbonads {
-  display: flex;
-  max-width: 330px;
-  background-color: hsl(0, 0%, 98%);
-  box-shadow: 0 1px 4px 1px hsla(0, 0%, 0%, 0.1);
+.side-by-side #carbonads a {
 }
 
-#carbonads a {
-  color: inherit;
-  text-decoration: none;
+.side-by-side #carbonads a:hover {
 }
 
-#carbonads a:hover {
-  color: inherit;
+.side-by-side #carbonads span {
+  @apply relative block w-full overflow-hidden;
 }
 
-#carbonads span {
-  position: relative;
-  display: block;
-  overflow: hidden;
+.side-by-side #carbonads .carbon-wrap {
+  @apply flex;
 }
 
-#carbonads .carbon-wrap {
-  display: flex;
+.side-by-side .carbon-img {
+  @apply block m-0 leading-none;
 }
 
-.carbon-img {
-  display: block;
-  margin: 0;
-  line-height: 1;
+.side-by-side .carbon-img img {
+  @apply block;
 }
 
-.carbon-img img {
-  display: block;
+.side-by-side .carbon-text {
+  @apply p-2 text-xs;
 }
 
-.carbon-text {
-  font-size: 13px;
-  padding: 10px;
-  line-height: 1.5;
-  text-align: left;
+.side-by-side .carbon-poweredby {
+  @apply block px-1 py-1 font-medium text-center text-gray-500 uppercase bg-gray-100 text-xxs;
 }
-
-.carbon-poweredby {
-  display: block;
-  padding: 8px 10px;
-  background: repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 5px,
-      hsla(0, 0%, 0%, 0.025) 5px,
-      hsla(0, 0%, 0%, 0.025) 10px
-    )
-    hsla(203, 11%, 95%, 0.4);
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 600;
-  font-size: 9px;
-  line-height: 1;
-} */
 
 /* Stacked image + text */
-#carbonads {
-  display: block;
-  overflow: hidden;
-  padding: 1em;
-  border: 1px solid #e4ecf0;
-  /* box-shadow: 0 1px 3px 0 rgba(16, 42, 67, 0.1),
-    0 1px 2px 0 rgba(16, 42, 67, 0.06); */
-  border-radius: 0.25rem;
-  margin-left: 4px;
-  /* max-width: 130px; */
-  background: #fff;
-  text-align: center;
-  font-size: 12px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  line-height: 1.5;
+.stacked #carbonads {
+  @apply block p-4 overflow-hidden text-xs leading-normal text-center bg-white border border-gray-200 rounded;
 }
 
-#carbonads a {
-  color: inherit;
-  text-decoration: none;
+.stacked #carbonads a {
 }
 
-#carbonads a:hover {
-  color: inherit;
+.stacked #carbonads a:hover {
 }
 
-#carbonads span {
-  display: block;
-  overflow: hidden;
+.stacked #carbonads span {
 }
 
-#carbonads img {
-  display: block;
-  margin: 0 auto 8px;
-  line-height: 1;
+.stacked #carbonads img {
+  @apply block mx-auto mb-2 leading-none;
 }
 
-.carbon-text {
-  display: block;
-  margin-bottom: 8px;
+.stacked .carbon-text {
+  @apply block mb-3 leading-snug;
 }
 
-.carbon-poweredby {
-  display: block;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 10px;
-  line-height: 1;
+.stacked .carbon-poweredby {
+  @apply block text-gray-500 uppercase text-xxs;
 }

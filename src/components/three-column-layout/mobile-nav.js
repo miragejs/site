@@ -68,7 +68,9 @@ export function MobileNav({ menuItems }) {
           )}
         </div>
 
-        <div className="mt-4">{windowWidth < 1024 && <CarbonAd />}</div>
+        <div className="mt-4">
+          {windowWidth < 1024 && <CarbonAd variant="side-by-side" />}
+        </div>
       </div>
     </div>
   )

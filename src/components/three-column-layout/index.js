@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef, useEffect, useContext } from "react"
 import { DesktopNav } from "./desktop-nav"
 import { MobileNav } from "./mobile-nav"
 import { MDXProvider } from "@mdx-js/react"
@@ -20,6 +20,7 @@ import {
   Pre,
   Code,
 } from "../../components/ui"
+import { CarbonAdContext } from "../../routes/app"
 
 export function ThreeColumnLayout({
   menuItems,
@@ -111,4 +112,19 @@ const components = {
       </div>
     )
   },
+}
+
+export function CarbonAd({ variant }) {
+  let { register, unregister } = useContext(CarbonAdContext)
+  let carbonAdsTargetRef = useRef()
+
+  useEffect(() => {
+    register(carbonAdsTargetRef)
+
+    return () => {
+      unregister(carbonAdsTargetRef)
+    }
+  }, [register, unregister])
+
+  return <div className={variant} ref={carbonAdsTargetRef} />
 }

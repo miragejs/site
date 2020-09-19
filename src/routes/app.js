@@ -1,4 +1,11 @@
-import React, { useState, useEffect, Fragment, useRef } from "react"
+import React, {
+  useState,
+  useEffect,
+  Fragment,
+  useRef,
+  createContext,
+  useCallback,
+} from "react"
 import { Router, Link, Match, navigate } from "@reach/router"
 import { Helmet } from "react-helmet"
 import { ReactComponent as LogoAndName } from "../assets/images/logo-and-name.svg"
@@ -52,16 +59,75 @@ const client = createClient({
   url: "https://miragejs-site-backend.herokuapp.com/v1/graphql",
 })
 
+export const CarbonAdContext = createContext()
+
+function CarbonAdProvider({ children }) {
+  let [queue, setQueue] = useState([])
+
+  const register = useCallback((ref) => {
+    setQueue((targets) => [...targets, ref])
+  }, [])
+
+  const unregister = useCallback((ref) => {
+    // Remove this ref from the queue
+    setQueue((targets) => targets.filter((target) => target !== ref))
+
+    // If this ref currently contains the ad, put it back
+    let root = document.getElementById("carbonads-root")
+    let container = document.getElementById("carbonads-container")
+    if (ref.current.contains(container)) {
+      root.appendChild(container)
+
+      // If carbonads has finished loading by the time we put it back, we can refresh the ad
+      let carbonads = document.getElementById("carbonads")
+      if (carbonads) {
+        container.innerHTML = ""
+        loadCarbonAd()
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    let root = document.getElementById("carbonads-root")
+    let container = document.getElementById("carbonads-container")
+    let containerIsInRoot = root.contains(container)
+
+    let bestTarget = queue.find((target) => target.current !== null)
+
+    if (containerIsInRoot && bestTarget) {
+      console.log("moving ad")
+      bestTarget.current.appendChild(container)
+    }
+  }, [queue])
+
+  return (
+    <CarbonAdContext.Provider value={{ register, unregister }}>
+      {children}
+    </CarbonAdContext.Provider>
+  )
+}
+
 export default function (props) {
   return (
-    <RouterProvider {...props}>
-      <ThemeProvider {...props}>
-        <UrqlProvider value={client}>
-          <AppInner {...props} />
-        </UrqlProvider>
-      </ThemeProvider>
-    </RouterProvider>
+    <CarbonAdProvider>
+      <RouterProvider {...props}>
+        <ThemeProvider {...props}>
+          <UrqlProvider value={client}>
+            <AppInner {...props} />
+          </UrqlProvider>
+        </ThemeProvider>
+      </RouterProvider>
+    </CarbonAdProvider>
   )
+}
+
+function loadCarbonAd() {
+  const script = document.createElement("script")
+  script.src =
+    "//cdn.carbonads.com/carbon.js?serve=CE7D42QY&placement=miragejscom"
+  script.id = "_carbonads_js"
+
+  document.getElementById("carbonads-container").appendChild(script)
 }
 
 function AppInner(props) {
@@ -78,6 +144,11 @@ function AppInner(props) {
   if (router.activePage && router.activePage.label) {
     title = router.activePage.label
   }
+
+  let carbonAdPlaceholder = useRef()
+  useEffect(() => {
+    loadCarbonAd(carbonAdPlaceholder.current)
+  }, [])
 
   return (
     <div className="relative z-0">
@@ -97,6 +168,10 @@ function AppInner(props) {
         </main>
 
         <Footer />
+      </div>
+
+      <div ref={carbonAdPlaceholder} className="hidden" id="carbonads-root">
+        <div id="carbonads-container"></div>
       </div>
     </div>
   )
@@ -363,7 +438,7 @@ function Header({ showHeaderNav }) {
                   }`}
                 >
                   <MobileNavLink
-                    to='/repl'
+                    to="/repl"
                     onClick={() => setIsShowingMobileNav(false)}
                   >
                     REPL

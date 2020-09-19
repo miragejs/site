@@ -1,0 +1,63 @@
+/* Original */
+.side-by-side {
+  @apply h-32;
+}
+.side-by-side #carbonads {
+  @apply flex shadow-xs;
+}
+
+.side-by-side #carbonads a {
+}
+
+.side-by-side #carbonads a:hover {
+}
+
+.side-by-side #carbonads span {
+  @apply relative block w-full overflow-hidden;
+}
+
+.side-by-side #carbonads .carbon-wrap {
+  @apply flex;
+}
+
+.side-by-side .carbon-img {
+  @apply block m-0 leading-none;
+}
+
+.side-by-side .carbon-img img {
+  @apply block;
+}
+
+.side-by-side .carbon-text {
+  @apply p-2 text-xs;
+}
+
+.side-by-side .carbon-poweredby {
+  @apply block px-1 py-1 font-medium text-center text-gray-500 uppercase bg-gray-100 text-xxs;
+}
+
+/* Stacked image + text */
+.stacked #carbonads {
+  @apply block p-4 overflow-hidden text-xs leading-normal text-center bg-white border border-gray-200 rounded;
+}
+
+.stacked #carbonads a {
+}
+
+.stacked #carbonads a:hover {
+}
+
+.stacked #carbonads span {
+}
+
+.stacked #carbonads img {
+  @apply block mx-auto mb-2 leading-none;
+}
+
+.stacked .carbon-text {
+  @apply block mb-3 leading-snug;
+}
+
+.stacked .carbon-poweredby {
+  @apply block text-gray-500 uppercase text-xxs;
+}

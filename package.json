@@ -91,7 +91,7 @@
     "@percy/cypress": "^2.3.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^10.4.9",
-    "@types/jest": "^26.0.13",
+    "@types/jest": "^26.0.14",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.3.0",
     "babel-preset-gatsby": "^0.5.6",

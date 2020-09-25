@@ -590,8 +590,13 @@ new Server({
     // Mock this route and Mirage will intercept it
     this.get("/movies")
 
-    // All other API requests will still pass through
+    // All other API requests on the current domain will still pass through
+    // e.g. GET /api/directors
     this.passthrough()
+    
+    // If your API requests go to an external domain, pass those through by
+    // specifying the fully qualified domain name
+    this.passthrough("http://api.acme.com/**");
   },
 })
 ```

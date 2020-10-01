@@ -78,7 +78,10 @@ export function ThreeColumnLayout({
 
 const components = {
   Link: (props) => (
-    <GatsbyLink {...props} className="underline hover:text-blue-500" />
+    <GatsbyLink
+      {...props}
+      className="font-medium text-blue-500 hover:underline focus:outline-none focus-visible:shadow-outline"
+    />
   ),
   h1: H1,
   h2: H2,

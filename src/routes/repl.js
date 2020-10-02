@@ -11,6 +11,9 @@ import { DialogOverlay, DialogContent } from "@reach/dialog"
 import queryString from "query-string"
 import { useDebounce } from "use-debounce"
 import { escapeBackticks } from "../utils"
+import { nanoid, customAlphabet } from "nanoid"
+
+const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
 const inspectorMachine = Machine(
   {
@@ -119,6 +122,8 @@ const inspectorMachine = Machine(
 )
 
 export default function ({ location, navigate }) {
+  let versionAndId = location.pathname.replace("/repl/", "")
+  console.log({ versionAndId })
   // Gather initial values from URL query params, if they exist
   let queryParams = queryString.parse(location.search) ?? {}
   let defaultConfig = useTutorialSnippet("starting-input")
@@ -231,22 +236,38 @@ export default function ({ location, navigate }) {
   const CreateSandbox = `
     mutation ($object: sandboxes_insert_input!) {
       insert_sandboxes_one(object: $object) {
-        id
-        config
+        id2
       }
     }
   `
   const [, createSandbox] = useMutation(CreateSandbox)
 
-  function shareSandbox() {
-    createSandbox({
-      object: { config: configInput, method, url, request_body: requestBody },
-    }).then((res) => {
-      let id = res.data.insert_sandboxes_one.id
-      setLatestShareUrl(`${location.origin}/repl/v1/${id}`)
-      setIsShowingShareDialog(true)
+  function handleCreateSandbox() {
+    let editingToken = nanoid()
+    let browserId = shortNanoid()
+
+    localStorage.setItem("repl:editingToken", editingToken)
+    localStorage.setItem("repl:browserId", browserId)
+
+    let attrs = {
+      id2: shortNanoid(),
+      editing_token: editingToken,
+      browser_id: browserId,
+      config: configInput,
+      method,
+      url,
+      request_body: requestBody,
+    }
+
+    createSandbox({ object: attrs }).then((res) => {
+      let id2 = res.data.insert_sandboxes_one.id2
+      navigate(`/repl/v2/${id2}`)
+      // setLatestShareUrl(`${location.origin}/repl/v1/${id}`)
+      // setIsShowingShareDialog(true)
     })
   }
+
+  let hasEditedDefaultConfig = configInput !== defaultConfig
 
   // TODO: Reset all state + navigate
   // function resetRepl() {
@@ -260,7 +281,7 @@ export default function ({ location, navigate }) {
     >
       <div className="flex items-center px-6 py-1 text-sm bg-gray-100 border-t border-b border-gray-300">
         <p className="font-medium tracking-wide text-gray-500">REPL</p>
-        <div className="ml-6 space-x-1">
+        <div className="flex items-center ml-6 space-x-1">
           {/* TODO: Implement resetRepl above */}
           {/* <button
             className="px-3 py-1 text-gray-800 rounded hover:bg-gray-200"
@@ -270,10 +291,15 @@ export default function ({ location, navigate }) {
           </button> */}
           <button
             className="px-3 py-1 text-gray-800 rounded hover:bg-gray-200"
-            onClick={shareSandbox}
+            onClick={handleCreateSandbox}
           >
-            Share
+            Save
           </button>
+          {hasEditedDefaultConfig && (
+            <p className="pl-4 text-xs text-gray-500">
+              You have unsaved changes.
+            </p>
+          )}
         </div>
         {isShowingShareDialog && (
           <DialogOverlay

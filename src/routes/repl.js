@@ -121,15 +121,54 @@ const inspectorMachine = Machine(
   }
 )
 
-export default function ({ location, navigate }) {
-  let versionAndId = location.pathname.replace("/repl/", "")
-  console.log({ versionAndId })
-  // Gather initial values from URL query params, if they exist
-  let queryParams = queryString.parse(location.search) ?? {}
+function useDefaultSandbox() {
   let defaultConfig = useTutorialSnippet("starting-input")
-  let initialConfigInput = queryParams?.config
-    ? atob(queryParams.config)
-    : defaultConfig
+
+  return {
+    configInput: defaultConfig,
+    method: "GET",
+    url: "/api/movies",
+    requestBody: "",
+  }
+}
+
+function useQueryParamsSandbox(queryParams) {
+  let defaultConfig = useTutorialSnippet("starting-input")
+
+  return {
+    configInput: queryParams.config ? atob(queryParams.config) : defaultConfig,
+    method: queryParams.method,
+    url: queryParams.url || "",
+    requestBody: queryParams.body,
+  }
+}
+
+export default function ({ location, navigate }) {
+  let queryParams = queryString.parse(location.search) ?? {}
+
+  let defaultSandbox = useDefaultSandbox()
+  let queryParamsSandbox = useQueryParamsSandbox(queryParams)
+  let sandboxSources = {
+    default: defaultSandbox,
+    queryParams: queryParamsSandbox,
+  }
+
+  let source =
+    queryParams.config ||
+    queryParams.method ||
+    queryParams.url ||
+    queryParams.body
+      ? "queryParams"
+      : "default"
+
+  let [configInput, setConfigInput] = useState(
+    sandboxSources[source].configInput
+  )
+  let [method, setMethod] = useState(sandboxSources[source].method)
+  let [url, setUrl] = useState(sandboxSources[source].url)
+  let [requestBody, setRequestBody] = useState(
+    sandboxSources[source].requestBody
+  )
 
   // And if there are query params, navigate to root /repl
   useEffect(() => {
@@ -137,13 +176,6 @@ export default function ({ location, navigate }) {
       navigate("/repl")
     }
   })
-
-  let [method, setMethod] = useState(queryParams?.method || "GET")
-  let [url, setUrl] = useState(
-    queryParams?.url || (queryParams?.config ? "" : "/api/movies")
-  )
-  let [requestBody, setRequestBody] = useState(queryParams?.body || "")
-  let [configInput, setConfigInput] = useState(initialConfigInput)
 
   let iframeRef = React.useRef()
   let [inspectorState, send] = useMachine(inspectorMachine, {
@@ -267,12 +299,8 @@ export default function ({ location, navigate }) {
     })
   }
 
+  let defaultConfig = useTutorialSnippet("starting-input")
   let hasEditedDefaultConfig = configInput !== defaultConfig
-
-  // TODO: Reset all state + navigate
-  // function resetRepl() {
-  //   navigate("/repl")
-  // }
 
   return (
     <div
@@ -282,21 +310,15 @@ export default function ({ location, navigate }) {
       <div className="flex items-center px-6 py-1 text-sm bg-gray-100 border-t border-b border-gray-300">
         <p className="font-medium tracking-wide text-gray-500">REPL</p>
         <div className="flex items-center ml-6 space-x-1">
-          {/* TODO: Implement resetRepl above */}
-          {/* <button
-            className="px-3 py-1 text-gray-800 rounded hover:bg-gray-200"
-            onClick={resetRepl}
-          >
-            New
-          </button> */}
           <button
             className="px-3 py-1 text-gray-800 rounded hover:bg-gray-200"
+            data-testid="save"
             onClick={handleCreateSandbox}
           >
             Save
           </button>
           {hasEditedDefaultConfig && (
-            <p className="pl-4 text-xs text-gray-500">
+            <p data-testid="status" className="pl-4 text-xs text-gray-500">
               You have unsaved changes.
             </p>
           )}

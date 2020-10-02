@@ -44,7 +44,7 @@ describe("loading the repl via query params", () => {
       })
   })
 
-  it("can use a query param for the method and url's initial value", () => {
+  it.only("can use a query param for the method and url's initial value", () => {
     cy.visit("/repl?method=GET&url=%2Fusers%2F1")
 
     cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")

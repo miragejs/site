@@ -66,7 +66,7 @@ Cypress.on("window:before:load", (win) => {
       body: request.requestBody,
     }).then((res) => {
       let content =
-        res.headers.map["content-type"] === "application/json"
+        res.headers.get("content-type").includes("application/json")
           ? res.json()
           : res.text()
       return new Promise((resolve) => {
@@ -101,6 +101,9 @@ if (window.Cypress) {
           return new Response(status, headers, body)
         })
       })
+      
+      // If your central server has any calls to passthrough(), you'll need to duplicate them here
+      // this.passthrough('https://my-api.com')
     },
   })
 }

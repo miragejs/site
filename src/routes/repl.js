@@ -145,14 +145,6 @@ function useQueryParamsSandbox(queryParams) {
 
 export default function ({ location, navigate }) {
   let queryParams = queryString.parse(location.search) ?? {}
-
-  let defaultSandbox = useDefaultSandbox()
-  let queryParamsSandbox = useQueryParamsSandbox(queryParams)
-  let sandboxSources = {
-    default: defaultSandbox,
-    queryParams: queryParamsSandbox,
-  }
-
   let source =
     queryParams.config ||
     queryParams.method ||
@@ -160,6 +152,13 @@ export default function ({ location, navigate }) {
     queryParams.body
       ? "queryParams"
       : "default"
+
+  let defaultSandbox = useDefaultSandbox()
+  let queryParamsSandbox = useQueryParamsSandbox(queryParams)
+  let sandboxSources = {
+    default: defaultSandbox,
+    queryParams: queryParamsSandbox,
+  }
 
   let [configInput, setConfigInput] = useState(
     sandboxSources[source].configInput

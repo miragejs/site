@@ -12,9 +12,9 @@ describe("REPL", () => {
         .should(
           "eq",
           d`
-            import { Server } from "miragejs"
+            import { createServer } from "miragejs"
 
-            export default new Server({
+            export default createServer({
               routes() {
                 this.get("/api/movies", () => {
                   return {
@@ -99,9 +99,9 @@ describe("REPL", () => {
 
       cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
-        import { Server } from "miragejs"
+        import { createServer } from "miragejs"
 
-        export default new Server({
+        export default createServer({
         })
       `
       )
@@ -174,9 +174,9 @@ describe("REPL", () => {
 
       cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
-        import { Server, Response } from "miragejs"
+        import { createServer, Response } from "miragejs"
 
-        export default new Server({
+        export default createServer({
           routes() {
             this.get("/foo", () => new Response(500, {}, {errors: ['something happened']}))
           },
@@ -201,9 +201,9 @@ describe("REPL", () => {
 
       cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
-        import { Server, Model, belongsTo } from "miragejs"
+        import { createServer, Model, belongsTo } from "miragejs"
 
-        export default new Server({
+        export default createServer({
           models: {
             user: Model,
           },
@@ -237,9 +237,9 @@ describe("REPL", () => {
 
       cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
-        import { Server, Model, RestSerializer } from "miragejs"
+        import { createServer, Model, RestSerializer } from "miragejs"
 
-        export default new Server({
+        export default createServer({
           serializers: {
             application: RestSerializer
           },
@@ -287,9 +287,9 @@ describe("REPL", () => {
 
       cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
-        import { Server, Model, RestSerializer } from "miragejs"
+        import { createServer, Model, RestSerializer } from "miragejs"
 
-        export default new Server({
+        export default createServer({
           serializers: {
             application: RestSerializer
           },
@@ -333,9 +333,9 @@ describe("REPL", () => {
 
       cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
-        import { Server, Model, RestSerializer } from "miragejs"
+        import { createServer, Model, RestSerializer } from "miragejs"
 
-        export default new Server({
+        export default createServer({
           serializers: {
             application: RestSerializer
           },
@@ -379,9 +379,9 @@ describe("REPL", () => {
 
       cy.get("[data-testid=config-input]").typeInCodemirror(
         d`
-        import { Server, Model, RestSerializer } from "miragejs"
+        import { createServer, Model, RestSerializer } from "miragejs"
 
-        export default new Server({
+        export default createServer({
           serializers: {
             application: RestSerializer
           },

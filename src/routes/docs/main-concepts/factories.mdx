@@ -15,9 +15,9 @@ Let's see how they work.
 Say we have a `Movie` model defined in Mirage.
 
 ```js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
-new Server({
+createServer({
   models: {
     movie: Model,
   },
@@ -27,9 +27,9 @@ new Server({
 To seed Mirage's database with some movies so you can start developing your app, use the `server.create` method in your server's `seeds`:
 
 ```js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
-new Server({
+createServer({
   models: {
     movie: Model,
   },
@@ -89,9 +89,9 @@ Fortunately, Factories let us do just that!
 Let's define a Factory for our `Movie` model using the `factories` key of our server options and the `Factory` import:
 
 ```js
-import { Server, Model, Factory } from "miragejs"
+import { createServer, Model, Factory } from "miragejs"
 
-new Server({
+createServer({
   models: {
     movie: Model,
   },
@@ -111,9 +111,9 @@ new Server({
 Right now the Factory is empty. Let's define a property on it:
 
 ```js
-import { Server, Model, Factory } from "miragejs"
+import { createServer, Model, Factory } from "miragejs"
 
-new Server({
+createServer({
   models: {
     movie: Model,
   },
@@ -173,10 +173,10 @@ and with the above factory definition, our database will now look like this:
 Let's add some more properties to our factory:
 
 ```js
-import { Server, Model, Factory } from "miragejs"
+import { createServer, Model, Factory } from "miragejs"
 import faker from "faker"
 
-new Server({
+createServer({
   models: {
     movie: Model,
   },
@@ -361,9 +361,9 @@ Let's see how it works.
 Say you have these two models in your app:
 
 ```js
-import { Server, Model, belongsTo } from "miragejs"
+import { createServer, Model, belongsTo } from "miragejs"
 
-new Server({
+createServer({
   models: {
     user: Model,
 
@@ -379,9 +379,9 @@ Let's further suppose that in your app, it is never valid to create a post witho
 You can use `afterCreate` to enforce this behavior:
 
 ```js
-import { Server, Model, belongsTo, Factory } from "miragejs"
+import { createServer, Model, belongsTo, Factory } from "miragejs"
 
-new Server({
+createServer({
   models: {
     user: Model,
 
@@ -460,9 +460,9 @@ Traits are an important feature of factories that make it easy to group related 
 For example, here we define a trait named `published` on our post factory:
 
 ```js
-import { Server, Model, Factory, trait } from "miragejs"
+import { createServer, Model, Factory, trait } from "miragejs"
 
-new Server({
+createServer({
   models: {
     post: Model,
   },
@@ -554,9 +554,9 @@ The `association()` helper provides some sugar for creating `belongsTo` relation
 As we saw earlier, the `afterCreate` hook lets us pre-wire relationships:
 
 ```js{14-20}
-import { Server, Model, Factory } from "miragejs"
+import { createServer, Model, Factory } from "miragejs"
 
-new Server({
+createServer({
   models: {
     user: Model,
 
@@ -582,9 +582,9 @@ new Server({
 The `association()` helper effectively replaces this code:
 
 ```js{14}
-import { Server, Model, Factory, association } from "miragejs"
+import { createServer, Model, Factory, association } from "miragejs"
 
-new Server({
+createServer({
   models: {
     user: Model,
 
@@ -634,9 +634,9 @@ Note that the `association()` helper cannot be used if your `belongsTo` relation
 To use your factories to seed your development database, call `server.create` and `server.createList` in your server's seeds function:
 
 ```js
-import { Server, Model, Factory } from "miragejs"
+import { createServer, Model, Factory } from "miragejs"
 
-new Server({
+createServer({
   models: {
     movie: Model,
   },
@@ -695,7 +695,7 @@ const state =
   // 'subscriber'
   "admin"
 
-new Server({
+createServer({
   // other config,
 
   seeds: scenarios[state],
@@ -709,7 +709,7 @@ This can be handy while developing your app or sharing the different states of a
 When you run your server in a `test` environment, the behavior of your server changes slightly.
 
 ```js
-new Server({
+createServer({
   environment: "test", // default is development
 
   seeds(server) {

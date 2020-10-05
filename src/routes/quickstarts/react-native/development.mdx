@@ -23,13 +23,13 @@ At the top of `App.js`, import `Server` from Mirage, create a server, and start 
 ```js{3-21}
 import React from "react"
 import { Text, View } from "react-native"
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 
 if (window.server) {
   server.shutdown()
 }
 
-window.server = new Server({
+window.server = createServer({
   routes() {
     this.get("/api/movies", () => {
       return {
@@ -64,7 +64,7 @@ export default function App() {
 }
 ```
 
-Note that before we call `new Server()`, we check to see if one already exists, and if so we shut it down. This is needed so React Native's hot module reloading doesn't cause multiple servers to exist at once.
+Note that before we call `createServer()`, we check to see if one already exists, and if so we shut it down. This is needed so React Native's hot module reloading doesn't cause multiple servers to exist at once.
 
 Now, whenever your app makes an API request, Mirage will intercept and respond to it.
 

@@ -24,10 +24,10 @@ Here's a basic example:
 
 ```js
 // src/server.js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
 export function makeServer({ environment = "development" } = {}) {
-  let server = new Server({
+  let server = createServer({
     environment,
 
     models: {

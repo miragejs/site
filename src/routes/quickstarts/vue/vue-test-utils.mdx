@@ -24,10 +24,10 @@ Here's a basic example:
 
 ```js
 // src/server.js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
 export function makeServer({ environment = "development" } = {}) {
-  let server = new Server({
+  let server = createServer({
     environment,
 
     models: {
@@ -61,13 +61,9 @@ Here's the Vue component we'll be testing.
 ```html
 <!-- src/App.vue -->
 <template>
-  <div v-if="serverError" data-testid="server-error">
-    {{ serverError }}
-  </div>
+  <div v-if="serverError" data-testid="server-error">{{ serverError }}</div>
 
-  <div v-else-if="users.length === 0" data-testid="no-users">
-    No users!
-  </div>
+  <div v-else-if="users.length === 0" data-testid="no-users">No users!</div>
 
   <div v-else>
     <ul id="users">

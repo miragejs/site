@@ -13,7 +13,7 @@ For now, let's learn the basics of the database so you feel confident interactin
 Mirage's database is really just a JavaScript object with some conventions around it. It's accessible off your `server` instance
 
 ```js
-let server = new Server()
+let server = createServer()
 
 server.db // {} the db is empty
 ```
@@ -48,7 +48,7 @@ server.db.movies.insert({ title: "The Dark Knight" })
 Mirage has a `seeds` method which is a conventional place to put some initial data into your server during development. You can call `loadData` on the database there:
 
 ```js
-new Server({
+createServer({
   seeds(server) {
     server.db.loadData({
       movies: [

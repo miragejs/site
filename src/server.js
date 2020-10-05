@@ -1,7 +1,7 @@
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 
 export function makeServer() {
-  return new Server({
+  return createServer({
     environment: process.env.NODE_ENV,
 
     seeds(server) {

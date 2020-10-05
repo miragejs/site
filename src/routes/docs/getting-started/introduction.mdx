@@ -53,20 +53,16 @@ export function App() {
 }
 ```
 
-We could set up a basic Mirage server to handle the `/api/users` network request it makes, like this:
+We use a simple Mirage route handler to handle the `/api/users` network request it makes, like this:
 
-```jsx
-// index.js
-import React from "react"
-import ReactDOM from "react-dom"
-import App from "./app"
-import { Server } from "miragejs"
+```jsx{3-13}
+// App.js
+import React, { useState, useEffect } from "react"
+import { createServer } from "miragejs"
 
-new Server({
+createServer({
   routes() {
-    this.namespace = "/api"
-
-    this.get("/users", () => [
+    this.get("/api/users", () => [
       { id: "1", name: "Luke" },
       { id: "2", name: "Leia" },
       { id: "3", name: "Anakin" },
@@ -74,10 +70,26 @@ new Server({
   },
 })
 
-ReactDOM.render(<App />, document.getElementById("root"))
+export function App() {
+  let [users, setUsers] = useState([])
+
+  useEffect(() => {
+    fetch("/api/users")
+      .then((response) => response.json())
+      .then((json) => setUsers(json))
+  }, [])
+
+  return (
+    <ul>
+      {users.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  )
+}
 ```
 
-Importantly, because Mirage mocks the HTTP boundary instead of the JavaScript code your app uses to make network requests, you never need to modify your application code to account for whether your app is talking to Mirage or to your real production backend.
+Importantly, because Mirage mocks the HTTP boundary instead of the JavaScript code your app uses to make network requests, you never need to modify your UI code to account for whether your app is talking to Mirage or to your real production backend.
 
 In addition to intercepting HTTP requests, Mirage provides a mock database and helper functions that make it easy to simulate dynamic backend services.
 

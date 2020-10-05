@@ -24,10 +24,10 @@ Here's a basic example:
 
 ```js
 // src/server.js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
 export function makeServer({ environment = "development" } = {}) {
-  let server = new Server({
+  let server = createServer({
     environment,
 
     models: {
@@ -65,10 +65,9 @@ Cypress.on("window:before:load", (win) => {
       headers: request.requestHeaders,
       body: request.requestBody,
     }).then((res) => {
-      let content =
-        res.headers.get("content-type").includes("application/json")
-          ? res.json()
-          : res.text()
+      let content = res.headers.get("content-type").includes("application/json")
+        ? res.json()
+        : res.text()
       return new Promise((resolve) => {
         content.then((body) => resolve([res.status, res.headers, body]))
       })
@@ -88,7 +87,7 @@ In your app's bootstrapping file, use Mirage to proxy your app's API requests to
 > Vue CLI users, this code goes in `src/main.js`.
 
 ```js
-import { Server, Response } from "miragejs"
+import { createServer, Response } from "miragejs"
 
 if (window.Cypress) {
   // If your app makes requests to domains other than / (the current domain), add them
@@ -97,7 +96,7 @@ if (window.Cypress) {
   let otherDomains = []
   let methods = ["get", "put", "patch", "post", "delete"]
 
-  new Server({
+  createServer({
     environment: "test",
     routes() {
       for (const domain of ["/", ...otherDomains]) {
@@ -118,7 +117,6 @@ if (window.Cypress) {
 }
 ```
 
-
 Now, whenever Cypress boots up your app, this code will delegate your app's network requests to the `handleFromCypress` function that we defined in the previous step.
 
 Once we start our real configured Mirage server alongside our Cypress code, it will start intercepting the requests from that function.
@@ -131,35 +129,34 @@ Create a new `cypress/integration/app.spec.js` file, import your `makeServer` fu
 import { makeServer } from "../../src/server"
 
 describe("user list", () => {
-  let server;
+  let server
 
   beforeEach(() => {
-    server = makeServer({ environment: "test" });
-  });
+    server = makeServer({ environment: "test" })
+  })
 
   afterEach(() => {
-    server.shutdown();
-  });
+    server.shutdown()
+  })
 
   it("shows the users from our server", () => {
-    server.create("user", { id: 1, name: "Luke" });
-    server.create("user", { id: 2, name: "Leia" });
+    server.create("user", { id: 1, name: "Luke" })
+    server.create("user", { id: 2, name: "Leia" })
 
-    cy.visit("/");
+    cy.visit("/")
 
-    cy.get('[data-testid="user-1"]').contains("Luke");
-    cy.get('[data-testid="user-2"]').contains("Leia");
-  });
+    cy.get('[data-testid="user-1"]').contains("Luke")
+    cy.get('[data-testid="user-2"]').contains("Leia")
+  })
 
   it("shows a message if there are no users", () => {
     // Don't create any users
 
-    cy.visit("/");
+    cy.visit("/")
 
-    cy.get('[data-testid="no-users"]').should("be.visible");
-  });
-});
-
+    cy.get('[data-testid="no-users"]').should("be.visible")
+  })
+})
 ```
 
 Note that we pass in `environment: test` option into our `makeServer` function, so that Mirage doesn't load its database seeds. That way, the server starts out empty for each test run, and in the beginning of our tests we can use `server.create` to set up our data scenario. The test environment also disables logging and latency, so that by default your CI test logs will be clean and your tests will be fast.

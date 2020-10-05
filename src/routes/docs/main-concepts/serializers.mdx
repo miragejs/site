@@ -49,9 +49,9 @@ Depending on your own backend API's format, you'll need to choose the closest se
 Once you've selected the appropriate serializer to start with, define it as your default application-wide serializer like this:
 
 ```js
-import { Server, RestSerializer } from "miragejs"
+import { createServer, RestSerializer } from "miragejs"
 
-new Server({
+createServer({
   serializers: {
     application: RestSerializer,
   },
@@ -63,9 +63,9 @@ The application serializer is the default one used for every Model and Collectio
 If you need to customize a serializer for a particular model type, you can define model-specific serializers that take precedence over your application serializer.
 
 ```js
-import { Server, RestSerializer } from "miragejs"
+import { createServer, RestSerializer } from "miragejs"
 
-new Server({
+createServer({
   serializers: {
     application: RestSerializer,
     movie: RestSerializer.extend({
@@ -80,13 +80,13 @@ You'll see examples of the kinds of model-specific customizations you might want
 Typically you might have application-wide customizations that you'd want to make, in addition to model-specific customizations. Because of this, the best practice is to use model-specific serializers that extend from your application serializer. You might achieve that like this:
 
 ```js
-import { Server, RestSerializer } from "miragejs"
+import { createServer, RestSerializer } from "miragejs"
 
 let ApplicationSerializer = RestSerializer.extend({
   root: false,
 })
 
-new Server({
+createServer({
   serializers: {
     application: ApplicationSerializer,
     movie: ApplicationSerializer.extend({
@@ -261,7 +261,7 @@ While most route handlers should return a Model or Collection instance and leave
 You can use the `this.serialize` helper method in a route handler to do this - make sure to use a `function` instead of a fat arrow so you have access to the correct `this`:
 
 ```js
-new Server({
+createServer({
   routes() {
     this.get("/movies", function (schema, request) {
       let movies = schema.movies.all()
@@ -280,11 +280,11 @@ The `serialize` helper will use the typical lookup logic to first check for a mo
 You can also use a specific serializer if you have a special case by passing in the name of the serializer as a second argument:
 
 ```js
-import { Server, RestSerializer } from "miragejs"
+import { createServer, RestSerializer } from "miragejs"
 
 let ApplicationSerializer = RestSerializer.extend()
 
-new Server({
+createServer({
   serializers: {
     application: ApplicationSerializer,
     movieWithRelationships: ApplicationSerializer.extend({

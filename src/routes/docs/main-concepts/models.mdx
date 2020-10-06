@@ -9,9 +9,9 @@ As a clarifying point, Mirage model instances only exist within Mirage's server,
 To define a model, import the `Model` class from `miragejs` and use it as a key on the `models` config option:
 
 ```js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
-new Server({
+createServer({
   models: {
     blogPost: Model,
   },
@@ -35,7 +35,7 @@ this.post("/blog-posts", function (schema) {
 You can also access it as `server.schema` directly off of your Mirage server instance, for example in your default scenario:
 
 ```js
-new Server({
+createServer({
   models: {
     blogPost: Model,
   },

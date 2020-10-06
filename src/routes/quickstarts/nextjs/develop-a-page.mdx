@@ -23,9 +23,9 @@ Within a page file, import `Server` from Mirage, create a server, and start mock
 ```js{3-15}
 // pages/index.js
 import { useState, useEffect } from "react"
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 
-new Server({
+createServer({
   routes() {
     this.get("/api/movies", () => ({
       movies: [

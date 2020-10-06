@@ -63,12 +63,12 @@ Within a test file, import `Server` from Mirage, create a server, and mock out t
 import React from "react"
 import { render, waitForElement } from "@testing-library/react-native"
 import App from "../App"
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 
 let server
 
 beforeEach(() => {
-  server = new Server()
+  server = createServer()
 })
 
 afterEach(() => {

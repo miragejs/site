@@ -23,10 +23,10 @@ Next, from your `server.js` file, export a function you can use to start your Mi
 
 ```js
 // src/server.js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
 export function makeServer({ environment: 'test' }) {
-  return new Server({
+  return createServer({
     environment,
 
     models: {

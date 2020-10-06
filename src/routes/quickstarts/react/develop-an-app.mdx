@@ -20,10 +20,10 @@ A common place to define your shared server is `src/server.js`:
 
 ```js
 // src/server.js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
 export function makeServer({ environment = "test" } = {}) {
-  let server = new Server({
+  let server = createServer({
     environment,
 
     models: {

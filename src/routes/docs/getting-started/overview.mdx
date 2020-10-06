@@ -5,9 +5,9 @@ Mirage lets you simulate API responses by writing **route handlers**.
 The simplest example of a route handler is a function that returns an object:
 
 ```js
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 
-new Server({
+createServer({
   routes() {
     this.namespace = "api"
 
@@ -29,9 +29,9 @@ Now whenever your app makes a GET request to `/api/movies`, Mirage will respond 
 You can get pretty far using static route handlers like this, and they're a good way to get comfortable working with Mirage. All the HTTP verbs work, there's a `timing` option you can use to simulate a slow server, and you can even return a custom `Response` to see how your app behaves when it receives an error from your API.
 
 ```js
-import { Server, Response } from "miragejs"
+import { createServer, Response } from "miragejs"
 
-new Server({
+createServer({
   routes() {
     this.namespace = "api"
 
@@ -84,9 +84,9 @@ Mirage has a **Data layer** to help you write a more powerful server implementat
 First, we'll tell Mirage that we have a dynamic `Movie` model:
 
 ```js{4-6}
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
-new Server({
+createServer({
   models: {
     movie: Model,
   },
@@ -132,7 +132,7 @@ The last step is to seed the database. Right now, if we sent a request to our ne
 That's because Mirage's database is empty. We can use **seeds** to start out our database with some initial data:
 
 ```js{14-18}
-new Server({
+createServer({
   models: {
     movie: Model,
   },
@@ -258,9 +258,9 @@ While it's nice to be able to pass in every attribute for each record, sometimes
 We can create a Factory for our `Movie` model like this:
 
 ```js{7-9}
-import { Server, Model, Factory } from "miragejs"
+import { createServer, Model, Factory } from "miragejs"
 
-new Server({
+createServer({
   models: {
     movie: Model,
   },
@@ -273,9 +273,9 @@ new Server({
 We can then define some properties on our Factory. They can be simple types like Booleans, Strings or Numbers, or functions that return dynamic data:
 
 ```js
-import { Server, Model, Factory } from "miragejs"
+import { createServer, Model, Factory } from "miragejs"
 
-new Server({
+createServer({
   models: {
     movie: Model,
   },
@@ -341,9 +341,9 @@ There's also a `server.createList` API to generate many records at once.
 You can use both `server.create` and `server.createList` to invoke your Factories in your `seeds` function:
 
 ```js
-import { Server, Factory } from "miragejs"
+import { createServer, Factory } from "miragejs"
 
-new Server({
+createServer({
   seeds(server) {
     server.createList("movie", 10)
   },
@@ -389,9 +389,9 @@ Dealing with relationships is always tricky, and mocking endpoints that deal wit
 Let's say your `Movie` has many `CastMembers`. You can declare this relationship in your model:
 
 ```js
-import { Server, hasMany, belongsTo } from "miragejs"
+import { createServer, hasMany, belongsTo } from "miragejs"
 
-new Server({
+createServer({
   models: {
     movie: Model.extend({
       castMembers: hasMany(),
@@ -487,9 +487,9 @@ This is why Mirage serializers exist. **Serializers** let you customize the form
 Mirage ships with a few named serializers that match popular backend formats:
 
 ```js
-import { Server, JSONAPISerializer } from "miragejs"
+import { createServer, JSONAPISerializer } from "miragejs"
 
-new Server({
+createServer({
   serializers: {
     application: JSONAPISerializer,
   },
@@ -499,9 +499,9 @@ new Server({
 You can also extend from the base class and use its formatting hooks to write your own:
 
 ```js
-import { Server, Serializer } from "miragejs"
+import { createServer, Serializer } from "miragejs"
 
-new Server({
+createServer({
   serializers: {
     application: Serializer.extend({
       keyForAttribute(attr) {
@@ -520,7 +520,7 @@ Mirage's serializer layer is aware of your relationships, which helps when mocki
 For example, with the following configuration
 
 ```js
-new Server({
+createServer({
   serializers: {
     movie: Serializer.extend({
       include: ["crewMembers"],
@@ -572,7 +572,7 @@ Mirage is a great tool to use even if you're working on an existing app, or if y
 To avoid this, tell Mirage to let unhandled requests pass through:
 
 ```js
-new Server({
+createServer({
   routes() {
     // Allow unhandled requests on the current domain to pass through
     this.passthrough()
@@ -585,7 +585,7 @@ Now you can develop as you normally would, for example against an existing API.
 When it comes time to build a new feature, you don't have to wait for the API to be updated. Just define the new route that you need
 
 ```js
-new Server({
+createServer({
   routes() {
     // Mock this route and Mirage will intercept it
     this.get("/movies")
@@ -593,10 +593,10 @@ new Server({
     // All other API requests on the current domain will still pass through
     // e.g. GET /api/directors
     this.passthrough()
-    
+
     // If your API requests go to an external domain, pass those through by
     // specifying the fully qualified domain name
-    this.passthrough("http://api.acme.com/**");
+    this.passthrough("http://api.acme.com/**")
   },
 })
 ```

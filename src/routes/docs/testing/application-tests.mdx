@@ -41,12 +41,12 @@ Let's import it and start it in `beforeEach`:
 
 ```js
 // homepage-test.js
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 
 let server
 
 beforeEach(() => {
-  server = new Server()
+  server = createServer()
 })
 
 afterEach(() => {
@@ -67,12 +67,12 @@ When you start Mirage, it will intercept your app's network requests, just like 
 Now we can mock out this route.
 
 ```js{6-16}
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
 let server
 
 beforeEach(() => {
-  server = new Server({
+  server = createServer({
     models: {
       movie: Model,
     },
@@ -105,12 +105,12 @@ As you learned in previous section of the guides, you can use the `seeds` method
 We can do that using the `server.create` and `server.createList` methods, directly in the body of our test:
 
 ```js{24}
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
 let server
 
 beforeEach(() => {
-  server = new Server({
+  server = createServer({
     models: {
       movie: Model,
     },
@@ -157,10 +157,10 @@ Next, export a function you can use to start your Mirage server:
 
 ```js
 // src/mirage.js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
 export function startMirage() {
-  return new Server({
+  return createServer({
     models: {
       movie: Model,
     },
@@ -231,11 +231,11 @@ To use the `test` environment in our tests, let's update our `startMirage` funct
 
 ```diff
   // src/mirage.js
-  import { Server, Model } from "miragejs"
+  import { createServer, Model } from "miragejs"
 
 - export function startMirage() {
 + export function startMirage({ environment: 'development' }) {
-    return new Server({
+    return createServer({
 +     environment,
 
       models: {
@@ -302,10 +302,10 @@ Say we wanted to test that when the user visits a detail route for a movie title
 
 ```js
 // src/mirage.js
-import { Server, Model, Factory } from "miragejs"
+import { createServer, Model, Factory } from "miragejs"
 
 export function startMirage({ environment: 'development' }) {
-  return new Server({
+  return createServer({
     environment,
 
     models: {
@@ -442,7 +442,7 @@ export default function(server) {
 // mirage.js
 import sharedScenario from "./scenarios/shared"
 
-new Server({
+createServer({
   seeds(server) {
     // Load the shared scenario in development
     sharedScenario(server)

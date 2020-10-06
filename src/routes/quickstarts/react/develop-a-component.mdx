@@ -21,9 +21,9 @@ Within a component file, import `Server` from Mirage, create a server, and start
 ```js{3-6}
 // src/App.js
 import React, { useState, useEffect } from "react"
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 
-let server = new Server()
+let server = createServer()
 server.get("/api/users", { users: [{ id: 1, name: "Bob" }] })
 
 export default function App() {

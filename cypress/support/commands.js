@@ -51,9 +51,9 @@ Cypress.Commands.add("getContent", { prevSubject: true }, (elements) => {
 // Were not able to configure delay :(
 // cy.get(".CodeMirror textarea").type(
 //   d`
-//   import { Server, Model, belongsTo } from "miragejs"
+//   import { createServer, Model, belongsTo } from "miragejs"
 
-//    export default new Server({
+//    export default createServer({
 //      models: {
 //        user: Model,
 //      },

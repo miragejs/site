@@ -22,10 +22,10 @@ A common place to define your shared server is `mirage.js`:
 
 ```js
 // mirage.js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
 export function makeServer({ environment = "test" } = {}) {
-  let server = new Server({
+  let server = createServer({
     environment,
 
     models: {

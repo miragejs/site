@@ -50,7 +50,7 @@ The default delay is 400ms during development, and 0 during testing (so your tes
 You can also set a global timing parameter for all routes. Individual timing parameters override the global setting.
 
 ```js
-new Server({
+createServer({
   routes() {
     this.namespace = "api"
     this.timing = 2000
@@ -148,9 +148,9 @@ Additionally, a header for `Content-Type` is set to `application/json`.
 You can customize both the response code and headers by returning an instance of the `Response` class in your route handler:
 
 ```js
-import { Server, Model, Response } from "miragejs"
+import { createServer, Model, Response } from "miragejs"
 
-new Server({
+createServer({
   models: {
     author: Model,
   },
@@ -189,7 +189,7 @@ this.get('http://api.twitter.com/v1', ...)
 If your entire app uses an external (other-origin) API, you can globally configure the domain via `urlPrefix`:
 
 ```js
-new Server({
+createServer({
   routes() {
     this.urlPrefix = 'https://my.api.com';
 

@@ -2,20 +2,17 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 
-new Server({
+createServer({
   routes() {
-    this.namespace = 'api'
+    this.namespace = "api"
 
-    this.get('/todos', ({ db }) => {
-      return db.todos;
+    this.get("/todos", ({ db }) => {
+      return db.todos
     })
-  }
+  },
 })
 
-ReactDOM.render(
-  <App />,
-  document.getElementById("root")
-)
+ReactDOM.render(<App />, document.getElementById("root"))
 ```

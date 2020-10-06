@@ -7,9 +7,9 @@ Once you've defined your models, you can define relationships between them using
 To define a to-one relationship, import the `belongsTo` helper and define a new property on a model that points to another model:
 
 ```js
-import { Server, Model, belongsTo } from "miragejs"
+import { createServer, Model, belongsTo } from "miragejs"
 
-new Server({
+createServer({
   models: {
     blogPost: Model.extend({
       author: belongsTo(),
@@ -44,9 +44,9 @@ To persist the new foreign key, you would need to call `blogPost.save()` after c
 To define a to-many relationship, use the `hasMany` helper:
 
 ```js
-import { Server, Model, hasMany } from "miragejs"
+import { createServer, Model, hasMany } from "miragejs"
 
-new Server({
+createServer({
   models: {
     blogPost: Model.extend({
       comments: hasMany(),
@@ -73,9 +73,9 @@ blogPost.createComment(attrs) // new saved comment (comment.blogPostId is set)
 A one-to-one relationship can be defined using the `belongsTo` helper on two models:
 
 ```js
-import { Server, Model, belongsTo } from "miragejs"
+import { createServer, Model, belongsTo } from "miragejs"
 
-new Server({
+createServer({
   models: {
     supplier: Model.extend({
       account: belongsTo(),
@@ -95,9 +95,9 @@ By default, Mirage will mark these two relationships as inverses of each other a
 A one-to-many relationship can be defined using the `belongsTo` helper on one model and the `hasMany` helper on an inverse:
 
 ```js
-import { Server, Model, belongsTo, hasMany } from "miragejs"
+import { createServer, Model, belongsTo, hasMany } from "miragejs"
 
-new Server({
+createServer({
   models: {
     user: Model.extend({
       comments: hasMany(),
@@ -117,9 +117,9 @@ Mirage will mark these as inverses of each other, and keep them in sync as they 
 A many-to-many relationship can be defined using the `hasMany` helper on two models:
 
 ```js
-import { Server, Model, hasMany } from "miragejs"
+import { createServer, Model, hasMany } from "miragejs"
 
-new Server({
+createServer({
   models: {
     blogPost: Model.extend({
       tags: hasMany(),
@@ -145,9 +145,9 @@ If your associations model has a different name than the association itself, you
 For example,
 
 ```js
-import { Server, Model, belongsTo, hasMany } from "miragejs"
+import { createServer, Model, belongsTo, hasMany } from "miragejs"
 
-new Server({
+createServer({
   models: {
     user: Model,
 
@@ -170,9 +170,9 @@ Often, relationships can be inverses of each other.
 For example, say we had the following two models:
 
 ```js
-import { Server, Model, belongsTo, hasMany } from "miragejs"
+import { createServer, Model, belongsTo, hasMany } from "miragejs"
 
-new Server({
+createServer({
   models: {
     blogPost: Model.extend({
       comments: hasMany(),
@@ -192,9 +192,9 @@ Mirage can often infer that two relationships on two different models are invers
 For example, suppose we had the following schema:
 
 ```js
-import { Server, Model, belongsTo, hasMany } from "miragejs"
+import { createServer, Model, belongsTo, hasMany } from "miragejs"
 
-new Server({
+createServer({
   models: {
     user: Model.extend({
       blogPosts: hasMany(),
@@ -211,9 +211,9 @@ new Server({
 In this case, Mirage doesn't know which relationship (`blogPost.author` or `blogPost.reviewer`) should by synchronized with the `user.blogPosts` collection. So, you can specify which one is the inverse by using the `inverse` option:
 
 ```js
-import { Server, Model, belongsTo, hasMany } from "miragejs"
+import { createServer, Model, belongsTo, hasMany } from "miragejs"
 
-new Server({
+createServer({
   models: {
     user: Model.extend({
       blogPosts: hasMany(),
@@ -236,9 +236,9 @@ You can specify whether an association is a polymorphic association by passing `
 For example, say you have `BlogPost` and `Picture` models that can both have a `Comment`. Here's how the model definitions could look:
 
 ```js
-import { Server, Model, belongsTo, hasMany } from "miragejs"
+import { createServer, Model, belongsTo, hasMany } from "miragejs"
 
-new Server({
+createServer({
   models: {
     blogPost: Model.extend({
       comments: hasMany(),
@@ -275,9 +275,9 @@ comment.commentableId = { id: 2, type: "picture" }
 Has-many relationships can also be polymorphic:
 
 ```js
-import { Server, Model, belongsTo, hasMany } from "miragejs"
+import { createServer, Model, belongsTo, hasMany } from "miragejs"
 
-new Server({
+createServer({
   models: {
     car: Model,
 

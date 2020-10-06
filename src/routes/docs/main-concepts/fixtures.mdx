@@ -7,9 +7,9 @@ In general, we recommend using factories for most situations, since they tend to
 Fixtures are nothing more than a conventional way to accomplish the following:
 
 ```js
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 
-new Server({
+createServer({
   seeds(server) {
     server.db.loadData({
       countries: [
@@ -29,9 +29,9 @@ Let's see how we can do the same thing using fixtures.
 Fixture data can be passed into your Mirage server definition using the `fixtures` key:
 
 ```js
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 
-new Server({
+createServer({
   fixtures: {
     countries: [
       { id: 1, name: "China" },
@@ -47,9 +47,9 @@ This data will be automatically loaded into Mirage's database as its starting da
 If you have a seeds function defined, Mirage assumes you want to use Factories to seed your data:
 
 ```js
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 
-new Server({
+createServer({
   fixtures: {
     countries: [
       { id: 1, name: "China" },
@@ -69,9 +69,9 @@ new Server({
 But you can use Fixtures in conjunction with Factories by calling `server.loadFixtures` in the default scenario:
 
 ```js
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 
-new Server({
+createServer({
   fixtures: {
     countries: [
       { id: 1, name: "China" },
@@ -111,10 +111,10 @@ export default [
 Now we can import it and pass it into our server definition:
 
 ```js
-import { Server } from "miragejs"
+import { createServer } from "miragejs"
 import countries from "./fixtures/countries"
 
-new Server({
+createServer({
   fixtures: {
     countries,
   },
@@ -144,12 +144,12 @@ seeds(server) {
 `server.loadFixtures()` will load all fixtures. You can load fixtures selectively by passing in an argument list of fixture names to `loadFixtures`:
 
 ```js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 import cities from "./fixtures/cities"
 import countries from "./fixtures/countries"
 import users from "./fixtures/users"
 
-new Server({
+createServer({
   models: {
     country: Model,
     city: Model,
@@ -188,9 +188,9 @@ There's no special API for creating relationships using fixtures – you just ne
 Let's say we had these models:
 
 ```js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
-new Server({
+createServer({
   models: {
     user: Model,
 
@@ -236,9 +236,9 @@ In this case, a post gets an `authorId`, even though that relationship points to
 Looking at the database dump above, if you wanted to recreate the same relationship graph using only Fixtures, your data would just need to match it:
 
 ```js
-import { Server, Model } from "miragejs"
+import { createServer, Model } from "miragejs"
 
-new Server({
+createServer({
   models: {
     user: Model,
 

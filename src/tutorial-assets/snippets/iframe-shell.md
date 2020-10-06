@@ -54,22 +54,22 @@
         },
       }
       const PlnkrRuntime = window.PlnkrRuntime
-      const plnkrInstantiate = PlnkrRuntime.Runtime.prototype[
-        PlnkrRuntime.Runtime.instantiate
-      ]
+      const plnkrInstantiate =
+        PlnkrRuntime.Runtime.prototype[PlnkrRuntime.Runtime.instantiate]
 
       // Monkey patch module loading for Mirage GraphQL
-      PlnkrRuntime.Runtime.prototype[PlnkrRuntime.Runtime.instantiate] =
-        function(key, processAnonRegister) {
-          return plnkrInstantiate.call(
-            this,
-            key.replace(
-              /https:\/\/dev\.jspm\.io\/@miragejs\/graphql(.*)/,
-              'https://jspm.dev/@miragejs/graphql$1'
-            ),
-            processAnonRegister
-          )
-        }
+      PlnkrRuntime.Runtime.prototype[
+        PlnkrRuntime.Runtime.instantiate
+      ] = function (key, processAnonRegister) {
+        return plnkrInstantiate.call(
+          this,
+          key.replace(
+            /https:\/\/dev\.jspm\.io\/@miragejs\/graphql(.*)/,
+            "https://jspm.dev/@miragejs/graphql$1"
+          ),
+          processAnonRegister
+        )
+      }
 
       const runtime = new PlnkrRuntime.Runtime({ host })
 

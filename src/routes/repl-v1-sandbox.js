@@ -16,7 +16,7 @@ export default function ({ id, navigate }) {
       }
     `,
     variables: {
-      id,
+      id: +id,
     },
   })
 
@@ -30,13 +30,13 @@ export default function ({ id, navigate }) {
 
   if (res.error || res.data?.sandboxes_by_pk === null) {
     return (
-      <div className="flex flex-col flex-1 items-center justify-center">
+      <div className="flex flex-col items-center justify-center flex-1">
         REPL not found.
       </div>
     )
   } else {
     return (
-      <div className="flex flex-col flex-1 items-center justify-center">
+      <div className="flex flex-col items-center justify-center flex-1">
         <div>Loading REPL...</div>
       </div>
     )

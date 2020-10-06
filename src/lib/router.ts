@@ -23,8 +23,8 @@ const allRoutes: RouteDefinition[] = [
     },
   },
   {
-    name: "repl-sandbox",
-    label: "repl-sandbox",
+    name: "repl-v1-sandbox",
+    label: "repl-v1-sandbox",
     path: "/repl/v1/:id",
   },
   {

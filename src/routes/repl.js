@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Repl from "../components/repl"
 import queryString from "query-string"
@@ -40,6 +40,13 @@ export default function ({ location, navigate }) {
   let [method, setMethod] = useState(initialValues.method)
   let [url, setUrl] = useState(initialValues.url)
   let [requestBody, setRequestBody] = useState(initialValues.requestBody)
+
+  // Clear any query params from initial render
+  useEffect(() => {
+    if (location.search) {
+      navigate("/repl")
+    }
+  })
 
   return (
     <Repl

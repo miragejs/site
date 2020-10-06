@@ -2,67 +2,57 @@ import React, { useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Repl from "../components/repl"
 import queryString from "query-string"
-import { useLocation } from "@reach/router"
 
-function DefaultSandbox() {
-  let defaultConfig = useTutorialSnippet("starting-input")
-
-  let [configInput, setConfigInput] = useState(defaultConfig)
-  let [method, setMethod] = useState("GET")
-  let [url, setUrl] = useState("/api/movies")
-  let [requestBody, setRequestBody] = useState("")
-
-  return (
-    <Repl
-      setConfigInput={setConfigInput}
-      configInput={configInput}
-      method={method}
-      setMethod={setMethod}
-      url={url}
-      setUrl={setUrl}
-      requestBody={requestBody}
-      setRequestBody={setRequestBody}
-    />
-  )
-}
-
-function QueryParamsSandbox() {
-  let defaultConfig = useTutorialSnippet("starting-input")
-  let location = useLocation()
+function getInitialValues({ location, defaultConfig }) {
   let queryParams = queryString.parse(location.search) ?? {}
-
-  let [configInput, setConfigInput] = useState(
-    queryParams.config ? atob(queryParams.config) : defaultConfig
-  )
-  let [method, setMethod] = useState(queryParams.method || "GET")
-  let [url, setUrl] = useState(queryParams.url || "")
-  let [requestBody, setRequestBody] = useState(queryParams.body || "")
-
-  return (
-    <Repl
-      setConfigInput={setConfigInput}
-      configInput={configInput}
-      method={method}
-      setMethod={setMethod}
-      url={url}
-      setUrl={setUrl}
-      requestBody={requestBody}
-      setRequestBody={setRequestBody}
-    />
-  )
-}
-
-export default function ({ location, navigate }) {
-  let queryParams = queryString.parse(location.search) ?? {}
-  let Component =
+  let mode =
     queryParams.config ||
     queryParams.method ||
     queryParams.url ||
     queryParams.body
-      ? QueryParamsSandbox
-      : DefaultSandbox
+      ? "queryParams"
+      : "default"
 
-  return <Component />
+  let initialValues = {
+    default: {
+      configInput: defaultConfig,
+      method: "GET",
+      url: "/api/movies",
+      requestBody: "",
+    },
+    queryParams: {
+      configInput: queryParams.config
+        ? atob(queryParams.config)
+        : defaultConfig,
+      method: queryParams.method || "GET",
+      url: queryParams.url || "",
+      requestBody: queryParams.body || "",
+    },
+  }
+
+  return initialValues[mode]
+}
+
+export default function ({ location, navigate }) {
+  let defaultConfig = useTutorialSnippet("starting-input")
+  let initialValues = getInitialValues({ location, defaultConfig })
+  let [configInput, setConfigInput] = useState(initialValues.configInput)
+  let [method, setMethod] = useState(initialValues.method)
+  let [url, setUrl] = useState(initialValues.url)
+  let [requestBody, setRequestBody] = useState(initialValues.requestBody)
+
+  return (
+    <Repl
+      setConfigInput={setConfigInput}
+      configInput={configInput}
+      method={method}
+      setMethod={setMethod}
+      url={url}
+      setUrl={setUrl}
+      requestBody={requestBody}
+      setRequestBody={setRequestBody}
+    />
+  )
 }
 
 function useTutorialSnippet(name) {

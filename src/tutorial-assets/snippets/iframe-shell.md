@@ -21,7 +21,7 @@
         }),
 
         "index.js": `
-          import { createServer } from 'miragejs';
+          import { Server } from 'miragejs';
           import server from './App';
 
           let didExportServer = server instanceof Server

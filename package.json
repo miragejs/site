@@ -88,7 +88,7 @@
     "xstate": "^4.13.0"
   },
   "devDependencies": {
-    "@percy/cypress": "^2.3.1",
+    "@percy/cypress": "^2.3.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^10.4.9",
     "@types/jest": "^26.0.14",

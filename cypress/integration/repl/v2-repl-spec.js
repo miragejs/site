@@ -1,7 +1,7 @@
 import d from "dedent"
 import { makeServer } from "../../../src/server-hasura"
 
-describe("v2 sandboxes", () => {
+describe("v2 repl", () => {
   let server
 
   beforeEach(() => {
@@ -12,7 +12,7 @@ describe("v2 sandboxes", () => {
     server.shutdown()
   })
 
-  it("can create a repl from /repl", () => {
+  it("can create a sandbox from /repl", () => {
     cy.visit("/repl")
 
     cy.get("[data-testid=config-input]").typeInCodemirror(
@@ -37,7 +37,7 @@ describe("v2 sandboxes", () => {
     })
   })
 
-  it("can load a repl", () => {
+  it("can load a sandbox", () => {
     server.logging = true
     let sandbox = server.create("sandbox", {
       config: d`
@@ -68,4 +68,10 @@ describe("v2 sandboxes", () => {
         expect(text).to.equal('"data"')
       })
   })
+
+  // it("it can fork a sandbox")
+
+  // it("can update a user's sandbox")
+
+  // it("shows an error state for a missing v2 sandbox")
 })

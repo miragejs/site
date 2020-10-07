@@ -31,6 +31,9 @@ const allRoutes: RouteDefinition[] = [
     name: "repl-v2-sandbox",
     label: "repl-v2-sandbox",
     path: "/repl/v2/:id2",
+    meta: {
+      fullWidthHeader: true,
+    },
   },
   {
     name: "docs",

@@ -1,7 +1,7 @@
 import d from "dedent"
 import { makeServer } from "../../../src/server-hasura"
 
-describe("saving repls", () => {
+describe("v1 repl", () => {
   let server
 
   beforeEach(() => {
@@ -42,4 +42,8 @@ describe("saving repls", () => {
     cy.get("[data-testid=request-url]").should("have.value", "/foo")
     cy.url().should("eq", `${Cypress.config().baseUrl}/repl`)
   })
+
+  // it('can fork a v1 sandbox')
+
+  // it("shows an error state for a missing v1 sandbox")
 })

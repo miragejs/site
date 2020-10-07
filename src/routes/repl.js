@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Repl from "../components/repl"
 import queryString from "query-string"
+import { useMutation } from "urql"
+import { nanoid, customAlphabet } from "nanoid"
+
+const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
 function getInitialValues({ location, defaultConfig }) {
   let queryParams = queryString.parse(location.search) ?? {}
@@ -48,8 +52,34 @@ export default function ({ location, navigate }) {
     }
   })
 
+  const { createSandbox } = useSandbox()
+
+  function handleSave() {
+    let editingToken = nanoid()
+    let browserId = shortNanoid()
+
+    localStorage.setItem("repl:editingToken", editingToken)
+    localStorage.setItem("repl:browserId", browserId)
+
+    let attrs = {
+      id2: shortNanoid(),
+      editing_token: editingToken,
+      browser_id: browserId,
+      config: configInput,
+      method,
+      url,
+      request_body: requestBody,
+    }
+
+    createSandbox({ object: attrs }).then((res) => {
+      let id2 = res.data.insert_sandboxes_one.id2
+      navigate(`/repl/v2/${id2}`)
+    })
+  }
+
   return (
     <Repl
+      onSave={handleSave}
       setConfigInput={setConfigInput}
       configInput={configInput}
       method={method}
@@ -88,4 +118,17 @@ function useTutorialSnippet(name) {
   }, {})
 
   return snippets[name]
+}
+
+function useSandbox() {
+  const CreateSandbox = `
+    mutation ($object: sandboxes_insert_input!) {
+      insert_sandboxes_one(object: $object) {
+        id2
+      }
+    }
+  `
+  const [, createSandbox] = useMutation(CreateSandbox)
+
+  return { createSandbox }
 }

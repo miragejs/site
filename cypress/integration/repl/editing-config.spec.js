@@ -1,6 +1,6 @@
 import d from "dedent"
 
-describe.only("editing the config", () => {
+describe("editing the config", () => {
   it("shows a parsing error", () => {
     cy.visit("/repl")
 

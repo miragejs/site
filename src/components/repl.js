@@ -117,6 +117,7 @@ const inspectorMachine = Machine(
 )
 
 export default function ({
+  onSave = () => {},
   setConfigInput,
   configInput,
   method,
@@ -222,15 +223,14 @@ export default function ({
       <div className="flex items-center px-6 py-1 text-sm bg-gray-100 border-t border-b border-gray-300">
         <p className="font-medium tracking-wide text-gray-500">REPL</p>
         <div className="flex items-center ml-6 space-x-1">
-          {/* <button
+          <button
             className="px-3 py-1 text-gray-800 rounded hover:bg-gray-200"
             data-testid="save"
-            onClick={() => {}} 
+            onClick={onSave}
           >
             Save
-          </button> */}
-          {/* TODO: Status */}
-          {/* {hasEditedDefaultConfig && (
+          </button>{" "}
+          {/* {true && (
             <p data-testid="status" className="pl-4 text-xs text-gray-500">
               You have unsaved changes.
             </p>

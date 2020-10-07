@@ -28,6 +28,11 @@ const allRoutes: RouteDefinition[] = [
     path: "/repl/v1/:id",
   },
   {
+    name: "repl-v2-sandbox",
+    label: "repl-v2-sandbox",
+    path: "/repl/v2/:id2",
+  },
+  {
     name: "docs",
     label: "Documentation",
     routes: [

@@ -1,6 +1,6 @@
 import d from "dedent"
 
-describe.only("loading the repl via query params", () => {
+describe("loading the repl via query params", () => {
   it("can use a query param for the config's initial value", () => {
     cy.visit(
       "/repl?config=aW1wb3J0IHsgY3JlYXRlU2VydmVyIH0gZnJvbSAibWlyYWdlanMiCgpleHBvcnQgZGVmYXVsdCBjcmVhdGVTZXJ2ZXIoewogIHJvdXRlcygpIHsKICAgIHRoaXMubmFtZXNwYWNlID0gImFwaSIKCiAgICB0aGlzLmdldCgiL21vdmllcyIsICgpID0%2BIHsKICAgICAgcmV0dXJuIHsKICAgICAgICBtb3ZpZXM6IFsKICAgICAgICAgIHsgaWQ6IDEsIG5hbWU6ICJJbmNlcHRpb24iLCB5ZWFyOiAyMDEwIH0sCiAgICAgICAgICB7IGlkOiAyLCBuYW1lOiAiSW50ZXJzdGVsbGFyIiwgeWVhcjogMjAxNCB9LAogICAgICAgICAgeyBpZDogMywgbmFtZTogIkR1bmtpcmsiLCB5ZWFyOiAyMDE3IH0sCiAgICAgICAgXSwKICAgICAgfQogICAgfSkKICB9LAp9KQ%3D%3D"
@@ -46,7 +46,7 @@ describe.only("loading the repl via query params", () => {
       })
   })
 
-  it.only("can use a query param for the method and url's initial value", () => {
+  it("can use a query param for the method and url's initial value", () => {
     cy.visit("/repl?method=GET&url=%2Fusers%2F1")
 
     cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")

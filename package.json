@@ -55,7 +55,7 @@
     "gatsby-plugin-react-helmet": "^3.3.11",
     "gatsby-plugin-react-svg": "^3.0.0",
     "gatsby-plugin-sharp": "^2.6.36",
-    "gatsby-plugin-styled-components": "^3.3.11",
+    "gatsby-plugin-styled-components": "^3.3.13",
     "gatsby-plugin-svgr": "^2.0.2",
     "gatsby-plugin-typescript": "^2.4.20",
     "gatsby-remark-images": "^3.3.33",

@@ -119,14 +119,8 @@ const inspectorMachine = Machine(
 export default function ({
   onSave = () => {},
   hasChanges,
-  setConfigInput,
-  configInput,
-  method,
-  setMethod,
-  url,
-  setUrl,
-  requestBody,
-  setRequestBody,
+  sandbox,
+  setSandbox,
 }) {
   let iframeRef = React.useRef()
   let [inspectorState, send] = useMachine(inspectorMachine, {
@@ -142,7 +136,7 @@ export default function ({
 
   function handleConfigInputChange(newConfigInput) {
     send("CONFIG_CHANGE")
-    setConfigInput(newConfigInput)
+    setSandbox((sandbox) => ({ ...sandbox, config: newConfigInput }))
   }
 
   function handleMessage({ data }) {
@@ -211,7 +205,7 @@ export default function ({
 
   // Splice in the Input into the iframe shell
   let lineForApp = shellLines.findIndex((line) => line.match("App.js"))
-  let escapedConfigInput = escapeBackticks(configInput)
+  let escapedConfigInput = escapeBackticks(sandbox.config || "")
   shellLines.splice(lineForApp + 1, 0, ...escapedConfigInput.split("\n"))
   let srcDoc = shellLines.join("\n")
   const [debouncedSrcDoc] = useDebounce(srcDoc, 225)
@@ -394,7 +388,7 @@ export default function ({
                 >
                   <CodeEditor
                     data-testid="config-input"
-                    value={configInput}
+                    value={sandbox.config}
                     onChange={handleConfigInputChange}
                   />
                 </div>
@@ -438,12 +432,18 @@ export default function ({
               </div>
               <div className="relative z-0 flex-1 bg-gray-100">
                 <Inspector.Request
-                  method={method}
-                  setMethod={setMethod}
-                  url={url}
-                  setUrl={setUrl}
-                  requestBody={requestBody}
-                  setRequestBody={setRequestBody}
+                  method={sandbox.method}
+                  setMethod={(method) =>
+                    setSandbox((sandbox) => ({ ...sandbox, method }))
+                  }
+                  url={sandbox.url}
+                  setUrl={(url) =>
+                    setSandbox((sandbox) => ({ ...sandbox, url }))
+                  }
+                  requestBody={sandbox.request_body}
+                  setRequestBody={(request_body) =>
+                    setSandbox((sandbox) => ({ ...sandbox, request_body }))
+                  }
                   onRequest={(request) => send("REQUEST", request)}
                 />
 

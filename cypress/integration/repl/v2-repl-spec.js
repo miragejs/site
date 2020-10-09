@@ -27,6 +27,11 @@ describe("v2 repl", () => {
       `
     )
 
+    cy.get("[data-testid=status]").should(
+      "contain",
+      "You have unsaved changes."
+    )
+
     cy.get("[data-testid=save]").click()
 
     cy.location().should((loc) => {
@@ -37,7 +42,7 @@ describe("v2 repl", () => {
     })
   })
 
-  it.only("can load a sandbox", () => {
+  it("can load a sandbox", () => {
     let sandbox = server.create("sandbox", {
       config: d`
         import { createServer } from "miragejs"
@@ -69,6 +74,7 @@ describe("v2 repl", () => {
   })
 
   it("can fork a sandbox", () => {
+    server.logging = true
     let sandbox = server.create("sandbox", {
       config: d`
         import { createServer } from "miragejs"
@@ -132,7 +138,7 @@ describe("v2 repl", () => {
       })
   })
 
-  it("can update a user's sandbox", () => {
+  it.skip("can update a user's sandbox", () => {
     localStorage.setItem("repl:browser_id", "my-browser")
     localStorage.setItem(
       "repl:editing_tokens",

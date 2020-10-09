@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Repl from "../components/repl"
 import queryString from "query-string"
@@ -7,7 +7,7 @@ import { nanoid, customAlphabet } from "nanoid"
 
 const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
-function getInitialValues({ location, defaultConfig }) {
+function getInitialSandbox({ location, defaultConfig }) {
   let queryParams = queryString.parse(location.search) ?? {}
   let mode =
     queryParams.config ||
@@ -17,33 +17,30 @@ function getInitialValues({ location, defaultConfig }) {
       ? "queryParams"
       : "default"
 
-  let initialValues = {
+  let initialSandboxes = {
     default: {
-      configInput: defaultConfig,
+      config: defaultConfig,
       method: "GET",
       url: "/api/movies",
-      requestBody: "",
+      request_body: "",
     },
     queryParams: {
-      configInput: queryParams.config
-        ? atob(queryParams.config)
-        : defaultConfig,
+      config: queryParams.config ? atob(queryParams.config) : defaultConfig,
       method: queryParams.method || "GET",
       url: queryParams.url || "",
-      requestBody: queryParams.body || "",
+      request_body: queryParams.body || "",
     },
   }
 
-  return initialValues[mode]
+  return initialSandboxes[mode]
 }
 
 export default function ({ location, navigate }) {
   let defaultConfig = useTutorialSnippet("starting-input")
-  let initialValues = getInitialValues({ location, defaultConfig })
-  let [configInput, setConfigInput] = useState(initialValues.configInput)
-  let [method, setMethod] = useState(initialValues.method)
-  let [url, setUrl] = useState(initialValues.url)
-  let [requestBody, setRequestBody] = useState(initialValues.requestBody)
+  let initialSandboxRef = useRef(getInitialSandbox({ location, defaultConfig }))
+  let [sandbox, setSandbox] = useState(() =>
+    getInitialSandbox({ location, defaultConfig })
+  )
 
   // Clear any query params from initial render
   useEffect(() => {
@@ -65,10 +62,7 @@ export default function ({ location, navigate }) {
       id2: shortNanoid(),
       editing_token: editingToken,
       browser_id: browserId,
-      config: configInput,
-      method,
-      url,
-      request_body: requestBody,
+      ...sandbox,
     }
 
     createSandbox({ object: attrs }).then((res) => {
@@ -77,17 +71,14 @@ export default function ({ location, navigate }) {
     })
   }
 
+  let hasChanges = initialSandboxRef.current.config !== sandbox.config
+
   return (
     <Repl
       onSave={handleSave}
-      setConfigInput={setConfigInput}
-      configInput={configInput}
-      method={method}
-      setMethod={setMethod}
-      url={url}
-      setUrl={setUrl}
-      requestBody={requestBody}
-      setRequestBody={setRequestBody}
+      sandbox={sandbox}
+      setSandbox={setSandbox}
+      hasChanges={hasChanges}
     />
   )
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import { useQuery } from "urql"
 import Repl from "../components/repl"
 import { useMutation } from "urql"
@@ -7,12 +7,8 @@ import { nanoid, customAlphabet } from "nanoid"
 const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
 export default function ({ id2, navigate }) {
-  let hasSetInitialStateRef = useRef(false)
-  let [initialConfigInput, setInitialConfigInput] = useState()
-  let [configInput, setConfigInput] = useState("")
-  let [method, setMethod] = useState("")
-  let [url, setUrl] = useState("")
-  let [requestBody, setRequestBody] = useState("")
+  let [initialSandbox, setInitialSandbox] = useState()
+  let [sandbox, setSandbox] = useState()
   let [res] = useQuery({
     query: `
       query ($id2: String!) {
@@ -30,19 +26,11 @@ export default function ({ id2, navigate }) {
     },
   })
 
-  let sandbox = res.data?.sandboxes[0]
-
-  if (!hasSetInitialStateRef.current && sandbox) {
-    setInitialConfigInput(sandbox.config || "")
-    setConfigInput(sandbox.config || "")
-    setMethod(sandbox.method || "GET")
-    setUrl(sandbox.url || "")
-    setRequestBody(sandbox.request_body || "")
-
-    hasSetInitialStateRef.current = true
+  if (!initialSandbox && res.data) {
+    let { __typename, ...sandboxFromResponse } = res.data.sandboxes[0]
+    setInitialSandbox(sandboxFromResponse)
+    setSandbox(sandboxFromResponse)
   }
-
-  let hasChanges = initialConfigInput !== configInput
 
   const { createSandbox } = useSandbox()
 
@@ -53,37 +41,29 @@ export default function ({ id2, navigate }) {
     localStorage.setItem("repl:editingToken", editingToken)
     localStorage.setItem("repl:browserId", browserId)
 
+    let { id, ...newSandboxAttrs } = sandbox
     let attrs = {
       id2: shortNanoid(),
       editing_token: editingToken,
       browser_id: browserId,
-      config: configInput,
-      method,
-      url,
-      request_body: requestBody,
+      ...newSandboxAttrs,
     }
 
     createSandbox({ object: attrs }).then((res) => {
-      let newSandbox = res.data.insert_sandboxes_one
-      setInitialConfigInput(newSandbox.config || "")
+      let { __typename, ...newSandbox } = res.data.insert_sandboxes_one
+      setInitialSandbox(newSandbox)
       navigate(`/repl/v2/${newSandbox.id2}`)
     })
   }
 
-  return !hasSetInitialStateRef.current ? (
+  return !initialSandbox ? (
     <p>Loading...</p>
   ) : (
     <Repl
-      hasChanges={hasChanges}
+      hasChanges={initialSandbox.config !== sandbox.config}
       onSave={handleSave}
-      setConfigInput={setConfigInput}
-      configInput={configInput}
-      method={method}
-      setMethod={setMethod}
-      url={url}
-      setUrl={setUrl}
-      requestBody={requestBody}
-      setRequestBody={setRequestBody}
+      sandbox={sandbox}
+      setSandbox={setSandbox}
     />
   )
 }

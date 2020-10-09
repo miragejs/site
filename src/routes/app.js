@@ -95,7 +95,6 @@ function CarbonAdProvider({ children }) {
     let bestTarget = queue.find((target) => target.current !== null)
 
     if (containerIsInRoot && bestTarget) {
-      console.log("moving ad")
       bestTarget.current.appendChild(container)
     }
   }, [queue])

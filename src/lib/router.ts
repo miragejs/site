@@ -23,13 +23,13 @@ const allRoutes: RouteDefinition[] = [
     },
   },
   {
-    name: "repl-v1-sandbox",
-    label: "repl-v1-sandbox",
+    name: "repl-v1",
+    label: "repl-v1",
     path: "/repl/v1/:id",
   },
   {
-    name: "repl-v2-sandbox",
-    label: "repl-v2-sandbox",
+    name: "repl-v2",
+    label: "repl-v2",
     path: "/repl/v2/:id2",
     meta: {
       fullWidthHeader: true,

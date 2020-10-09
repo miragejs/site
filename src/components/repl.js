@@ -118,6 +118,7 @@ const inspectorMachine = Machine(
 
 export default function ({
   onSave = () => {},
+  hasChanges,
   setConfigInput,
   configInput,
   method,
@@ -218,6 +219,7 @@ export default function ({
   return (
     <div
       className="flex flex-col mt-16"
+      data-testid="repl"
       style={{ height: "calc(100vh - 4rem)" }}
     >
       <div className="flex items-center px-6 py-1 text-sm bg-gray-100 border-t border-b border-gray-300">
@@ -230,11 +232,11 @@ export default function ({
           >
             Save
           </button>{" "}
-          {/* {true && (
+          {hasChanges && (
             <p data-testid="status" className="pl-4 text-xs text-gray-500">
               You have unsaved changes.
             </p>
-          )} */}
+          )}
         </div>
 
         {isShowingShareDialog && (

@@ -37,8 +37,7 @@ describe("v2 repl", () => {
     })
   })
 
-  it("can load a sandbox", () => {
-    server.logging = true
+  it.only("can load a sandbox", () => {
     let sandbox = server.create("sandbox", {
       config: d`
         import { createServer } from "miragejs"
@@ -69,7 +68,142 @@ describe("v2 repl", () => {
       })
   })
 
-  // it("it can fork a sandbox")
+  it("can fork a sandbox", () => {
+    let sandbox = server.create("sandbox", {
+      config: d`
+        import { createServer } from "miragejs"
+
+        export default createServer({
+          routes() {
+            this.get("/movies", () => ([
+              { id: 1, name: "Inception", year: 2010 },
+            ]))
+          },
+        })
+      `,
+      url: "/movies",
+      method: "GET",
+    })
+
+    cy.visit(`/repl/v2/${sandbox.id2}`)
+
+    cy.get("[data-testid=config-input]").typeInCodemirror(
+      d`
+      import { createServer } from "miragejs"
+
+      export default createServer({
+        routes() {
+          this.get("/movies", () => ([
+            { id: 1, name: "Inception", year: 2010 },
+            { id: 2, name: "Interstellar", year: 2014 },
+          ]))
+        },
+      })
+      `
+    )
+
+    cy.get("[data-testid=status]").should(
+      "contain",
+      "You have unsaved changes."
+    )
+
+    cy.get("[data-testid=save]").click()
+
+    cy.get("[data-testid=repl]").should("exist")
+    cy.get("[data-testid=status]").should(
+      "not.contain",
+      "You have unsaved changes."
+    )
+
+    cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
+
+    cy.get("[data-testid=send-request]").click()
+
+    cy.get("[data-testid=response-body]")
+      .should("exist")
+      .invoke("text")
+      .then((text) => {
+        let json = JSON.parse(text)
+
+        expect(json).to.deep.equal([
+          { id: 1, name: "Inception", year: 2010 },
+          { id: 2, name: "Interstellar", year: 2014 },
+        ])
+      })
+  })
+
+  it("can update a user's sandbox", () => {
+    localStorage.setItem("repl:browser_id", "my-browser")
+    localStorage.setItem(
+      "repl:editing_tokens",
+      JSON.stringify(["my-editing-token-1"])
+    )
+    let sandbox = server.create("sandbox", {
+      browser_id: "my-browser",
+      editing_token: "my-editing-token-1",
+      config: d`
+        import { createServer } from "miragejs"
+
+        export default createServer({
+          routes() {
+            this.get("/movies", () => ([
+              { id: 1, name: "Inception", year: 2010 },
+            ]))
+          },
+        })
+      `,
+      url: "/movies",
+      method: "GET",
+    })
+
+    cy.visit(`/repl/v2/${sandbox.id2}`)
+
+    cy.get("[data-testid=config-input]").typeInCodemirror(
+      d`
+      import { createServer } from "miragejs"
+
+      export default createServer({
+        routes() {
+          this.get("/movies", () => ([
+            { id: 1, name: "Inception", year: 2010 },
+            { id: 2, name: "Interstellar", year: 2014 },
+          ]))
+        },
+      })
+      `
+    )
+
+    cy.get("[data-testid=status]").should(
+      "contain",
+      "You have unsaved changes."
+    )
+
+    cy.get("[data-testid=save]").click()
+
+    cy.get("[data-testid=repl]").should("exist")
+    cy.get("[data-testid=status]").should(
+      "not.contain",
+      "You have unsaved changes."
+    )
+
+    cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
+
+    cy.get("[data-testid=send-request]").click()
+
+    cy.get("[data-testid=response-body]")
+      .should("exist")
+      .invoke("text")
+      .then((text) => {
+        let json = JSON.parse(text)
+
+        expect(json).to.deep.equal([
+          { id: 1, name: "Inception", year: 2010 },
+          { id: 2, name: "Interstellar", year: 2014 },
+        ])
+      })
+
+    localStorage.clear()
+  })
 
   // it("can update a user's sandbox")
 

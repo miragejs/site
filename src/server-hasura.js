@@ -53,16 +53,13 @@ export function makeServer({ environment = "test" } = {}) {
               mutation_root: {
                 update_sandboxes_by_pk(obj, args, context, info) {
                   let editingToken =
-                    request.requestHeaders["x-repl-editing-token"]
+                    request.requestHeaders["x-hasura-repl-editing-token"]
                   let { _set, pk_columns } = args
                   let { mirageSchema: schema } = context
                   let sandboxId = pk_columns.id
                   let ownsSandbox =
                     editingToken ===
                     schema.db.sandboxes.find(sandboxId).editing_token
-
-                  console.log({ headers: request.requestHeaders })
-                  debugger
 
                   if (ownsSandbox) {
                     return schema.db.sandboxes.update(sandboxId, _set)

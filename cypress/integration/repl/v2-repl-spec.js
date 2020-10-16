@@ -141,15 +141,15 @@ describe("v2 repl", () => {
       })
   })
 
-  it.only("can update a user's sandbox", () => {
+  it("can update a user's sandbox", () => {
     server.logging = true
     cy.window().then((win) => {
       win.localStorage.setItem("repl:browserId", "my-browser")
-      win.localStorage.setItem("repl:editingToken", "my-editing-token-1")
+      win.localStorage.setItem("repl:editingToken", "my-editing-token")
     })
     let sandbox = server.create("sandbox", {
       browser_id: "my-browser",
-      editing_token: "my-editing-token-1",
+      editing_token: "my-editing-token",
       config: d`
         import { createServer } from "miragejs"
 
@@ -274,14 +274,14 @@ describe("v2 repl", () => {
     })
   })
 
-  it("lets a user update multiple sandboxes", () => {
+  it("lets a user update an existing sandbox after creating a new one from /repl", () => {
     cy.window().then((win) => {
       win.localStorage.setItem("repl:browserId", "my-browser")
-      win.localStorage.setItem("repl:editingToken", "my-editing-token-1")
+      win.localStorage.setItem("repl:editingToken", "my-editing-token")
     })
     let existingSandbox = server.create("sandbox", {
       browser_id: "my-browser",
-      editing_token: "my-editing-token-1",
+      editing_token: "my-editing-token",
       config: d`
         import { createServer } from "miragejs"
 
@@ -320,7 +320,10 @@ describe("v2 repl", () => {
 
         export default createServer({
           routes() {
-            this.get('/games', () => ([ { id: 1, name: 'Breath of the Wild' }]))
+            this.get('/movies', () => ([
+              { id: 1, name: 'Inception' },
+              { id: 2, name: 'Interstellar' },
+            ]))
           }
         })
       `
@@ -331,17 +334,104 @@ describe("v2 repl", () => {
     cy.location().should((loc) => {
       expect(server.db.sandboxes.length).to.eq(2)
 
-      // let existingSandbox = server.db.sandboxes[0]
       expect(loc.pathname).to.eq(`/repl/v2/${existingSandbox.id2}`)
-      // expect(existingSandbox.config).to.eq(d`
-      //   import { createServer } from "miragejs"
 
-      //   export default createServer({
-      //     routes() {
-      //       this.get('/foo', () => ({ some: 'new data' }))
-      //     }
-      //   })
-      // `)
+      expect(server.db.sandboxes.find(existingSandbox.id).config).to.eq(d`
+        import { createServer } from "miragejs"
+
+        export default createServer({
+          routes() {
+            this.get('/movies', () => ([
+              { id: 1, name: 'Inception' },
+              { id: 2, name: 'Interstellar' },
+            ]))
+          }
+        })
+      `)
+    })
+  })
+
+  it("lets a user update an existing sandbox after forking one", () => {
+    cy.window().then((win) => {
+      win.localStorage.setItem("repl:browserId", "my-browser")
+      win.localStorage.setItem("repl:editingToken", "my-editing-token")
+    })
+    let existingSandbox = server.create("sandbox", {
+      browser_id: "my-browser",
+      editing_token: "my-editing-token",
+      config: d`
+        import { createServer } from "miragejs"
+
+        export default createServer({
+          routes() {
+            this.get('/movies', () => ([ { id: 1, name: 'Inception' }]))
+          }
+        })
+      `,
+      url: "/movies",
+
+      method: "GET",
+    })
+    let otherUsersSandbox = server.create("sandbox", {
+      browser_id: "other-users-browser",
+      editing_token: "other-users-editing-token",
+      config: "",
+      url: "/movies",
+      method: "GET",
+    })
+
+    cy.visit(`/repl/v2/${otherUsersSandbox.id2}`)
+
+    cy.get("[data-testid=config-input]").typeInCodemirror(
+      d`
+        import { createServer } from "miragejs"
+
+        export default createServer({
+          routes() {
+            this.get('/games', () => ([ { id: 1, name: 'Breath of the Wild' }]))
+          }
+        })
+      `
+    )
+
+    cy.get("[data-testid=save]").click()
+
+    cy.visit(`/repl/v2/${existingSandbox.id2}`)
+
+    cy.get("[data-testid=config-input]").typeInCodemirror(
+      d`
+      import { createServer } from "miragejs"
+
+      export default createServer({
+        routes() {
+          this.get('/movies', () => ([
+            { id: 1, name: 'Inception' },
+            { id: 2, name: 'Interstellar' }
+          ]))
+        }
+      })
+      `
+    )
+
+    cy.get("[data-testid=save]").click()
+
+    cy.location().should((loc) => {
+      expect(server.db.sandboxes.length).to.eq(3)
+
+      expect(loc.pathname).to.eq(`/repl/v2/${existingSandbox.id2}`)
+
+      expect(server.db.sandboxes.find(existingSandbox.id).config).to.eq(d`
+        import { createServer } from "miragejs"
+
+        export default createServer({
+          routes() {
+            this.get('/movies', () => ([
+              { id: 1, name: 'Inception' },
+              { id: 2, name: 'Interstellar' }
+            ]))
+          }
+        })
+      `)
     })
   })
 })

@@ -52,8 +52,8 @@ export default function ({ location, navigate }) {
   const { createSandbox } = useSandbox()
 
   function handleSave() {
-    let editingToken = nanoid()
-    let browserId = shortNanoid()
+    let editingToken = localStorage.getItem("repl:editingToken") || nanoid()
+    let browserId = localStorage.getItem("repl:browserId") || shortNanoid()
 
     localStorage.setItem("repl:editingToken", editingToken)
     localStorage.setItem("repl:browserId", browserId)

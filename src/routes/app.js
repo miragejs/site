@@ -57,6 +57,16 @@ const themeClasses = {
 
 const client = createClient({
   url: "https://miragejs-site-backend.herokuapp.com/v1/graphql",
+  fetchOptions: () => {
+    return {
+      headers: {
+        "X-Hasura-Repl-Editing-Token":
+          typeof window !== `undefined`
+            ? localStorage.getItem("repl:editingToken")
+            : "",
+      },
+    }
+  },
 })
 
 export const CarbonAdContext = createContext()

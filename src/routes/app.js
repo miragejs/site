@@ -29,7 +29,7 @@ import { DialogOverlay, DialogContent } from "@reach/dialog"
 import useKeyboardShortcut from "../hooks/use-keyboard-shortcut"
 import { createGlobalStyle } from "styled-components"
 import "focus-visible/dist/focus-visible.min.js"
-import { createClient, Provider as UrqlProvider } from "urql"
+import { GraphQLProvider } from "../components/graphql-provider"
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -54,10 +54,6 @@ const themeClasses = {
     divider: "border-gray-700",
   },
 }
-
-const client = createClient({
-  url: "https://miragejs-site-backend.herokuapp.com/v1/graphql",
-})
 
 export const CarbonAdContext = createContext()
 
@@ -111,9 +107,9 @@ export default function (props) {
     <CarbonAdProvider>
       <RouterProvider {...props}>
         <ThemeProvider {...props}>
-          <UrqlProvider value={client}>
+          <GraphQLProvider>
             <AppInner {...props} />
-          </UrqlProvider>
+          </GraphQLProvider>
         </ThemeProvider>
       </RouterProvider>
     </CarbonAdProvider>

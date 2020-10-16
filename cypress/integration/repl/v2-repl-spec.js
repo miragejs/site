@@ -10,6 +10,10 @@ describe("v2 repl", () => {
 
   afterEach(() => {
     server.shutdown()
+
+    cy.window().then((win) => {
+      win.localStorage.clear()
+    })
   })
 
   it("can create a sandbox from /repl", () => {
@@ -74,7 +78,6 @@ describe("v2 repl", () => {
   })
 
   it("can fork a sandbox", () => {
-    server.logging = true
     let sandbox = server.create("sandbox", {
       config: d`
         import { createServer } from "miragejs"
@@ -139,12 +142,10 @@ describe("v2 repl", () => {
   })
 
   it.only("can update a user's sandbox", () => {
+    server.logging = true
     cy.window().then((win) => {
-      win.localStorage.setItem("repl:browser_id", "my-browser")
-      win.localStorage.setItem(
-        "repl:editing_tokens",
-        JSON.stringify(["my-editing-token-1"])
-      )
+      win.localStorage.setItem("repl:browserId", "my-browser")
+      win.localStorage.setItem("repl:editingToken", "my-editing-token-1")
     })
     let sandbox = server.create("sandbox", {
       browser_id: "my-browser",
@@ -211,13 +212,138 @@ describe("v2 repl", () => {
       `)
       expect(loc.pathname).to.eq(`/repl/v2/${sandbox.id2}`)
     })
+  })
 
-    cy.window().then((win) => {
-      win.localStorage.clear()
+  it("can create a sandbox then update it", () => {
+    cy.visit("/repl")
+
+    cy.get("[data-testid=config-input]").typeInCodemirror(
+      d`
+        import { createServer } from "miragejs"
+
+        export default createServer({
+          routes() {
+            this.get('/foo', () => ({ some: 'data' }))
+          }
+        })
+      `
+    )
+
+    cy.get("[data-testid=status]").should(
+      "contain",
+      "You have unsaved changes."
+    )
+
+    cy.get("[data-testid=save]").click()
+
+    cy.location().should((loc) => {
+      expect(server.db.sandboxes.length).to.eq(1)
+
+      let newSandbox = server.db.sandboxes[0]
+      expect(loc.pathname).to.eq(`/repl/v2/${newSandbox.id2}`)
+    })
+
+    cy.get("[data-testid=config-input]").typeInCodemirror(
+      d`
+        import { createServer } from "miragejs"
+
+        export default createServer({
+          routes() {
+            this.get('/foo', () => ({ some: 'new data' }))
+          }
+        })
+      `
+    )
+
+    cy.get("[data-testid=save]").click()
+
+    cy.location().should((loc) => {
+      expect(server.db.sandboxes.length).to.eq(1)
+
+      let existingSandbox = server.db.sandboxes[0]
+      expect(loc.pathname).to.eq(`/repl/v2/${existingSandbox.id2}`)
+      expect(existingSandbox.config).to.eq(d`
+        import { createServer } from "miragejs"
+
+        export default createServer({
+          routes() {
+            this.get('/foo', () => ({ some: 'new data' }))
+          }
+        })
+      `)
     })
   })
 
-  // it("can create a sandbox then update it")
+  it("lets a user update multiple sandboxes", () => {
+    cy.window().then((win) => {
+      win.localStorage.setItem("repl:browserId", "my-browser")
+      win.localStorage.setItem("repl:editingToken", "my-editing-token-1")
+    })
+    let existingSandbox = server.create("sandbox", {
+      browser_id: "my-browser",
+      editing_token: "my-editing-token-1",
+      config: d`
+        import { createServer } from "miragejs"
 
-  // it("shows an error state for a missing v2 sandbox")
+        export default createServer({
+          routes() {
+            this.get('/movies', () => ([ { id: 1, name: 'Inception' }]))
+          }
+        })
+      `,
+      url: "/movies",
+
+      method: "GET",
+    })
+
+    cy.visit("/repl")
+
+    cy.get("[data-testid=config-input]").typeInCodemirror(
+      d`
+        import { createServer } from "miragejs"
+
+        export default createServer({
+          routes() {
+            this.get('/games', () => ([ { id: 1, name: 'Breath of the Wild' }]))
+          }
+        })
+      `
+    )
+
+    cy.get("[data-testid=save]").click()
+
+    cy.visit(`/repl/v2/${existingSandbox.id2}`)
+
+    cy.get("[data-testid=config-input]").typeInCodemirror(
+      d`
+        import { createServer } from "miragejs"
+
+        export default createServer({
+          routes() {
+            this.get('/games', () => ([ { id: 1, name: 'Breath of the Wild' }]))
+          }
+        })
+      `
+    )
+
+    cy.get("[data-testid=save]").click()
+
+    cy.location().should((loc) => {
+      expect(server.db.sandboxes.length).to.eq(2)
+
+      // let existingSandbox = server.db.sandboxes[0]
+      expect(loc.pathname).to.eq(`/repl/v2/${existingSandbox.id2}`)
+      // expect(existingSandbox.config).to.eq(d`
+      //   import { createServer } from "miragejs"
+
+      //   export default createServer({
+      //     routes() {
+      //       this.get('/foo', () => ({ some: 'new data' }))
+      //     }
+      //   })
+      // `)
+    })
+  })
 })
+
+// it("shows an error state for a missing v2 sandbox")

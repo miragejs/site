@@ -33,21 +33,21 @@ export default function ({ id2, navigate }) {
     setSandbox(sandboxFromResponse)
   }
 
-  const { createSandboxMutation, saveSandboxMutation } = useSandbox()
+  const { createSandbox, updateSandbox } = useSandbox()
 
   function handleSave() {
-    if (sandbox.browser_id === localStorage.getItem("repl:browser_id")) {
-      saveSandbox()
+    if (sandbox.browser_id === localStorage.getItem("repl:browserId")) {
+      handleUpdateSandbox()
     } else {
-      forkSandbox()
+      handleCreateSandbox()
     }
   }
 
-  function saveSandbox() {
-    localStorage.getItem("repl:editing_token")
+  function handleUpdateSandbox() {
+    localStorage.getItem("repl:editingToken")
     let { id, editingToken, ...sandboxAttrs } = sandbox
 
-    saveSandboxMutation({ id, object: sandboxAttrs }).then((res) => {
+    updateSandbox({ id, object: sandboxAttrs }).then((res) => {
       let {
         __typename,
         ...sandboxFromResponse
@@ -56,12 +56,12 @@ export default function ({ id2, navigate }) {
     })
   }
 
-  function forkSandbox() {
+  function handleCreateSandbox() {
     let editingToken = nanoid()
     let browserId = shortNanoid()
 
-    localStorage.setItem("repl:editing_token", editingToken)
-    localStorage.setItem("repl:browser_id", browserId)
+    localStorage.setItem("repl:editingToken", editingToken)
+    localStorage.setItem("repl:browserId", browserId)
 
     let { id, ...newSandboxAttrs } = sandbox
     let attrs = {
@@ -71,8 +71,9 @@ export default function ({ id2, navigate }) {
       ...newSandboxAttrs,
     }
 
-    createSandboxMutation({ object: attrs }).then((res) => {
+    createSandbox({ object: attrs }).then((res) => {
       let { __typename, ...newSandbox } = res.data.insert_sandboxes_one
+      setSandbox((sandbox) => ({ ...sandbox, browser_id: browserId }))
       setInitialSandbox(newSandbox)
       navigate(`/repl/v2/${newSandbox.id2}`)
     })
@@ -103,7 +104,7 @@ function useSandbox() {
       }
     }
   `
-  const [, createSandboxMutation] = useMutation(CreateSandbox)
+  const [, createSandbox] = useMutation(CreateSandbox)
 
   const SaveSandbox = `
     mutation ($id: Int!, $object: sandboxes_set_input!) {
@@ -117,7 +118,7 @@ function useSandbox() {
       }
     }
   `
-  const [, saveSandboxMutation] = useMutation(SaveSandbox)
+  const [, updateSandbox] = useMutation(SaveSandbox)
 
-  return { createSandboxMutation, saveSandboxMutation }
+  return { createSandbox, updateSandbox }
 }

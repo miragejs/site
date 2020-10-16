@@ -18,6 +18,7 @@ export default function ({ id2, navigate }) {
           method
           request_body
           url
+          browser_id
         }
       }
     `,
@@ -32,14 +33,35 @@ export default function ({ id2, navigate }) {
     setSandbox(sandboxFromResponse)
   }
 
-  const { createSandbox } = useSandbox()
+  const { createSandboxMutation, saveSandboxMutation } = useSandbox()
 
   function handleSave() {
+    if (sandbox.browser_id === localStorage.getItem("repl:browser_id")) {
+      saveSandbox()
+    } else {
+      forkSandbox()
+    }
+  }
+
+  function saveSandbox() {
+    localStorage.getItem("repl:editing_token")
+    let { id, editingToken, ...sandboxAttrs } = sandbox
+
+    saveSandboxMutation({ id, object: sandboxAttrs }).then((res) => {
+      let {
+        __typename,
+        ...sandboxFromResponse
+      } = res.data.update_sandboxes_by_pk
+      setInitialSandbox(sandboxFromResponse)
+    })
+  }
+
+  function forkSandbox() {
     let editingToken = nanoid()
     let browserId = shortNanoid()
 
-    localStorage.setItem("repl:editingToken", editingToken)
-    localStorage.setItem("repl:browserId", browserId)
+    localStorage.setItem("repl:editing_token", editingToken)
+    localStorage.setItem("repl:browser_id", browserId)
 
     let { id, ...newSandboxAttrs } = sandbox
     let attrs = {
@@ -49,7 +71,7 @@ export default function ({ id2, navigate }) {
       ...newSandboxAttrs,
     }
 
-    createSandbox({ object: attrs }).then((res) => {
+    createSandboxMutation({ object: attrs }).then((res) => {
       let { __typename, ...newSandbox } = res.data.insert_sandboxes_one
       setInitialSandbox(newSandbox)
       navigate(`/repl/v2/${newSandbox.id2}`)
@@ -81,7 +103,21 @@ function useSandbox() {
       }
     }
   `
-  const [, createSandbox] = useMutation(CreateSandbox)
+  const [, createSandboxMutation] = useMutation(CreateSandbox)
 
-  return { createSandbox }
+  const SaveSandbox = `
+    mutation ($id: Int!, $object: sandboxes_set_input!) {
+      update_sandboxes_by_pk(pk_columns: {id: $id}, _set: $object) {
+        id
+        id2
+        config
+        method
+        request_body
+        url
+      }
+    }
+  `
+  const [, saveSandboxMutation] = useMutation(SaveSandbox)
+
+  return { createSandboxMutation, saveSandboxMutation }
 }

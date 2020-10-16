@@ -48,6 +48,15 @@ export function makeServer({ environment = "test" } = {}) {
                 return records
               },
             },
+
+            mutation_root: {
+              update_sandboxes_by_pk(obj, args, context, info) {
+                let { _set, pk_columns } = args
+                let { mirageSchema: schema } = context
+
+                return schema.db.sandboxes.update(pk_columns.id, _set)
+              },
+            },
           },
         })
       )

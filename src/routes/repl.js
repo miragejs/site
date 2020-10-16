@@ -71,7 +71,17 @@ export default function ({ location, navigate }) {
     })
   }
 
-  let hasChanges = initialSandboxRef.current.config !== sandbox.config
+  let configHasChanged = initialSandboxRef.current.config !== sandbox.config
+  let methodHasChanged = initialSandboxRef.current.method !== sandbox.method
+  let urlHasChanged = initialSandboxRef.current.url !== sandbox.url
+  let requestBodyHasChanged =
+    initialSandboxRef.current.requestBody !== sandbox.requestBody
+
+  let hasChanges =
+    configHasChanged ||
+    methodHasChanged ||
+    urlHasChanged ||
+    requestBodyHasChanged
 
   return (
     <Repl

@@ -82,11 +82,26 @@ export default function ({ id2, navigate }) {
     })
   }
 
+  let hasChanges
+  if (initialSandbox) {
+    let configHasChanged = initialSandbox.config !== sandbox.config
+    let methodHasChanged = initialSandbox.method !== sandbox.method
+    let urlHasChanged = initialSandbox.url !== sandbox.url
+    let requestBodyHasChanged =
+      initialSandbox.requestBody !== sandbox.requestBody
+
+    hasChanges =
+      configHasChanged ||
+      methodHasChanged ||
+      urlHasChanged ||
+      requestBodyHasChanged
+  }
+
   return !initialSandbox ? (
     <p>Loading...</p>
   ) : (
     <Repl
-      hasChanges={initialSandbox.config !== sandbox.config}
+      hasChanges={hasChanges}
       onSave={handleSave}
       sandbox={sandbox}
       setSandbox={setSandbox}

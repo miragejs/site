@@ -16,7 +16,7 @@ describe("v2 repl", () => {
     })
   })
 
-  it("can create a sandbox from /repl", () => {
+  it("can create a new sandbox", () => {
     cy.visit("/repl")
 
     cy.get("[data-testid=config-input]").typeInCodemirror(
@@ -46,7 +46,7 @@ describe("v2 repl", () => {
     })
   })
 
-  it("can load a sandbox", () => {
+  it("can load an existing sandbox", () => {
     let sandbox = server.create("sandbox", {
       config: d`
         import { createServer } from "miragejs"
@@ -77,72 +77,7 @@ describe("v2 repl", () => {
       })
   })
 
-  it("can fork a sandbox", () => {
-    let sandbox = server.create("sandbox", {
-      config: d`
-        import { createServer } from "miragejs"
-
-        export default createServer({
-          routes() {
-            this.get("/movies", () => ([
-              { id: 1, name: "Inception", year: 2010 },
-            ]))
-          },
-        })
-      `,
-      url: "/movies",
-      method: "GET",
-    })
-
-    cy.visit(`/repl/v2/${sandbox.id2}`)
-
-    cy.get("[data-testid=config-input]").typeInCodemirror(
-      d`
-      import { createServer } from "miragejs"
-
-      export default createServer({
-        routes() {
-          this.get("/movies", () => ([
-            { id: 1, name: "Inception", year: 2010 },
-            { id: 2, name: "Interstellar", year: 2014 },
-          ]))
-        },
-      })
-      `
-    )
-
-    cy.get("[data-testid=status]").should(
-      "contain",
-      "You have unsaved changes."
-    )
-
-    cy.get("[data-testid=save]").click()
-
-    cy.get("[data-testid=repl]").should("exist")
-    cy.get("[data-testid=status]").should(
-      "not.contain",
-      "You have unsaved changes."
-    )
-
-    cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
-
-    cy.get("[data-testid=send-request]").click()
-
-    cy.get("[data-testid=response-body]")
-      .should("exist")
-      .invoke("text")
-      .then((text) => {
-        let json = JSON.parse(text)
-
-        expect(json).to.deep.equal([
-          { id: 1, name: "Inception", year: 2010 },
-          { id: 2, name: "Interstellar", year: 2014 },
-        ])
-      })
-  })
-
-  it("can update a user's sandbox", () => {
-    server.logging = true
+  it("can update a user's existing sandbox", () => {
     cy.window().then((win) => {
       win.localStorage.setItem("repl:browserId", "my-browser")
       win.localStorage.setItem("repl:editingToken", "my-editing-token")
@@ -274,7 +209,82 @@ describe("v2 repl", () => {
     })
   })
 
-  it("lets a user update an existing sandbox after creating a new one from /repl", () => {
+  it("can fork a sandbox then update it", () => {
+    let otherUsersSandbox = server.create("sandbox", {
+      config: d`
+        import { createServer } from "miragejs"
+
+        export default createServer({
+          routes() {
+            this.get("/movies", () => ([
+              { id: 1, name: "Inception", year: 2010 },
+            ]))
+          },
+        })
+      `,
+      url: "/movies",
+      method: "GET",
+    })
+
+    cy.visit(`/repl/v2/${otherUsersSandbox.id2}`)
+
+    cy.get("[data-testid=config-input]").typeInCodemirror(
+      d`
+      import { createServer } from "miragejs"
+
+      export default createServer({
+        routes() {
+          this.get("/movies", () => ([
+            { id: 1, name: "Inception", year: 2010 },
+            { id: 2, name: "Interstellar", year: 2014 },
+          ]))
+        },
+      })
+      `
+    )
+
+    cy.get("[data-testid=status]").should(
+      "contain",
+      "You have unsaved changes."
+    )
+
+    cy.get("[data-testid=save]").click()
+
+    cy.get("[data-testid=status]").should(
+      "not.contain",
+      "You have unsaved changes."
+    )
+
+    cy.location().should((loc) => {
+      expect(server.db.sandboxes.length).to.eq(2)
+
+      let forkedSandbox = server.db.sandboxes[1]
+      expect(loc.pathname).to.eq(`/repl/v2/${forkedSandbox.id2}`)
+    })
+
+    cy.get("[data-testid=request-method]").select("POST")
+
+    cy.get("[data-testid=status]").should(
+      "contain",
+      "You have unsaved changes."
+    )
+
+    cy.get("[data-testid=save]").click()
+
+    cy.get("[data-testid=status]").should(
+      "not.contain",
+      "You have unsaved changes."
+    )
+
+    cy.location().should((loc) => {
+      expect(server.db.sandboxes.length).to.eq(2)
+
+      let forkedSandbox = server.db.sandboxes[1]
+      expect(loc.pathname).to.eq(`/repl/v2/${forkedSandbox.id2}`)
+    })
+  })
+
+  it("lets a user update an old sandbox after creating a new one from /repl", () => {
     cy.window().then((win) => {
       win.localStorage.setItem("repl:browserId", "my-browser")
       win.localStorage.setItem("repl:editingToken", "my-editing-token")
@@ -351,7 +361,7 @@ describe("v2 repl", () => {
     })
   })
 
-  it("lets a user update an existing sandbox after forking one", () => {
+  it("lets a user update an old sandbox after forking a different one", () => {
     cy.window().then((win) => {
       win.localStorage.setItem("repl:browserId", "my-browser")
       win.localStorage.setItem("repl:editingToken", "my-editing-token")

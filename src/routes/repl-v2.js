@@ -115,6 +115,7 @@ function useSandbox() {
       insert_sandboxes_one(object: $object) {
         id
         id2
+        browser_id
         config
         method
         request_body
@@ -129,6 +130,7 @@ function useSandbox() {
       update_sandboxes_by_pk(pk_columns: {id: $id}, _set: $object) {
         id
         id2
+        browser_id
         config
         method
         request_body

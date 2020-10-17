@@ -36,7 +36,7 @@ export default function CodeEditor({
         await import("codemirror/mode/javascript/javascript")
 
         editorRef.current = new CodeMirror(editorDivRef.current, {
-          value,
+          value: value ?? "",
           mode: "javascript",
         })
 

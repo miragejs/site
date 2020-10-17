@@ -17,7 +17,6 @@ const allRoutes: RouteDefinition[] = [
   {
     name: "repl",
     label: "REPL",
-    path: "repl/*",
     meta: {
       fullWidthHeader: true,
     },

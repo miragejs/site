@@ -13,7 +13,6 @@ import useMeasure from "react-use-measure"
 import { ResizeObserver } from "@juggle/resize-observer"
 import CodeEditor from "../components/code-editor"
 import { useMutation } from "urql"
-import { DialogOverlay, DialogContent } from "@reach/dialog"
 import queryString from "query-string"
 import { useDebounce } from "use-debounce"
 import { escapeBackticks } from "../utils"
@@ -188,8 +187,6 @@ export default function ({ location, navigate }) {
   })
   let [activeServerTab, setActiveServerTab] = React.useState("Config")
   let [activeResponseTab, setActiveResponseTab] = React.useState("JSON")
-  let [isShowingShareDialog, setIsShowingShareDialog] = useState(false)
-  let [latestShareUrl, setLatestShareUrl] = useState(false)
   let [errorMessageRef, errorMessagebounds] = useMeasure({
     polyfill: ResizeObserver,
   })
@@ -299,8 +296,6 @@ export default function ({ location, navigate }) {
     createSandbox({ object: attrs }).then((res) => {
       let id2 = res.data.insert_sandboxes_one.id2
       navigate(`/repl/v2/${id2}`)
-      // setLatestShareUrl(`${location.origin}/repl/v1/${id}`)
-      // setIsShowingShareDialog(true)
     })
   }
 
@@ -328,75 +323,6 @@ export default function ({ location, navigate }) {
             </p>
           )}
         </div>
-        {isShowingShareDialog && (
-          <DialogOverlay
-            className="bg-gray-900.50"
-            onDismiss={() => setIsShowingShareDialog(false)}
-          >
-            <div className="fixed inset-x-0 bottom-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center">
-              <DialogContent
-                className="overflow-hidden transition-all transform rounded-lg shadow-xl sm:max-w-lg"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="modal-headline"
-                style={{
-                  marginTop: 0,
-                  marginBottom: 0,
-                  padding: 0,
-                  width: "100%",
-                  background: "white",
-                }}
-              >
-                <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-green-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-                      <svg
-                        className="w-6 h-6 text-green-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </div>
-                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                      <h3
-                        className="text-lg font-medium leading-6 text-gray-900"
-                        id="modal-headline"
-                      >
-                        Share link created
-                      </h3>
-                      <div className="mt-4">
-                        <p className="text-sm leading-5 text-gray-500">
-                          Here's your unique URL:
-                        </p>
-                        <p className="mt-1 text-sm font-medium text-gray-700">
-                          {latestShareUrl}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="px-4 py-3 bg-gray-100 sm:px-6 sm:flex sm:flex-row-reverse">
-                  <span className="flex w-full rounded-md shadow-sm sm:w-auto">
-                    <button
-                      type="button"
-                      onClick={() => setIsShowingShareDialog(false)}
-                      className="inline-flex justify-center w-full px-4 py-2 text-base font-medium leading-6 text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue sm:text-sm sm:leading-5"
-                    >
-                      Close
-                    </button>
-                  </span>
-                </div>
-              </DialogContent>
-            </div>
-          </DialogOverlay>
-        )}
       </div>
       <div className="flex flex-col flex-1 min-h-0">
         <div className="flex flex-1 min-h-0">

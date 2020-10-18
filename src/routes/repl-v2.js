@@ -1,6 +1,7 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useQuery } from "urql"
 import Repl from "../components/repl"
+import SEO from "../components/seo"
 import { useMutation } from "urql"
 import { nanoid, customAlphabet } from "nanoid"
 
@@ -14,6 +15,7 @@ export default function ({ id2, navigate }) {
       query ($id2: String!) {
         sandboxes(where: {id2: {_eq: $id2}}) {
           id
+          id2
           config
           method
           request_body
@@ -27,11 +29,20 @@ export default function ({ id2, navigate }) {
     },
   })
 
-  if (!initialSandbox && res.data) {
+  let hasntSetInitialSandbox = !initialSandbox && res.data
+
+  if (hasntSetInitialSandbox) {
     let { __typename, ...sandboxFromResponse } = res.data.sandboxes[0]
     setInitialSandbox(sandboxFromResponse)
     setSandbox(sandboxFromResponse)
   }
+
+  let hasNavigatedToNewSandbox = initialSandbox && initialSandbox.id2 !== id2
+  useEffect(() => {
+    if (hasNavigatedToNewSandbox && !res.fetching) {
+      setInitialSandbox(null)
+    }
+  }, [hasNavigatedToNewSandbox, res.fetching])
 
   const { createSandbox, updateSandbox } = useSandbox()
 
@@ -97,15 +108,21 @@ export default function ({ id2, navigate }) {
       requestBodyHasChanged
   }
 
-  return !initialSandbox ? (
-    <p>Loading...</p>
-  ) : (
-    <Repl
-      hasChanges={hasChanges}
-      onSave={handleSave}
-      sandbox={sandbox}
-      setSandbox={setSandbox}
-    />
+  return (
+    <>
+      <SEO title={`REPL ${id2}`} />
+
+      {!initialSandbox ? (
+        <p>Loading...</p>
+      ) : (
+        <Repl
+          hasChanges={hasChanges}
+          onSave={handleSave}
+          sandbox={sandbox}
+          setSandbox={setSandbox}
+        />
+      )}
+    </>
   )
 }
 

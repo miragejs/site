@@ -187,9 +187,6 @@ function Header({ showHeaderNav }) {
   }
 
   let fullWidthHeader = router.activePage?.meta?.fullWidthHeader
-  console.log(router)
-  debugger
-  console.log({ fullWidthHeader })
   let shouldShowDivider = theme === "light" && !fullWidthHeader
 
   return (

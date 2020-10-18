@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import "codemirror/lib/codemirror.css"
 import { createGlobalStyle } from "styled-components"
 
@@ -27,7 +27,7 @@ export default function CodeEditor({
 
   handlerRef.current = onChange
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Load CodeMirror + its plugins using dynamic import, since they
     // only work in the browser.
     const f = async () => {
@@ -51,11 +51,26 @@ export default function CodeEditor({
           .setAttribute("data-testid", dataTestId)
       }
 
+      // If the parent passes in a new value after the editor has been initialized, we may need to update it
+      if (value !== editorRef.current.getValue()) {
+        editorRef.current.setValue(value)
+      }
+
       editorRef.current.setOption("extraKeys", extraKeys)
     }
 
     f()
   }, [value, dataTestId, extraKeys])
+
+  // let previousValue = usePrevious(value)
+  // useEffect(() => {
+  //   console.log({ value })
+  //   console.log({ previousValue })
+  //   if (editorRef.current?.getValue() && previousValue !== value) {
+  //     console.log("codemirror setValue")
+  //     editorRef.current.setValue(value)
+  //   }
+  // }, [previousValue, value])
 
   return (
     <>

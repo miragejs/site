@@ -66,8 +66,8 @@ export default function ({ location, navigate }) {
     }
 
     createSandbox({ object: attrs }).then((res) => {
-      let id2 = res.data.insert_sandboxes_one.id2
-      navigate(`/repl/v2/${id2}`)
+      let { __typename, ...newSandbox } = res.data.insert_sandboxes_one
+      navigate(`/repl/v2/${newSandbox.id2}`, { state: { sandbox: newSandbox } })
     })
   }
 
@@ -125,7 +125,13 @@ function useSandbox() {
   const CreateSandbox = `
     mutation ($object: sandboxes_insert_input!) {
       insert_sandboxes_one(object: $object) {
+        id
         id2
+        config
+        method
+        request_body
+        url
+        browser_id
       }
     }
   `

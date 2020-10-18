@@ -7,9 +7,13 @@ import { nanoid, customAlphabet } from "nanoid"
 
 const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
-export default function ({ id2, navigate }) {
-  let [initialSandbox, setInitialSandbox] = useState()
-  let [sandbox, setSandbox] = useState()
+export default function ({ id2, navigate, location }) {
+  let [initialSandbox, setInitialSandbox] = useState(location.state?.sandbox)
+  let [sandbox, setSandbox] = useState(location.state?.sandbox)
+  if (location.state?.sandbox) {
+    navigate(location.pathname, { replace: true, state: {} })
+  }
+
   let [res] = useQuery({
     query: `
       query ($id2: String!) {

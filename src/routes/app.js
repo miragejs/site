@@ -32,7 +32,9 @@ import "focus-visible/dist/focus-visible.min.js"
 import { createClient, Provider as UrqlProvider } from "urql"
 import { makeServer } from "../server-hasura"
 
-makeServer({ environment: "development" })
+// if (!window.Cypress) {
+//   makeServer({ environment: "development" })
+// }
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}

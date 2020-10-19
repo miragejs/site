@@ -121,6 +121,8 @@ export default function ({ id2, navigate, location }) {
       requestBodyHasChanged
   }
 
+  console.log({ sandboxId: sandbox?.id })
+
   return (
     <>
       <SEO title={`REPL ${id2}`} />

@@ -8,6 +8,11 @@ import { nanoid, customAlphabet } from "nanoid"
 const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
 export default function ({ id2, navigate, location }) {
+  /*
+    If we navigated here from /repl with location state, use that as the
+    default values for this state, then clear it using navigate(). This
+    lets us avoid waiting on urql to load the sandbox from the server.
+  */
   let [initialSandbox, setInitialSandbox] = useState(location.state?.sandbox)
   let [sandbox, setSandbox] = useState(location.state?.sandbox)
   if (location.state?.sandbox) {
@@ -41,6 +46,10 @@ export default function ({ id2, navigate, location }) {
     setSandbox(sandboxFromResponse)
   }
 
+  /*
+    If the user navigated from one v2 sandbox directly to another (e.g. by using
+    the back button to jump between them) we need to reset our sandbox state.
+  */
   let hasNavigatedToNewSandbox = initialSandbox && initialSandbox.id2 !== id2
   useEffect(() => {
     if (hasNavigatedToNewSandbox && !res.fetching) {

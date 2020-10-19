@@ -25,6 +25,9 @@ export default function CodeEditor({
   let editorRef = React.useRef()
   let handlerRef = React.useRef()
 
+  // CodeEditor can't handle nulls or undefineds
+  value = value ?? ""
+
   handlerRef.current = onChange
 
   useEffect(() => {
@@ -36,7 +39,7 @@ export default function CodeEditor({
         await import("codemirror/mode/javascript/javascript")
 
         editorRef.current = new CodeMirror(editorDivRef.current, {
-          value: value ?? "",
+          value,
           mode: "javascript",
         })
 

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react"
 import { useQuery } from "urql"
 import Repl from "../components/repl"
 import SEO from "../components/seo"
-import { useMutation } from "urql"
 import { nanoid, customAlphabet } from "nanoid"
+import { useSandbox } from "../hooks/use-sandbox"
 
 const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
@@ -57,7 +57,7 @@ export default function ({ id2, navigate, location }) {
     }
   }, [hasNavigatedToNewSandbox, res.fetching])
 
-  const { createSandbox, updateSandbox } = useSandbox()
+  let { createSandbox, updateSandbox } = useSandbox()
 
   function handleSave() {
     if (
@@ -137,38 +137,4 @@ export default function ({ id2, navigate, location }) {
       )}
     </>
   )
-}
-
-function useSandbox() {
-  const CreateSandbox = `
-    mutation ($object: sandboxes_insert_input!) {
-      insert_sandboxes_one(object: $object) {
-        id
-        id2
-        browser_id
-        config
-        method
-        request_body
-        url
-      }
-    }
-  `
-  const [, createSandbox] = useMutation(CreateSandbox)
-
-  const UpdateSandbox = `
-    mutation ($id: Int!, $object: sandboxes_set_input!) {
-      update_sandboxes_by_pk(pk_columns: {id: $id}, _set: $object) {
-        id
-        id2
-        browser_id
-        config
-        method
-        request_body
-        url
-      }
-    }
-  `
-  const [, updateSandbox] = useMutation(UpdateSandbox)
-
-  return { createSandbox, updateSandbox }
 }

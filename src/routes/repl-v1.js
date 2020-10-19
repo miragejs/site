@@ -1,9 +1,9 @@
 import React, { useState } from "react"
-import { useMutation, useQuery } from "urql"
+import { useQuery } from "urql"
 import SEO from "../components/seo"
 import Repl from "../components/repl"
-
 import { nanoid, customAlphabet } from "nanoid"
+import { useSandbox } from "../hooks/use-sandbox"
 
 const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
@@ -53,7 +53,7 @@ export default function ({ id, navigate }) {
       requestBodyHasChanged
   }
 
-  const { createSandbox } = useSandbox()
+  let { createSandbox } = useSandbox()
 
   function handleSave() {
     let editingToken = localStorage.getItem("repl:editingToken") || nanoid()
@@ -109,23 +109,4 @@ export default function ({ id, navigate }) {
   //     </div>
   //   )
   // } else
-}
-
-function useSandbox() {
-  const CreateSandbox = `
-    mutation ($object: sandboxes_insert_input!) {
-      insert_sandboxes_one(object: $object) {
-        id
-        id2
-        browser_id
-        config
-        method
-        request_body
-        url
-      }
-    }
-  `
-  const [, createSandbox] = useMutation(CreateSandbox)
-
-  return { createSandbox }
 }

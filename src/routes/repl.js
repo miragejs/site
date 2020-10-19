@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Repl from "../components/repl"
 import queryString from "query-string"
-import { useMutation } from "urql"
 import { nanoid, customAlphabet } from "nanoid"
+import { useSandbox } from "../hooks/use-sandbox"
 
 const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
@@ -119,23 +119,4 @@ function useTutorialSnippet(name) {
   }, {})
 
   return snippets[name]
-}
-
-function useSandbox() {
-  const CreateSandbox = `
-    mutation ($object: sandboxes_insert_input!) {
-      insert_sandboxes_one(object: $object) {
-        id
-        id2
-        config
-        method
-        request_body
-        url
-        browser_id
-      }
-    }
-  `
-  const [, createSandbox] = useMutation(CreateSandbox)
-
-  return { createSandbox }
 }

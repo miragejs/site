@@ -1,8 +1,11 @@
 import React, { useState } from "react"
-import { useQuery } from "urql"
-import queryString from "query-string"
+import { useMutation, useQuery } from "urql"
 import SEO from "../components/seo"
 import Repl from "../components/repl"
+
+import { nanoid, customAlphabet } from "nanoid"
+
+const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
 export default function ({ id, navigate }) {
   let [initialSandbox, setInitialSandbox] = useState()
@@ -50,8 +53,27 @@ export default function ({ id, navigate }) {
       requestBodyHasChanged
   }
 
+  const { createSandbox } = useSandbox()
+
   function handleSave() {
-    console.log("FORK ME")
+    let editingToken = localStorage.getItem("repl:editingToken") || nanoid()
+    let browserId = localStorage.getItem("repl:browserId") || shortNanoid()
+
+    localStorage.setItem("repl:editingToken", editingToken)
+    localStorage.setItem("repl:browserId", browserId)
+
+    let { id, ...newSandboxAttrs } = sandbox
+    let attrs = {
+      ...newSandboxAttrs,
+      id2: shortNanoid(),
+      editing_token: editingToken,
+      browser_id: browserId,
+    }
+
+    createSandbox({ object: attrs }).then((res) => {
+      let { __typename, ...newSandbox } = res.data.insert_sandboxes_one
+      navigate(`/repl/v2/${newSandbox.id2}`, { state: { sandbox: newSandbox } })
+    })
   }
 
   return res.error || res.data?.sandboxes_by_pk === null ? (
@@ -87,4 +109,23 @@ export default function ({ id, navigate }) {
   //     </div>
   //   )
   // } else
+}
+
+function useSandbox() {
+  const CreateSandbox = `
+    mutation ($object: sandboxes_insert_input!) {
+      insert_sandboxes_one(object: $object) {
+        id
+        id2
+        browser_id
+        config
+        method
+        request_body
+        url
+      }
+    }
+  `
+  const [, createSandbox] = useMutation(CreateSandbox)
+
+  return { createSandbox }
 }

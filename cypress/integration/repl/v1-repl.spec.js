@@ -45,7 +45,7 @@ describe("v1 repl", () => {
     })
   })
 
-  it.only("can fork a v1 sandbox", () => {
+  it("can fork a v1 sandbox", () => {
     let sandbox = server.create("sandbox", {
       id: "1",
       config: d`
@@ -83,20 +83,19 @@ describe("v1 repl", () => {
     cy.location().should((loc) => {
       expect(server.db.sandboxes.length).to.eq(2)
 
-      // let sandbox = server.db.sandboxes[0]
-      // expect(sandbox.config).to.eq(d`
-      //   import { createServer } from "miragejs"
+      let newSandbox = server.db.sandboxes[1]
+      expect(newSandbox.config).to.eq(d`
+        import { createServer } from "miragejs"
 
-      //   export default createServer({
-      //     routes() {
-      //       this.get("/movies", () => ([
-      //         { id: 1, name: "Inception", year: 2010 },
-      //         { id: 2, name: "Interstellar", year: 2014 },
-      //       ]))
-      //     },
-      //   })
-      // `)
-      // expect(loc.pathname).to.eq(`/repl/v2/${sandbox.id2}`)
+        export default createServer({
+          routes() {
+            this.get("/movies", () => ([
+              { id: 1, name: "Inception", year: 2010 },
+            ]))
+          },
+        })
+      `)
+      expect(loc.pathname).to.eq(`/repl/v2/${newSandbox.id2}`)
     })
   })
 

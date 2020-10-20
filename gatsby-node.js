@@ -147,9 +147,15 @@ exports.createPages = ({ actions }) => {
 
   // Netlify Redirects
   createAppPage("/repl/v1/ssr-shell")
+  createAppPage("/repl/v2/ssr-shell")
   createRedirect({
     fromPath: "/repl/v1/*",
     toPath: "/repl/v1/ssr-shell",
+    statusCode: 200,
+  })
+  createRedirect({
+    fromPath: "/repl/v2/*",
+    toPath: "/repl/v2/ssr-shell",
     statusCode: 200,
   })
 

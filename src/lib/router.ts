@@ -25,6 +25,9 @@ const allRoutes: RouteDefinition[] = [
     name: "repl-v1",
     label: "repl-v1",
     path: "/repl/v1/:id",
+    meta: {
+      fullWidthHeader: true,
+    },
   },
   {
     name: "repl-v2",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useQuery } from "urql"
 import Repl from "../components/repl"
 import SEO from "../components/seo"
@@ -12,9 +12,11 @@ export default function ({ id2, navigate, location }) {
     If we navigated here from /repl with location state, use that as the
     default values for this state, then clear it using navigate(). This
     lets us avoid waiting on urql to load the sandbox from the server.
+    TODO
   */
-  let [initialSandbox, setInitialSandbox] = useState(location.state?.sandbox)
-  let [sandbox, setSandbox] = useState(location.state?.sandbox)
+  // let [initialSandbox, setInitialSandbox] = useState(location.state?.sandbox)
+  // let [buffer, setBuffer] = useState(location.state?.sandbox)
+  let [buffer, setBuffer] = useState()
   if (location.state?.sandbox) {
     navigate(location.pathname, { replace: true, state: {} })
   }
@@ -38,31 +40,34 @@ export default function ({ id2, navigate, location }) {
     },
   })
 
-  let hasntSetInitialSandbox = !initialSandbox && res.data
+  let sandboxFromServer
+  let serverResponse = res.data?.sandboxes[0]
+  let serverDataMatchesUrlParam = serverResponse?.id2 === id2
+  if (serverResponse && serverDataMatchesUrlParam) {
+    let { __typename, ...rest } = serverResponse
+    sandboxFromServer = rest
+  }
 
-  if (hasntSetInitialSandbox) {
-    let { __typename, ...sandboxFromResponse } = res.data.sandboxes[0]
-    setInitialSandbox(sandboxFromResponse)
-    setSandbox(sandboxFromResponse)
+  if (!buffer && sandboxFromServer) {
+    setBuffer(sandboxFromServer)
   }
 
   /*
-    If the user navigated from one v2 sandbox directly to another (e.g. by using
-    the back button to jump between them) we need to reset our sandbox state.
+    If we already have a buffer and we navigate from one sandbox to another, our buffer
+    gets stale. So we update it.
+
+    This happens after a sandbox is either created from /repl or forked from /repl/v2.
   */
-  let hasNavigatedToNewSandbox = initialSandbox && initialSandbox.id2 !== id2
-  useEffect(() => {
-    if (hasNavigatedToNewSandbox && !res.fetching) {
-      setInitialSandbox(null)
-    }
-  }, [hasNavigatedToNewSandbox, res.fetching])
+  if (buffer && sandboxFromServer && buffer.id !== sandboxFromServer.id) {
+    setBuffer(sandboxFromServer)
+  }
 
   let { createSandbox, updateSandbox } = useSandbox()
 
   function handleSave() {
     if (
-      sandbox.browser_id &&
-      sandbox.browser_id === localStorage.getItem("repl:browserId")
+      buffer.browser_id &&
+      buffer.browser_id === localStorage.getItem("repl:browserId")
     ) {
       handleUpdateSandbox()
     } else {
@@ -72,15 +77,9 @@ export default function ({ id2, navigate, location }) {
 
   function handleUpdateSandbox() {
     localStorage.getItem("repl:editingToken")
-    let { id, id2, browser_id, ...sandboxAttrs } = sandbox
+    let { id, id2, browser_id, ...sandboxAttrs } = buffer
 
-    updateSandbox({ id, object: sandboxAttrs }).then((res) => {
-      let {
-        __typename,
-        ...sandboxFromResponse
-      } = res.data.update_sandboxes_by_pk
-      setInitialSandbox(sandboxFromResponse)
-    })
+    updateSandbox({ id, object: sandboxAttrs })
   }
 
   function handleCreateSandbox() {
@@ -90,7 +89,7 @@ export default function ({ id2, navigate, location }) {
     localStorage.setItem("repl:editingToken", editingToken)
     localStorage.setItem("repl:browserId", browserId)
 
-    let { id, ...newSandboxAttrs } = sandbox
+    let { id, ...newSandboxAttrs } = buffer
     let attrs = {
       ...newSandboxAttrs,
       id2: shortNanoid(),
@@ -99,20 +98,17 @@ export default function ({ id2, navigate, location }) {
     }
 
     createSandbox({ object: attrs }).then((res) => {
-      let { __typename, ...newSandbox } = res.data.insert_sandboxes_one
-      setSandbox(newSandbox)
-      setInitialSandbox(newSandbox)
-      navigate(`/repl/v2/${newSandbox.id2}`)
+      navigate(`/repl/v2/${res.data.insert_sandboxes_one.id2}`)
     })
   }
 
   let hasChanges
-  if (initialSandbox) {
-    let configHasChanged = initialSandbox.config !== sandbox.config
-    let methodHasChanged = initialSandbox.method !== sandbox.method
-    let urlHasChanged = initialSandbox.url !== sandbox.url
+  if (sandboxFromServer && buffer) {
+    let configHasChanged = sandboxFromServer.config !== buffer.config
+    let methodHasChanged = sandboxFromServer.method !== buffer.method
+    let urlHasChanged = sandboxFromServer.url !== buffer.url
     let requestBodyHasChanged =
-      initialSandbox.requestBody !== sandbox.requestBody
+      sandboxFromServer.requestBody !== buffer.requestBody
 
     hasChanges =
       configHasChanged ||
@@ -121,20 +117,18 @@ export default function ({ id2, navigate, location }) {
       requestBodyHasChanged
   }
 
-  console.log({ sandboxId: sandbox?.id })
-
   return (
     <>
       <SEO title={`REPL ${id2}`} />
 
-      {!initialSandbox ? (
+      {!buffer ? (
         <p>Loading...</p>
       ) : (
         <Repl
           hasChanges={hasChanges}
           onSave={handleSave}
-          sandbox={sandbox}
-          setSandbox={setSandbox}
+          sandbox={buffer}
+          setSandbox={setBuffer}
         />
       )}
     </>

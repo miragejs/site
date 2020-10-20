@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import "codemirror/lib/codemirror.css"
 import { createGlobalStyle } from "styled-components"
 
@@ -25,9 +25,12 @@ export default function CodeEditor({
   let editorRef = React.useRef()
   let handlerRef = React.useRef()
 
+  // CodeEditor can't handle nulls or undefineds
+  value = value ?? ""
+
   handlerRef.current = onChange
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Load CodeMirror + its plugins using dynamic import, since they
     // only work in the browser.
     const f = async () => {
@@ -56,6 +59,17 @@ export default function CodeEditor({
 
     f()
   }, [value, dataTestId, extraKeys])
+
+  /*
+    If the parent passes in a new value after the editor has been
+    initialized, we may need to update it. That's what this effect is for.
+  */
+  useEffect(() => {
+    let editorValue = editorRef.current?.getValue()
+    if (value && editorValue && value !== editorValue) {
+      editorRef.current.setValue(value)
+    }
+  }, [value])
 
   return (
     <>

@@ -30,6 +30,11 @@ import useKeyboardShortcut from "../hooks/use-keyboard-shortcut"
 import { createGlobalStyle } from "styled-components"
 import "focus-visible/dist/focus-visible.min.js"
 import { createClient, Provider as UrqlProvider } from "urql"
+import { makeServer } from "../server-hasura"
+
+// if (!window.Cypress) {
+//   makeServer({ environment: "development" })
+// }
 
 // Glob import all components in the route directory
 const routeComponentsMap = {}
@@ -105,7 +110,6 @@ function CarbonAdProvider({ children }) {
     let bestTarget = queue.find((target) => target.current !== null)
 
     if (containerIsInRoot && bestTarget) {
-      console.log("moving ad")
       bestTarget.current.appendChild(container)
     }
   }, [queue])

@@ -8,15 +8,12 @@ import { useSandbox } from "../hooks/use-sandbox"
 const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
 export default function ({ id2, navigate, location }) {
+  let [buffer, setBuffer] = useState(location.state?.sandbox)
   /*
-    If we navigated here from /repl with location state, use that as the
-    default values for this state, then clear it using navigate(). This
-    lets us avoid waiting on urql to load the sandbox from the server.
-    TODO
+    If we navigated here from /repl with location state, we use that as the
+    default values for the buffer then clear it using navigate(). This
+    lets us avoid waiting on loading the sandbox from the server.
   */
-  // let [initialSandbox, setInitialSandbox] = useState(location.state?.sandbox)
-  // let [buffer, setBuffer] = useState(location.state?.sandbox)
-  let [buffer, setBuffer] = useState()
   if (location.state?.sandbox) {
     navigate(location.pathname, { replace: true, state: {} })
   }
@@ -53,10 +50,8 @@ export default function ({ id2, navigate, location }) {
   }
 
   /*
-    If we already have a buffer and we navigate from one sandbox to another, our buffer
-    gets stale. So we update it.
-
-    This happens after a sandbox is either created from /repl or forked from /repl/v2.
+    If we already have a buffer and sandboxFromServer changes (e.g. due to a navigation),
+    the buffer gets stale. So we update it.
   */
   if (buffer && sandboxFromServer && buffer.id !== sandboxFromServer.id) {
     setBuffer(sandboxFromServer)
@@ -102,7 +97,7 @@ export default function ({ id2, navigate, location }) {
     })
   }
 
-  let hasChanges
+  let bufferHasChanges
   if (sandboxFromServer && buffer) {
     let configHasChanged = sandboxFromServer.config !== buffer.config
     let methodHasChanged = sandboxFromServer.method !== buffer.method
@@ -110,7 +105,7 @@ export default function ({ id2, navigate, location }) {
     let requestBodyHasChanged =
       sandboxFromServer.requestBody !== buffer.requestBody
 
-    hasChanges =
+    bufferHasChanges =
       configHasChanged ||
       methodHasChanged ||
       urlHasChanged ||
@@ -122,10 +117,17 @@ export default function ({ id2, navigate, location }) {
       <SEO title={`REPL ${id2}`} />
 
       {!buffer ? (
-        <p>Loading...</p>
+        <div
+          className="flex flex-col items-center mt-16"
+          style={{ height: "calc(100vh - 4rem)" }}
+        >
+          <p className="mt-40 text-xl text-gray-500 animate-pulse">
+            Loading...
+          </p>
+        </div>
       ) : (
         <Repl
-          hasChanges={hasChanges}
+          hasChanges={bufferHasChanges}
           onSave={handleSave}
           sandbox={buffer}
           setSandbox={setBuffer}

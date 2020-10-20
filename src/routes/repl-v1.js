@@ -8,8 +8,7 @@ import { useSandbox } from "../hooks/use-sandbox"
 const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
 export default function ({ id, navigate }) {
-  let [initialSandbox, setInitialSandbox] = useState()
-  let [sandbox, setSandbox] = useState()
+  let [buffer, setBuffer] = useState()
 
   const [res] = useQuery({
     query: `
@@ -30,23 +29,27 @@ export default function ({ id, navigate }) {
     },
   })
 
-  let hasntSetInitialSandbox = !initialSandbox && res.data
-
-  if (hasntSetInitialSandbox) {
-    let { __typename, ...sandboxFromResponse } = res.data.sandboxes_by_pk
-    setInitialSandbox(sandboxFromResponse)
-    setSandbox(sandboxFromResponse)
+  let sandboxFromServer
+  let serverResponse = res.data?.sandboxes_by_pk
+  let serverDataMatchesUrlParam = serverResponse?.id === +id
+  if (serverResponse && serverDataMatchesUrlParam) {
+    let { __typename, ...rest } = serverResponse
+    sandboxFromServer = rest
   }
 
-  let hasChanges
-  if (initialSandbox) {
-    let configHasChanged = initialSandbox.config !== sandbox.config
-    let methodHasChanged = initialSandbox.method !== sandbox.method
-    let urlHasChanged = initialSandbox.url !== sandbox.url
-    let requestBodyHasChanged =
-      initialSandbox.requestBody !== sandbox.requestBody
+  if (!buffer && sandboxFromServer) {
+    setBuffer(sandboxFromServer)
+  }
 
-    hasChanges =
+  let bufferHasChanges
+  if (sandboxFromServer && buffer) {
+    let configHasChanged = sandboxFromServer.config !== buffer.config
+    let methodHasChanged = sandboxFromServer.method !== buffer.method
+    let urlHasChanged = sandboxFromServer.url !== buffer.url
+    let requestBodyHasChanged =
+      sandboxFromServer.requestBody !== buffer.requestBody
+
+    bufferHasChanges =
       configHasChanged ||
       methodHasChanged ||
       urlHasChanged ||
@@ -62,7 +65,7 @@ export default function ({ id, navigate }) {
     localStorage.setItem("repl:editingToken", editingToken)
     localStorage.setItem("repl:browserId", browserId)
 
-    let { id, ...newSandboxAttrs } = sandbox
+    let { id, ...newSandboxAttrs } = buffer
     let attrs = {
       ...newSandboxAttrs,
       id2: shortNanoid(),
@@ -80,19 +83,22 @@ export default function ({ id, navigate }) {
     <div className="flex flex-col items-center justify-center flex-1">
       REPL not found.
     </div>
-  ) : !initialSandbox ? (
-    <div className="flex flex-col items-center justify-center flex-1">
-      <div>Loading REPL...</div>
+  ) : !buffer ? (
+    <div
+      className="flex flex-col items-center mt-16"
+      style={{ height: "calc(100vh - 4rem)" }}
+    >
+      <p className="mt-40 text-xl text-gray-500 animate-pulse">Loading...</p>
     </div>
   ) : (
     <>
       <SEO title={`REPL ${id}`} />
 
       <Repl
-        hasChanges={hasChanges}
+        hasChanges={bufferHasChanges}
         onSave={handleSave}
-        sandbox={sandbox}
-        setSandbox={setSandbox}
+        sandbox={buffer}
+        setSandbox={setBuffer}
       />
     </>
   )

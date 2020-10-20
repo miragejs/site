@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Repl from "../components/repl"
 import queryString from "query-string"
@@ -37,10 +37,8 @@ function getInitialSandbox({ location, defaultConfig }) {
 
 export default function ({ location, navigate }) {
   let defaultConfig = useTutorialSnippet("starting-input")
-  let initialSandboxRef = useRef(getInitialSandbox({ location, defaultConfig }))
-  let [sandbox, setSandbox] = useState(() =>
-    getInitialSandbox({ location, defaultConfig })
-  )
+  let initialSandbox = getInitialSandbox({ location, defaultConfig })
+  let [buffer, setBuffer] = useState(initialSandbox)
 
   // Clear any query params from initial render
   useEffect(() => {
@@ -62,7 +60,7 @@ export default function ({ location, navigate }) {
       id2: shortNanoid(),
       editing_token: editingToken,
       browser_id: browserId,
-      ...sandbox,
+      ...buffer,
     }
 
     createSandbox({ object: attrs }).then((res) => {
@@ -71,11 +69,10 @@ export default function ({ location, navigate }) {
     })
   }
 
-  let configHasChanged = initialSandboxRef.current.config !== sandbox.config
-  let methodHasChanged = initialSandboxRef.current.method !== sandbox.method
-  let urlHasChanged = initialSandboxRef.current.url !== sandbox.url
-  let requestBodyHasChanged =
-    initialSandboxRef.current.requestBody !== sandbox.requestBody
+  let configHasChanged = initialSandbox.config !== buffer.config
+  let methodHasChanged = initialSandbox.method !== buffer.method
+  let urlHasChanged = initialSandbox.url !== buffer.url
+  let requestBodyHasChanged = initialSandbox.requestBody !== buffer.requestBody
 
   let hasChanges =
     configHasChanged ||
@@ -86,8 +83,8 @@ export default function ({ location, navigate }) {
   return (
     <Repl
       onSave={handleSave}
-      sandbox={sandbox}
-      setSandbox={setSandbox}
+      sandbox={buffer}
+      setSandbox={setBuffer}
       hasChanges={hasChanges}
     />
   )

@@ -65,16 +65,6 @@ export default function CodeEditor({
     f()
   }, [value, dataTestId, extraKeys])
 
-  // let previousValue = usePrevious(value)
-  // useEffect(() => {
-  //   console.log({ value })
-  //   console.log({ previousValue })
-  //   if (editorRef.current?.getValue() && previousValue !== value) {
-  //     console.log("codemirror setValue")
-  //     editorRef.current.setValue(value)
-  //   }
-  // }, [previousValue, value])
-
   return (
     <>
       <GlobalStyle />

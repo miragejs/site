@@ -99,5 +99,9 @@ describe("v1 repl", () => {
     })
   })
 
-  // it("shows an error state for a missing v1 sandbox")
+  it("shows an error state for a missing v1 sandbox", () => {
+    cy.visit(`/repl/v1/asdf`)
+
+    cy.get("[data-testid=missing-sandbox]").should("exist")
+  })
 })

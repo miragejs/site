@@ -4,6 +4,7 @@ import SEO from "../components/seo"
 import Repl from "../components/repl"
 import { nanoid, customAlphabet } from "nanoid"
 import { useSandbox } from "../hooks/use-sandbox"
+import { Link } from "gatsby"
 
 const shortNanoid = customAlphabet("1234567890abcdef", 10)
 
@@ -80,8 +81,24 @@ export default function ({ id, navigate }) {
   }
 
   return res.error || res.data?.sandboxes_by_pk === null ? (
-    <div className="flex flex-col items-center justify-center flex-1">
-      REPL not found.
+    <div
+      className="flex flex-col items-center mt-16"
+      style={{ height: "calc(100vh - 4rem)" }}
+      data-testid="missing-sandbox"
+    >
+      <p className="mt-40 text-xl text-gray-700">
+        REPL not found.{" "}
+        <span role="img" aria-label="sad face">
+          😕
+        </span>
+      </p>
+      <p className="mt-12 text-gray-500">
+        Try{" "}
+        <Link className="text-blue-500 underline" to="/repl">
+          creating a new REPL
+        </Link>
+        .
+      </p>
     </div>
   ) : !buffer ? (
     <div

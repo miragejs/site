@@ -5,9 +5,7 @@ describe("making a request", () => {
     cy.visit("/repl")
     cy.get("[data-testid=request-method]").select("POST")
     cy.get("[data-testid=sandbox-ready]", { timeout: 10000 }).should("exist")
-    cy.get("[data-testid=request-body-input]").typeInCodemirror(
-      d`invalid JSON!`
-    )
+    cy.get("[data-testid=request-body-input]").typeInCodemirror("invalid JSON!")
     cy.get("[data-testid=request-url]").type("{enter}")
     cy.contains("Request body must be JSON").should("exist")
   })

@@ -54,16 +54,22 @@ export default function CodeEditor({
           .setAttribute("data-testid", dataTestId)
       }
 
-      // If the parent passes in a new value after the editor has been initialized, we may need to update it
-      if (value !== editorRef.current.getValue()) {
-        editorRef.current.setValue(value)
-      }
-
       editorRef.current.setOption("extraKeys", extraKeys)
     }
 
     f()
   }, [value, dataTestId, extraKeys])
+
+  /*
+    If the parent passes in a new value after the editor has been
+    initialized, we may need to update it. That's what this effect is for.
+  */
+  useEffect(() => {
+    let editorValue = editorRef.current?.getValue()
+    if (value && editorValue && value !== editorValue) {
+      editorRef.current.setValue(value)
+    }
+  }, [value])
 
   return (
     <>

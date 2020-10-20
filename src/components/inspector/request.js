@@ -19,9 +19,9 @@ export default function ({
     return json.replace(/`/g, "'").replace(/\n/g, "")
   }
 
-  function handleRequestBodyChange(e) {
+  function handleRequestBodyChange(value) {
     setRequestBodyIsValid(true)
-    setRequestBody(e)
+    setRequestBody(value)
   }
 
   function handleMethodChange(e) {
@@ -54,15 +54,12 @@ export default function ({
     if (!url) {
       setUrlIsValid(false)
     }
-
     if (method !== "GET" && !hasJsonStructure(requestBody)) {
       setRequestBodyIsValid(false)
     }
-
     if (!url || (method !== "GET" && !hasJsonStructure(requestBody))) {
       return
     }
-
     let parsedBody
     if (method !== "GET" && requestBody) {
       try {
@@ -71,7 +68,6 @@ export default function ({
         console.warn("The request body could not be parsed")
       }
     }
-
     onRequest({
       method,
       url,

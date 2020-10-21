@@ -31,7 +31,7 @@
     "@mdx-js/mdx": "^1.6.18",
     "@mdx-js/react": "^1.6.19",
     "@n8tb1t/use-scroll-position": "^1.0.43",
-    "@reach/dialog": "^0.10.5",
+    "@reach/dialog": "^0.11.2",
     "@reach/router": "^1.3.4",
     "@react-hook/window-size": "^3.0.7",
     "@svgr/webpack": "^5.4.0",

@@ -9085,10 +9085,10 @@ gatsby-recipes@^0.2.31:
     yoga-layout-prebuilt "^1.9.6"
     yup "^0.27.0"
 
-gatsby-remark-images@^3.3.36:
-  version "3.3.36"
-  resolved "https://registry.yarnpkg.com/gatsby-remark-images/-/gatsby-remark-images-3.3.36.tgz#f058319c8b5309427931ecfa4bfbdbeba324ade9"
-  integrity sha512-Kd3iGGOkENnILOAN0Ia1Np2ike2I6ur9kt7RyoxXPvXE+run/BVIKDBdMiXnjtA+q/z5abtLzM1DuCucuWbPEQ==
+gatsby-remark-images@^3.3.38:
+  version "3.3.38"
+  resolved "https://registry.yarnpkg.com/gatsby-remark-images/-/gatsby-remark-images-3.3.38.tgz#629ed6214c60cf0ee37432d41979beb0b0d1afdf"
+  integrity sha512-0LsLIuHejZmu9n7yz7uXKC8NjuIzT1nSSqdnhTef/e47f0TuoQgyBI97OSHebum2zDZ/YBVcu+6BhmoWxaw6iw==
   dependencies:
     "@babel/runtime" "^7.11.2"
     chalk "^2.4.2"

@@ -61,7 +61,7 @@
     "gatsby-plugin-typescript": "^2.4.22",
     "gatsby-remark-images": "^3.3.38",
     "gatsby-source-filesystem": "^2.3.35",
-    "gatsby-transformer-sharp": "^2.5.18",
+    "gatsby-transformer-sharp": "^2.5.20",
     "graphql": "^15.3.0",
     "hex-rgb": "^4.2.0",
     "install": "^0.13.0",

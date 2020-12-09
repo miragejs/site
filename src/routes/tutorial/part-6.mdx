@@ -119,7 +119,7 @@ this.post("/api/reminders", (schema, request) => {
 
 When creating an unassociated todo, the attrs are `{ text: "New todo" }`, but an associated todo has attrs like `{ text: "Respond to Jill", listId: "2" }`.
 
-When we defined our relationship, Mirage set up special attributes on our models known as foreign keys. These are how it keeps track of which models are associated with each other. Setting a foreing key like `listId` or `reminderIds: []` is enough to update a relationship and have it reflected across all your Mirage route handlers.
+When we defined our relationship, Mirage set up special attributes on our models known as foreign keys. These are how it keeps track of which models are associated with each other. Setting a foreign key like `listId` or `reminderIds: []` is enough to update a relationship and have it reflected across all your Mirage route handlers.
 
 So, we don't have to update our POST handler to accommodate our UI's List feature, since `listId` is already being passed into `reminders.create()`.
 

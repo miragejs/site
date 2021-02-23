@@ -547,6 +547,8 @@ server.createList("post", 10, "withComments")
 
 Combining traits with the `afterCreate` hook is one of the most powerful features of Mirage factories. Effective use of this technique will dramatically simplify the process of creating different graphs of relational data for your app.
 
+When creating an object with one or more traits, the factory will run _every_ applicable `afterCreate` hook. The base factory's `afterCreate` hook will run first (if it exists), and any trait hooks will run in the order the traits were specified in the call to `create` or `createList`.
+
 ### The association helper
 
 The `association()` helper provides some sugar for creating `belongsTo` relationships.

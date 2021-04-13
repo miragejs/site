@@ -53,7 +53,7 @@ For example, in a React app `index.js` is often the "bootstrapping" file, so you
 import React from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
-import { makeServer } from "./mirage"
+import { makeServer } from "./server"
 
 makeServer({ environment: "development" })
 
@@ -69,7 +69,7 @@ In your production environment, you probably don't want Mirage to run (since you
 import React from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
-import { makeServer } from "./mirage"
+import { makeServer } from "./server"
 
 if (process.env.NODE_ENV === "development") {
   makeServer({ environment: "development" })
@@ -86,13 +86,13 @@ You can also use your new centralized server definition in tests. Import your `m
 
 ```js
 // tests/home-test.js
-import { startMirage } from "./mirage"
+import { makeServer } from "./server"
 
 describe("homepage", function () {
   let server
 
   beforeEach(() => {
-    server = startMirage()
+    server = makeServer()
   })
 
   afterEach(() => {
@@ -115,14 +115,14 @@ Note that even though your tests are using the shared server definition, you can
 
 ```js
 // tests/home-test.js
-import { startMirage } from "./mirage"
+import { makeServer } from "./server"
 import { Response } from "miragejs"
 
 describe("homepage", function () {
   let server
 
   beforeEach(() => {
-    server = startMirage()
+    server = makeServer()
   })
 
   afterEach(() => {

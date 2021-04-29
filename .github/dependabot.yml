@@ -1,0 +1,41 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: babel-preset-gatsby
+    versions:
+    - 0.11.0
+    - 0.12.0
+    - 0.12.1
+    - 0.12.2
+    - 1.0.0
+    - 1.1.0
+    - 1.2.0
+    - 1.3.0
+  - dependency-name: y18n
+    versions:
+    - 4.0.1
+  - dependency-name: "@reach/dialog"
+    versions:
+    - 0.13.0
+    - 0.13.2
+    - 0.14.0
+  - dependency-name: use-debounce
+    versions:
+    - 5.2.0
+    - 5.2.1
+    - 6.0.0
+  - dependency-name: "@xstate/react"
+    versions:
+    - 1.2.2
+    - 1.3.1
+  - dependency-name: "@testing-library/react"
+    versions:
+    - 11.2.3
+    - 11.2.5
+  commit-message:
+    prefix: "[skip netlify]"

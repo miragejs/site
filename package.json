@@ -41,7 +41,7 @@
     "@xstate/react": "^0.8.1",
     "autoprefixer": "^9.8.6",
     "babel-plugin-styled-components": "^1.11.1",
-    "codemirror": "^5.58.1",
+    "codemirror": "^5.58.2",
     "dedent": "^0.7.0",
     "docsearch.js": "^2.6.3",
     "eslint-plugin-chai-friendly": "^0.6.0",

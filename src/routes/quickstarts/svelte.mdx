@@ -1,0 +1,67 @@
+# Setup a Svelte App with Mirage for Development
+
+Mock your Svelte app's networking code so you can develop your Svelte app without any backend services.
+
+> This is a quickstart guide for people familiar with Mirage. If you're brand new to Mirage, take a look at the [Overview](/docs/getting-started/overview).
+
+## Step 1: Create your app
+
+```bash
+npx degit sveltejs/template svelte-mirage
+cd svelte-mirage
+```
+
+## Step 2: Install Mirage
+
+```bash
+# Using npm
+npm install --save-dev miragejs
+
+# Using Yarn
+yarn add --dev miragejs
+```
+
+## Step 3: Update your bootstrap file
+
+Replace the content of `src/App.js` with:
+
+```html
+<script>
+  import { onMount } from "svelte"
+  import { Server } from "miragejs"
+
+  new Server({
+    routes() {
+      this.get("/api/users", () => ({
+        users: [{ name: "Sam" }, { name: "Ryan" }],
+      }))
+    },
+  })
+
+  let users
+
+  onMount(async () => {
+    const response = await fetch("/api/users")
+    const data = await response.json()
+    users = data.users
+  })
+</script>
+
+<main>
+  {#if users}
+    {#each users as user}
+      <li>{user.name}</li>
+    {/each}
+  {:else}
+    <p>loading.....</p>
+  {/if}
+</main>
+```
+
+## Step 4: Start your development server
+
+```bash
+npm run dev
+```
+
+You can now continue to develop your Svelte app, mocking out your backend API endpoints with Mirage as you go.

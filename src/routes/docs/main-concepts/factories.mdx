@@ -421,7 +421,7 @@ let jane = server.create("user", { name: "Jane" })
 server.createList("post", 10, { user: jane })
 ```
 
-would not work as we expect, since the attribute overrides are used while the object is being created, but the logic in `afterCreate` runs _after_ the post has been created. Thus, this post would be associated with the newly created post from the hook, rather than Jane.
+would not work as we expect, since the attribute overrides are used while the object is being created, but the logic in `afterCreate` runs _after_ the post has been created. Thus, this post would be associated with the newly created user from the hook, rather than Jane.
 
 To fix this, we can update our `afterCreate` hook to first check if the newly created post already has a user associated with it, and only if it doesn't will we create a new one and update the relationship:
 

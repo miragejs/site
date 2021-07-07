@@ -97,7 +97,7 @@
     "@types/jest": "^26.0.14",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
-    "babel-preset-gatsby": "^0.5.12",
+    "babel-preset-gatsby": "^1.9.0",
     "cypress": "^4.12.1",
     "esdoc": "miragejs/esdoc#015a3426b2e53b2b0270a9c00133780db3f1d144",
     "esdoc-accessor-plugin": "^1.0.0",

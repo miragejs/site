@@ -1,0 +1,33 @@
+# Persisting across page reloads
+
+Mirage works with an _in-memory_ database. This means the database will be lost when reloading a page.
+
+However you can make use of `dump` and `loadData` to save the contents of the database and load them on page reload.
+
+For example, you could persist the data to localStorage after every mutating request. You can hook into handled requests using [`pretender.handledRequest`](https://github.com/pretenderjs/pretender#handled-requests):
+
+```js
+new Server({
+  models: {
+    user: Model,
+  },
+
+  seeds(server) {
+    const storedDB = localStorage.getItem("mirageDB")
+
+    if (storedDB) {
+      server.db.loadData(JSON.parse(storedDB))
+    } else {
+      // Seed normally
+    }
+  },
+
+  routes() {
+    this.pretender.handledRequest = verb => {
+      if (["POST", "PUT", "DELETE"].includes(verb)) {
+        localStorage.setItem("mirageDB", JSON.stringify(server.db.dump()))
+      }
+    }
+  },
+})
+```

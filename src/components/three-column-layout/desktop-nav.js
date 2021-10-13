@@ -48,7 +48,7 @@ export function DesktopNav({ menuItems }) {
       style={{ width: sidebarWidth }}
     >
       <div className="absolute inset-y-0 right-0 w-screen border-r border-gray-200 bg-gray-50"></div>
-      <nav className="sticky top-0 h-screen -mt-16 overflow-y-scroll leading-snug">
+      <nav className="sticky top-0 h-screen -mt-16 overflow-y-auto leading-snug">
         <div className="h-full pt-16">
           <div className="flex flex-col h-full pt-6 pr-8 xl:pt-8">
             <ul className="flex-1">

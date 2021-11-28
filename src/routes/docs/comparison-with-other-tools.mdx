@@ -65,7 +65,7 @@ MSW is a great library and the service worker concept might even make it into Mi
 
 ## Other low-level mocking libraries
 
-There are low-level mocking tools like [Pretender](https://github.com/pretenderjs/pretender) and [FakeRest](https://github.com/marmelab/FakeRest) that are often used in isolation (usually tests) to define static mocks for specific endpoints. (Mirage actually uses Pretender under the hood as its inceptor!)
+There are low-level mocking tools like [Pretender](https://github.com/pretenderjs/pretender) and [FakeRest](https://github.com/marmelab/FakeRest) that are often used in isolation (usually tests) to define static mocks for specific endpoints. (Mirage actually uses Pretender under the hood as its interceptor!)
 
 The biggest difference with tools like these and Mirage is that Mirage is designed to let you faithfully recreate your entire production API server, so that your app can interact with it in exactly the same way it would talk to the network in production. Mirage's data and serializer layers are what enable this. Mocking every endpoint by hand can be tedious and hard to keep updated, and is <Link to='/docs/about/'>what actually what led to Mirage's existence in the first place</Link>.
 

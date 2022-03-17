@@ -18,7 +18,8 @@ yarn add --dev miragejs
 
 ## Step 2: Create a Server within a test
 
-Within a test file, import `Server` from Mirage, create a server, and mock out the API endpoints that your code needs:
+Within a test file, import `Server` from Mirage, create a server, and mock out the API endpoints that your code needs
+(`urlPrefix` is only required if your API is at a different port or host):
 
 ```js{5-15,18-21}
 // src/__tests__/App.test.js
@@ -30,7 +31,10 @@ import { createServer } from "miragejs"
 let server
 
 beforeEach(() => {
-  server = createServer()
+  server = createServer({
+    environment: "test",
+    urlPrefix: "http://localhost:3000",
+  })
 })
 
 afterEach(() => {

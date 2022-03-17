@@ -26,6 +26,13 @@ createServer({
 
 Now whenever your app makes a GET request to `/api/movies`, Mirage will respond with this data.
 
+If your API is on a different host or port than your app, set `urlPrefix`:
+
+```js
+    routes() {
+      this.urlPrefix = 'http://localhost:3000';
+```
+
 You can get pretty far using static route handlers like this, and they're a good way to get comfortable working with Mirage. All the HTTP verbs work, there's a `timing` option you can use to simulate a slow server, and you can even return a custom `Response` to see how your app behaves when it receives an error from your API.
 
 ```js

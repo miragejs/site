@@ -31,6 +31,11 @@ let server
 
 beforeEach(() => {
   server = createServer()
+//  If your API is at a different port or host than your app, you'll need something like:
+//  server = createServer({
+//    environment: "test",
+//    urlPrefix: "http://api.acme.com:3000",
+//  })
 })
 
 afterEach(() => {

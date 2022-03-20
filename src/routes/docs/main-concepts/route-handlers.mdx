@@ -10,6 +10,13 @@ this.get("/movies", { movies: ["Interstellar", "Inception", "Dunkirk"] })
 
 Now when your app makes a GET request to `/movies`, it will receive this object as JSON data.
 
+If your API is on a different host or port than your app, set `urlPrefix`:
+
+```js
+    routes() {
+      this.urlPrefix = 'http://localhost:3000';
+```
+
 You can also write function route handlers by passing in a function as the second argument:
 
 ```js

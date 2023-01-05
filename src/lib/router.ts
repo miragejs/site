@@ -239,6 +239,7 @@ const allRoutes: RouteDefinition[] = [
         ],
       },
       { label: "Ember", name: "ember" },
+      { label: "Svelte", name: "svelte" },
       { label: "Cypress", name: "cypress" },
     ],
   },

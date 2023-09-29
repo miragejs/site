@@ -1,0 +1,98 @@
+# Middleware
+
+Middleware lets you write code which runs before and after route handlers, and middleware can be shared by many route handlers, too.
+
+For example, you can write middleware to check requests on their way to the route handlers:
+
+```js
+function requireContentType(value) {
+  return (schema, request, next) => {
+    if (request.requestHeaders['Content-Type'] !== value) {
+      return new Response(400, {}, `Content-Type must be "${value}"`);
+    }
+    return next();
+  }
+}
+```
+
+...or you can write middleware to modify the responses on their way back to the client:
+
+```js
+function addOurSpecialResponseHeader() {
+  return (schema, request, next) => {
+    const [status, headers, payload] = next().toRackResponse();
+    return new Response(status, { 'special-header': '1', ...headers }, payload);
+  }
+}
+```
+
+## Adding middleware to route handlers
+
+When you define your route handlers you can specify which middleware to use.  Each set of middleware applies to the subsequent route definitions.
+
+```js
+routes() {
+  this.middleware = [
+    requireContentType('application/json'),
+  ];
+
+  this.get("/movies", /*...*/);
+  this.get("/movies/:id", /*...*/);
+
+  this.middleware = [
+    requireContentType('application/xml'),
+    addOurSpecialResponseHeader(),
+  ];
+
+  this.get("/movies.xml", /*...*/);
+  this.get("/movies/:id.xml", /*...*/);
+}
+```
+
+## More example middleware
+
+Catching errors
+
+```js
+function catchError(klass, handler) {
+  return (schema, request, next) => {
+    try {
+      return next();
+    } catch(e) {
+      if (e instanceof klass) {
+        return handler(e);
+      }
+      throw e;
+    }
+  }
+}
+
+routes() {
+  this.middleware = [
+    catchError(Error, handleInternalServerError),
+    catchError(InvalidQueryError, handleBadRequest),
+  ];
+```
+
+Randomizing failures
+
+```js
+function random500() {
+  return (schema, request, next) => {
+    return Math.random() < 0.2 ? new Response(500, {}, 'internal error') : next();
+  }
+}
+
+routes() {
+  this.middleware = [
+    random500(),
+  ]
+```
+
+---
+
+Middleware is a simple mechanism which isn't tied to any particular use case, so you can stretch your imagination when using it.
+
+---
+
+Now that we've covered all of Mirage's main concepts, we're ready to see how we can use Mirage to effectively test our JavaScript application.

@@ -63,6 +63,7 @@ const allRoutes: RouteDefinition[] = [
           { label: "Factories", name: "factories" },
           { label: "Fixtures", name: "fixtures" },
           { label: "Serializers", name: "serializers" },
+          { label: "Middleware", name: "middleware" },
         ],
       },
       {

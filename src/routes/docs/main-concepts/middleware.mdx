@@ -1,8 +1,8 @@
 # Middleware
 
-Middleware lets you write code which runs before and/or after route handlers, and is shared across route handlers.
+Middleware lets you write code which runs before and after route handlers, and middleware can be shared by many route handlers, too.
 
-For example, you can write middleware to check the request on its way to the route handlers:
+For example, you can write middleware to check requests on their way to the route handlers:
 
 ```js
 function requireContentType(value) {

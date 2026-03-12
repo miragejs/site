@@ -1,0 +1,354 @@
+/* Scaling container: change only this element's size to scale the whole scene */
+.genie-scene {
+  --scene-width: 260px;
+  --scene-height: 280px;
+  width: var(--scene-width);
+  height: var(--scene-height);
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin: 8px;
+
+  @media (max-width: 1000px) {
+    width: 160px;
+    height: 180px;
+
+    .speech-bubble {
+      width: 110%;
+      max-width: 110%;
+    }
+  }
+}
+
+/* Lamp container: float animation when idle (bottom→top movement) */
+.lamp-container {
+  position: absolute;
+  bottom: 0;
+  left: 70%;
+  width: 50%;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  transform: translateX(-50%);
+  will-change: transform;
+}
+
+.genie-scene:not(.activated) .lamp-icon g#magic_lamp {
+  animation: lamp-float 2.5s ease-in-out infinite;
+}
+
+.genie-scene.activated .lamp-container {
+  animation: none;
+}
+
+@keyframes lamp-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5%);
+  }
+}
+
+.lamp-button {
+  position: relative;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #b7791f;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 180ms ease;
+}
+
+.lamp-button:hover {
+  transform: scale(1.04);
+}
+
+.lamp-button:focus {
+  border: none;
+  outline: none;
+}
+
+.lamp-icon {
+  width: 100%;
+  overflow: visible;
+}
+
+.genie-scene.activated .lamp-button {
+  animation: lamp-settle 240ms ease-out forwards;
+  cursor: default;
+}
+
+@keyframes lamp-settle {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(0.96);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Lamp shadow: subtle scale/opacity in sync with float */
+.lamp-icon g#lamp_shadow {
+  transform-box: fill-box;
+  transform-origin: center center;
+}
+
+.genie-scene:not(.activated) .lamp-icon g#lamp_shadow {
+  animation: lamp-shadow-float 2.5s ease-in-out infinite;
+}
+
+@keyframes lamp-shadow-float {
+  0%,
+  100% {
+    opacity: 0.9;
+    transform: scaleX(0.9);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scaleX(1);
+  }
+}
+
+/* Sparks: twinkle in order spark-a → spark-g (staggered delay) */
+.lamp-icon [id="spark-a"] {
+  animation: spark-twinkle 1.2s ease-in-out 0ms infinite;
+}
+.lamp-icon [id="spark-b"] {
+  animation: spark-twinkle 1.2s ease-in-out 100ms infinite;
+}
+.lamp-icon [id="spark-c"] {
+  animation: spark-twinkle 1.2s ease-in-out 200ms infinite;
+}
+.lamp-icon [id="spark-d"] {
+  animation: spark-twinkle 1.2s ease-in-out 300ms infinite;
+}
+.lamp-icon [id="spark-e"] {
+  animation: spark-twinkle 1.2s ease-in-out 400ms infinite;
+}
+.lamp-icon [id="spark-f"] {
+  animation: spark-twinkle 1.2s ease-in-out 500ms infinite;
+}
+.lamp-icon [id="spark-g"] {
+  animation: spark-twinkle 1.2s ease-in-out 600ms infinite;
+}
+
+.genie-scene.activated .lamp-icon [id^="spark-"] {
+  animation: none;
+}
+
+.genie-scene.activated
+  .lamp-icon
+  [id^="spark-"]:not(#spark-b, #spark-c, #spark-d, #spark-f) {
+  display: none;
+}
+
+@keyframes spark-twinkle {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Genie: behind smoke, reveal bottom-to-top (opacity), tail at lamp neck */
+.genie-container {
+  position: absolute;
+  bottom: 23%;
+  left: 30%;
+  width: 45%;
+  z-index: 1;
+  pointer-events: none;
+  transform-origin: center bottom;
+  transform: translateX(-50%);
+  opacity: 0;
+  color: #60a5fa;
+}
+
+.genie-icon {
+  display: block;
+  width: 200%;
+  height: auto;
+}
+
+/* Smoke from lamp neck: icon scale + opacity in, then fade out; centered on lamp (left side of scene) */
+.smoke-from-neck {
+  position: absolute;
+  bottom: 21%;
+  left: 32%;
+  width: 30%;
+  transform: translateX(-50%);
+  transform-origin: bottom center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.smoke-from-neck .smoke-icon {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: right bottom;
+  opacity: 0;
+}
+
+/* Speech bubble */
+.speech-bubble {
+  position: absolute;
+  top: 0;
+  right: 0;
+  max-width: 100%;
+  padding: 8px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  color: #111827;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+  transform: translateY(-110%) scale(0.96);
+  transform-origin: center center;
+  box-sizing: border-box;
+}
+
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 18%;
+  width: 8px;
+  height: 8px;
+  background: white;
+  transform: rotate(45deg);
+}
+
+.speech-bubble-close {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  background: white;
+  color: #70737a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  opacity: 1;
+  transition: all 250ms ease;
+}
+
+.speech-bubble-close:hover {
+  color: white;
+  background: rgb(200, 71, 71);
+}
+
+.speech-bubble-close:focus-visible {
+  outline: 2px solid #7c3aed;
+  outline-offset: 1px;
+}
+
+.speech-bubble p {
+  margin: 0;
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: clamp(12px, 3.2vw, 14px);
+  font-style: italic;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+.speech-bubble a {
+  color: #60a5fa;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.speech-bubble a:hover {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .genie-scene:not(.activated) .lamp-container,
+  .genie-scene.activated .lamp-button,
+  .lamp-icon [id^="spark-"],
+  .genie-scene:not(.activated) .lamp-icon [id="lamp_shadow"],
+  .genie-scene:not(.activated) .lamp-icon g#lamp_shadow,
+  .genie-scene.activated .genie-container,
+  .genie-scene.activated .smoke-from-neck .smoke-icon,
+  .genie-scene.activated .speech-bubble {
+    animation: none !important;
+  }
+
+  .genie-scene.activated .genie-container {
+    opacity: 1;
+    transform: translateX(-50%);
+  }
+
+  .genie-scene.activated .speech-bubble {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+}
+
+/** --- Main Animations --- */
+
+@keyframes smoke-from-neck-inout {
+  0% {
+    transform: translate(12%, 6%) scale(0.25);
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.7;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+}
+
+.genie-scene.activated .smoke-from-neck .smoke-icon {
+  animation: smoke-from-neck-inout 2000ms ease-out forwards;
+}
+
+@keyframes genie-reveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10%) scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+.genie-scene.activated .genie-container {
+  animation: genie-reveal 750ms ease-out 750ms forwards;
+}
+
+@keyframes bubble-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-90%) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-110%) scale(1);
+  }
+}
+
+.genie-scene.activated .speech-bubble {
+  animation: bubble-in 250ms ease-in 1250ms forwards;
+  pointer-events: auto;
+}

@@ -21,6 +21,7 @@ import { useTheme } from "../hooks/use-theme"
 import SEO from "../components/seo"
 import SignupForm from "../components/signup-form"
 import ErrorBoundary from "../components/error-boundary"
+import GenieIntro from "../components/genie-intro"
 import NotFound from "./not-found"
 import { sidebarWidth } from "../components/three-column-layout/desktop-nav"
 import "docsearch.js/dist/cdn/docsearch.min.css"
@@ -128,6 +129,7 @@ export default function (props) {
         <ThemeProvider {...props}>
           <UrqlProvider value={client}>
             <AppInner {...props} />
+            <GenieIntro />
           </UrqlProvider>
         </ThemeProvider>
       </RouterProvider>

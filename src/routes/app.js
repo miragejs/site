@@ -191,6 +191,72 @@ function AppInner(props) {
   )
 }
 
+const ORM_BANNER_STORAGE_KEY = "miragejs-orm-banner-dismissed"
+
+function OrmBanner() {
+  const [isDismissed, setIsDismissed] = useState(() => {
+    if (typeof window === "undefined") return true
+    return localStorage.getItem(ORM_BANNER_STORAGE_KEY) === "true"
+  })
+
+  if (isDismissed) return null
+
+  function dismiss() {
+    localStorage.setItem(ORM_BANNER_STORAGE_KEY, "true")
+    setIsDismissed(true)
+  }
+
+  return (
+    <div className="flex items-center justify-center py-2">
+      <p className="text-sm md:text-base text-white text-center">
+        <div className="md:hidden">
+          <span>
+            The ORM you love, without the server.
+          </span>
+          {" "}
+          <a
+            href="https://github.com/miragejs/orm"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline font-semibold text-white hover:text-green-100"
+          >
+            Meet @miragejs/orm &rarr;
+          </a>
+        </div>
+        <div className="hidden md:block">
+          <span className="hidden md:inline">
+            The magic behind Mirage is out of the lamp &mdash; meet{" "}
+            <strong>@miragejs/orm</strong>. A standalone data layer, no server
+            needed.
+          </span>
+          {" "}
+          <a
+            href="https://github.com/miragejs/orm"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline font-semibold text-white hover:text-green-100"
+          >
+            Check it out &rarr;
+          </a>
+        </div>
+      </p>
+      <button
+        onClick={dismiss}
+        className="absolute right-0 md:mr-4 p-1 text-green-100 hover:text-white focus:outline-none"
+        aria-label="Dismiss banner"
+      >
+        <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+          <path
+            fillRule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </button>
+    </div>
+  )
+}
+
 function Header({ showHeaderNav }) {
   const { theme } = useTheme()
   const [isShowingMobileNav, setIsShowingMobileNav] = useState(false)
@@ -216,8 +282,11 @@ function Header({ showHeaderNav }) {
           : "bg-white shadow fixed top-0 inset-x-0"
       }`}
     >
+      <div className="md:px-6 relative bg-green-600">
+        <OrmBanner />
+      </div>
       <div className="md:px-6">
-        <div className={fullWidthHeader ? null : "max-w-6xl mx-auto"}>
+        <div className={fullWidthHeader ? "" : "max-w-6xl mx-auto"}>
           <header
             className={`
               ${isShowingMobileNav && theme === "dark" ? "bg-gray-900" : ""}
